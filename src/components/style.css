@@ -1,0 +1,28 @@
+.loginPage {
+    background-color: rgb(185, 175, 184);
+    background-size: 100% 120%;
+}
+
+.loginForm {
+    background-color: rgba(200, 161, 187, 0.751);
+    color: white;
+}
+.mb-2{
+    background-color: rgb(188, 126, 172);
+    color: rgb(20, 18, 18);
+}
+
+.mb-2:hover{
+    
+        background-color: rgba(224, 50, 252, 1);
+      
+}
+
+.forgot-password {
+     
+    color: #333;
+    margin-top: 10px;
+    font-size: 11px;
+    cursor: pointer;
+    text-align: right;
+  }
