@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-rou
 import Login from './components/Login';
 import Addusertable from './components/Addusertable';
 import Adduser from './components/Adduser';
+import Dashboard from './components/Dashboard';
+import PrimaryNavBar from './components/common/PrimaryNavBar';
 
 
 function App() {
@@ -13,8 +15,11 @@ function App() {
         <Route path="/" element={<Login />} > </Route>
         <Route path="/Addusertable" element={<Addusertable />}> </Route>
         <Route path="/Adduser" element={<Adduser />}> </Route>
+        <Route path="/PrimaryNavBar" element={<PrimaryNavBar/>}> </Route>
+
      </Routes>
    </BrowserRouter>
+
   );
 }
 

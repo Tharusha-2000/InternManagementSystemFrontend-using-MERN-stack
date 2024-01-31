@@ -22,7 +22,7 @@ function Login () {
   
     const handleSubmit = (event) => {
         event.preventDefault()
-        axios.post('http:/10.10.31.12/Addusertable', values)
+        axios.post('http://localhost:5173/Addusertable', values)
         .then(result => {
             if(result.data.loginStatus) {
                 localStorage.setItem("valid", true)
