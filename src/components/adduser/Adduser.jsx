@@ -3,23 +3,58 @@ import React from 'react'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import './adduser.css'
 
-import { Link, Outlet, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 
 function Adduser() {
     console.log("hi");
-	const option = [ 
+	const option =[
+		{label:"Gender",value:1},
+		{label:"Male",value:2},
+		{label:"female",value:3},
+	]
+     function handleSelect(event){
+		setValue(event.target.value)
+	}
+	const [data, setData] = useState({
+		name: "",
+		email: "",
+		password: "",
+		
+	  });
+	  const navigate = useNavigate()
+      const handleSubmit = (e) => {
+		e.preventDefault()
+		const formData = new FormData();
+		formData.append('name', data.name);
+		formData.append('email', data.email);
+		formData.append('password', data.password);
+		
+	
+		axios.post('http://localhost:3000/add_user', formData)
+		.then(result => {
+			if(result.data.Status) {
+				navigate('/Addusertable')
+			} else {
+				alert(result.data.Error)
+			}
+		})
+		.catch(err => console.log(err))
+	  }
+
+
+
+
+/*	const option = [ 
 		{label: "Gender",value :1},
 		{label: "Male",value :2},
 		{label: "Female",value :3},
 	   ]
    
-	   function handleSelect(event){
-		   setValue(event.target.value)
-	   }
+	 
   
-   /*
+   
     const [data, setData] = useState({
 		name: '',
 		email: '',
@@ -45,13 +80,25 @@ function Adduser() {
 		})
 		.catch(err => console.log(err));
 	}
-   */
-
+  
+    const handleSubmit= (e)=>{
+	e.preventDefault();
+	const data={email,password}
+	axios.post('http://localhost:5173/register',{email,password})
+	.then(res=>{
+		console.log(res);
+		console.log(res.data);
+		alert("user added successfully")
+	})
+	.catch(err=>{console.log(err)
+	})
+   }
+    */
     return (
 
 		<div className='d-flex flex-column align-items-center pt-4'>
 		  <h2>NEW REGISTRATION</h2>
-			<form class="row g-3 w-50" >
+			<form class="row g-3 w-50" onSubmit={handleSubmit} >
 			  <div className='box1 rounded-1'>
                 <div class="col-12">
 					<label for="inputName" class="form-label">First Name</label>
@@ -75,7 +122,7 @@ function Adduser() {
 					<select className="form-select" onChange={handleSelect}>
                         {option.map(option => (
                            <option value={option.value}>{option.label}</option>
-      
+                         
                          ))}
                     </select>
 					
@@ -109,7 +156,7 @@ function Adduser() {
              </div>
              <div className='box3 rounded-1'>
                     <h4>Invite User</h4>
-                  <h8>TO:</h8>
+                     <p>TO:</p>
                 
 				<div class="col-12">
 					<label for="inputName" class="form-label">Name</label>
@@ -117,11 +164,7 @@ function Adduser() {
 					onChange={e => setData({...data, name: e.target.value})}/>
 				</div>
 				
-				<div class="col-12">
-					<label for="inputEAddress" class="form-label">Email Address</label>
-					<input type="Email" class="form-control" id="inputEmail" placeholder="enter email" autoComplete='off'
-					onChange={e => setData({...data, email: e.target.value})}/>
-				</div>
+				
 
 				<div class="col-12 mb-3">
 					<label for="inputMsg" class="form-label" >Massege</label>
@@ -134,7 +177,7 @@ function Adduser() {
              </div>
 			 <div className='d-flex btnt'>
 				<div class="col-0">
-					<button type="submit" class="btn btn-primary" className=' rounded-2 btn1'>Register & invite</button>
+					<button type="submit" class="btn btn-primary" className=' rounded-2 btn1 '>Register & invite</button>
 				</div>
                 <div class="col-3">
 					<button type="cancel " class="btn btn-primary" className=' rounded-2 btn2'>cancel</button>

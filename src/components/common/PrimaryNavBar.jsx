@@ -1,10 +1,5 @@
-
 import React from 'react';
 import './PrimaryNavBar.css';
-//import LOGO from './assets/logo.png';
-//import LOGO2 from './assets/logopart2.png';
-//import PrimaryButton from '../Buttons/PrimaryButton'
-//import '../../vars.css';
 
 function PrimaryNavBar() {
     console.log("PrimaryNavBar");
@@ -29,7 +24,6 @@ function PrimaryNavBar() {
             <div className='pr-3'>
               <button type="button" className="btn btn-outline-primary btn-sm">SIGN UP</button>
             </div>
-            <Button type="button" value="SIGN IN" color="third" IsSmall={true}/>
           </form>
         </div>
       </nav>
