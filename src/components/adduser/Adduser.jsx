@@ -9,14 +9,7 @@ import axios from 'axios'
 
 function Adduser() {
     console.log("hi");
-	const option =[
-		{label:"Gender",value:1},
-		{label:"Male",value:2},
-		{label:"female",value:3},
-	]
-     function handleSelect(event){
-		setValue(event.target.value)
-	}
+	
 	const [data, setData] = useState({
 		name: "",
 		email: "",
@@ -99,45 +92,7 @@ function Adduser() {
 		<div className='d-flex flex-column align-items-center pt-4'>
 		  <h2>NEW REGISTRATION</h2>
 			<form class="row g-3 w-50" onSubmit={handleSubmit} >
-			  <div className='box1 rounded-1'>
-                <div class="col-12">
-					<label for="inputName" class="form-label">First Name</label>
-					<input type="text" class="form-control" id="inputfName" placeholder='Enter FName' autoComplete='off'
-					onChange={e => setData({...data, fname: e.target.value})}/>
-				</div>
-                <div class="col-12">
-					<label for="inputName" class="form-label">Last Name</label>
-					<input type="text" class="form-control" id="inputLName" placeholder='Enter LName' autoComplete='off'
-					onChange={e => setData({...data, lname: e.target.value})}/>
-				</div>
-                <div className='d-flex ' >
-                <div class="col-6">
-					<label for="inputDate" class="form-label">Date of Birth</label>
-					<input type="date" class="form-control" id="inputDate" placeholder='Enter DOB' autoComplete='off'
-					onChange={e => setData({...data, date: e.target.value})}/>
-				</div>
-                <div class="col-6">
-                    <label for="inputGender" class="form-label">Gender</label>
-					
-					<select className="form-select" onChange={handleSelect}>
-                        {option.map(option => (
-                           <option value={option.value}>{option.label}</option>
-                         
-                         ))}
-                    </select>
-					
-					<input type="text" class="form-control" id="inputgender" placeholder='Enter Gender' autoComplete='off'
-					onChange={e => setData({...data, gender: e.target.value})}/> 
-				 
-				</div>
-                </div>
-				<div class="col-12">
-					<label for="inputRoll" class="form-label">Roll</label>
-					<input type="text" class="form-control" id="inputroll" placeholder='Enter roll' autoComplete='off'
-					onChange={e => setData({...data, roll: e.target.value})}/>
-				</div>
-				<br />
-             </div>
+			 
 
              <div className='box2 rounded-1'>
                 <h4>Temporary Login Details</h4>
@@ -164,13 +119,6 @@ function Adduser() {
 					onChange={e => setData({...data, name: e.target.value})}/>
 				</div>
 				
-				
-
-				<div class="col-12 mb-3">
-					<label for="inputMsg" class="form-label" >Massege</label>
-					<input type="text" class="form-control" id="inputMsg" placeholder='enter msg'
-					onChange={e => setData({...data, msg: e.target.value})}/>
-				</div>
 				<br />
 				
 
