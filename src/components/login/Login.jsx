@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import './style.css'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 
 
 
 function Login () {
-  
+   
    console.log("login");
    //const navigate =useNavigate();
 
@@ -22,7 +22,7 @@ function Login () {
   
     const handleSubmit = (event) => {
         event.preventDefault()
-        axios.post('http:/10.10.31.12/Addusertable', values)
+        axios.post('http://localhost:5173/Addusertable', values)
         .then(result => {
             if(result.data.loginStatus) {
                 localStorage.setItem("valid", true)
@@ -55,14 +55,13 @@ function Login () {
                     <input type="password" name='password' placeholder='Enter Password'
                       className='form-control rounded-0'/>
                 </div>
+             </form>  
                 <div className='mb-1'> 
-                    <p className="forgot-password" >
-                        Forget password?
-                       </p>
+                  <Link to="/forgot">Forgot Password</Link>
                 </div>
                 <button className='w-100 rounded-1 mb-2' onClick={handleSubmit}> Log in </button>
               
-            </form> 
+           
         </div>
     </div>
     
