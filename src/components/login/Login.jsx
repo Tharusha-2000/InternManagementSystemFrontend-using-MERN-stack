@@ -9,7 +9,7 @@ function Login () {
    
    console.log("login");
    //const navigate =useNavigate();
-
+/*
    const [values, setValues] = useState({
         email: '',
         password: ''
@@ -35,7 +35,7 @@ function Login () {
     }
     
 
-
+*/
 
 
   return (
@@ -59,7 +59,7 @@ function Login () {
                 <div className='mb-1'> 
                   <Link to="/forgot">Forgot Password</Link>
                 </div>
-                <button className='w-100 rounded-1 mb-2' onClick={handleSubmit}> Log in </button>
+                <button className='w-100 rounded-1 mb-2' > Log in </button>
               
            
         </div>

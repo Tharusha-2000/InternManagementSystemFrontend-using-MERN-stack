@@ -11,13 +11,12 @@ import PrimaryNavBar from './components/common/PrimaryNavBar';
 function App() {
   return (
    <BrowserRouter>
-     <Routes>
-        <Route path="/p" element={<Login />} > </Route>
+      <Routes>
+        <Route path="/" element={<Login />} > </Route>
         <Route path="/Addusertable" element={<Addusertable />}> </Route>
         <Route path="/Adduser" element={<Adduser />}> </Route>
-        <Route path="/" element={<PrimaryNavBar/>}> </Route>
-
-     </Routes>
+        <Route path="/p" element={<PrimaryNavBar/>}> </Route>
+      </Routes>
    </BrowserRouter>
 
   );
