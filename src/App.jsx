@@ -5,7 +5,9 @@ import Login from './components/login/Login';
 import Addusertable from './components/adduser/Addusertable';
 import Adduser from './components/adduser/Adduser';
 //import Dashboard from './components/Dashboard';
-import PrimaryNavBar from './components/common/PrimaryNavBar';
+import Header from './components/common/Header';
+import HS from './components/common/HS';
+
 
 
 function App() {
@@ -15,7 +17,8 @@ function App() {
         <Route path="/" element={<Login />} > </Route>
         <Route path="/Addusertable" element={<Addusertable />}> </Route>
         <Route path="/Adduser" element={<Adduser />}> </Route>
-        <Route path="/p" element={<PrimaryNavBar/>}> </Route>
+        <Route path="/HS" element={<HS/>}> </Route>
+        <Route path="/HS/Addusertable" element={<Addusertable/>}> </Route>
       </Routes>
    </BrowserRouter>
 
