@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './style.css'
 import axios from 'axios'
 import { Link,useNavigate } from 'react-router-dom'
-
+import Fogetpassword from './Fogetpassword';
 
 
 
@@ -58,7 +58,7 @@ function Login () {
                 </div>
              </form>  
                 <div className='mb-1'> 
-                  <Link to="/forgot">Forgot Password</Link>
+                  <Link to="/Forgetpassword">Forgot Password</Link>
                 </div>
                 <button className='w-100 rounded-1 mb-2' > Log in </button>
               

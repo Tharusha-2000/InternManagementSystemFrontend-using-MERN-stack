@@ -9,6 +9,7 @@ import Header from './components/common/Header';
 import HS from './components/common/HS';
 import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
+import CreateNew from './components/login/CreateNew';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/Addusertable" element={<Addusertable />}> </Route>
         <Route path="/Adduser" element={<Adduser />}> </Route>
         <Route path="/Forgetpassword" element={<Fogetpassword/>}> </Route>
+        <Route path="/CreateNew" element={<CreateNew/>}> </Route>
         <Route path="/Varify" element={<Varify/>}> </Route>
         <Route path="/HS" element={<HS/>}> </Route>
         <Route path="/HS/Addusertable" element={<Addusertable/>}> </Route>

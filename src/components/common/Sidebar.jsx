@@ -4,6 +4,8 @@ import {  BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill,
   BsListCheck, BsMenuButtonWideFill, BsFillGearFill } from 'react-icons/bs'
 import { BsMastodon } from "react-icons/bs";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+
+
 function Sidebar({openSidebarToggle, OpenSidebar}) {
     const nanvigate = useNavigate()
   return (
