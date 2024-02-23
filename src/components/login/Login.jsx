@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import './style.css'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
-import  jwt_decode from 'jwt-decode';
+import  * as jwt_decode from 'jwt-decode'
+
 
 function Login () {
    
@@ -19,22 +20,25 @@ function Login () {
   
     const handleSubmit = (event) => {
         console.log(values)
-        event.preventDefault()
-        axios.post('http://localhost:8080/api/users/login', values)
-        .then(result => {
+        event.preventDefault();
+
+        axios
+             .post('http://localhost:8080/api/users/login', values)
+             .then(result => {
             if(result.data) {
                 window.alert(result.data.msg);
                 const token = result.data.token;
-                
-                localStorage.setItem("token", JSON.stringify(token));
+                localStorage.setItem("token", token);
+              
                 const decodedToken = jwt_decode(token);
-                console.log(token);
-                const role = decodedToken.role;
-                if(role === 'admin') {
-                    navigate('/HS')
-                } else  {
-                    navigate('/uS')
-                }
+                console.log(decodedToken);
+                //const role = decodedToken.role;
+              
+                // if(role === 'admin') {
+                //     navigate('/HS')
+                // } else  {
+                //     navigate('/')
+                // }
             } else {
                 setError('result')
                 window.alert(result.data.msg)
