@@ -10,14 +10,15 @@ import HS from './components/common/HS';
 import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
-
+import Test from './components/Test';
 
 function App() {
   return (
    
    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} > </Route>
+      <Route path="/" element={<Test/>} > </Route>
+        <Route path="/ll" element={<Login />} > </Route>
         <Route path="/Addusertable" element={<Addusertable />}> </Route>
         <Route path="/Adduser" element={<Adduser />}> </Route>
         <Route path="/Forgetpassword" element={<Fogetpassword/>}> </Route>
