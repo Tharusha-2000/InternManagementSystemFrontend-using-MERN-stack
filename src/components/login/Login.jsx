@@ -22,23 +22,24 @@ function Login () {
         console.log(values)
         event.preventDefault();
 
-        axios
-             .post('http://localhost:8080/api/users/login', values)
+        axios.post('http://localhost:8090/api/users/login', values)
              .then(result => {
-            if(result.data) {
-                window.alert(result.data.msg);
-                const token = result.data.token;
-                localStorage.setItem("token", token);
+                if(result.data) {
+                    window.alert(result.data.msg);
+                    const token = result.data.token;
+                    console.log(token);
+                    localStorage.setItem("token", token);
+                    const decodedToken = jwt_decode(token);
+                    console.log(decodedToken);
+                    console.log("hi");
+                 
+                     const role = decodedToken.role;
               
-                const decodedToken = jwt_decode(token);
-                console.log(decodedToken);
-                //const role = decodedToken.role;
-              
-                // if(role === 'admin') {
-                //     navigate('/HS')
-                // } else  {
-                //     navigate('/')
-                // }
+                     if(role === 'admin') {
+                          navigate('/HS');
+                   } else  {
+                      navigate('/')
+                    }
             } else {
                 setError('result')
                 window.alert(result.data.msg)
