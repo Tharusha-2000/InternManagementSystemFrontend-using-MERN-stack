@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './HS.css'
 import Header from './Header'
 import Sidebar from './Sidebar'
-import Home from './Home'
+
 
 
 function HS() {
@@ -16,7 +16,6 @@ function HS() {
     <div className='grid-container'>
       <Header OpenSidebar={OpenSidebar}/>
       <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar}/>
-      <Home />
     </div>
   )
 }
