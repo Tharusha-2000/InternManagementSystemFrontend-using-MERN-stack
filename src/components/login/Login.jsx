@@ -2,18 +2,18 @@ import React, { useState } from 'react'
 import './style.css'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
-import  * as jwt_decode from 'jwt-decode'
+import  {jwtDecode} from 'jwt-decode'
 
 
 function Login () {
    
    console.log("login");
-   const [values, setValues] = useState({
+   const [values, setValues] =useState({
         email: '',
         password: ''
     })
 
-    const [error, setError] = useState(null)
+    const [error, setError] =useState(null)
     const navigate = useNavigate()
     axios.defaults.withCredentials = true;
     
@@ -21,36 +21,51 @@ function Login () {
     const handleSubmit = (event) => {
         console.log(values)
         event.preventDefault();
-
-        axios.post('http://localhost:8090/api/users/login', values)
+       if(!values.email || !values.password) {
+            setError('result')
+            window.alert('Please fill the required fields')
+            return;
+       }
+        axios.post('http://localhost:8110/api/users/login', values)
              .then(result => {
-                if(result.data) {
-                    window.alert(result.data.msg);
-                    const token = result.data.token;
-                    console.log(token);
-                    localStorage.setItem("token", token);
-                    const decodedToken = jwt_decode(token);
-                    console.log(decodedToken);
-                    console.log("hi");
+                 if(result.data) {
+                     window.alert(result.data.msg);
+                     const token = result.data.token;
+                     localStorage.setItem("token", token);
+                     const decodedToken = jwtDecode(token);
+                     console.log(decodedToken);
+                     console.log("hi");
                  
-                     const role = decodedToken.role;
+                      const role = decodedToken.role;
               
-                     if(role === 'admin') {
-                          navigate('/HS');
-                   } else  {
-                      navigate('/')
-                    }
-            } else {
+                        if(role === 'admin') {
+                              navigate('/HS');
+                        } else if(role === 'intern')  {
+                              navigate('')
+                        }else if(role === 'mentor')  {
+                              navigate('')
+                        }else if(role === 'evaluvator')  {
+                              navigate('')  
+                        }else if(role === 'manager')  {
+                              navigate('')
+                        } else{
+                           setError('result')
+                           window.alert('Invalid role')
+                        } 
+                 } else {
                 setError('result')
                 window.alert(result.data.msg)
-            }
-        })
-        .catch(err => {
-            if (err.response) {
-                window.alert(err.response.data.msg);
-            }
-        })
+                }
+                        })
+          .catch(err => {
+             if (err.response) {
+                 window.alert(err.response.data.msg);
+              }
+
+            })
+
     }   
+    
 return (
     
      <div className='d-flex justify-content-center align-items-center vh-100  loginPage'>
