@@ -49,7 +49,7 @@ const Varify = () => {
      const otpNumber=Number(otp.join(''))
      console.log(otpNumber);
 
-     axios.get(`http://localhost:8110/api/users/verifyOTP?&code=${otpNumber}` )
+     axios.get(`http://localhost:8201/api/users/verifyOTP?&code=${otpNumber}` )
       
        .then(result => {
            if(result.data){

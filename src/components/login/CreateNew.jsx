@@ -30,7 +30,13 @@ function CreateNew () {
           window.alert('Password and Confirm Password should be same')
           return;
          }
-         axios.put('http://localhost:8110/api/users/resetPassword', {email:email,password:values.password})
+         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/;
+        if (!passwordRegex.test(data.password)) {
+            window.alert('Password must be at least 6 characters long and contain at least one letter and one number.')
+            return;
+        }
+
+         axios.put('http://localhost:8201/api/users/resetPassword', {email:email,password:values.password})
           // console.log(email);
           // console.log(values);
          
