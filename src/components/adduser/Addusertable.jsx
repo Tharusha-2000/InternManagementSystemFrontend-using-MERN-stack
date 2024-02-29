@@ -3,7 +3,12 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Addusertable = ({ rows }) => {
-    const [employee, setEmployee] = useState([]);
+  
+  const [data, setData] = useState({
+    name: "tharusha" ,
+    role: "Admin",
+    email: "tharushadinuth21@gmail.com"
+  });
     const navigate = useNavigate()
  
     

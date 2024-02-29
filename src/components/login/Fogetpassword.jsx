@@ -10,20 +10,26 @@ function Fogetpassword () {
    const [error, setError] =useState(null)
    const navigate = useNavigate()
 
+
   const handleSubmit = (event) => {
     console.log(value)
     event.preventDefault();
-    if(!value.email ) {
+    if(!value.email ){
       setError('result')
       window.alert('Please fill the required fields')
       return;
     }
-    axios.post('http://localhost:8110/api/users/generateOTP&sendmail', value)
+
+    axios.post('http://localhost:8201/api/users/generateOTP&sendmail', value)
           .then(result => {
               if(result.data){
                   window.alert(result.data.msg);
                   console.log(result.data.msg);
-                  navigate('/CreateNew');
+                     if(result.status === 201 ) {
+                     // console.log(result.data.code);
+                          navigate('/Varify',{ state: { email: value.email ,code:result.data.code} });
+                      }
+                 
                 }
               }) 
                 .catch(err => {

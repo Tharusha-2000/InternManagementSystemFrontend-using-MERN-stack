@@ -1,13 +1,17 @@
 import './style.css'
-import { Link,useNavigate } from 'react-router-dom'
+import { Link,useNavigate,useLocation } from 'react-router-dom'
 import React, { useState, useRef } from 'react';
 import './varify.css'; 
+import axios from 'axios';
 
 
 const Varify = () => {
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [otp, setOtp] = useState(['','','','','','']);
+  const location = useLocation();
+  const { email,code } = location.state;
   const inputRefs = useRef([]);
-
+  const navigate = useNavigate();
+  //console.log({code});
   const handleChange = (index, value) => {
             const newOtp = [...otp];
             newOtp[index] = value;
@@ -22,13 +26,55 @@ const Varify = () => {
               inputRefs.current[index - 1].focus();
         }
     };
+  const resendOTP = () => {
+    if(!email){
+      window.alert('cannot resend OTP without email address')
+      return;
+    }
+    axios.post('http://localhost:8110/api/users/generateOTP&sendmail',{email:email})
+    .then(result => {
+        console.log("hi");
+        if(result.data){
+             if(result.status === 201 ) {
+                 window.alert(result.data.msg);   
+             }
+            }
+          });
+  };
+
+  const handleSubmit = (e) => {
+
+    e.preventDefault();
+     console.log(otp);
+     const otpNumber=Number(otp.join(''))
+     console.log(otpNumber);
+
+     axios.get(`http://localhost:8201/api/users/verifyOTP?&code=${otpNumber}` )
+      
+       .then(result => {
+           if(result.data){
+                 console.log("hi");
+                 window.alert(result.data.msg);
+                  if(result.status === 201 ) {
+                      navigate('/CreateNew' ,{state: { email:email} });
+                      }
+                  }
+               }).catch(err => {
+                  if (err.response) {
+                     console.log("hhhhh");
+                     window.alert(err.response.data.msg);
+                  }
+                });
+
+  };
 
   return (
+    
    <div className='d-flex justify-content-center align-items-center vh-100  loginPage'>
      <div className='p-3 rounded w-25 border  loginForm'>      
        
        <h1>Verification</h1>
-       <form >
+       <form onSubmit={handleSubmit}>
            <div className='mb-3 '>
                <label htmlFor="email"><strong>Enter verification code</strong></label>
                <br />
@@ -48,12 +94,12 @@ const Varify = () => {
                  />
              ))}
          </div>
-           <div className='mb-1'> 
-                   <p>Didn’t Receive a code?<Link to="#">resend</Link></p>
-                  
-                </div>
              <button type="submit" className='w-100 rounded-1 mb-2'>Verify</button>
-       </form>     
+       </form> 
+       <div className='mb-1'> 
+                   <p>Didn’t Receive a code?<button type="button" onClick={resendOTP} class="btn btn-link">resend</button></p>
+                  
+           </div>    
      </div>
    </div>
   )
