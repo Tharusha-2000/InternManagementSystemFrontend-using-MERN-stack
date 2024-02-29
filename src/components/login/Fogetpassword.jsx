@@ -20,12 +20,11 @@ function Fogetpassword () {
       return;
     }
 
-    axios.post('http://localhost:8110/api/users/generateOTP&sendmail', value)
+    axios.post('http://localhost:8201/api/users/generateOTP&sendmail', value)
           .then(result => {
               if(result.data){
                   window.alert(result.data.msg);
                   console.log(result.data.msg);
-                  
                      if(result.status === 201 ) {
                      // console.log(result.data.code);
                           navigate('/Varify',{ state: { email: value.email ,code:result.data.code} });
