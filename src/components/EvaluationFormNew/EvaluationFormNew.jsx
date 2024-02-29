@@ -32,7 +32,7 @@ function EvaluationFormNew() {
             as={Row}
             className="mb-3"
             controlId="formPlaintextPassword" noGutters
-          >
+          > 
             <Form.Label column sm="2" md="3">
               Assigned Evaluator Name:
             </Form.Label>
