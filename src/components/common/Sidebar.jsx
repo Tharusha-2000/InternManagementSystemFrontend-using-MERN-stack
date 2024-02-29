@@ -4,6 +4,8 @@ import {  BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill,
   BsListCheck, BsMenuButtonWideFill, BsFillGearFill } from 'react-icons/bs'
 import { BsMastodon } from "react-icons/bs";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import Adduser from '../adduser/Adduser';
+
 function Sidebar({openSidebarToggle, OpenSidebar}) {
     const nanvigate = useNavigate()
   return (
@@ -22,7 +24,7 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                 </Link>
             </li>
             <li className='sidebar-list-item'>
-                <Link to='HS/Addusertable'>
+                <Link to='Addusertable'>
                     <BsFillArchiveFill className='icon'/> Registration
                 </Link>
             </li>
