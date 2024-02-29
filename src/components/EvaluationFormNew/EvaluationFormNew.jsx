@@ -20,7 +20,7 @@ function EvaluationFormNew() {
             controlId="formPlaintextPassword" noGutters
           >
             <Form.Label column sm="2" md="3">
-              Intern Name
+              Intern Name:
             </Form.Label>
             <Col sm="10"  md="9">
             <Form.Control type="text" placeholder="Readonly intern name..." readOnly />
@@ -34,7 +34,7 @@ function EvaluationFormNew() {
             controlId="formPlaintextPassword" noGutters
           >
             <Form.Label column sm="2" md="3">
-              Assigned Evaluator Name
+              Assigned Evaluator Name:
             </Form.Label>
             <Col sm="10"  md="9">
             <Form.Control type="text" placeholder="Evaluator Name..." readOnly />
@@ -47,7 +47,7 @@ function EvaluationFormNew() {
             controlId="formPlaintextPassword" noGutters
           >
             <Form.Label column sm="2" md="3">
-              Evaluator Name
+              Evaluator Name:
             </Form.Label>
             <Col sm="10"  md="9">
             <Form.Control
