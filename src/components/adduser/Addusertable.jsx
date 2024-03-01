@@ -2,45 +2,21 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Addusertable = ({ rows }) => {
+
+function Addusertable ({rows}) {
   
-  const [data, setData] = useState({
-    name: "tharusha" ,
-    role: "Admin",
-    email: "tharushadinuth21@gmail.com"
-  });
+  const [data, setData] = useState([]);
     const navigate = useNavigate()
- 
     
+    useEffect(() => {
+      axios.get('http://localhost:8201/api/users/user')
+          .then(result => {
+              setData(result.data.users);
+          })
+          .catch(err => console.log(err));
+  }, []);
  
 
-
-
-
- /*
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/auth/employee")
-      .then((result) => {
-        if (result.data.Status) {
-          setEmployee(result.data.Result);
-        } else {
-          alert(result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-  const handleDelete = (id) => {
-    axios.delete('http://localhost:3000/auth/delete_employee/'+id)
-    .then(result => {
-        if(result.data.Status) {
-            window.location.reload()
-        } else {
-            alert(result.data.Error)
-        }
-    })
-  } 
-  */
   return (
     <div className="px-5 mt-3">
       <div className="d-flex justify-content-center">
@@ -50,26 +26,28 @@ const Addusertable = ({ rows }) => {
          + Addnew
       </Link>
       <div className="mt-3">
+       <div className="table-responsive">
         <table className="table">
           <thead>
             <tr>
               <th>Name</th>
               <th>Roll</th>
               <th>Email</th>
-            
+              <th>  </th>
+          
             </tr>
           </thead>
           <tbody>
-            {employee.map((e) => (
+            {data.map( user => (
               <tr>
-                <td>{e.name}</td>
-                <td>{e.roll}</td>
-                <td>{e.email}</td>
+                <td>{user.fname}</td>
+                <td>{user.role}</td>
+                <td>{user.email}</td>
                 
                 
                 <td>
                   <Link
-                    to={`/Adduser/` + e.id}
+                    to={`/Adduser/` + user.id}
                     className="btn btn-info btn-sm me-2"
                   >
                     Edit
@@ -84,9 +62,10 @@ const Addusertable = ({ rows }) => {
             ))}
           </tbody>
         </table>
+       </div> 
       </div>
     </div>
   );
-};
+}
 
 export default Addusertable;
