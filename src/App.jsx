@@ -6,8 +6,9 @@ import Addusertable from './components/adduser/Addusertable';
 import Adduser from './components/adduser/Adduser';
 //import Dashboard from './components/Dashboard';
 import Header from './components/common/Header';
-import HS from './components/common/HS';
 
+import HS from './components/common/HS';
+import Internprofile from './components/internprofile/Internprofile';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} > </Route>
+        <Route path="/Internprofile" element={<Internprofile/>}> </Route>
         <Route path="/Addusertable" element={<Addusertable />}> </Route>
         <Route path="/Adduser" element={<Adduser />}> </Route>
         <Route path="/HS" element={<HS/>}> </Route>
