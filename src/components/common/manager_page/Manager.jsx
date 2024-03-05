@@ -22,9 +22,9 @@ function Manager() {
       
       <div>
         <Routes>
-        <Route path="/mentordashboard" element={<Dashboard />}></Route>
-        <Route path="/profile" element={<Profile />}></Route>
-        <Route path="/viewrofile" element={<ViewProfile />}></Route>
+        <Route path="/managerdashboard" element={<ManagerDashboard />}></Route>
+        <Route path="/managerprofile" element={<ManagerProfile />}></Route>
+        <Route path="/managerviewprofile" element={<ManagerViewProfile />}></Route>
         <Route path="/security" element={<Security />}></Route>
         
         </Routes>
@@ -36,19 +36,13 @@ function Manager() {
 
 export default Manager
 
-function Dashboard(){
-  return <h2>This is evlauator Dashboard</h2>
-}
 
 
-function Profile(){
-  return <h2>Evaluator profile</h2>
-}
 
 
-function ViewProfile(){
-  return <h2>Evaluator Profile view page</h2>
-}
+
+
+
 
 function Security(){
   return <h2> Security page</h2>

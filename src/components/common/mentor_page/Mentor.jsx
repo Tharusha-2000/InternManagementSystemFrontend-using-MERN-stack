@@ -22,9 +22,9 @@ function Mentor() {
       
       <div>
         <Routes>
-        <Route path="/mentordashboard" element={<Dashboard />}></Route>
-        <Route path="/profile" element={<Profile />}></Route>
-        <Route path="/viewrofile" element={<ViewProfile />}></Route>
+        <Route path="/mentordashboard" element={<MentorDashboard />}></Route>
+        <Route path="/mentorprofile" element={<MentorProfile />}></Route>
+        <Route path="/mentorviewprofile" element={<MentorViewProfile />}></Route>
         <Route path="/security" element={<Security />}></Route>
         
         </Routes>
@@ -36,19 +36,13 @@ function Mentor() {
 
 export default Mentor
 
-function Dashboard(){
-  return <h2>This is mentor Dashboard</h2>
-}
 
 
-function Profile(){
-  return <h2>mentor profile</h2>
-}
 
 
-function ViewProfile(){
-  return <h2>mentor Profile page</h2>
-}
+
+
+
 
 function Security(){
   return <h2> Security page</h2>

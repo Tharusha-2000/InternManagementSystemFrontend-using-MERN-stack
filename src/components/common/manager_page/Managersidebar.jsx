@@ -23,14 +23,14 @@ function Managersidebar({openSidebarToggle, OpenSidebar}) {
             </li>
            
             <li className='sidebar-list-item'>
-                <a href="profilecreate">
+                <a href="managerprofile">
                     <BsPeopleFill className='icon'/> Profile
                 </a>
             </li>
          
            
             <li className='sidebar-list-item'>
-                <a href="profile">
+                <a href="managerviewprofile">
                     <BsMenuButtonWideFill className='icon'/> View Profile
                 </a>
             </li>

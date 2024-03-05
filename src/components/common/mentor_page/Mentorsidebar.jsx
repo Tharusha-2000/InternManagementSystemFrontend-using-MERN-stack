@@ -23,14 +23,14 @@ function Mentorsidebar({openSidebarToggle, OpenSidebar}) {
             </li>
            
             <li className='sidebar-list-item'>
-                <a href="profile">
+                <a href="mentorprofile">
                     <BsPeopleFill className='icon'/> Profile
                 </a>
             </li>
          
            
             <li className='sidebar-list-item'>
-                <a href="viewprofile">
+                <a href="mentorviewprofile">
                     <BsMenuButtonWideFill className='icon'/> View Profile
                 </a>
             </li>

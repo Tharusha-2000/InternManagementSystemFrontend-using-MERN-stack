@@ -25,7 +25,7 @@ function HS() {
   
       <div>
         <Routes>
-        <Route path="/" element={<Dashboard />}></Route>
+        <Route path="/" element={<AdminDashboard />}></Route>
         <Route path="/registration" element={<Registration />}></Route>
         <Route path="/evaluation" element={<Evaluation />}></Route>
         <Route path="/profilecreate" element={<ProfileCreate />}></Route>
@@ -42,33 +42,7 @@ function HS() {
 
 export default HS
 
-function Dashboard(){
-  return <h2>Dashboard</h2>
-}
 
-function Registration(){
-  return <h2>Register page</h2>
-}
-
-function Evaluation(){
-  return <h2>Evaluation page</h2>
-}
-
-function ProfileCreate(){
-  return <h2>Profile creation</h2>
-}
-
-function CVManagement(){
-  return <h2>CV Manageemnt</h2>
-}
-
-function Profile(){
-  return <h2>Profile page</h2>
-}
-
-function Security(){
-  return <h2>Security page</h2>
-}
 
 
 
