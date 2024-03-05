@@ -22,9 +22,9 @@ function Evaluator() {
       
       <div>
         <Routes>
-        <Route path="/evaluatordashboard" element={<Dashboard />}></Route>
-        <Route path="/profile" element={<Profile />}></Route>
-        <Route path="/viewrofile" element={<ViewProfile />}></Route>
+        <Route path="/evaluatordashboard" element={<EvaluatorDashboard />}></Route>
+        <Route path="/evaluatorprofile" element={<EvaluatorProfile />}></Route>
+        <Route path="/evaluatorviewprofile" element={<EvaluatorViewProfile />}></Route>
         <Route path="/security" element={<Security />}></Route>
         
         </Routes>
@@ -36,19 +36,10 @@ function Evaluator() {
 
 export default Evaluator
 
-function Dashboard(){
-  return <h2>This is evlauator Dashboard</h2>
-}
 
 
-function Profile(){
-  return <h2>Evaluator profile</h2>
-}
 
 
-function ViewProfile(){
-  return <h2>Evaluator Profile page</h2>
-}
 
 function Security(){
   return <h2> Security page</h2>

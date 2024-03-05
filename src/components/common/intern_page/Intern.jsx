@@ -22,9 +22,9 @@ function Intern() {
       
       <div>
         <Routes>
-        <Route path="/interndashboard" element={<Dashboard />}></Route>
-        <Route path="/evaluation" element={<Evaluation />}></Route>
-        <Route path="/viewrofile" element={<ViewProfile />}></Route>
+        <Route path="/interndashboard" element={<InternDashboard />}></Route>
+        <Route path="/internevaluation" element={<InternEvaluation />}></Route>
+        <Route path="/internviewprofile" element={<InternViewProfile />}></Route>
         <Route path="/security" element={<Security />}></Route>
         
         </Routes>
@@ -36,19 +36,13 @@ function Intern() {
 
 export default Intern
 
-function Dashboard(){
-  return <h2>This is intern Dashboard</h2>
-}
 
 
-function Evaluation(){
-  return <h2>Intern evaluation</h2>
-}
 
 
-function ViewProfile(){
-  return <h2>Intern Profile page</h2>
-}
+
+
+
 
 function Security(){
   return <h2>Intern Security page</h2>

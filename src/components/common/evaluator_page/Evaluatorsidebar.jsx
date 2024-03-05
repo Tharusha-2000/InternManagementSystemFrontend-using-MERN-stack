@@ -1,8 +1,7 @@
 //Navigation Bar Design changed
 
 import React from 'react'
-import {  BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, 
-  BsListCheck, BsMenuButtonWideFill, BsFillGearFill } from 'react-icons/bs'
+import {  BsGrid1X2Fill, BsPeopleFill, BsMenuButtonWideFill, BsFillGearFill } from 'react-icons/bs'
 import { BsMastodon } from "react-icons/bs";
 
 function Evaluatorsidebar({openSidebarToggle, OpenSidebar}) {
@@ -10,7 +9,7 @@ function Evaluatorsidebar({openSidebarToggle, OpenSidebar}) {
     <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive" : ""}>
       <div className='sidebar-title'>
         <div className='sidebar-brand'>
-          <BsMastodon className='icon_header' /> Company Name
+          <BsMastodon className='icon_header' /> 99x
         </div>
         <span className='icon close_icon'onClick={OpenSidebar}>X</span>
       </div>
@@ -23,14 +22,14 @@ function Evaluatorsidebar({openSidebarToggle, OpenSidebar}) {
             </li>
            
             <li className='sidebar-list-item'>
-                <a href="profilecreate">
+                <a href="evaluatorprofile">
                     <BsPeopleFill className='icon'/> Profile
                 </a>
             </li>
          
            
             <li className='sidebar-list-item'>
-                <a href="profile">
+                <a href="evalauatorviewprofile">
                     <BsMenuButtonWideFill className='icon'/> View Profile
                 </a>
             </li>

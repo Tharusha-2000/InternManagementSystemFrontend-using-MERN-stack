@@ -23,14 +23,14 @@ function Internsidebar({openSidebarToggle, OpenSidebar}) {
             </li>
            
             <li className='sidebar-list-item'>
-                <a href="evaluation">
+                <a href="internevaluation">
                     <BsFillGrid3X3GapFill className='icon'/> Evaluation
                 </a>
             </li>
          
            
             <li className='sidebar-list-item'>
-                <a href="profile">
+                <a href="internviewprofile">
                     <BsMenuButtonWideFill className='icon'/> View Profile
                 </a>
             </li>
