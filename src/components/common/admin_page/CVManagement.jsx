@@ -1,11 +1,19 @@
-import React from 'react'
+import React from 'react';
+import Sidebar from './Sidebar';
+import Header from '../Header';
+import Box from '@mui/material/Box';
 
-function CVManagement() {
+
+export default function CVManagement() {
   return (
-    <h2>
-        cv management page - admin
-    </h2>
-  )
-}
-
-export default CVManagement
+    <>
+    <Header />
+    <Box height={60} />
+    <Box sx={{ display: 'flex' }}>
+    <Sidebar />
+    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+       <h1>CVManagement</h1>
+      </Box>
+      </Box>
+      </>
+  )}

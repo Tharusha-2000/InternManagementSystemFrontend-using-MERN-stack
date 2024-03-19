@@ -1,12 +1,19 @@
-import React from 'react'
+import React from 'react';
+import Sidebar from './Sidebar';
+import Header from '../Header';
+import Box from '@mui/material/Box';
 
-function Evaluation() {
+
+export default function Evalauation() {
   return (
-    <h2>
-        Evalution page - Admin
-    </h2>
-  )
-  
-}
-
-export default Evaluation
+    <>
+    <Header />
+    <Box height={60} />
+    <Box sx={{ display: 'flex' }}>
+    <Sidebar />
+    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+       <h1>Evaluation</h1>
+      </Box>
+      </Box>
+      </>
+  )}

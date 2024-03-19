@@ -1,11 +1,20 @@
-import React from 'react'
+import React from 'react';
+import Sidebar from './Sidebar';
+import Header from '../Header';
+import Box from '@mui/material/Box';
 
-function ProfileCreate() {
+
+
+export default function ProfileCreate() {
   return (
-    <h2>
-        profile creation page - admin
-    </h2>
-  )
-}
-
-export default ProfileCreate
+    <>
+    <Header />
+    <Box height={60} />
+    <Box sx={{ display: 'flex' }}>
+    <Sidebar />
+    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+       <h1>ProfileCreate</h1>
+      </Box>
+      </Box>
+      </>
+  )}
