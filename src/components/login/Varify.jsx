@@ -27,11 +27,12 @@ const Varify = () => {
         }
     };
   const resendOTP = () => {
+    //console.log("hi")
     if(!email){
-      window.alert('cannot resend OTP without email address')
-      return;
+     window.alert('cannot resend OTP without email address')
+     return;
     }
-    axios.post('http://localhost:8110/api/users/generateOTP&sendmail',{email:email})
+    axios.post('http://localhost:8201/api/users/generateOTP&sendmail',{email:email})
     .then(result => {
         console.log("hi");
         if(result.data){

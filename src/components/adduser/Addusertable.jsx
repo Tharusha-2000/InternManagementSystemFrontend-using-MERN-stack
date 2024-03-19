@@ -15,7 +15,20 @@ function Addusertable ({rows}) {
           })
           .catch(err => console.log(err));
   }, []);
- 
+
+    function handleDelete(id) {
+       if (window.confirm("Are you sure you want to delete this user?")) {
+        axios.delete(`http://localhost:8201/api/users/user/${id}`)
+        .then(result => {
+        setData(data.filter(user => user._id!==id));
+        console.log(result.data.msg); 
+        })
+        .catch(err => console.log(err));
+    }
+ }
+
+    
+   
 
   return (
     <div className="px-5 mt-3">
@@ -40,19 +53,20 @@ function Addusertable ({rows}) {
           <tbody>
             {data.map( user => (
               <tr>
-                <td>{user.fname}</td>
+                <td>{user.fname} { user.lname }</td>
                 <td>{user.role}</td>
                 <td>{user.email}</td>
                 
                 
                 <td>
                   <Link
-                    to={`/Adduser/` + user.id}
+                    //to={`/Adduser/` + user.id}
                     className="btn btn-info btn-sm me-2"
                   >
-                    Edit
+                    Change Role
                   </Link>
-                  <button
+                  <button 
+                    onClick={() => handleDelete(user._id)} 
                     className="btn btn-warning btn-sm"
                    >
                     Delete
