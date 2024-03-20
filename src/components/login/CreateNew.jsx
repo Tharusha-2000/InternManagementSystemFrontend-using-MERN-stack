@@ -36,7 +36,7 @@ function CreateNew () {
             return;
         }
 
-         axios.put('http://localhost:8201/api/users/resetPassword', {email:email,password:values.password})
+         axios.put('http://localhost:8000/api/users/resetPassword', {email:email,password:values.password})
           // console.log(email);
           // console.log(values);
          
@@ -57,28 +57,10 @@ function CreateNew () {
             })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 
 
-
-
-
-    
-   
   return (
     
      <div className='d-flex justify-content-center align-items-center vh-100  loginPage'>

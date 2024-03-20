@@ -28,7 +28,7 @@ function Login () {
        }
        
 
-        axios.post('http://localhost:8201/api/users/login', values)
+        axios.post('http://localhost:8000/api/users/login', values)
              .then(result => {
                  if(result.data) {
                      window.alert(result.data.msg);
@@ -41,7 +41,7 @@ function Login () {
                       const role = decodedToken.role;
               
                         if(role === 'admin') {
-                              navigate('/HS');
+                              navigate('/AD');
                         } else if(role === 'intern')  {
                               navigate('')
                         }else if(role === 'mentor')  {
