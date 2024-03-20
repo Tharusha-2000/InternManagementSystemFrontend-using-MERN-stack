@@ -14,7 +14,6 @@ import HS from './components/common/HS';
 import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
-import Test from './components/Test';
 
 
 
