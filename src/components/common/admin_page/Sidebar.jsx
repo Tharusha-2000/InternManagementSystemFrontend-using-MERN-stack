@@ -15,6 +15,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import {useNavigate} from "react-router-dom";
 import { useAppStore } from '../appStore';
+import { Switch } from '@mui/material';
+import SwitchAccountOutlinedIcon from '@mui/icons-material/SwitchAccountOutlined';
 
 const drawerWidth = 240;
 
@@ -95,7 +97,7 @@ export default function Sidebar() {
         </DrawerHeader>   
         <Divider />
         <List>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/")}}>
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/AD")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -175,7 +177,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <InboxIcon /> 
+                  <SwitchAccountOutlinedIcon /> 
                 </ListItemIcon>
                 <ListItemText primary="Profile Create" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
