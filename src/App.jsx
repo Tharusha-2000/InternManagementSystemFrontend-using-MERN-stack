@@ -9,7 +9,7 @@ import Login from './components/login/Login';
 import Addusertable from './components/adduser/Addusertable';
 import Adduser from './components/adduser/Adduser';
 //import Dashboard from './components/Dashboard';
-import Header from './components/common/Header';
+//import Header from './components/common/Header';
 import HS from './components/common/HS';
 import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
@@ -18,18 +18,40 @@ import CreateNew from './components/login/CreateNew';
 
 
 
-import AdminDashboard from './components/common/admin_page/AdminDashboard';
-import Registration from './components/common/admin_page/Registration';
-import CVManagement from './components/common/admin_page/CVManagement';
-import Evaluation from './components/common/admin_page/Evaluation';
-import Profile from './components/common/admin_page/Profile';
-import ProfileCreate from './components/common/admin_page/ProfileCreate';
-import Security from './components/common/admin_page/Security';
+import AdminDashboard from './components/admin_page/AdminDashboard';
+import Registration from './components/admin_page/Registration';
+import CVManagement from './components/admin_page/CVManagement';
+import Evaluation from './components/admin_page/Evaluation';
+import Profile from './components/admin_page/Profile';
+import ProfileCreate from './components/admin_page/ProfileCreate';
+import Security from './components/admin_page/Security';
 
 
 import Test from './test.jsx';
 
 
+
+import EvaluatorDashboard from './components/evaluator_page/EvaluatorDashboard';
+import EvaluatorProfile from './components/evaluator_page/EvaluatorProfile';
+import EvaluatorEvaluation from './components/evaluator_page/EvaluatorEvaluation';
+import EvaluatorViewProfile from './components/evaluator_page/EvaluatorViewProfile';
+
+
+import MentorDashboard from './components/mentor_page/MentorDashboard';
+import MentorProfile from './components/mentor_page/MentorProfile';
+import MentorEvaluation from './components/mentor_page/MentorEvaluation';
+import MentorViewProfile from './components/mentor_page/MentorViewProfile';
+
+
+import InternDashboard from './components/intern_page/InternDashboard';
+import InternProfile from './components/intern_page/InternProfile';
+import InternEvaluation from './components/intern_page/InternEvaluation';
+
+
+import ManagerDashboard from './components/manager_page/ManagerDashboard';
+import ManagerProfile from './components/manager_page/ManagerProfile';
+import ManagerEvaluation from './components/manager_page/ManagerEvaluation';
+import ManagerViewProfile from './components/manager_page/ManagerViewProfile';
 
 
 function App() {
@@ -54,6 +76,7 @@ function App() {
 
 
 
+            {/*---------------Admin Navigation-----------------*/}
 
             <Route path="/AD" element={<AdminDashboard/>}></Route>
             <Route path="/registration" element={<Registration />}></Route>
@@ -62,6 +85,54 @@ function App() {
             <Route path="/profile" element={<Profile />}></Route>
             <Route path="/profilecreate" element={<ProfileCreate />}></Route>
             <Route path="/security" element={<Security />}></Route>
+
+
+
+
+
+            {/*-------------Evaluator Navigation--------------*/}
+
+            <Route path="/evaluatordashboard" element={<EvaluatorDashboard/>}></Route>
+            <Route path="/evaluatorprofile" element={<EvaluatorProfile />}></Route>
+            <Route path="/evaluatorevaluation" element={<EvaluatorEvaluation />}></Route>
+            <Route path="/evaluatorviewprofile" element={<EvaluatorViewProfile />}></Route>
+            <Route path="/security" element={<Security />}></Route>
+            
+
+
+
+
+            {/*---------------Mentor Navigation---------------*/}
+
+            <Route path="/mentordashboard" element={<MentorDashboard/>}></Route>
+            <Route path="/mentorprofile" element={<MentorProfile />}></Route>
+            <Route path="/mentorevaluation" element={<MentorEvaluation />}></Route>
+            <Route path="/mentorviewprofile" element={<MentorViewProfile />}></Route>
+            <Route path="/security" element={<Security />}></Route>
+
+
+
+
+
+            {/*---------------Intern Navigation---------------*/}
+
+            <Route path="/interndashboard" element={<InternDashboard/>}></Route>
+            <Route path="/internprofile" element={<InternProfile />}></Route>
+            <Route path="/internevaluation" element={<InternEvaluation />}></Route>
+            <Route path="/security" element={<Security />}></Route>
+
+
+
+
+
+            {/*---------------Manager Navigation---------------*/}
+
+            <Route path="/managerdashboard" element={<ManagerDashboard/>}></Route>
+            <Route path="/managerprofile" element={<ManagerProfile />}></Route>
+            <Route path="/managerevaluation" element={<ManagerEvaluation />}></Route>
+            <Route path="/managerviewprofile" element={<ManagerViewProfile />}></Route>
+            <Route path="/security" element={<Security />}></Route>
+
         </Routes>
 
    </BrowserRouter>    

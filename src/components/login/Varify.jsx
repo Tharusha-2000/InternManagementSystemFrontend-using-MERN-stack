@@ -42,14 +42,14 @@ function OTP({ separator, length, value, onChange }) {
           focusInput(currentIndex - 1);
           selectInput(currentIndex - 1);
         }
-        break;
-      case "ArrowRight":
-        event.preventDefault();
-        if (currentIndex < length - 1) {
-          focusInput(currentIndex + 1);
-          selectInput(currentIndex + 1);
-        }
-        break;
+     break;
+    case "ArrowRight":
+      event.preventDefault();
+      if (currentIndex < length - 1) {
+        focusInput(currentIndex + 1);
+        selectInput(currentIndex + 1);
+      }
+      break;
       case "Delete":
         event.preventDefault();
         onChange((prevOtp) => {
@@ -202,14 +202,15 @@ function Varify() {
                  window.alert(result.data.msg);   
                }
             }
-      });
-          
-  };
+          });
+      
+      };
 
   const handleSubmit = () => {
 
      console.log(otp);
 
+     axios.get(`http://localhost:8000/api/users/verifyOTP?&code=${otpNumber}` )
      axios.get(`http://localhost:8000/api/users/verifyOTP?&code=${otp}` )
       
        .then(result => {
@@ -228,7 +229,6 @@ function Varify() {
                 });
 
   };
-
 
 
   return (
