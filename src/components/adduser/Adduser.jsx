@@ -4,7 +4,7 @@ import './adduser.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function Adduser() {
+function Adduser({setShowAddUser}) {
     const navigate = useNavigate();
     const option = [
         { value: '', label: 'Select' },
@@ -155,7 +155,7 @@ return (
                  <button type="submit" class="btn btn-primary" className=' rounded-2 btn1 '>Register & invite</button>
              </div>
              <div class="col-3">
-             <button type="cancel" onClick={() => navigate('/AddUserTable')} class="btn btn-primary" className=' rounded-2 btn2'>cancel</button>
+             <button type="cancel" onClick={()=> setShowAddUser(false)} class="btn btn-primary" className=' rounded-2 btn2'>cancel</button>
 
              </div>
           </div> 

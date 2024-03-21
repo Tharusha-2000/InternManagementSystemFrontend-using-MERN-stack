@@ -27,6 +27,8 @@ import ProfileCreate from './components/common/admin_page/ProfileCreate';
 import Security from './components/common/admin_page/Security';
 
 
+import Test from './test.jsx';
+
 
 
 
@@ -45,7 +47,7 @@ function App() {
         <Route path="/Varify" element={<Varify/>}> </Route>
         <Route path="/HS" element={<HS/>}> </Route>
      
-
+        <Route path="/Test" element={<Test/>}> </Route>
 
 
 
