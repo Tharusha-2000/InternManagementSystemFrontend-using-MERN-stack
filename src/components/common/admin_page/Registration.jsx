@@ -2,6 +2,7 @@ import React from 'react';
 import Sidebar from './Sidebar';
 import Header from '../Header';
 import Box from '@mui/material/Box';
+import Adduser from '../../adduser/Adduser'
 
 
 
@@ -13,7 +14,7 @@ export default function Registration() {
     <Box sx={{ display: 'flex' }}>
     <Sidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       <h1>Registration</h1>
+    <Adduser />
       </Box>
       </Box>
       </>

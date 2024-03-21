@@ -13,6 +13,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
+import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
+import SwitchAccountOutlinedIcon from '@mui/icons-material/SwitchAccountOutlined';
+import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
+import PermContactCalendarOutlinedIcon from '@mui/icons-material/PermContactCalendarOutlined';
+import SettingsApplicationsOutlinedIcon from '@mui/icons-material/SettingsApplicationsOutlined';
+import { indigo } from '@mui/material/colors';
 import {useNavigate} from "react-router-dom";
 import { useAppStore } from '../appStore';
 
@@ -110,7 +118,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <InboxIcon /> 
+                  <DashboardOutlinedIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -132,7 +140,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <InboxIcon /> 
+                  <HowToRegOutlinedIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Registration" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -153,7 +161,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <InboxIcon /> 
+                  <FactCheckOutlinedIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Evaluation" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -175,7 +183,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <InboxIcon /> 
+                  <SwitchAccountOutlinedIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Profile Create" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -196,7 +204,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <InboxIcon /> 
+                  <PostAddOutlinedIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
                 <ListItemText primary="CV Management" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -217,13 +225,13 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <InboxIcon /> 
+                  <PermContactCalendarOutlinedIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
         
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/security")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/adduser")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -238,7 +246,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <InboxIcon /> 
+                  <SettingsApplicationsOutlinedIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Security" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
