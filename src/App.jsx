@@ -14,9 +14,17 @@ import HS from './components/common/HS';
 import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
-import Test from './components/Test';
 
 
+
+
+import AdminDashboard from './components/common/admin_page/AdminDashboard';
+import Registration from './components/common/admin_page/Registration';
+import CVManagement from './components/common/admin_page/CVManagement';
+import Evaluation from './components/common/admin_page/Evaluation';
+import Profile from './components/common/admin_page/Profile';
+import ProfileCreate from './components/common/admin_page/ProfileCreate';
+import Security from './components/common/admin_page/Security';
 
 
 
@@ -29,16 +37,31 @@ function App() {
    <BrowserRouter>
       <TokenCheck setUsers={setUsers} />
       <Routes>
-      <Route path="/" element={<Test />} > </Route>
-        <Route path="/ll" element={<Login setUsers={setUsers}/>} > </Route>
+        <Route path="/Login" element={<Login setUsers={setUsers}/>} > </Route>
         <Route path="/Addusertable" element={<Addusertable />}> </Route>
         <Route path="/Adduser" element={<Adduser />}> </Route>
         <Route path="/Forgetpassword" element={<Fogetpassword/>}> </Route>
         <Route path="/CreateNew" element={<CreateNew/>}> </Route>
         <Route path="/Varify" element={<Varify/>}> </Route>
         <Route path="/HS" element={<HS/>}> </Route>
-        <Route path="/HS/Addusertable" element={<Addusertable/>}> </Route>
-      </Routes>
+     
+
+
+
+
+
+
+
+
+            <Route path="/AD" element={<AdminDashboard/>}></Route>
+            <Route path="/registration" element={<Registration />}></Route>
+            <Route path="/cvmanagement" element={<CVManagement />}></Route>
+            <Route path="/evaluation" element={<Evaluation />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/profilecreate" element={<ProfileCreate />}></Route>
+            <Route path="/security" element={<Security />}></Route>
+        </Routes>
+
    </BrowserRouter>    
   
   );

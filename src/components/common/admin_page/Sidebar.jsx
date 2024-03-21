@@ -23,6 +23,8 @@ import SettingsApplicationsOutlinedIcon from '@mui/icons-material/SettingsApplic
 import { indigo } from '@mui/material/colors';
 import {useNavigate} from "react-router-dom";
 import { useAppStore } from '../appStore';
+import { Switch } from '@mui/material';
+import SwitchAccountOutlinedIcon from '@mui/icons-material/SwitchAccountOutlined';
 
 const drawerWidth = 240;
 
@@ -103,7 +105,7 @@ export default function Sidebar() {
         </DrawerHeader>   
         <Divider />
         <List>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/")}}>
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/AD")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,

@@ -20,7 +20,7 @@ function Fogetpassword () {
       return;
     }
 
-    axios.post('http://localhost:8201/api/users/generateOTP&sendmail', value)
+    axios.post('http://localhost:8000/api/users/generateOTP&sendmail', value)
           .then(result => {
               if(result.data){
                   window.alert(result.data.msg);

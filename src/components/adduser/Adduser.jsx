@@ -40,7 +40,7 @@ function Adduser() {
         return;
         }
 
-      axios.post('http://localhost:8201/api/users/register', data)
+      axios.post('http://localhost:8000/api/users/register', data)
             .then(result => {   
                   if (result.data) {
                      window.alert(result.data.msg);
