@@ -18,13 +18,17 @@ import CreateNew from './components/login/CreateNew';
 
 
 
-import AdminDashboard from './components/admin_page/AdminDashboard';
-import Registration from './components/admin_page/Registration';
-import CVManagement from './components/admin_page/CVManagement';
-import Evaluation from './components/admin_page/Evaluation';
-import Profile from './components/admin_page/Profile';
-import ProfileCreate from './components/admin_page/ProfileCreate';
-import Security from './components/admin_page/Security';
+import AdminDashboard from './components/common/admin_page/AdminDashboard';
+import Registration from './components/common/admin_page/Registration';
+import CVManagement from './components/common/admin_page/CVManagement';
+import Evaluation from './components/common/admin_page/Evaluation';
+import Profile from './components/common/admin_page/Profile';
+import ProfileCreate from './components/common/admin_page/ProfileCreate';
+import Security from './components/common/admin_page/Security';
+
+
+import Test from './test.jsx';
+
 
 
 import EvaluatorDashboard from './components/evaluator_page/EvaluatorDashboard';
@@ -65,6 +69,7 @@ function App() {
         <Route path="/Varify" element={<Varify/>}> </Route>
         <Route path="/HS" element={<HS/>}> </Route>
      
+        <Route path="/Test" element={<Test/>}> </Route>
 
 
 
