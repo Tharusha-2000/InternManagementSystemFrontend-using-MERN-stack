@@ -42,22 +42,14 @@ function OTP({ separator, length, value, onChange }) {
           focusInput(currentIndex - 1);
           selectInput(currentIndex - 1);
         }
-    };
-  const resendOTP = () => {
-    //console.log("hi")
-    if(!email){
-     window.alert('cannot resend OTP without email address')
-     return;
-    }
-    axios.post('http://localhost:8000/api/users/generateOTP&sendmail',{email:email})
-        break;
-      case "ArrowRight":
-        event.preventDefault();
-        if (currentIndex < length - 1) {
-          focusInput(currentIndex + 1);
-          selectInput(currentIndex + 1);
-        }
-        break;
+     break;
+    case "ArrowRight":
+      event.preventDefault();
+      if (currentIndex < length - 1) {
+        focusInput(currentIndex + 1);
+        selectInput(currentIndex + 1);
+      }
+      break;
       case "Delete":
         event.preventDefault();
         onChange((prevOtp) => {
@@ -211,9 +203,8 @@ function Varify() {
                }
             }
           });
-      });
-          
-  };
+      
+      };
 
   const handleSubmit = () => {
 
@@ -238,7 +229,6 @@ function Varify() {
                 });
 
   };
-
 
 
   return (
