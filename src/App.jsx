@@ -25,10 +25,10 @@ import Evaluation from './components/common/admin_page/Evaluation';
 import Profile from './components/common/admin_page/Profile';
 import ProfileCreate from './components/common/admin_page/ProfileCreate';
 import Security from './components/common/admin_page/Security';
-
+import Search from './components/searchbar/Search.jsx';
 
 import Test from './test.jsx';
-
+import Test2 from './test2.jsx';
 
 
 
@@ -48,8 +48,8 @@ function App() {
         <Route path="/HS" element={<HS/>}> </Route>
      
         <Route path="/Test" element={<Test/>}> </Route>
-
-
+        <Route path="/Test2" element={<Test2/>}> </Route>
+        <Route path="/Search" element={<Search/>}> </Route>
 
 
 

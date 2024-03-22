@@ -55,8 +55,8 @@ function Fogetpassword() {
         display: 'flex', // add this
         justifyContent: 'center', // add this
         alignItems: 'center', 
-        
-      }} >
+       }} >
+
       <Paper
         sx={{
           width: 400,
