@@ -1,4 +1,4 @@
-import './App.css';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, BrowserRouter, Link ,useNavigate } from 'react-router-dom';
 import React,{ useEffect, useState } from 'react';
@@ -28,7 +28,7 @@ import Security from './components/admin_page/Security';
 
 
 import Test from './test.jsx';
-
+import Test2 from './test2.jsx';
 
 
 import EvaluatorDashboard from './components/evaluator_page/EvaluatorDashboard';
@@ -70,8 +70,8 @@ function App() {
         <Route path="/HS" element={<HS/>}> </Route>
      
         <Route path="/Test" element={<Test/>}> </Route>
-
-
+        <Route path="/Test2" element={<Test2/>}> </Route>
+      
 
 
 

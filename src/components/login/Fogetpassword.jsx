@@ -23,7 +23,7 @@ function Fogetpassword() {
       return;
     }
 
-    axios.post('http://localhost:8000/api/users/generateOTP&sendmail', value)
+    axios.post('http://localhost:8001/api/users/generateOTP&sendmail', value)
           .then(result => {
               if(result.data){
                   window.alert(result.data.msg);
@@ -55,8 +55,8 @@ function Fogetpassword() {
         display: 'flex', // add this
         justifyContent: 'center', // add this
         alignItems: 'center', 
-        
-      }} >
+       }} >
+
       <Paper
         sx={{
           width: 400,

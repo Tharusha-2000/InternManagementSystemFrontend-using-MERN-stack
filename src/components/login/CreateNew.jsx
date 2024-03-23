@@ -38,7 +38,7 @@ function CreateNew() {
             return;
          }
 
-         axios.put('http://localhost:8201/api/users/resetPassword', {email:email,password:values.password})
+         axios.put('http://localhost:8001/api/users/resetPassword', {email:email,password:values.password})
           // console.log(email);
           // console.log(values);
          
