@@ -85,6 +85,7 @@ function test({ rows }) {
         .then((result) => {
           setData(data.filter((user) => user._id !== id));
           console.log(result.data.msg);
+          window.location.reload(); 
         })
         .catch((err) => console.log(err));
     }

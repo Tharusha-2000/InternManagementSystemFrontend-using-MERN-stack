@@ -3,7 +3,7 @@ import { Link } from '@mui/material';
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import image2 from "../../assets/photo2.jpg";
-import React, { useState } from "react";
+import React  from "react";
 
 
 import PropTypes from "prop-types";
@@ -194,7 +194,7 @@ function Varify() {
      window.alert('cannot resend OTP without email address')
      return;
     }
-  axios.post('http://localhost:8000/api/users/generateOTP&sendmail',{email:email})
+  axios.post('http://localhost:8001/api/users/generateOTP&sendmail',{email:email})
     .then(result => {
         console.log("hi");
         if(result.data){
@@ -210,8 +210,8 @@ function Varify() {
 
      console.log(otp);
 
-     axios.get(`http://localhost:8000/api/users/verifyOTP?&code=${otpNumber}` )
-     axios.get(`http://localhost:8000/api/users/verifyOTP?&code=${otp}` )
+    
+     axios.get(`http://localhost:8001/api/users/verifyOTP?&code=${otp}` )
       
        .then(result => {
            if(result.data){

@@ -5,7 +5,7 @@ import { Button, Dialog, DialogTitle,InputLabel, DialogContent,IconButton, TextF
 import CloseIcon from '@mui/icons-material/Close';
 
 function Adduser() {
-  const navigate = useNavigate();
+  
   const [open, setOpen] = useState(false);
   const [data, setData] = useState({
     fname: "",
