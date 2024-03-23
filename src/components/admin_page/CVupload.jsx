@@ -4,7 +4,7 @@ import Header from '../common/Header';
 import Box from '@mui/material/Box';
 
 
-export default function CVManagement() {
+export default function CVupload() {
   return (
     <>
     <Header />
@@ -12,7 +12,7 @@ export default function CVManagement() {
     <Box sx={{ display: 'flex' }}>
     <Sidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       <h1>CVManagement</h1>
+       <h1>CV upload </h1>
       </Box>
       </Box>
       </>

@@ -10,7 +10,7 @@ import Addusertable from './components/adduser/Addusertable';
 import Adduser from './components/adduser/Adduser';
 //import Dashboard from './components/Dashboard';
 //import Header from './components/common/Header';
-import HS from './components/common/HS';
+
 import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
@@ -20,7 +20,7 @@ import CreateNew from './components/login/CreateNew';
 
 import AdminDashboard from './components/admin_page/AdminDashboard';
 import Registration from './components/admin_page/Registration';
-import CVManagement from './components/admin_page/CVManagement';
+import CVupload from './components/admin_page/CVupload.jsx';
 import Evaluation from './components/admin_page/Evaluation';
 import Profile from './components/admin_page/Profile';
 import ProfileCreate from './components/admin_page/ProfileCreate';
@@ -67,7 +67,7 @@ function App() {
         <Route path="/Forgetpassword" element={<Fogetpassword/>}> </Route>
         <Route path="/CreateNew" element={<CreateNew/>}> </Route>
         <Route path="/Varify" element={<Varify/>}> </Route>
-        <Route path="/HS" element={<HS/>}> </Route>
+        
      
         <Route path="/Test" element={<Test/>}> </Route>
         <Route path="/Test2" element={<Test2/>}> </Route>
@@ -80,7 +80,7 @@ function App() {
 
             <Route path="/AD" element={<AdminDashboard/>}></Route>
             <Route path="/registration" element={<Registration />}></Route>
-            <Route path="/cvmanagement" element={<CVManagement />}></Route>
+            <Route path="/cvupload" element={<CVupload/>}></Route>
             <Route path="/evaluation" element={<Evaluation />}></Route>
             <Route path="/profile" element={<Profile />}></Route>
             <Route path="/profilecreate" element={<ProfileCreate />}></Route>
