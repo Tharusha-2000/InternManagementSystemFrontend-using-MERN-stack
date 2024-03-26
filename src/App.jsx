@@ -10,11 +10,10 @@ import Addusertable from './components/adduser/Addusertable';
 import Adduser from './components/adduser/Adduser';
 //import Dashboard from './components/Dashboard';
 //import Header from './components/common/Header';
-
 import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
-
+import Security from './components/common/Security.jsx';
 
 
 
@@ -24,7 +23,7 @@ import CVupload from './components/admin_page/CVupload.jsx';
 import Evaluation from './components/admin_page/Evaluation';
 import Profile from './components/admin_page/Profile';
 import ProfileCreate from './components/admin_page/ProfileCreate';
-import Security from './components/admin_page/Security';
+
 
 
 import Test from './test.jsx';
@@ -54,6 +53,7 @@ import ManagerEvaluation from './components/manager_page/ManagerEvaluation';
 import ManagerViewProfile from './components/manager_page/ManagerViewProfile';
 
 
+
 function App() {
   const [user,setUsers] = useState();  
   return (
@@ -62,12 +62,13 @@ function App() {
       <TokenCheck setUsers={setUsers} />
       <Routes>
         <Route path="/Login" element={<Login setUsers={setUsers}/>} > </Route>
+
         <Route path="/Addusertable" element={<Addusertable />}> </Route>
         <Route path="/Adduser" element={<Adduser />}> </Route>
         <Route path="/Forgetpassword" element={<Fogetpassword/>}> </Route>
         <Route path="/CreateNew" element={<CreateNew/>}> </Route>
         <Route path="/Varify" element={<Varify/>}> </Route>
-        
+        <Route path="/HS" element={<HS/>}> </Route>
      
         <Route path="/Test" element={<Test/>}> </Route>
         <Route path="/Test2" element={<Test2/>}> </Route>
@@ -78,7 +79,7 @@ function App() {
 
             {/*---------------Admin Navigation-----------------*/}
 
-            <Route path="/AD" element={<AdminDashboard/>}></Route>
+            <Route path="/AdminDashboard" element={<AdminDashboard/>}></Route>
             <Route path="/registration" element={<Registration />}></Route>
             <Route path="/cvupload" element={<CVupload/>}></Route>
             <Route path="/evaluation" element={<Evaluation />}></Route>
