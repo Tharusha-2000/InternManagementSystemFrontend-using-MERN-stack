@@ -1,143 +1,132 @@
-
-import React from 'react'
-import 'bootstrap-icons/font/bootstrap-icons.css'
-import './adduser.css'
-
-import {  useNavigate } from 'react-router-dom'
-import axios from 'axios'
-
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Button, Dialog, DialogTitle,InputLabel, DialogContent,IconButton, TextField, Grid, FormControl, FormLabel,RadioGroup, FormControlLabel, Radio, Select, MenuItem,Typography} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 function Adduser() {
-    console.log("hi");
-	
-	const [data, setData] = useState({
-		name: "",
-		email: "",
-		password: "",
-		
-	  });
-	  const navigate = useNavigate()
-      const handleSubmit = (e) => {
-		e.preventDefault()
-		const formData = new FormData();
-		formData.append('name', data.name);
-		formData.append('email', data.email);
-		formData.append('password', data.password);
-		
-	
-		axios.post('http://localhost:3000/add_user', formData)
-		.then(result => {
-			if(result.data.Status) {
-				navigate('/Addusertable')
-			} else {
-				alert(result.data.Error)
-			}
-		})
-		.catch(err => console.log(err))
-	  }
-
-
-
-
-/*	const option = [ 
-		{label: "Gender",value :1},
-		{label: "Male",value :2},
-		{label: "Female",value :3},
-	   ]
-   
-	 
   
-   
-    const [data, setData] = useState({
-		name: '',
-		email: '',
-		password: '',
-		address: '',
-		salary: '',
-		image: ''
-	})
-	const navigate = useNavigate()
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState({
+    fname: "",
+    lname: "",
+    dob: "",
+    role: "",
+    gender: "",
+    email: "",
+    password: ""
+  });
 
-
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		const formdata = new FormData();
-		formdata.append("name", data.name);
-		formdata.append("email", data.email);
-		formdata.append("password", data.password);
-		formdata.append("address", data.address);
-		formdata.append("salary", data.);
-		axios.post('http://localhost:8081/create', formdata)
-		.then(res => {
-			navigate('/Addusertable')
-		})
-		.catch(err => console.log(err));
-	}
   
-    const handleSubmit= (e)=>{
-	e.preventDefault();
-	const data={email,password}
-	axios.post('http://localhost:5173/register',{email,password})
-	.then(res=>{
-		console.log(res);
-		console.log(res.data);
-		alert("user added successfully")
-	})
-	.catch(err=>{console.log(err)
-	})
-   }
-    */
-    return (
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-		<div className='d-flex flex-column align-items-center pt-4'>
-		  <h2>NEW REGISTRATION</h2>
-			<form class="row g-3 w-50" onSubmit={handleSubmit} >
-			 
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-             <div className='box2 rounded-1'>
-                <h4>Temporary Login Details</h4>
-                <div class="col-12">
-					<label for="inputEmail" class="form-label">Email</label>
-					<input type="email" class="form-control" id="inputEmail" placeholder='Enter Email' autoComplete='off'
-					onChange={e => setData({...data, email: e.target.value})}/>
-				</div>
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if(!data.fname||!data.lname||!data.dob||!data.role ||!data.gender ||!data.email || !data.password) {
+        window.alert('Please fill the required fields')
+        return;
+    }
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/;
+    if (!passwordRegex.test(data.password)) {
+        window.alert('Password must be at least 6 characters long and contain at least one letter and one number.')
+        return;
+    }
+    const nameRegex = /^[A-Za-z]+$/;
+    if (!nameRegex.test(data.fname)||!nameRegex.test(data.lname)) {
+    window.alert('name must only contain letters.')
+    return;
+    }
 
-				<div class="col-12">
-					<label for="inputPassword4" class="form-label">Password</label>
-					<input type="password" class="form-control" id="inputPassword4" placeholder='Enter Password'
-					 onChange={e => setData({...data, password: e.target.value})}/>
-				</div>
-                <br />
-             </div>
-             <div className='box3 rounded-1'>
-                    <h4>Invite User</h4>
-                     <p>TO:</p>
-                
-				<div class="col-12">
-					<label for="inputName" class="form-label">Name</label>
-					<input type="text" class="form-control" id="inputName" placeholder="Enter Name" autoComplete='off'
-					onChange={e => setData({...data, name: e.target.value})}/>
-				</div>
-				
-				<br />
-				
+  axios.post('http://localhost:8001/api/users/register', data)
+        .then(result => {   
+              if (result.data) {
+                 window.alert(result.data.msg);
+                 if(result.status === 201 ) {
+                    handleClose();
+                    window.location.reload(); 
+                }
+            } 
+        
+        })
+        .catch(err => console.log(err));
+};
 
-             </div>
-			 <div className='d-flex btnt'>
-				<div class="col-0">
-					<button type="submit" class="btn btn-primary" className=' rounded-2 btn1 '>Register & invite</button>
-				</div>
-                <div class="col-3">
-					<button type="cancel " class="btn btn-primary" className=' rounded-2 btn2'>cancel</button>
-				
-				</div>
-             </div>
-			</form>
-		</div>
-
-    )
-
+  return (
+    <div>
+      <Button  onClick={handleClickOpen}
+         variant="contained"
+         size="small"
+         color="primary"
+         sx={{ padding: "10px", marginLeft: "2%" }}
+       >
+        +ADD new
+      </Button>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">New Registration<IconButton onClick={handleClose} style={{float:'right'}}><CloseIcon color="primary"></CloseIcon></IconButton></DialogTitle>
+        <DialogContent>
+          <form onSubmit={handleSubmit}>
+            <br />
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField label="First Name" fullWidth onChange={e => setData({ ...data, fname: e.target.value })} />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField label="Last Name" fullWidth onChange={e => setData({ ...data, lname: e.target.value })} />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField label="Date of Birth" type="date" fullWidth InputLabelProps={{ shrink: true }} onChange={e => setData({ ...data, dob: e.target.value })} />
+              </Grid>
+               <Grid item xs={6}>
+               <FormControl fullWidth>
+                 <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Gender"
+                    onChange={e => setData({ ...data, gender: e.target.value })} 
+                  >
+                    <MenuItem value='male'>Male</MenuItem>
+                    <MenuItem value='female'>Female</MenuItem>
+                  
+                </Select>
+               </FormControl>
+               </Grid>
+              <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Role</FormLabel>
+                  <RadioGroup row onChange={e => setData({ ...data, role: e.target.value })}>
+                    <FormControlLabel value="intern" control={<Radio />} label="Intern" />
+                    <FormControlLabel value="evaluator" control={<Radio />} label="Evaluator" />
+                    <FormControlLabel value="manager" control={<Radio />} label="Manager" />
+                    <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+                    <FormControlLabel value="mentor" control={<Radio />} label="Mentor" />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                 <Typography variant="h7">Temporary Login Details</Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField label="Email" type="email" fullWidth onChange={e => setData({ ...data, email: e.target.value })} />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField label="Password" type="password" fullWidth onChange={e => setData({ ...data, password: e.target.value })} />
+              </Grid>
+              <Grid item xs={12}>
+                <Button type="submit" variant="contained" color="primary" fullWidth>Register & invite</Button>
+              </Grid>
+            </Grid>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 }
 
 export default Adduser;
-

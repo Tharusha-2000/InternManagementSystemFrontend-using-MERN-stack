@@ -75,7 +75,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function Sidebar() {
+export default function Managersidebar() {
   const theme = useTheme();
   //const [open, setOpen] = React.useState(true);  // change as true
   const navigate = useNavigate();
@@ -103,7 +103,7 @@ export default function Sidebar() {
         </DrawerHeader>   
         <Divider />
         <List>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/AD")}}>
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/managerdashboard")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -125,7 +125,7 @@ export default function Sidebar() {
             </ListItem>
 
       
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/registration")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/managerprofile")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -140,13 +140,14 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <HowToRegOutlinedIcon sx={{ color: indigo[900] }} /> 
+                  <SwitchAccountOutlinedIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
-                <ListItemText primary="Registration" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
 
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/evaluation")}}>
+
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/managerevaluation")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -168,49 +169,8 @@ export default function Sidebar() {
             </ListItem>
         
                   
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/profilecreate")}}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <SwitchAccountOutlinedIcon sx={{ color: indigo[900] }} /> 
-                </ListItemIcon>
-                <ListItemText primary="Profile Create" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-        
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/cvmanagement")}}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <PostAddOutlinedIcon sx={{ color: indigo[900] }} /> 
-                </ListItemIcon>
-                <ListItemText primary="CV Management" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
                   
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/profile")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/managerviewprofile")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -227,10 +187,11 @@ export default function Sidebar() {
                 >
                   <PermContactCalendarOutlinedIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
-                <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="View Profile" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
         
+
             <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/security")}}>
               <ListItemButton
                 sx={{
@@ -259,3 +220,4 @@ export default function Sidebar() {
     </Box>
   );
 }
+

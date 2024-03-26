@@ -1,87 +1,297 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 
-const Addusertable = ({ rows }) => {
-    const [employee, setEmployee] = useState([]);
-    const navigate = useNavigate()
- 
-    
- 
+import {
+  Button,
+  Dialog,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Paper,
+  Box,
+  Typography,
+  Grid,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
+import CloseIcon from "@mui/icons-material/Close";
+import Divider from "@mui/material/Divider";
+import Adduser from "./Adduser";
 
+function test({ rows }) {
+  //const [DialogIsOpen, setDialogIsOpen] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("");
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [data, setData] = useState([]);
+  const [open, openchange] = useState(false);
+  
+  const [filteredData, setFilteredData] = useState([]);
 
-
-
- /*
+  {/* get details in database */}
   useEffect(() => {
     axios
-      .get("http://localhost:3000/auth/employee")
+      .get("http://localhost:8001/api/users/user")
       .then((result) => {
-        if (result.data.Status) {
-          setEmployee(result.data.Result);
-        } else {
-          alert(result.data.Error);
-        }
+        setFilteredData(result.data.users);
+        setData(result.data.users);
+        
       })
       .catch((err) => console.log(err));
   }, []);
-  const handleDelete = (id) => {
-    axios.delete('http://localhost:3000/auth/delete_employee/'+id)
-    .then(result => {
-        if(result.data.Status) {
-            window.location.reload()
-        } else {
-            alert(result.data.Error)
-        }
-    })
-  } 
-  */
-  return (
-    <div className="px-5 mt-3">
-      <div className="d-flex justify-content-center">
-        <h3>USER LIST</h3>
-      </div>
-      <Link to="/Adduser" className="btn btn-success">
-         + Addnew
-      </Link>
-      <div className="mt-3">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Roll</th>
-              <th>Email</th>
-            
-            </tr>
-          </thead>
-          <tbody>
-            {employee.map((e) => (
-              <tr>
-                <td>{e.name}</td>
-                <td>{e.roll}</td>
-                <td>{e.email}</td>
-                
-                
-                <td>
-                  <Link
-                    to={`/Adduser/` + e.id}
-                    className="btn btn-info btn-sm me-2"
-                  >
-                    Edit
-                  </Link>
-                  <button
-                    className="btn btn-warning btn-sm"
-                   >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+ 
+  {/* handel change password*/}
+
+  const functionopenpopup = (userId) => {
+    setSelectedUserId(userId);
+    openchange(true);
+  };
+  const closepopup = () => {
+    openchange(false);
+  };
+
+  function handleRoleChange() {
+    axios
+      .put(`http://localhost:8001/api/users/user/${selectedUserId}`, {
+        role: selectedRole,
+      })
+      .then((result) => {
+          const updateData=data.map((user) =>
+            user._id === selectedUserId ? { ...user, role: selectedRole } : user
+          );
+        setData(updateData);
+        setFilteredData(updateData);
+        console.log(result.data.msg);
+        closepopup();
+      })
+      .catch((err) => console.log(err));
+  }
+  
+  {/* delect user*/}
+
+  function handleDelete(id) {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      axios
+        .delete(`http://localhost:8001/api/users/user/${id}`)
+        .then((result) => {
+          setData(data.filter((user) => user._id !== id));
+          console.log(result.data.msg);
+          window.location.reload(); 
+        })
+        .catch((err) => console.log(err));
+    }
+  }
+  
+
+
+// creating filter function
+const Filter = (event) => {
+  const searchTerm = event.target.value.toLowerCase();
+  
+  setFilteredData(
+    data.filter(
+      (f) =>
+        (typeof f.fname === 'string' && f.fname.toLowerCase().includes(searchTerm)) ||
+        (typeof f.lname === 'string' && f.lname.toLowerCase().includes(searchTerm)) ||
+        ((typeof f.fname === 'string' && typeof f.lname === 'string') && 
+         (f.fname.toLowerCase() + ' ' + f.lname.toLowerCase()).includes(searchTerm))||
+        (typeof f.role === 'string' && f.role.toLowerCase().includes(searchTerm)) ||
+        (typeof f.email === 'string' && f.email.toLowerCase().includes(searchTerm))
+    )
   );
 };
 
-export default Addusertable;
+
+
+
+
+  return (
+<Grid>  
+   <Grid> 
+   <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
+   <div>
+     <br />
+      <Typography variant="h4" gutterBottom align="center">
+        User List
+      </Typography>
+      <br />
+
+     <Grid sx={{ justifyContent: "space-between",mb:4 }}>
+    
+       <Adduser/>
+
+       
+        <Paper
+          component="form"
+          sx={{
+            p: "2px 4px",
+            display: "flex",
+            alignItems: "center",
+            width: "100vh",
+            borderRadius: "20px",
+            boxShadow: 3,
+            marginLeft: "1%"
+          }}
+        >
+          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 3, flex: 1 }} placeholder="Search Users" />
+          <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
+          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+            <SearchIcon />
+          </IconButton>
+        </Paper>
+       
+      </Grid>
+      <br />
+      <br />
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "1em",
+                }}
+              >
+                Name
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "1em",
+                }}
+              >
+                Role
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "1em",
+                }}
+              >
+                Email
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "1em",
+                }}
+              >
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredData.map((user) => (
+              <TableRow key={user._id}>
+                <TableCell sx={{ fontSize: "1em" }}>
+                  {" "}
+                  {user.fname} {user.lname}{" "}
+                </TableCell>
+                <TableCell sx={{ fontSize: "1em" }}>{user.role}</TableCell>
+                <TableCell sx={{ fontSize: "1em" }}>{user.email}</TableCell>
+                <TableCell>
+                  
+                    <Button
+                      onClick={() => functionopenpopup(user._id)}
+                      color="primary"
+                      variant="contained"
+                    >
+                      Change Role
+                    </Button>
+                 
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => handleDelete(user._id)}
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+   </div>
+   </Paper>
+   </Grid>
+
+     {/* pop up the change roll*/ }
+        <Grid>
+           <React.Fragment>
+                    <Dialog
+                      // fullScreen
+                      open={open}
+                      onClose={closepopup}
+                      fullWidth
+                      maxWidth="xs"
+                    >
+                      <DialogTitle>
+                        Change Role
+                        <IconButton
+                          onClick={closepopup}
+                          style={{ float: "right" }}
+
+                        >
+                          <CloseIcon color="primary"></CloseIcon>
+                        </IconButton>{" "}
+                      </DialogTitle>
+                      <DialogContent>
+                        <Stack spacing={1} margin={1}>
+                          <RadioGroup
+                            aria-label="role"
+                            name="role"
+                            onChange={(e) => setSelectedRole(e.target.value)}
+                          >
+                            <FormControlLabel
+                              value="admin"
+                              control={<Radio />}
+                              label="Admin"
+                            />
+                            <FormControlLabel
+                              value="manager"
+                              control={<Radio />}
+                              label="Manager"
+                            />
+                            <FormControlLabel
+                              value="mentor"
+                              control={<Radio />}
+                              label="Mentor"
+                            />
+                            <FormControlLabel
+                              value="evaluator"
+                              control={<Radio />}
+                              label="Evaluator"
+                            />
+                          </RadioGroup>
+
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleRoleChange}
+                          >
+                            Save
+                          </Button>
+                        </Stack>
+                      </DialogContent>
+                    </Dialog>
+                   </React.Fragment>
+           </Grid>
+
+      
+  </Grid>
+  
+  );
+}
+
+export default test;

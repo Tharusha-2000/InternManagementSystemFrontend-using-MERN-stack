@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Home() {
+function sample() {
   return (
     <div>
-      Home
+      
     </div>
   )
 }
 
-export default Home
+export default sample

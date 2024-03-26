@@ -1,72 +1,165 @@
-import React, { useState } from 'react'
-import './style.css'
-import axios from 'axios'
-import { Link,useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import {useNavigate } from 'react-router-dom';
+import  {jwtDecode} from 'jwt-decode';
+import image from '../../assets/photo1.jpeg'
 
 
+const defaultTheme = createTheme();
 
-
-function Login () {
-   
-   console.log("login");
-
-/*
-   const [values, setValues] = useState({
+function Login() {
+    console.log("login");
+    const [values, setValues] =useState({
         email: '',
         password: ''
     })
 
-    const [error, setError] = useState(null)
+    
+    const [error, setError] =useState(null)
     const navigate = useNavigate()
     axios.defaults.withCredentials = true;
     
   
     const handleSubmit = (event) => {
-        event.preventDefault()
-        axios.post('http://localhost:5173/Addusertable', values)
-        .then(result => {
-            if(result.data.loginStatus) {
-                localStorage.setItem("valid", true)
-                navigate('/Addusertable')
-            } else {
-                setError(result.data.Error)
-            }
-        })
-        .catch(err => console.log(err))
-    }
-    
+        console.log(values)
+        event.preventDefault();
+       if(!values.email || !values.password) {
+            setError('result')
+            window.alert('Please fill the required fields')
+            return;
+       }
+       
 
-*/
+      axios.post('http://localhost:8001/api/users/login', values)
+             .then(result => {
+                 if(result.data) {
+                     window.alert(result.data.msg);
+                     const token = result.data.token;
+                     localStorage.setItem("token", token);
+                     const decodedToken = jwtDecode(token);
+                     console.log(decodedToken);
+                     console.log("hi");
+                 
+                      const role = decodedToken.role;
+              
+                        if(role === 'admin') {
+                              navigate('/AD');
+                        } else if(role === 'intern')  {
+                              navigate('')
+                        }else if(role === 'mentor')  {
+                              navigate('')
+                        }else if(role === 'evaluvator')  {
+                              navigate('')  
+                        }else if(role === 'manager')  {
+                              navigate('')
+                        } else{
+                           setError('result')
+                           window.alert('Invalid role')
+                        } 
+                 } else {
+                setError('result')
+                window.alert(result.data.msg)
+                }
+                        })
+          .catch(err => {
+             if (err.response) {
+                 window.alert(err.response.data.msg);
+              }
 
+            })
+
+    }   
 
   return (
-    
-     <div className='d-flex justify-content-center align-items-center vh-100  loginPage'>
-         <div className='p-3 rounded w-25 border  loginForm'>      
-            
-            <h2>Login Page</h2>
-            <form >
-                <div className='mb-3 '>
-                    <label htmlFor="email"><strong>Email:</strong></label>
-                    <input type="email" name='email' autoComplete='off' placeholder='Enter Email'
-                      className='form-control rounded-0'/>
-                </div>
-                <div className='mb-3'> 
-                    <label htmlFor="password"><strong>Password:</strong></label>
-                    <input type="password" name='password' placeholder='Enter Password'
-                      className='form-control rounded-0'/>
-                </div>
-             </form>  
-                <div className='mb-1'> 
-                  <Link to="/forgot">Forgot Password</Link>
-                </div>
-                <button className='w-100 rounded-1 mb-2' > Log in </button>
-              
+    <ThemeProvider theme={defaultTheme}>
+      <Grid container component="main" sx={{ height: '100vh' }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
            
-        </div>
-    </div>
-    
- )
-}
+            backgroundImage: `url(${image})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) =>
+              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+              Login 
+          </Typography>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={(e) => setValues({...values, email : e.target.value})}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={(e) => setValues({...values, password : e.target.value})}
+              />
 
-export default Login
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Login in
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="/Forgetpassword" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+               </Grid>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
+  );
+}
+export default Login;
