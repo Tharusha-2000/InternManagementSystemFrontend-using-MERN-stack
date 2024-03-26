@@ -1,4 +1,4 @@
-import './App.css';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, BrowserRouter, Link ,useNavigate } from 'react-router-dom';
 import React,{ useEffect, useState } from 'react';
@@ -6,11 +6,13 @@ import {jwtDecode} from 'jwt-decode';
 
 
 import Login from './components/login/Login';
-import Addusertable from './components/adduser/Addusertable';
-import Adduser from './components/adduser/Adduser';
+import Addusertable from './components/adduser/Addusertable.jsx';
+import Adduser from './components/adduser/Adduser.jsx';
+
+
 //import Dashboard from './components/Dashboard';
 //import Header from './components/common/Header';
-import HS from './components/common/HS';
+
 import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
@@ -28,7 +30,7 @@ import Security from './components/admin_page/Security';
 
 
 import Test from './test.jsx';
-
+import Test2 from './test2.jsx';
 
 
 import EvaluatorDashboard from './components/evaluator_page/EvaluatorDashboard';
@@ -54,6 +56,7 @@ import ManagerEvaluation from './components/manager_page/ManagerEvaluation';
 import ManagerViewProfile from './components/manager_page/ManagerViewProfile';
 
 
+
 function App() {
   const [user,setUsers] = useState();  
   return (
@@ -62,23 +65,24 @@ function App() {
       <TokenCheck setUsers={setUsers} />
       <Routes>
         <Route path="/Login" element={<Login setUsers={setUsers}/>} > </Route>
+
         <Route path="/Addusertable" element={<Addusertable />}> </Route>
         <Route path="/Adduser" element={<Adduser />}> </Route>
         <Route path="/Forgetpassword" element={<Fogetpassword/>}> </Route>
         <Route path="/CreateNew" element={<CreateNew/>}> </Route>
         <Route path="/Varify" element={<Varify/>}> </Route>
-        <Route path="/HS" element={<HS/>}> </Route>
+      
      
         <Route path="/Test" element={<Test/>}> </Route>
-
-
+        <Route path="/Test2" element={<Test2/>}> </Route>
+      
 
 
 
 
             {/*---------------Admin Navigation-----------------*/}
 
-            <Route path="/AD" element={<AdminDashboard/>}></Route>
+            <Route path="/AdminDashboard" element={<AdminDashboard/>}></Route>
             <Route path="/registration" element={<Registration />}></Route>
             <Route path="/cvmanagement" element={<CVManagement />}></Route>
             <Route path="/evaluation" element={<Evaluation />}></Route>

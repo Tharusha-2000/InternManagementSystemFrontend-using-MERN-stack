@@ -1,8 +1,8 @@
 import React from 'react';
-import Sidebar from '../common/Sidebar';
+import AdminSidebar from '../common/AdminSidebar';
 import Header from '../common/Header';
 import Box from '@mui/material/Box';
-
+import Addusertable from '../adduser/Addusertable'
 
 export default function Evalauation() {
   return (
@@ -10,9 +10,9 @@ export default function Evalauation() {
     <Header />
     <Box height={60} />
     <Box sx={{ display: 'flex' }}>
-    <Sidebar />
+    <AdminSidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       <h1>Evaluation</h1>
+          <Addusertable/>
       </Box>
       </Box>
       </>
