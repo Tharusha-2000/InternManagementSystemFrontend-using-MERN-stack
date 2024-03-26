@@ -10,13 +10,10 @@ import Addusertable from './components/adduser/Addusertable.jsx';
 import Adduser from './components/adduser/Adduser.jsx';
 
 
-//import Dashboard from './components/Dashboard';
-//import Header from './components/common/Header';
-
 import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
-
+import Security from './components/common/Security.jsx';
 
 
 
@@ -26,7 +23,7 @@ import CVManagement from './components/admin_page/CVManagement';
 import Evaluation from './components/admin_page/Evaluation';
 import Profile from './components/admin_page/Profile';
 import ProfileCreate from './components/admin_page/ProfileCreate';
-import Security from './components/admin_page/Security';
+
 
 
 import Test from './test.jsx';
