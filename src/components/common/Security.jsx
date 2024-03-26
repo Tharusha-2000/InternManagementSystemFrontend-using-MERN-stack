@@ -7,7 +7,7 @@ import Mentorsidebar from './Mentorsidebar';
 import Evaluatorsidebar from './Evaluatorsidebar';
 import Header from './Header';
 import Box from '@mui/material/Box';
-
+import Secure from '../Security/Secure';
 export default function Security() {
   const [role, setRole] = useState('');
 
@@ -43,7 +43,7 @@ export default function Security() {
       <Box sx={{ display: 'flex' }}>
         {getSidebar()}
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <h1>Security</h1>
+            <Secure/>
         </Box>
       </Box>
     </>
