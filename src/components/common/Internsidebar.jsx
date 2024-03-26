@@ -170,7 +170,7 @@ export default function Internsidebar() {
         
         
 
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/internsecurity")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/security")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,

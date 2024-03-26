@@ -107,8 +107,8 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      
+      <MenuItem onClick={handleMenuClose}>Log Out</MenuItem>
     </Menu>
   );
 
@@ -178,18 +178,8 @@ export default function Header() {
           >
             <MenuIcon />
           </IconButton>
-          {/*
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            Intern Evaluation System
-          </Typography>
-         */}
 
-               {/* Replace Typography with IconButton for custom SVG icon */}
+               
                <Typography
                       variant="h6"
                       noWrap
