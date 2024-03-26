@@ -93,11 +93,11 @@ export default function Header() {
   };
  
   function userLogout(){
-  
-    localStorage.removeItem('token');
-    navigate('/Login')
+    if (window.confirm('Are you sure you want to log out?')) {
+      localStorage.removeItem('token');
+      navigate('/Login');
+    }
   }
-
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
