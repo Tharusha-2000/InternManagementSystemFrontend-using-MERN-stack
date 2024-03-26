@@ -56,7 +56,7 @@ function Login() {
                         if(role === 'admin') {
                               navigate('/AD');
                         } else if(role === 'intern')  {
-                              navigate('')
+                              navigate('/interndashboard')
                         }else if(role === 'mentor')  {
                               navigate('')
                         }else if(role === 'evaluvator')  {
