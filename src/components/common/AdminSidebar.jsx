@@ -103,7 +103,7 @@ export default function Sidebar() {
         </DrawerHeader>   
         <Divider />
         <List>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/AD")}}>
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/AdminDashboard")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,

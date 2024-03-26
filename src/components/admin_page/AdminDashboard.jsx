@@ -1,7 +1,7 @@
 import React from 'react';
-import Sidebar from '../common/Sidebar';
+import AdminSidebar from '../common/AdminSidebar';
 import Header from '../common/Header';
-import '../common/HS.css'
+
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -23,7 +23,7 @@ export default function AdminDashboard() {
     <Header />
     <Box height={70} />
     <Box sx={{ display: 'flex' }}>
-    <Sidebar />
+    <AdminSidebar />
     
     <Box  component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Grid container spacing={2}>

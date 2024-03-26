@@ -6,11 +6,13 @@ import {jwtDecode} from 'jwt-decode';
 
 
 import Login from './components/login/Login';
-import Addusertable from './components/adduser/Addusertable';
-import Adduser from './components/adduser/Adduser';
+import Addusertable from './components/adduser/Addusertable.jsx';
+import Adduser from './components/adduser/Adduser.jsx';
+
+
 //import Dashboard from './components/Dashboard';
 //import Header from './components/common/Header';
-import HS from './components/common/HS';
+
 import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
@@ -69,7 +71,7 @@ function App() {
         <Route path="/Forgetpassword" element={<Fogetpassword/>}> </Route>
         <Route path="/CreateNew" element={<CreateNew/>}> </Route>
         <Route path="/Varify" element={<Varify/>}> </Route>
-        <Route path="/HS" element={<HS/>}> </Route>
+      
      
         <Route path="/Test" element={<Test/>}> </Route>
         <Route path="/Test2" element={<Test2/>}> </Route>
@@ -80,7 +82,7 @@ function App() {
 
             {/*---------------Admin Navigation-----------------*/}
 
-            <Route path="/AD" element={<AdminDashboard/>}></Route>
+            <Route path="/AdminDashboard" element={<AdminDashboard/>}></Route>
             <Route path="/registration" element={<Registration />}></Route>
             <Route path="/cvmanagement" element={<CVManagement />}></Route>
             <Route path="/evaluation" element={<Evaluation />}></Route>
