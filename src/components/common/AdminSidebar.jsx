@@ -103,7 +103,7 @@ export default function Sidebar() {
         </DrawerHeader>   
         <Divider />
         <List>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/AD")}}>
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/AdminDashboard")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -189,7 +189,7 @@ export default function Sidebar() {
               </ListItemButton>
             </ListItem>
         
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/cvmanagement")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/cvupload")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -206,7 +206,7 @@ export default function Sidebar() {
                 >
                   <PostAddOutlinedIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
-                <ListItemText primary="CV Management" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="CV upload" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
                   

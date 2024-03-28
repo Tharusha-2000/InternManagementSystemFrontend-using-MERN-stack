@@ -54,15 +54,15 @@ function Login() {
                       const role = decodedToken.role;
               
                         if(role === 'admin') {
-                              navigate('/AD');
+                              navigate('/AdminDashboard');
                         } else if(role === 'intern')  {
-                              navigate('')
+                              navigate('/interndashboard')
                         }else if(role === 'mentor')  {
-                              navigate('')
+                              navigate('mentordashboard')
                         }else if(role === 'evaluvator')  {
-                              navigate('')  
+                              navigate('evaluvatordashboard')  
                         }else if(role === 'manager')  {
-                              navigate('')
+                              navigate('managerdashboard')
                         } else{
                            setError('result')
                            window.alert('Invalid role')

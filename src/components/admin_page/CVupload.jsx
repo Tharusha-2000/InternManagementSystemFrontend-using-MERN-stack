@@ -1,19 +1,18 @@
 import React from 'react';
-import Sidebar from '../common/Sidebar';
+import AdminSidebar from '../common/AdminSidebar';
 import Header from '../common/Header';
 import Box from '@mui/material/Box';
 
 
-
-export default function Security() {
+export default function CVupload() {
   return (
     <>
     <Header />
     <Box height={60} />
     <Box sx={{ display: 'flex' }}>
-    <Sidebar />
+    <AdminSidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       <h1>Security</h1>
+       <h1>CV upload </h1>
       </Box>
       </Box>
       </>
