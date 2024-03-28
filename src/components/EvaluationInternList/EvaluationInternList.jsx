@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from 'axios';
 import {
   Table,
   TableBody,
@@ -20,15 +21,21 @@ function EvaluationInternList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/interns")
-      .then((res) => res.json())
-      .then((data) => {
-        setInterns(data);
-        setError(null);
-      })
-      .catch((err) => {
-        setError("Error fetching data");
-      });
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/api/interns');
+        if (response.data && response.data.interns) {
+          setInterns(response.data.interns);
+        } else {
+          console.error('Unexpected response format:', response);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError(error.message);
+      }
+    };
+  
+    fetchData();
   }, []);
 
   if (error) {
