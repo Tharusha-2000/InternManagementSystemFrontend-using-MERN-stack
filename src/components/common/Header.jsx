@@ -16,8 +16,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import MuiAppBar from '@mui/material/AppBar';
 import { useAppStore } from './appStore';
-
-
+import { useNavigate } from 'react-router-dom';
 
 const AppBar = styled(MuiAppBar, {
  })(({  theme }) => ({
@@ -64,7 +63,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+
+
 export default function Header() {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const updateOpen = useAppStore((state) => state.updateOpen);
@@ -89,7 +91,13 @@ export default function Header() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
+ 
+  function userLogout(){
+    if (window.confirm('Are you sure you want to log out?')) {
+      localStorage.removeItem('token');
+      navigate('/Login');
+    }
+  }
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -107,8 +115,8 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      
+      <MenuItem onClick={()=>{handleMenuClose();userLogout();}}>Log Out</MenuItem>
     </Menu>
   );
 
@@ -178,18 +186,8 @@ export default function Header() {
           >
             <MenuIcon />
           </IconButton>
-          {/*
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            Intern Evaluation System
-          </Typography>
-         */}
 
-               {/* Replace Typography with IconButton for custom SVG icon */}
+               
                <Typography
                       variant="h6"
                       noWrap

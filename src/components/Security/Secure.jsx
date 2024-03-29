@@ -52,8 +52,9 @@ const handleSubmit = (e) => {
      
 
      const token = localStorage.getItem('token');   
-    
-     axios.post('http://localhost:8001/api/users/secure',values,{
+
+     axios.put('http://localhost:8001/api/users/secure',values,{
+
                  headers: {
                     'Authorization': `Bearer ${token}`
                      }
