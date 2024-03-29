@@ -151,7 +151,7 @@ function TokenCheck({ setUsers }) {
       if (decodedToken.exp * 1000 < new Date().getTime()) {
         setUsers(null);
         localStorage.removeItem('token');
-        navigate('/ll');
+        navigate('/Login');
       } else {
         setUsers(decodedToken);
       }

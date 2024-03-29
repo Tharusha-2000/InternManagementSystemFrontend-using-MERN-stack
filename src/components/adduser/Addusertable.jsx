@@ -27,8 +27,9 @@ import InputBase from "@mui/material/InputBase";
 import CloseIcon from "@mui/icons-material/Close";
 import Divider from "@mui/material/Divider";
 import Adduser from "./Adduser";
+import { Add } from "@mui/icons-material";
 
-function test({ rows }) {
+function Addusertable({ rows }) {
   //const [DialogIsOpen, setDialogIsOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -293,4 +294,4 @@ const Filter = (event) => {
   );
 }
 
-export default test;
+export default Addusertable;
