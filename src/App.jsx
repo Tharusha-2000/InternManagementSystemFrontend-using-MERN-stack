@@ -14,14 +14,14 @@ import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
 import Security from './components/common/Security.jsx';
-
+import Profile from './components/common/Profile.jsx'
 
 
 import AdminDashboard from './components/admin_page/AdminDashboard';
 import Registration from './components/admin_page/Registration';
 import CVupload from './components/admin_page/CVupload.jsx';
 import Evaluation from './components/admin_page/Evaluation';
-import Profile from './components/admin_page/Profile';
+//import Profile from './components/admin_page/Profile';
 import ProfileCreate from './components/admin_page/ProfileCreate';
 
 
@@ -68,8 +68,8 @@ function App() {
         <Route path="/Forgetpassword" element={<Fogetpassword/>}> </Route>
         <Route path="/CreateNew" element={<CreateNew/>}> </Route>
         <Route path="/Varify" element={<Varify/>}> </Route>
-       
-        
+        <Route path="/security" element={<Security />}></Route>
+        <Route path="/profile" element={<Profile />}></Route>
     
 
         <Route path="/Test" element={<Test/>}> </Route>
@@ -85,9 +85,9 @@ function App() {
             <Route path="/registration" element={<Registration />}></Route>
             <Route path="/cvupload" element={<CVupload/>}></Route>
             <Route path="/evaluation" element={<Evaluation />}></Route>
-            <Route path="/profile" element={<Profile />}></Route>
+            
             <Route path="/profilecreate" element={<ProfileCreate />}></Route>
-            <Route path="/security" element={<Security />}></Route>
+           
 
 
 
@@ -96,10 +96,10 @@ function App() {
             {/*-------------Evaluator Navigation--------------*/}
 
             <Route path="/evaluatordashboard" element={<EvaluatorDashboard/>}></Route>
-            <Route path="/evaluatorprofile" element={<EvaluatorProfile />}></Route>
+            {/* <Route path="/evaluatorprofile" element={<EvaluatorProfile />}></Route> */}
             <Route path="/evaluatorevaluation" element={<EvaluatorEvaluation />}></Route>
             <Route path="/evaluatorviewprofile" element={<EvaluatorViewProfile />}></Route>
-            <Route path="/security" element={<Security />}></Route>
+          
             
 
 
@@ -108,10 +108,10 @@ function App() {
             {/*---------------Mentor Navigation---------------*/}
 
             <Route path="/mentordashboard" element={<MentorDashboard/>}></Route>
-            <Route path="/mentorprofile" element={<MentorProfile />}></Route>
+            {/* <Route path="/mentorprofile" element={<MentorProfile />}></Route> */}
             <Route path="/mentorevaluation" element={<MentorEvaluation />}></Route>
             <Route path="/mentorviewprofile" element={<MentorViewProfile />}></Route>
-            <Route path="/security" element={<Security />}></Route>
+          
 
 
 
@@ -122,7 +122,7 @@ function App() {
             <Route path="/interndashboard" element={<InternDashboard/>}></Route>
             <Route path="/internprofile" element={<InternProfile />}></Route>
             <Route path="/internevaluation" element={<InternEvaluation />}></Route>
-            <Route path="/security" element={<Security />}></Route>
+            
 
 
 
@@ -131,10 +131,10 @@ function App() {
             {/*---------------Manager Navigation---------------*/}
 
             <Route path="/managerdashboard" element={<ManagerDashboard/>}></Route>
-            <Route path="/managerprofile" element={<ManagerProfile />}></Route>
+            {/* <Route path="/managerprofile" element={<ManagerProfile />}></Route> */}
             <Route path="/managerevaluation" element={<ManagerEvaluation />}></Route>
             <Route path="/managerviewprofile" element={<ManagerViewProfile />}></Route>
-            <Route path="/security" element={<Security />}></Route>
+            
 
         </Routes>
 
