@@ -114,7 +114,11 @@ function Addusertable({ rows }) {
           window.location.reload(); 
         })
         .catch((err) => console.log(err));
-        
+        if ( err.response.status ===403 ) {
+          window.alert(err.response.data.msg);
+          localStorage.removeItem('token');
+          // navigate("/Login");
+        }
     }
   }
   
