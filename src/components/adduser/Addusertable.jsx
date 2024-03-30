@@ -111,16 +111,18 @@ function Addusertable({ rows }) {
         .then((result) => {
           setData(data.filter((user) => user._id !== id));
           console.log(result.data.msg);
-          window.location.reload(); 
+           window.location.reload(); 
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
         if ( err.response.status ===403 ) {
           window.alert(err.response.data.msg);
           localStorage.removeItem('token');
-          // navigate("/Login");
+           navigate("/Login");
         }
-    }
+    });
   }
+}
   
 
 
@@ -303,6 +305,11 @@ const Filter = (event) => {
                               value="evaluator"
                               control={<Radio />}
                               label="Evaluator"
+                            />
+                            <FormControlLabel
+                              value="intern"
+                              control={<Radio />}
+                              label="Intern"
                             />
                           </RadioGroup>
 
