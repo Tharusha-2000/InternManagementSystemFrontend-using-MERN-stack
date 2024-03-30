@@ -42,8 +42,12 @@ function Adduser() {
     window.alert('name must only contain letters.')
     return;
     }
-
-  axios.post('http://localhost:8001/api/users/register', data)
+  const token = localStorage.getItem('token');
+  axios.post('http://localhost:8001/api/users/register', data,{
+            headers: {
+            Authorization: `Bearer ${token}`,
+        },
+   })
         .then(result => {   
               if (result.data) {
                  window.alert(result.data.msg);
