@@ -19,7 +19,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 function EvaluationInternList() {
   const [interns, setInterns] = useState([]);
   const [error, setError] = useState(null);
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchData = async () => {
       try {

@@ -45,9 +45,7 @@ export default function Profile() {
       <Box height={60} />
       <Box sx={{ display: "flex" }}>
         {getSidebar()}
-         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-           <h1>Profile</h1>
-         </Box>
+       <h1>Profile</h1>
         
         </Box>
     </>

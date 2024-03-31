@@ -31,13 +31,11 @@ import Test2 from './test2.jsx';
 
 
 import EvaluatorDashboard from './components/evaluator_page/EvaluatorDashboard';
-import EvaluatorProfile from './components/evaluator_page/EvaluatorProfile';
 import EvaluatorEvaluation from './components/evaluator_page/EvaluatorEvaluation';
 import EvaluatorViewProfile from './components/evaluator_page/EvaluatorViewProfile';
 
 
 import MentorDashboard from './components/mentor_page/MentorDashboard';
-import MentorProfile from './components/mentor_page/MentorProfile';
 import MentorEvaluation from './components/mentor_page/MentorEvaluation';
 import MentorViewProfile from './components/mentor_page/MentorViewProfile';
 
@@ -48,7 +46,6 @@ import InternEvaluation from './components/intern_page/InternEvaluation';
 
 
 import ManagerDashboard from './components/manager_page/ManagerDashboard';
-import ManagerProfile from './components/manager_page/ManagerProfile';
 import ManagerEvaluation from './components/manager_page/ManagerEvaluation';
 import ManagerViewProfile from './components/manager_page/ManagerViewProfile';
 
@@ -96,7 +93,6 @@ function App() {
             {/*-------------Evaluator Navigation--------------*/}
 
             <Route path="/evaluatordashboard" element={<EvaluatorDashboard/>}></Route>
-            {/* <Route path="/evaluatorprofile" element={<EvaluatorProfile />}></Route> */}
             <Route path="/evaluatorevaluation" element={<EvaluatorEvaluation />}></Route>
             <Route path="/evaluatorviewprofile" element={<EvaluatorViewProfile />}></Route>
           
@@ -108,7 +104,6 @@ function App() {
             {/*---------------Mentor Navigation---------------*/}
 
             <Route path="/mentordashboard" element={<MentorDashboard/>}></Route>
-            {/* <Route path="/mentorprofile" element={<MentorProfile />}></Route> */}
             <Route path="/mentorevaluation" element={<MentorEvaluation />}></Route>
             <Route path="/mentorviewprofile" element={<MentorViewProfile />}></Route>
           
@@ -131,7 +126,6 @@ function App() {
             {/*---------------Manager Navigation---------------*/}
 
             <Route path="/managerdashboard" element={<ManagerDashboard/>}></Route>
-            {/* <Route path="/managerprofile" element={<ManagerProfile />}></Route> */}
             <Route path="/managerevaluation" element={<ManagerEvaluation />}></Route>
             <Route path="/managerviewprofile" element={<ManagerViewProfile />}></Route>
             
