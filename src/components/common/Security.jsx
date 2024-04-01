@@ -62,6 +62,7 @@ export default function Security() {
       window.alert("Password and Confirm Password should be same");
       return;
     }
+
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/;
 if (!passwordRegex.test(values.Newpassword)) {
   window.alert(
@@ -69,6 +70,7 @@ if (!passwordRegex.test(values.Newpassword)) {
   );
   return;
 }
+
 
 
     const token = localStorage.getItem("token");

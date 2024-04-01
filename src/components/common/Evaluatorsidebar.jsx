@@ -125,7 +125,7 @@ export default function Evaluatorsidebar() {
             </ListItem>
 
       
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/evaluatorprofile")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/profile")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
