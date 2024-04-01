@@ -27,8 +27,9 @@ import InputBase from "@mui/material/InputBase";
 import CloseIcon from "@mui/icons-material/Close";
 import Divider from "@mui/material/Divider";
 import Adduser from "./Adduser";
+import { useNavigate } from "react-router-dom";
 
-function test({ rows }) {
+function Addusertable({ rows }) {
   //const [DialogIsOpen, setDialogIsOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -36,11 +37,20 @@ function test({ rows }) {
   const [open, openchange] = useState(false);
   
   const [filteredData, setFilteredData] = useState([]);
+  const navigate = useNavigate();
 
   {/* get details in database */}
+  const token = localStorage.getItem('token');
+ 
+ 
   useEffect(() => {
     axios
-      .get("http://localhost:8001/api/users/user")
+      .get("http://localhost:8001/api/users/user",{
+        headers: {
+        Authorization: `Bearer ${token}`,
+    },
+  })
+
       .then((result) => {
         setFilteredData(result.data.users);
         setData(result.data.users);
@@ -61,9 +71,13 @@ function test({ rows }) {
 
   function handleRoleChange() {
     axios
-      .put(`http://localhost:8001/api/users/user/${selectedUserId}`, {
-        role: selectedRole,
-      })
+      .put(`http://localhost:8001/api/users/user/${selectedUserId}`, 
+      {role: selectedRole},
+      {headers: {
+         Authorization: `Bearer ${token}` 
+       },
+      },
+       )
       .then((result) => {
           const updateData=data.map((user) =>
             user._id === selectedUserId ? { ...user, role: selectedRole } : user
@@ -72,8 +86,16 @@ function test({ rows }) {
         setFilteredData(updateData);
         console.log(result.data.msg);
         closepopup();
+     
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        if ( err.response.status ===403 ) {
+          window.alert(err.response.data.msg);
+           localStorage.removeItem('token');
+           navigate("/Login");
+        }
+      });
   }
   
   {/* delect user*/}
@@ -81,15 +103,26 @@ function test({ rows }) {
   function handleDelete(id) {
     if (window.confirm("Are you sure you want to delete this user?")) {
       axios
-        .delete(`http://localhost:8001/api/users/user/${id}`)
+        .delete(`http://localhost:8001/api/users/user/${id}`,{
+          headers: {
+          Authorization: `Bearer ${token}`,
+      },
+    })
         .then((result) => {
           setData(data.filter((user) => user._id !== id));
           console.log(result.data.msg);
-          window.location.reload(); 
+           window.location.reload(); 
         })
-        .catch((err) => console.log(err));
-    }
+        .catch((err) => {
+          console.log(err);
+        if ( err.response.status ===403 ) {
+          window.alert(err.response.data.msg);
+          localStorage.removeItem('token');
+           navigate("/Login");
+        }
+    });
   }
+}
   
 
 
@@ -180,9 +213,11 @@ const Filter = (event) => {
                 Email
               </TableCell>
               <TableCell
+                
                 sx={{
                   fontWeight: "bold",
                   fontSize: "1em",
+                  
                 }}
               >
                 Actions
@@ -209,7 +244,8 @@ const Filter = (event) => {
                     </Button>
                  
                   <Button
-                    variant="contained"
+                    style={{ marginLeft: "10px" }}
+                    variant="outlined"
                     color="secondary"
                     onClick={() => handleDelete(user._id)}
                   >
@@ -252,6 +288,7 @@ const Filter = (event) => {
                             name="role"
                             onChange={(e) => setSelectedRole(e.target.value)}
                           >
+
                             <FormControlLabel
                               value="admin"
                               control={<Radio />}
@@ -271,6 +308,11 @@ const Filter = (event) => {
                               value="evaluator"
                               control={<Radio />}
                               label="Evaluator"
+                            />
+                            <FormControlLabel
+                              value="intern"
+                              control={<Radio />}
+                              label="Intern"
                             />
                           </RadioGroup>
 
@@ -293,4 +335,4 @@ const Filter = (event) => {
   );
 }
 
-export default test;
+export default Addusertable;

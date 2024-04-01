@@ -58,11 +58,11 @@ function Login() {
                         } else if(role === 'intern')  {
                               navigate('/interndashboard')
                         }else if(role === 'mentor')  {
-                              navigate('mentordashboard')
-                        }else if(role === 'evaluvator')  {
-                              navigate('evaluvatordashboard')  
+                              navigate('/mentordashboard')
+                        }else if(role === 'evaluator')  {
+                              navigate('/evaluatordashboard')  
                         }else if(role === 'manager')  {
-                              navigate('managerdashboard')
+                              navigate('/managerdashboard')
                         } else{
                            setError('result')
                            window.alert('Invalid role')
