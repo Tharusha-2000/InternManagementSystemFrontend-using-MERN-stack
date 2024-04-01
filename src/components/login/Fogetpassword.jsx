@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
-import './style.css'
 
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import Input from '@mui/material/Input';
+import Button from '@mui/material/Button';
+import image2 from '../../assets/photo2.jpg';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-
-function Fogetpassword () {
-   const [value, setValue] =useState({ email: ''})
-   const [error, setError] =useState(null)
-   const navigate = useNavigate()
+function Fogetpassword() {
+    const [value, setValue] =useState({ email: ''})
+    const [error, setError] =useState(null)
+    const navigate = useNavigate()
 
 
   const handleSubmit = (event) => {
@@ -20,7 +23,7 @@ function Fogetpassword () {
       return;
     }
 
-    axios.post('http://localhost:8201/api/users/generateOTP&sendmail', value)
+    axios.post('http://localhost:8001/api/users/generateOTP&sendmail', value)
           .then(result => {
               if(result.data){
                   window.alert(result.data.msg);
@@ -34,31 +37,71 @@ function Fogetpassword () {
               }) 
                 .catch(err => {
                   if (err.response) {
-                   //   window.alert(err.response.data.msg);
+                      window.alert(err.response.data.msg);
                   }
               })
        
 
     }
 
+  return (
+    <main
+    style={{
+        backgroundImage: `url(${image2})`,
+        backgroundSize: '100% 100%',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        height: '100vh', // make the main tag fill the entire height of the viewport
+        display: 'flex', // add this
+        justifyContent: 'center', // add this
+        alignItems: 'center', 
+       }} >
 
- return (
-   <div className='d-flex justify-content-center align-items-center vh-100  loginPage'>
-    <div className='p-3 rounded w-25 border  loginForm'>      
+      <Paper
+        sx={{
+          width: 400,
+          mx: 'auto', // margin left & right
+          my: 0, // margin top & bottom
+          py: 3, // padding top & bottom
+          px: 2, // padding left & right
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          borderRadius: 'sm',
+          boxShadow: 'md',
+          backgroundColor: 'rgba(190, 216, 230, 0.9)',
+ 
+        }}
+        variant="outlined"
+      >
        
-       <h2>Forget password</h2>
-       <form onSubmit={handleSubmit}>
-           <div className='mb-3 '>
-               <label htmlFor="email"><strong>Enter Email Address</strong></label>
-               <br />
-               <br />
-               <input type="email" name='email' autoComplete='off' placeholder='Enter Email' onChange={(e) => setValue({...value, email: e.target.value})}
-                 className='form-control rounded-0'/>
-           </div>
-             <button type="submit" className='w-100 rounded-1 mb-2' >Send Email</button>
-       </form>     
-    </div>
-   </div>
-  )
+        <div>
+          <Typography variant="h5" component="h3">
+            <b>Forget Password</b>
+          </Typography>
+          <br />
+          <br />
+          <Typography variant="body1">Enter the email address .</Typography>
+        </div>
+        
+      
+          <Input
+            name="email"
+            type="email"
+            placeholder="johndoe@email.com"
+            onChange={(e) => setValue({...value, email: e.target.value})}
+          />
+        
+        
+          <Button 
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }} 
+                onClick={handleSubmit} >Send Email</Button>
+          
+      </Paper>
+    </main>
+  );
 }
+
 export default Fogetpassword;
