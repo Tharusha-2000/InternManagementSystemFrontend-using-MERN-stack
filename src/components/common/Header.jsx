@@ -76,7 +76,7 @@ export default function Header() {
     >
       <MenuItem onClick={()=>{handleMenuClose()}}>example1</MenuItem>
       <MenuItem onClick={()=>{handleMenuClose()}}>example2</MenuItem>
-      <MenuItem onClick={()=>{handleMenuClose();userLogout();}}>Log Out</MenuItem>
+      <MenuItem onClick={()=>{handleMenuClose()}}>example3</MenuItem>
     </Menu>
   );
 

@@ -88,7 +88,7 @@ function Adduser() {
               </Grid>
                <Grid item xs={6}>
                <FormControl fullWidth>
-                 <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                 <InputLabel id="demo-simple-select-label">Gender</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"

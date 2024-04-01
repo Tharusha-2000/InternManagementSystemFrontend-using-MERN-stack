@@ -213,9 +213,11 @@ const Filter = (event) => {
                 Email
               </TableCell>
               <TableCell
+                
                 sx={{
                   fontWeight: "bold",
                   fontSize: "1em",
+                  
                 }}
               >
                 Actions
@@ -242,7 +244,8 @@ const Filter = (event) => {
                     </Button>
                  
                   <Button
-                    variant="contained"
+                    style={{ marginLeft: "10px" }}
+                    variant="outlined"
                     color="secondary"
                     onClick={() => handleDelete(user._id)}
                   >
