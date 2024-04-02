@@ -19,27 +19,17 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 function EvaluationInternList() {
   const [interns, setInterns] = useState([]);
   const [error, setError] = useState(null);
-  const token = localStorage.getItem("token");
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:8001/api/users/interns',{
-          headers: {
-          Authorization: `Bearer ${token}`,
-      },
-    })
-        if (response.data && response.data.interns) {
-          setInterns(response.data.interns);
-        } else {
-          console.error('Unexpected response format:', response);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setError(error.message);
-      }
-    };
-  
-    fetchData();
+    axios
+      .get("http://localhost:8001/api/users/interns")
+      .then((result) => {
+        setInterns(result.data.interns);
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(err.message);
+      });
   }, []);
 
   if (error) {
@@ -67,9 +57,9 @@ function EvaluationInternList() {
         <TableBody>
           {interns.map((intern) => (
             <TableRow key={intern._id}>
-              <TableCell>{intern.Name}</TableCell>
-              <TableCell>{intern.userID}</TableCell>
-              <TableCell>{intern.eformStatus}</TableCell>
+              <TableCell>{intern.fname}</TableCell>
+              <TableCell>{intern.lname}</TableCell>
+              <TableCell>{intern.email}</TableCell>
               <TableCell
                 style={{
                   display: "flex",
