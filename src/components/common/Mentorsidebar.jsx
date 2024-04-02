@@ -125,7 +125,7 @@ export default function Mentorsidebar() {
             </ListItem>
 
       
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/mentorprofile")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/profile")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,

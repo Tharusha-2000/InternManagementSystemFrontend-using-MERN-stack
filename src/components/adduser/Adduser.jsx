@@ -42,8 +42,12 @@ function Adduser() {
     window.alert('name must only contain letters.')
     return;
     }
-
-  axios.post('http://localhost:8001/api/users/register', data)
+  const token = localStorage.getItem('token');
+  axios.post('http://localhost:8001/api/users/register', data,{
+            headers: {
+            Authorization: `Bearer ${token}`,
+        },
+   })
         .then(result => {   
               if (result.data) {
                  window.alert(result.data.msg);
@@ -84,7 +88,7 @@ function Adduser() {
               </Grid>
                <Grid item xs={6}>
                <FormControl fullWidth>
-                 <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                 <InputLabel id="demo-simple-select-label">Gender</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -102,7 +106,7 @@ function Adduser() {
                   <FormLabel component="legend">Role</FormLabel>
                   <RadioGroup row onChange={e => setData({ ...data, role: e.target.value })}>
                     <FormControlLabel value="intern" control={<Radio />} label="Intern" />
-                    <FormControlLabel value="evaluator" control={<Radio />} label="Evaluator" />
+                    <FormControlLabel value="evaluator " control={<Radio />} label="Evaluator" />
                     <FormControlLabel value="manager" control={<Radio />} label="Manager" />
                     <FormControlLabel value="admin" control={<Radio />} label="Admin" />
                     <FormControlLabel value="mentor" control={<Radio />} label="Mentor" />
