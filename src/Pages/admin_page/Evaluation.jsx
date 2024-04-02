@@ -1,9 +1,9 @@
 import React from 'react';
-import AdminSidebar from '../common/AdminSidebar';
-import Header from '../common/Header';
+import AdminSidebar from '../../components/common/AdminSidebar';
+import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
-import Addusertable from '../adduser/Addusertable'
-import EvaluationInternList from '../EvaluationInternList/EvaluationInternList';
+
+import EvaluationInternList from '../../components/EvaluationInternList/EvaluationInternList';
 
 export default function Evalauation() {
   return (

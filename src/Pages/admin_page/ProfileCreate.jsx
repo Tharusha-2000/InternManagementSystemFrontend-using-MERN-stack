@@ -1,18 +1,19 @@
 import React from 'react';
-import Mentorsidebar from '../common/Mentorsidebar';
-import Header from '../common/Header';
+import AdminSidebar from '../../components/common/AdminSidebar';
+import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
 
 
-export default function MentorDashboard() {
+
+export default function ProfileCreate() {
   return (
     <>
     <Header />
     <Box height={60} />
     <Box sx={{ display: 'flex' }}>
-    <Mentorsidebar />
+    <AdminSidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       <h1>mentor dashboard </h1>
+       <h1>ProfileCreate</h1>
       </Box>
       </Box>
       </>
