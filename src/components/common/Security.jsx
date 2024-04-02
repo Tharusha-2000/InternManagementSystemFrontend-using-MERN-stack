@@ -69,6 +69,12 @@ export default function Security() {
       );
       return;
     }
+    if (!passwordRegex.test(values.Newpassword)) {
+      window.alert(
+        "Password must be at least 6 characters long and contain at least one letter and one number."
+      );
+      return;
+    }
 
     const token = localStorage.getItem("token");
     axios
