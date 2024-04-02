@@ -1,4 +1,10 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+import Adminsidebar from "./AdminSidebar";
+import Managersidebar from "./Managersidebar";
+import Mentorsidebar from "./Mentorsidebar";
+import Evaluatorsidebar from "./Evaluatorsidebar";
+import Header from "./Header";
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
@@ -17,12 +23,45 @@ import Card from '@mui/joy/Card';
 import CardActions from '@mui/joy/CardActions';
 import CardOverflow from '@mui/joy/CardOverflow';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded';
+import {TextField} from '@mui/material';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 
-export default function MyProfile() {
-  return (
+export default function Profile() {
+  const [role, setRole] = useState("");
+  
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setRole(decodedToken.role);
+    }
+  }, []);
+
+  const getSidebar = () => {
+    switch (role) {
+      case "admin":
+        return <Adminsidebar />;
+      case "mentor":
+        return <Mentorsidebar />;
+      case "evaluator":
+        return <Evaluatorsidebar />;
+      case "manager":
+        return <Managersidebar />;
+      default:
+        return null;
+    }
+  };
+
+
+
+return (
+  <>
+  <Header />
+  <Box height={60} />
+      <Box sx={{ display: "flex" }}>  
+    {getSidebar()}
     <Box sx={{ flex: 1, width: '100%' }}>
      
       <Stack
@@ -85,14 +124,14 @@ export default function MyProfile() {
                 <FormControl
                   sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                 >
-                  <Input size="sm" placeholder="First name" />
+                  <Input size="sm" placeholder="First name"    />
                   <Input size="sm" placeholder="Last name" sx={{ flexGrow: 1 }} />
                 </FormControl>
               </Stack>
               <Stack direction="row" spacing={2}>
                 <FormControl>
                   <FormLabel>Role</FormLabel>
-                  <Input size="sm" defaultValue="UI Developer" />
+                  <Input size="sm"  />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>Email</FormLabel>
@@ -101,34 +140,26 @@ export default function MyProfile() {
                     type="email"
                     startDecorator={<EmailRoundedIcon />}
                     placeholder="email"
-                    defaultValue="siriwatk@test.com"
+                    
                     sx={{ flexGrow: 1 }}
                   />
                 </FormControl>
               </Stack>
              
               <div>
-                <FormControl sx={{ display: { sm: 'contents' } }}>
-                  <FormLabel>Timezone</FormLabel>
-                  <Select
-                    size="sm"
-                    startDecorator={<AccessTimeFilledRoundedIcon />}
-                    defaultValue="1"
-                  >
-                    <Option value="1">
-                      Indochina Time (Bangkok){' '}
-                      <Typography textColor="text.tertiary" ml={0.5}>
-                        — GMT+07:00
-                      </Typography>
-                    </Option>
-                    <Option value="2">
-                      Indochina Time (Ho Chi Minh City){' '}
-                      <Typography textColor="text.tertiary" ml={0.5}>
-                        — GMT+07:00
-                      </Typography>
-                    </Option>
-                  </Select>
-                </FormControl>
+              <Stack direction="row" spacing={2}>
+                  <FormControl sx={{ width: '175px'}}>
+                      <FormLabel>Gender</FormLabel>
+                       <Select size="sm">
+                         <Option value="male"> Male </Option>
+                         <Option value="female"> Female </Option>
+                       </Select>
+                  </FormControl>
+                  <FormControl sx={{ flexGrow: 1 }}>
+                      <FormLabel>Date of Birth</FormLabel>
+                      <Input size="sm" type="date" sx={{ flexGrow: 1 }} />
+                  </FormControl>
+                </Stack>
               </div>
             </Stack>
           </Stack>
@@ -187,7 +218,7 @@ export default function MyProfile() {
             </Stack>
             <FormControl>
               <FormLabel>Role</FormLabel>
-              <Input size="sm" defaultValue="UI Developer" />
+              <Input size="sm" value=" " />
             </FormControl>
             <FormControl sx={{ flexGrow: 1 }}>
               <FormLabel>Email</FormLabel>
@@ -196,33 +227,29 @@ export default function MyProfile() {
                 type="email"
                 startDecorator={<EmailRoundedIcon />}
                 placeholder="email"
-                defaultValue="siriwatk@test.com"
+                
+
                 sx={{ flexGrow: 1 }}
               />
             </FormControl>
            
             <div>
               <FormControl sx={{ display: { sm: 'contents' } }}>
-                <FormLabel>Timezone</FormLabel>
+                <FormLabel>Gender</FormLabel>
                 <Select
                   size="sm"
-                  startDecorator={<AccessTimeFilledRoundedIcon />}
-                  defaultValue="1"
                 >
-                  <Option value="1">
-                    Indochina Time (Bangkok){' '}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                  <Option value="2">
-                    Indochina Time (Ho Chi Minh City){' '}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
+                  <Option value="male"> Male </Option>
+                  <Option value="female"> Female </Option>
                 </Select>
               </FormControl>
+
+              <FormControl>
+
+              <FormLabel>Date of Birth</FormLabel>
+              <Input size="sm" type="date" sx={{ flexGrow: 1 }} />
+             </FormControl>
+             
             </div>
           </Stack>
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
@@ -269,5 +296,8 @@ export default function MyProfile() {
         </Card>
       </Stack>
     </Box>
+    </Box>
+    </> 
   );
 }
+

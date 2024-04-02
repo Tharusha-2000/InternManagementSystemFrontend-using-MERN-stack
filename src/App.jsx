@@ -14,43 +14,42 @@ import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
 import Security from './components/common/Security.jsx';
+import Profile from './components/common/Profile.jsx'
 
 
-
-import AdminDashboard from './components/admin_page/AdminDashboard';
-import Registration from './components/admin_page/Registration';
-import CVupload from './components/admin_page/CVupload.jsx';
-import Evaluation from './components/admin_page/Evaluation';
-import Profile from './components/admin_page/Profile';
-import ProfileCreate from './components/admin_page/ProfileCreate';
+import AdminDashboard from './Pages/admin_page/AdminDashboard';
+import Registration from './Pages/admin_page/Registration';
+import CVupload from './Pages/admin_page/CVupload.jsx';
+import Evaluation from './Pages/admin_page/Evaluation';
+//import Profile from './Pages/admin_page/Profile';
+import ProfileCreate from './Pages/admin_page/ProfileCreate';
 
 
 
 import Test from './test.jsx';
 import Test2 from './test2.jsx';
+import Test3 from './Test3.jsx';
 
 
-import EvaluatorDashboard from './components/evaluator_page/EvaluatorDashboard';
-import EvaluatorProfile from './components/evaluator_page/EvaluatorProfile';
-import EvaluatorEvaluation from './components/evaluator_page/EvaluatorEvaluation';
-import EvaluatorViewProfile from './components/evaluator_page/EvaluatorViewProfile';
+import EvaluatorDashboard from './Pages/evaluator_page/EvaluatorDashboard';
+import EvaluatorEvaluation from './Pages/evaluator_page/EvaluatorEvaluation';
+import EvaluatorViewProfile from './Pages/evaluator_page/EvaluatorViewProfile';
 
 
-import MentorDashboard from './components/mentor_page/MentorDashboard';
-import MentorProfile from './components/mentor_page/MentorProfile';
-import MentorEvaluation from './components/mentor_page/MentorEvaluation';
-import MentorViewProfile from './components/mentor_page/MentorViewProfile';
+
+import MentorDashboard from './Pages/mentor_page/MentorDashboard';
+import MentorEvaluation from './Pages/mentor_page/MentorEvaluation';
+import MentorViewProfile from './Pages/mentor_page/MentorViewProfile';
 
 
-import InternDashboard from './components/intern_page/InternDashboard';
-import InternProfile from './components/intern_page/InternProfile';
-import InternEvaluation from './components/intern_page/InternEvaluation';
+import InternDashboard from './Pages/intern_page/InternDashboard';
+import InternProfile from './Pages/intern_page/InternProfile';
+import InternEvaluation from './Pages/intern_page/InternEvaluation';
 
 
-import ManagerDashboard from './components/manager_page/ManagerDashboard';
-import ManagerProfile from './components/manager_page/ManagerProfile';
-import ManagerEvaluation from './components/manager_page/ManagerEvaluation';
-import ManagerViewProfile from './components/manager_page/ManagerViewProfile';
+import ManagerDashboard from './Pages/manager_page/ManagerDashboard';
+import ManagerEvaluation from './Pages/manager_page/ManagerEvaluation';
+import ManagerViewProfile from './Pages/manager_page/ManagerViewProfile';
 
 
 
@@ -68,12 +67,13 @@ function App() {
         <Route path="/Forgetpassword" element={<Fogetpassword/>}> </Route>
         <Route path="/CreateNew" element={<CreateNew/>}> </Route>
         <Route path="/Varify" element={<Varify/>}> </Route>
-       
-        
+        <Route path="/security" element={<Security />}></Route>
+        <Route path="/profile" element={<Profile />}></Route>
     
 
         <Route path="/Test" element={<Test/>}> </Route>
         <Route path="/Test2" element={<Test2/>}> </Route>
+        <Route path="/Test3" element={<Test3/>}> </Route>
       
 
 
@@ -85,9 +85,9 @@ function App() {
             <Route path="/registration" element={<Registration />}></Route>
             <Route path="/cvupload" element={<CVupload/>}></Route>
             <Route path="/evaluation" element={<Evaluation />}></Route>
-            <Route path="/profile" element={<Profile />}></Route>
+            
             <Route path="/profilecreate" element={<ProfileCreate />}></Route>
-            <Route path="/security" element={<Security />}></Route>
+           
 
 
 
@@ -96,10 +96,9 @@ function App() {
             {/*-------------Evaluator Navigation--------------*/}
 
             <Route path="/evaluatordashboard" element={<EvaluatorDashboard/>}></Route>
-            <Route path="/evaluatorprofile" element={<EvaluatorProfile />}></Route>
             <Route path="/evaluatorevaluation" element={<EvaluatorEvaluation />}></Route>
             <Route path="/evaluatorviewprofile" element={<EvaluatorViewProfile />}></Route>
-            <Route path="/security" element={<Security />}></Route>
+          
             
 
 
@@ -108,10 +107,9 @@ function App() {
             {/*---------------Mentor Navigation---------------*/}
 
             <Route path="/mentordashboard" element={<MentorDashboard/>}></Route>
-            <Route path="/mentorprofile" element={<MentorProfile />}></Route>
             <Route path="/mentorevaluation" element={<MentorEvaluation />}></Route>
             <Route path="/mentorviewprofile" element={<MentorViewProfile />}></Route>
-            <Route path="/security" element={<Security />}></Route>
+          
 
 
 
@@ -122,7 +120,7 @@ function App() {
             <Route path="/interndashboard" element={<InternDashboard/>}></Route>
             <Route path="/internprofile" element={<InternProfile />}></Route>
             <Route path="/internevaluation" element={<InternEvaluation />}></Route>
-            <Route path="/security" element={<Security />}></Route>
+            
 
 
 
@@ -131,10 +129,9 @@ function App() {
             {/*---------------Manager Navigation---------------*/}
 
             <Route path="/managerdashboard" element={<ManagerDashboard/>}></Route>
-            <Route path="/managerprofile" element={<ManagerProfile />}></Route>
             <Route path="/managerevaluation" element={<ManagerEvaluation />}></Route>
             <Route path="/managerviewprofile" element={<ManagerViewProfile />}></Route>
-            <Route path="/security" element={<Security />}></Route>
+            
 
         </Routes>
 
@@ -154,7 +151,7 @@ function TokenCheck({ setUsers }) {
       if (decodedToken.exp * 1000 < new Date().getTime()) {
         setUsers(null);
         localStorage.removeItem('token');
-        navigate('/ll');
+        navigate('/Login');
       } else {
         setUsers(decodedToken);
       }

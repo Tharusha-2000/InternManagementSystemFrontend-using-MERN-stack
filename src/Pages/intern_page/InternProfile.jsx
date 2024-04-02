@@ -1,4 +1,10 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+import Adminsidebar from "../../components/common/AdminSidebar";
+import Managersidebar from "../../components/common/Managersidebar";
+import Mentorsidebar from "../../components/common/Mentorsidebar";
+import Evaluatorsidebar from "../../components/common/Evaluatorsidebar";
+import Header from "../../components/common/Header";
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
@@ -21,8 +27,42 @@ import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRou
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 
-export default function MyProfile() {
-  return (
+export default function Profile() {
+  const [role, setRole] = useState("");
+  
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setRole(decodedToken.role);
+    }
+  }, []);
+
+  const getSidebar = () => {
+    switch (role) {
+      case "admin":
+        return <Adminsidebar />;
+      case "mentor":
+        return <Mentorsidebar />;
+      case "evaluator":
+        return <Evaluatorsidebar />;
+      case "manager":
+        return <Managersidebar />;
+      default:
+        return null;
+    }
+  };
+
+
+
+return (
+  <>
+  
+  <Header />
+  <Box height={60} />
+      <Box sx={{ display: "flex" }}>  
+    {getSidebar()}
     <Box sx={{ flex: 1, width: '100%' }}>
      
       <Stack
@@ -38,9 +78,6 @@ export default function MyProfile() {
         <Card>
           <Box sx={{ mb: 1 }}>
             <Typography level="title-md">Personal info</Typography>
-            <Typography level="body-sm">
-              Customize how your profile information will apper to the networks.
-            </Typography>
           </Box>
           <Divider />
           <Stack
@@ -78,6 +115,7 @@ export default function MyProfile() {
               >
                 <EditRoundedIcon />
               </IconButton>
+     
             </Stack>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
               <Stack spacing={1}>
@@ -89,10 +127,22 @@ export default function MyProfile() {
                   <Input size="sm" placeholder="Last name" sx={{ flexGrow: 1 }} />
                 </FormControl>
               </Stack>
+
               <Stack direction="row" spacing={2}>
                 <FormControl>
-                  <FormLabel>Role</FormLabel>
-                  <Input size="sm" defaultValue="UI Developer" />
+                  <FormLabel>Date of Birth</FormLabel>
+                  <Input size="sm" defaultValue="2001.03.09" />
+                </FormControl>
+                <FormControl sx={{ flexGrow: 1 }}>
+                  <FormLabel>Gender</FormLabel>
+                  <Input size="sm" defaultValue="Male" />
+                </FormControl>
+                </Stack>
+
+              <Stack direction="row" spacing={2}>
+                <FormControl>
+                  <FormLabel>Phone Number</FormLabel>
+                  <Input size="sm" defaultValue="0785642332" />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>Email</FormLabel>
@@ -105,137 +155,52 @@ export default function MyProfile() {
                     sx={{ flexGrow: 1 }}
                   />
                 </FormControl>
-              </Stack>
-             
-              <div>
-                <FormControl sx={{ display: { sm: 'contents' } }}>
-                  <FormLabel>Timezone</FormLabel>
-                  <Select
-                    size="sm"
-                    startDecorator={<AccessTimeFilledRoundedIcon />}
-                    defaultValue="1"
-                  >
-                    <Option value="1">
-                      Indochina Time (Bangkok){' '}
-                      <Typography textColor="text.tertiary" ml={0.5}>
-                        — GMT+07:00
-                      </Typography>
-                    </Option>
-                    <Option value="2">
-                      Indochina Time (Ho Chi Minh City){' '}
-                      <Typography textColor="text.tertiary" ml={0.5}>
-                        — GMT+07:00
-                      </Typography>
-                    </Option>
-                  </Select>
-                </FormControl>
-              </div>
-            </Stack>
-          </Stack>
-          <Stack
-            direction="column"
-            spacing={2}
-            sx={{ display: { xs: 'flex', md: 'none' }, my: 1 }}
-          >
-            <Stack direction="row" spacing={2}>
-              <Stack direction="column" spacing={1}>
-                <AspectRatio
-                  ratio="1"
-                  maxHeight={108}
-                  sx={{ flex: 1, minWidth: 108, borderRadius: '100%' }}
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                    srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                    loading="lazy"
-                    alt=""
-                  />
-                </AspectRatio>
-                <IconButton
-                  aria-label="upload new picture"
-                  size="sm"
-                  variant="outlined"
-                  color="neutral"
-                  sx={{
-                    bgcolor: 'background.body',
-                    position: 'absolute',
-                    zIndex: 2,
-                    borderRadius: '50%',
-                    left: 85,
-                    top: 180,
-                    boxShadow: 'sm',
-                  }}
-                >
-                  <EditRoundedIcon />
-                </IconButton>
-              </Stack>
-              <Stack spacing={1} sx={{ flexGrow: 1 }}>
-                <FormLabel>Name</FormLabel>
+                </Stack>
+               
+                <Stack spacing={1}>
+                <FormLabel>University Name</FormLabel>
                 <FormControl
-                  sx={{
-                    display: {
-                      sm: 'flex-column',
-                      md: 'flex-row',
-                    },
-                    gap: 2,
-                  }}
+                  sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                 >
-                  <Input size="sm" placeholder="First name" />
-                  <Input size="sm" placeholder="Last name" />
+                  <Input size="sm" placeholder="University Name" />
                 </FormControl>
               </Stack>
-            </Stack>
-            <FormControl>
-              <FormLabel>Role</FormLabel>
-              <Input size="sm" defaultValue="UI Developer" />
-            </FormControl>
-            <FormControl sx={{ flexGrow: 1 }}>
-              <FormLabel>Email</FormLabel>
-              <Input
-                size="sm"
-                type="email"
-                startDecorator={<EmailRoundedIcon />}
-                placeholder="email"
-                defaultValue="siriwatk@test.com"
-                sx={{ flexGrow: 1 }}
-              />
-            </FormControl>
-           
-            <div>
-              <FormControl sx={{ display: { sm: 'contents' } }}>
-                <FormLabel>Timezone</FormLabel>
-                <Select
-                  size="sm"
-                  startDecorator={<AccessTimeFilledRoundedIcon />}
-                  defaultValue="1"
+
+              <Stack direction="row" spacing={2}>
+                <FormControl>
+                  <FormLabel>Role</FormLabel>
+                  <Input size="sm" defaultValue="SE Intern" />
+                </FormControl>
+                <FormControl sx={{ flexGrow: 1 }}>
+                  <FormLabel>GPA</FormLabel>
+                  <Input size="sm" defaultValue="" />
+                </FormControl>
+                </Stack>
+
+              
+                <Stack spacing={1}>
+                <FormLabel>Accomplishments</FormLabel>
+                <FormControl
+                  sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                 >
-                  <Option value="1">
-                    Indochina Time (Bangkok){' '}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                  <Option value="2">
-                    Indochina Time (Ho Chi Minh City){' '}
-                    <Typography textColor="text.tertiary" ml={0.5}>
-                      — GMT+07:00
-                    </Typography>
-                  </Option>
-                </Select>
-              </FormControl>
-            </div>
-          </Stack>
+                  <Input size="sm" placeholder="Accomplishments" />
+                </FormControl>
+              </Stack>
+              </Stack>
+              </Stack>
+          
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
             <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
+            <Button variant="outlined" sx={{ borderColor: 'blue' }}>
                 Cancel
-              </Button>
-              <Button size="sm" variant="solid">
+            </Button>
+              {/* <Button size="sm" variant="solid">
                 Save
-              </Button>
+              </Button> */}
             </CardActions>
           </CardOverflow>
         </Card>
+
         <Card>
           <Box sx={{ mb: 1 }}>
             <Typography level="title-md">Bio</Typography>
@@ -269,5 +234,9 @@ export default function MyProfile() {
         </Card>
       </Stack>
     </Box>
+    </Box>
+    </> 
   );
 }
+
+
