@@ -66,13 +66,14 @@ export default function Security() {
     }
 
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/;
+if (!passwordRegex.test(values.Newpassword)) {
+  window.alert(
+    "Password must be at least 6 characters long and contain at least one letter and one number."
+  );
+  return;
+}
 
-    if (!passwordRegex.test(values.Newpassword)) {
-      window.alert(
-        "Password must be at least 6 characters long and contain at least one letter and one number."
-      );
-      return;
-    }
+
 
     const token = localStorage.getItem("token");
     axios
@@ -86,6 +87,7 @@ export default function Security() {
         if (result.data) {
           window.alert(result.data.msg);
           console.log(result.data.msg);
+      setValues({ Newpassword: "", Oldpassword: "", Confirmpassword: "" }); // Reset the state here
         }
       })
       .catch((err) => {
@@ -133,9 +135,10 @@ export default function Security() {
                     label="Old password"
                     type="password"
                     id="Oldpassword"
-                    onChange={(e) =>
-                      setValues({ ...values, Oldpassword: e.target.value })
-                    }
+                   value={values.Oldpassword}
+                   onChange={(e) =>
+                     setValues({ ...values, Oldpassword: e.target.value })
+                   }
                   />
                   <TextField
                     margin="normal"
@@ -145,9 +148,10 @@ export default function Security() {
                     label="New password"
                     type="password"
                     id="Newpassword"
-                    onChange={(e) =>
-                      setValues({ ...values, Newpassword: e.target.value })
-                    }
+                   value={values.Newpassword}
+                   onChange={(e) =>
+                     setValues({ ...values, Newpassword: e.target.value })
+                   }
                   />
                   <TextField
                     margin="normal"
@@ -157,6 +161,7 @@ export default function Security() {
                     label="Confirm password"
                     type="password"
                     id="Confirmpassword"
+                    value={values.Confirmpassword}
                     onChange={(e) =>
                       setValues({ ...values, Confirmpassword: e.target.value })
                     }
@@ -174,14 +179,18 @@ export default function Security() {
                       </Button>
                     </Box>
                     <Box width="45%">
-                      <Button
-                        type="cancel"
-                        fullWidth
-                        variant="outlined"
-                        sx={{ mt: 3, mb: 2 }}
-                      >
-                        Cancel
-                      </Button>
+                    <Button
+  type="button"
+  fullWidth
+  variant="outlined"
+  sx={{ mt: 3, mb: 2 }}
+  onClick={(event) => {
+    event.preventDefault();
+    setValues({ Newpassword: "", Oldpassword: "", Confirmpassword: "" });
+  }}
+>
+  Cancel
+</Button>
                     </Box>
                   </Box>
                 </Box>
