@@ -19,11 +19,15 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 function EvaluationInternList() {
   const [interns, setInterns] = useState([]);
   const [error, setError] = useState(null);
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/api/interns');
+        const response = await axios.get('http://localhost:8001/api/users/interns',{
+          headers: {
+          Authorization: `Bearer ${token}`,
+      },
+    })
         if (response.data && response.data.interns) {
           setInterns(response.data.interns);
         } else {

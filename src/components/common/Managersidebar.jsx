@@ -125,7 +125,7 @@ export default function Managersidebar() {
             </ListItem>
 
       
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/managerprofile")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/profile")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,

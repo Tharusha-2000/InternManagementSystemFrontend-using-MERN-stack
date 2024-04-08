@@ -76,12 +76,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Sidebar() {
+
   const theme = useTheme();
   //const [open, setOpen] = React.useState(true);  // change as true
   const navigate = useNavigate();
  // const updateOpen = useAppStore((state) => state.updateOpen);
   const open = useAppStore((state) => state.dopen);
-
+  const [selected, setSelected] = React.useState("");
 
   {/*const handleDrawerOpen = () => {
     setOpen(true);
@@ -90,6 +91,8 @@ export default function Sidebar() {
   const handleDrawerClose = () => {
     setOpen(false);
   }; */}
+
+  
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -109,6 +112,7 @@ export default function Sidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  
                 }}
               >
                 <ListItemIcon
@@ -125,12 +129,13 @@ export default function Sidebar() {
             </ListItem>
 
       
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/registration")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Registration");navigate("/registration");}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  backgroundColor: selected === "Registration" ? 'rgba(0, 0, 0, 0.04)' : 'inherit', 
                 }}
               >
                 <ListItemIcon
