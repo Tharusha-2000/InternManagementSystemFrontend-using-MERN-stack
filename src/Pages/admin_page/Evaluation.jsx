@@ -4,6 +4,8 @@ import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
 
 import EvaluationInternList from '../../components/EvaluationInternList/EvaluationInternList';
+import EvaluationFormAdmin from '../../components/EvaluationFormNew/EvaluationFormAdmin';
+import TempMentorTables from '../../components/EvaluationFormNew/TempMentorTables';
 
 export default function Evalauation() {
   return (
