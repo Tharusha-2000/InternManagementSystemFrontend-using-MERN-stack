@@ -22,7 +22,8 @@ function Adduser() {
     department: "",
   });
 
-  
+  console.log(data);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -93,12 +94,11 @@ function Adduser() {
               </Grid>
                <Grid item xs={6}>
                <FormControl fullWidth>
-                 <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                 <InputLabel >Gender</InputLabel>
                   <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Gender"
-                    onChange={e => setData({ ...data, gender: e.target.value })} 
+                     label="Gender"
+                     onChange={e => setData({ ...data, gender: e.target.value })} 
+                     
                   >
                     <MenuItem value='male'>Male</MenuItem>
                     <MenuItem value='female'>Female</MenuItem>

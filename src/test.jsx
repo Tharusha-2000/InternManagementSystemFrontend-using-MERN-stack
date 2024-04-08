@@ -15,7 +15,7 @@ function test() {
   const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/user`, {
+    axios.get(`${BASE_URL}user`, {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then(result => {
@@ -44,7 +44,7 @@ function test() {
     });
     console.log(response.data);
   }
-  
+
 console.log(imageUrl);
   return (
     <div>
