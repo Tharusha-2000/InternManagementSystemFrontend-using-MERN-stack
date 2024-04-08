@@ -1,10 +1,10 @@
 import React from 'react';
-import Internsidebar from '../common/Internsidebar';
-import Header from '../common/Header';
+import Internsidebar from '../../components/common/Internsidebar';
+import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
 
 
-export default function InternEvaluation() {
+export default function InternViewProfile() {
   return (
     <>
     <Header />
@@ -12,7 +12,7 @@ export default function InternEvaluation() {
     <Box sx={{ display: 'flex' }}>
     <Internsidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       <h1>intern evaluation </h1>
+       <h1>intern view profile </h1>
       </Box>
       </Box>
       </>

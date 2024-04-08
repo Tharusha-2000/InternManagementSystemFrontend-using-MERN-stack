@@ -1,18 +1,18 @@
 import React from 'react';
-import AdminSidebar from '../common/AdminSidebar';
-import Header from '../common/Header';
+import Mentorsidebar from '../../components/common/Mentorsidebar';
+import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
 
 
-export default function CVupload() {
+export default function MentorEvaluation() {
   return (
     <>
     <Header />
     <Box height={60} />
     <Box sx={{ display: 'flex' }}>
-    <AdminSidebar />
+    <Mentorsidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       <h1>CV upload </h1>
+       <h1>mentor ev</h1>
       </Box>
       </Box>
       </>

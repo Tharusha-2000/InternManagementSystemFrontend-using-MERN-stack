@@ -1,18 +1,18 @@
 import React from 'react';
-import Evaluatorsidebar from '../common/Evaluatorsidebar';
-import Header from '../common/Header';
+import AdminSidebar from '../../components/common/AdminSidebar';
+import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
 
 
-export default function EvaluatorEvaluation() {
+export default function CVupload() {
   return (
     <>
     <Header />
     <Box height={60} />
     <Box sx={{ display: 'flex' }}>
-    <Evaluatorsidebar />
+    <AdminSidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       <h1>evaluatr evaluation </h1>
+       <h1>CV upload </h1>
       </Box>
       </Box>
       </>
