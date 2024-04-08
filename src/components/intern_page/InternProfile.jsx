@@ -25,6 +25,7 @@ import CardOverflow from '@mui/joy/CardOverflow';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import axios from 'axios';
 
 
 export default function Profile() {
@@ -54,6 +55,21 @@ export default function Profile() {
     }
   };
 
+  const handleSubmit = async (event) =>{
+    event.preventDefault();
+
+    const data = {
+      firstName: firstName,
+      lastName: lastName,
+    };
+
+    try{
+      const response = await axios.post('API_ENDPOINT', data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
 return (
@@ -118,7 +134,7 @@ return (
      
             </Stack>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
-              <Stack spacing={1}>
+            <Stack spacing={1}>
                 <FormLabel>Name</FormLabel>
                 <FormControl
                   sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
@@ -126,23 +142,26 @@ return (
                   <Input size="sm" placeholder="First name" />
                   <Input size="sm" placeholder="Last name" sx={{ flexGrow: 1 }} />
                 </FormControl>
-              </Stack>
+            </Stack>
 
-              <Stack direction="row" spacing={2}>
-                <FormControl>
-                  <FormLabel>Date of Birth</FormLabel>
-                  <Input size="sm" defaultValue="2001.03.09" />
-                </FormControl>
-                <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel>Gender</FormLabel>
-                  <Input size="sm" defaultValue="Male" />
-                </FormControl>
-                </Stack>
+            <Stack direction="row" spacing={2}>
+            <FormControl sx={{ flexGrow: 1 }}>
+                      <FormLabel>Date of Birth</FormLabel>
+                      <Input size="sm" type="date" sx={{ flexGrow: 1 }} />
+                  </FormControl>
+                  <FormControl sx={{ width: '175px'}}>
+                      <FormLabel>Gender</FormLabel>
+                      <Select size="sm">
+                         <Option value="male"> Male </Option>
+                         <Option value="female"> Female </Option>
+                       </Select>
+                  </FormControl>
+                  </Stack>
 
               <Stack direction="row" spacing={2}>
                 <FormControl>
                   <FormLabel>Phone Number</FormLabel>
-                  <Input size="sm" defaultValue="0785642332" />
+                  <Input size="sm" defaultValue="" />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>Email</FormLabel>
@@ -151,52 +170,94 @@ return (
                     type="email"
                     startDecorator={<EmailRoundedIcon />}
                     placeholder="email"
-                    defaultValue="siriwatk@test.com"
+                    defaultValue=""
                     sx={{ flexGrow: 1 }}
                   />
                 </FormControl>
                 </Stack>
-               
-                <Stack spacing={1}>
-                <FormLabel>University Name</FormLabel>
-                <FormControl
+                </Stack>
+                </Stack>
+          
+          <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
+            <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
+            <Button variant="outlined" sx={{ borderColor: 'blue', textTransform: 'uppercase' }}>
+                Cancel
+           </Button>
+           <Button variant="solid" sx={{ borderColor: 'blue', textTransform: 'uppercase' }} onClick={handleSubmit}>
+             Save
+          </Button>
+          </CardActions>
+          </CardOverflow>
+          </Card>
+
+        <Card>
+        <Box sx={{ mb: 1 }}>
+            <Typography level="title-md">Other info</Typography>
+        </Box>
+        <Divider />
+          <Stack
+            direction="row"
+            spacing={3}
+            sx={{ display: { xs: 'none', md: 'flex' }, my: 1 }}
+          >
+            <Stack direction="column" spacing={1}>
+            
+            </Stack>
+            <Stack spacing={2} sx={{ flexGrow: 1 }}>
+            <Stack spacing={1}>
+            </Stack>
+
+            <Stack spacing={1}>
+            <FormLabel>University Name</FormLabel>
+            <FormControl
                   sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                 >
-                  <Input size="sm" placeholder="University Name" />
-                </FormControl>
-              </Stack>
+            <Input size="sm" placeholder="University Name" />
+            </FormControl>
+            </Stack>
 
               <Stack direction="row" spacing={2}>
                 <FormControl>
-                  <FormLabel>Role</FormLabel>
-                  <Input size="sm" defaultValue="SE Intern" />
+                  <FormLabel>GPA</FormLabel>
+                  <Input size="sm" defaultValue="" placeholder="GPA"/>
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel>GPA</FormLabel>
-                  <Input size="sm" defaultValue="" />
+                  <FormLabel>Role</FormLabel>
+                  <Input size="sm" defaultValue="" placeholder="Role"/>
                 </FormControl>
                 </Stack>
 
-              
+                <Stack direction="row" spacing={2}>
+                <FormControl>
+                  <FormLabel>Interview Score</FormLabel>
+                  <Input size="sm" defaultValue="" placeholder="Interview Score"/>
+                </FormControl>
+                <FormControl sx={{ flexGrow: 1 }}>
+                  <FormLabel>Interview FeedBack</FormLabel>
+                  <Input size="sm" defaultValue="" placeholder="Interview FeedBack" />
+                </FormControl>
+                </Stack>
+
                 <Stack spacing={1}>
-                <FormLabel>Accomplishments</FormLabel>
+                <FormLabel>Mentor Name</FormLabel>
                 <FormControl
                   sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                 >
-                  <Input size="sm" placeholder="Accomplishments" />
-                </FormControl>
+                  <Input size="sm" placeholder="Mentor Name" />
+                  </FormControl>
               </Stack>
+ 
               </Stack>
               </Stack>
           
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
             <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-            <Button variant="outlined" sx={{ borderColor: 'blue' }}>
+            <Button variant="outlined" sx={{ borderColor: 'blue', textTransform: 'uppercase' }}>
                 Cancel
-            </Button>
-              {/* <Button size="sm" variant="solid">
-                Save
-              </Button> */}
+           </Button>
+           <Button variant="solid" sx={{ borderColor: 'blue', textTransform: 'uppercase' }}>
+             Save
+           </Button>
             </CardActions>
           </CardOverflow>
         </Card>
@@ -215,7 +276,7 @@ return (
               size="sm"
               minRows={4}
               sx={{ mt: 1.5 }}
-              defaultValue="I'm a software developer based in Bangkok, Thailand. My goal is to solve UI problems with neat CSS without using too much JavaScript."
+              defaultValue="" placeholder="Description"
             />
             <FormHelperText sx={{ mt: 0.75, fontSize: 'xs' }}>
               275 characters left
@@ -223,12 +284,12 @@ return (
           </Stack>
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
             <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
+            <Button variant="outlined" sx={{ borderColor: 'blue', textTransform: 'uppercase' }}>
                 Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
+           </Button>
+           <Button variant="solid" sx={{ borderColor: 'blue', textTransform: 'uppercase' }}>
+             Save
+           </Button>
             </CardActions>
           </CardOverflow>
         </Card>

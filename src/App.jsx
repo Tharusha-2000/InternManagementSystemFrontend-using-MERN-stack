@@ -47,6 +47,7 @@ import InternProfile from './components/intern_page/InternProfile';
 import InternEvaluation from './components/intern_page/InternEvaluation';
 
 
+
 import ManagerDashboard from './components/manager_page/ManagerDashboard';
 import ManagerEvaluation from './components/manager_page/ManagerEvaluation';
 import ManagerViewProfile from './components/manager_page/ManagerViewProfile';
@@ -120,7 +121,7 @@ function App() {
             <Route path="/interndashboard" element={<InternDashboard/>}></Route>
             <Route path="/internprofile" element={<InternProfile />}></Route>
             <Route path="/internevaluation" element={<InternEvaluation />}></Route>
-            
+            <Route path="/interntable" element={<Interntable/>}></Route>
 
 
 
