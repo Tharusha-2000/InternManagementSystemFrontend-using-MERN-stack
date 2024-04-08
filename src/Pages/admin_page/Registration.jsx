@@ -1,10 +1,10 @@
 import React from 'react';
-import AdminSidebar from '../common/AdminSidebar';
-import Header from '../common/Header';
+import AdminSidebar from '../../components/common/AdminSidebar';
+import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
 
 //import Adduser from '../adduser/Adduser';
-import Addusertable from '../adduser/Addusertable';
+import Addusertable from '../../components/adduser/Addusertable';
 
 
 

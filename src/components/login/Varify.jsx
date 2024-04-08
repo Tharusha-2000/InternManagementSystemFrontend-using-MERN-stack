@@ -11,7 +11,7 @@ import { Input as BaseInput } from "@mui/base/Input";
 import { Box, styled } from "@mui/system";
 import { useNavigate,useLocation } from 'react-router-dom';
 import axios from "axios";
-
+import {BASE_URL} from '../../config';
 
 function OTP({ separator, length, value, onChange }) {
 
@@ -194,7 +194,7 @@ function Varify() {
      window.alert('cannot resend OTP without email address')
      return;
     }
-  axios.post('http://localhost:8001/api/users/generateOTP&sendmail',{email:email})
+  axios.post(`${BASE_URL}generateOTP&sendmail`,{email:email})
     .then(result => {
         console.log("hi");
         if(result.data){
@@ -211,7 +211,7 @@ function Varify() {
      console.log(otp);
 
     
-     axios.get(`http://localhost:8001/api/users/verifyOTP?&code=${otp}` )
+     axios.get(`${BASE_URL}verifyOTP?&code=${otp}` )
       
        .then(result => {
            if(result.data){

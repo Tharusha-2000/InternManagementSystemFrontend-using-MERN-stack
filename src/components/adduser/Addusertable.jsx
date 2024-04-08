@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from '../../config';
 
 import {
   Button,
@@ -45,13 +46,14 @@ function Addusertable({ rows }) {
  
   useEffect(() => {
     axios
-      .get("http://localhost:8001/api/users/user",{
+      .get(`${BASE_URL}users`,{
         headers: {
         Authorization: `Bearer ${token}`,
     },
   })
 
       .then((result) => {
+        console.log(result.data.users); 
         setFilteredData(result.data.users);
         setData(result.data.users);
         
@@ -71,7 +73,7 @@ function Addusertable({ rows }) {
 
   function handleRoleChange() {
     axios
-      .put(`http://localhost:8001/api/users/user/${selectedUserId}`, 
+      .put(`${BASE_URL}users/${selectedUserId}`, 
       {role: selectedRole},
       {headers: {
          Authorization: `Bearer ${token}` 
@@ -103,7 +105,7 @@ function Addusertable({ rows }) {
   function handleDelete(id) {
     if (window.confirm("Are you sure you want to delete this user?")) {
       axios
-        .delete(`http://localhost:8001/api/users/user/${id}`,{
+        .delete(`${BASE_URL}users/${id}`,{
           headers: {
           Authorization: `Bearer ${token}`,
       },

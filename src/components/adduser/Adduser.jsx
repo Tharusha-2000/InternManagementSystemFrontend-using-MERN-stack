@@ -3,10 +3,12 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Button, Dialog, DialogTitle,InputLabel, DialogContent,IconButton, TextField, Grid, FormControl, FormLabel,RadioGroup, FormControlLabel, Radio, Select, MenuItem,Typography} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { BASE_URL } from '../../config';
 
 function Adduser() {
   
   const [open, setOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('');
   const [data, setData] = useState({
     fname: "",
     lname: "",
@@ -14,10 +16,14 @@ function Adduser() {
     role: "",
     gender: "",
     email: "",
-    password: ""
+    password: "",
+    jobtitle: "",
+    employmentType: "",
+    department: "",
   });
 
-  
+  console.log(data);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -43,7 +49,7 @@ function Adduser() {
     return;
     }
   const token = localStorage.getItem('token');
-  axios.post('http://localhost:8001/api/users/register', data,{
+  axios.post(`${BASE_URL}/register`, data,{
             headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -88,12 +94,11 @@ function Adduser() {
               </Grid>
                <Grid item xs={6}>
                <FormControl fullWidth>
-                 <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                 <InputLabel >Gender</InputLabel>
                   <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Gender"
-                    onChange={e => setData({ ...data, gender: e.target.value })} 
+                     label="Gender"
+                     onChange={e => setData({ ...data, gender: e.target.value })} 
+                     
                   >
                     <MenuItem value='male'>Male</MenuItem>
                     <MenuItem value='female'>Female</MenuItem>
@@ -104,7 +109,13 @@ function Adduser() {
               <Grid item xs={12}>
                 <FormControl component="fieldset">
                   <FormLabel component="legend">Role</FormLabel>
-                  <RadioGroup row onChange={e => setData({ ...data, role: e.target.value })}>
+                  <RadioGroup 
+                       row 
+                        onChange={(e) => {
+                          setSelectedValue(e.target.value);
+                          setData({ ...data, role: e.target.value });
+                        }}
+                      >
                     <FormControlLabel value="intern" control={<Radio />} label="Intern" />
                     <FormControlLabel value="evaluator " control={<Radio />} label="Evaluator" />
                     <FormControlLabel value="manager" control={<Radio />} label="Manager" />
@@ -112,6 +123,15 @@ function Adduser() {
                     <FormControlLabel value="mentor" control={<Radio />} label="Mentor" />
                   </RadioGroup>
                 </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField label="jobtitle" fullWidth  disabled={selectedValue == 'intern'} onChange={e => setData({ ...data, jobtitle: e.target.value })} />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField label=" employmentType" fullWidth disabled={selectedValue == 'intern'}  onChange={e => setData({ ...data, employmentType: e.target.value })} />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField label="department" fullWidth disabled={selectedValue == 'intern'} onChange={e => setData({ ...data, department: e.target.value })} />
               </Grid>
               <Grid item xs={12}>
                  <Typography variant="h7">Temporary Login Details</Typography>
