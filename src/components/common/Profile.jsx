@@ -5,32 +5,37 @@ import Managersidebar from "./Managersidebar";
 import Mentorsidebar from "./Mentorsidebar";
 import Evaluatorsidebar from "./Evaluatorsidebar";
 import Header from "./Header";
-import AspectRatio from '@mui/joy/AspectRatio';
-import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
-import Divider from '@mui/joy/Divider';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import FormHelperText from '@mui/joy/FormHelperText';
-import Input from '@mui/joy/Input';
-import IconButton from '@mui/joy/IconButton';
-import Textarea from '@mui/joy/Textarea';
-import Stack from '@mui/joy/Stack';
-import Select from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
-import Typography from '@mui/joy/Typography';
-import Card from '@mui/joy/Card';
-import CardActions from '@mui/joy/CardActions';
-import CardOverflow from '@mui/joy/CardOverflow';
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import {TextField} from '@mui/material';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-
+import AspectRatio from "@mui/joy/AspectRatio";
+import Box from "@mui/joy/Box";
+import Button from "@mui/joy/Button";
+import Divider from "@mui/joy/Divider";
+import { FormControl, FormLabel, Select, MenuItem } from "@mui/joy";
+import Input from "@mui/joy/Input";
+import IconButton from "@mui/joy/IconButton";
+import Stack from "@mui/joy/Stack";
+import Typography from "@mui/joy/Typography";
+import Card from "@mui/joy/Card";
+import CardActions from "@mui/joy/CardActions";
+import CardOverflow from "@mui/joy/CardOverflow";
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import axios from "axios";
+import { BASE_URL } from "../../config";
 
 export default function Profile() {
   const [role, setRole] = useState("");
-  
-
+  const [data, setData] = useState({
+    fname: "",
+    lname: "",
+    dob: "",
+    role: "",
+    gender: "",
+    email: "",
+    jobtitle: '',
+    department: '',
+    employmentType: ''
+  });
+  const [originalData, setOriginalData] = useState({});
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -176,8 +181,8 @@ return (
                   sx={{ flex: 1, minWidth: 108, borderRadius: '100%' }}
                 >
                   <img
-                    src=""
-                    
+                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
+                    srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
                     loading="lazy"
                     alt=""
                   />
@@ -265,39 +270,65 @@ return (
         </Card>
         <Card>
           <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Bio</Typography>
-            <Typography level="body-sm">
-              Write a short introduction to be displayed on your profile
-            </Typography>
+            <Typography level="title-md">job details</Typography>
           </Box>
           <Divider />
-          <Stack spacing={2} sx={{ my: 1 }}>
+          <div>
+                    <Stack direction="row" spacing={2}>
+                      <FormControl sx={{ flexGrow: 1 }}>
+                     
+                        <FormLabel>Job title</FormLabel>
+                        <Input
+                      size="sm"
+                      value={data.jobtitle}
+                      type="text"
+                      onChange={e => setData({ ...data, jobtitle: e.target.value })}
+                      fullWidth
+                  
+                    />
+                      </FormControl>
+                      <FormControl sx={{ flexGrow: 1 }}>
+                        <FormLabel>Department</FormLabel>
+                        <Input
+                          size="sm"
+                          value={data.department}
+                          onChange={e => setData({ ...data, department: e.target.value })}
+                          type="text"
+                          fullWidth
+                       
+                        />
+                      </FormControl>
+                    </Stack>
+                  </div>
 
-            <Textarea
-              size="sm"
-              minRows={4}
-              sx={{ mt: 1.5 }}
-              defaultValue="I'm a software developer based in Bangkok, Thailand. My goal is to solve UI problems with neat CSS without using too much JavaScript."
-            />
-            <FormHelperText sx={{ mt: 0.75, fontSize: 'xs' }}>
-              275 characters left
-            </FormHelperText>
-          </Stack>
+           <FormControl sx={{ display: { sm: "contents" } }}>
+                    <FormLabel>employmentType</FormLabel>
+                    <Input
+                      size="sm"
+                      value={data.employmentType}
+                      type="text"
+                      onChange={e => setData({ ...data, employmentType: e.target.value })}
+                      fullWidth
+                  
+                    />
+           </FormControl>
+
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
             <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
+              <Button size="sm" variant="outlined" color="neutral" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button size="sm" variant="solid">
+              <Button size="sm" variant="solid" type="submit">
                 Save
               </Button>
             </CardActions>
           </CardOverflow>
         </Card>
-      </Stack>
-    </Box>
-    </Box>
-    </> 
+          </Stack>
+            
+        </Box>
+        </form>
+      </Box>
+    </>
   );
 }
-

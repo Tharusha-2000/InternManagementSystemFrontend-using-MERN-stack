@@ -19,27 +19,17 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 function EvaluationInternList() {
   const [interns, setInterns] = useState([]);
   const [error, setError] = useState(null);
-  const token = localStorage.getItem("token");
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:8001/api/users/interns',{
-          headers: {
-          Authorization: `Bearer ${token}`,
-      },
-    })
-        if (response.data && response.data.interns) {
-          setInterns(response.data.interns);
-        } else {
-          console.error('Unexpected response format:', response);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setError(error.message);
-      }
-    };
-  
-    fetchData();
+    axios
+      .get("http://localhost:8001/api/users/interns")
+      .then((result) => {
+        setInterns(result.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(err.message);
+      });
   }, []);
 
   if (error) {
@@ -54,8 +44,8 @@ function EvaluationInternList() {
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>User ID</TableCell>
+            <TableCell>Intern Name</TableCell>
+            <TableCell>Mentor Name</TableCell>
             <TableCell>Status</TableCell>
             <TableCell style={{
                   display: "flex",
@@ -65,10 +55,10 @@ function EvaluationInternList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {interns.map((intern) => (
-            <TableRow key={intern._id}>
-              <TableCell>{intern.Name}</TableCell>
-              <TableCell>{intern.userID}</TableCell>
+          {interns.map((intern, index) => (
+            <TableRow key={index}>
+              <TableCell>{intern.name}</TableCell>
+              <TableCell>{intern.mentor}</TableCell>
               <TableCell>{intern.eformStatus}</TableCell>
               <TableCell
                 style={{

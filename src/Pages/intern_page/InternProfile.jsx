@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import Adminsidebar from "../common/AdminSidebar";
-import Managersidebar from "../common/Managersidebar";
-import Mentorsidebar from "../common/Mentorsidebar";
-import Evaluatorsidebar from "../common/Evaluatorsidebar";
-import Header from "../common/Header";
+import Adminsidebar from "../../components/common/AdminSidebar";
+import Managersidebar from "../../components/common/Managersidebar";
+import Mentorsidebar from "../../components/common/Mentorsidebar";
+import Evaluatorsidebar from "../../components/common/Evaluatorsidebar";
+import Header from "../../components/common/Header";
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
