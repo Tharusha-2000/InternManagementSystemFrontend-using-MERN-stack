@@ -28,7 +28,6 @@ export default function Profile() {
     fname: "",
     lname: "",
     dob: "",
-    role: "",
     gender: "",
     email: "",
     jobtitle: '',
@@ -86,6 +85,7 @@ const handleSubmit = (e) => {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((response) => {
+      window.alert(response.data.msg);
       console.log(response.data);
     })
     .catch((error) => {
@@ -100,8 +100,8 @@ const handleSubmit = (e) => {
       <Box sx={{ display: "flex" }}>
         {getSidebar()}
 
-        <form onSubmit={handleSubmit}>
-        <Box sx={{ flex: 1, width: "100%" }}>
+        
+        <Box sx={{ flex: 1, width: "100%",  justifyContent: "center"}} >
           <Stack
             spacing={4}
             sx={{
@@ -110,6 +110,8 @@ const handleSubmit = (e) => {
               mx: "auto",
               px: { xs: 2, md: 6 },
               py: { xs: 2, md: 3 },
+              justifyContent: "center",
+
             }}
           >
             <Card>
@@ -187,8 +189,9 @@ const handleSubmit = (e) => {
                   <Stack direction="row" spacing={2}>
                     <FormControl>
                       <FormLabel>Role</FormLabel>
-                      <Input size="sm" value={data.role} 
-                      onChange={e => setData({ ...data, role: e.target.value })} />
+                      <Input size="sm"
+                        value={data.role} 
+                       />
                     </FormControl>
                     <FormControl sx={{ flexGrow: 1 }}>
                       <FormLabel>Email</FormLabel>
@@ -300,7 +303,7 @@ const handleSubmit = (e) => {
                 <FormControl>
                   <FormLabel>Role</FormLabel>
                   <Input size="sm" value={data.role}
-                  onChange={e => setData({ ...data, role: e.target.value })} />
+                  />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>Email</FormLabel>
@@ -343,13 +346,13 @@ const handleSubmit = (e) => {
               </Stack>
              
             </Card>
-          
-        <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">job details</Typography>
-          </Box>
-          <Divider />
-          <div>
+                  
+                <Card>
+                  <Box sx={{ mb: 1 }}>
+                    <Typography level="title-md">job details</Typography>
+                  </Box>
+                  <Divider />
+                  <div>
                     <Stack direction="row" spacing={2}>
                       <FormControl sx={{ flexGrow: 1 }}>
                      
@@ -377,7 +380,7 @@ const handleSubmit = (e) => {
                     </Stack>
                   </div>
 
-           <FormControl sx={{ display: { sm: "contents" } }}>
+              <FormControl sx={{ display: { sm: "contents" } }}>
                     <FormLabel>employmentType</FormLabel>
                     <Input
                       size="sm"
@@ -385,25 +388,24 @@ const handleSubmit = (e) => {
                       type="text"
                       onChange={e => setData({ ...data, employmentType: e.target.value })}
                       fullWidth
-                  
-                    />
-           </FormControl>
+                     />
+              </FormControl>
 
           <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
             <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
               <Button size="sm" variant="outlined" color="neutral" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button size="sm" variant="solid" type="submit">
+              <Button size="sm" variant="solid" type="submit" onClick={handleSubmit}>
                 Save
               </Button>
             </CardActions>
           </CardOverflow>
-        </Card>
+         </Card>
           </Stack>
             
         </Box>
-        </form>
+       
       </Box>
     </>
   );

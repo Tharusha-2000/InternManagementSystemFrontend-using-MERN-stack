@@ -73,9 +73,9 @@ function Adduser() {
          variant="contained"
          size="small"
          color="primary"
-         sx={{ padding: "10px", marginLeft: "2%" }}
+         sx={{ padding: "10px", marginLeft: "2%" ,fontSize: "0.8rem" }}
        >
-        +ADD new
+         +AddUser
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">New Registration<IconButton onClick={handleClose} style={{float:'right'}}><CloseIcon color="primary"></CloseIcon></IconButton></DialogTitle>
@@ -98,7 +98,7 @@ function Adduser() {
                   <Select
                      label="Gender"
                      onChange={e => setData({ ...data, gender: e.target.value })} 
-                     
+
                   >
                     <MenuItem value='male'>Male</MenuItem>
                     <MenuItem value='female'>Female</MenuItem>

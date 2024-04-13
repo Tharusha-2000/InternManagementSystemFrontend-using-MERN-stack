@@ -4,6 +4,7 @@ import Adminsidebar from "../../components/common/AdminSidebar";
 import Managersidebar from "../../components/common/Managersidebar";
 import Mentorsidebar from "../../components/common/Mentorsidebar";
 import Evaluatorsidebar from "../../components/common/Evaluatorsidebar";
+import Internsidebar from "../../components/common/Internsidebar";
 import Header from "../../components/common/Header";
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
@@ -16,14 +17,11 @@ import Input from '@mui/joy/Input';
 import IconButton from '@mui/joy/IconButton';
 import Textarea from '@mui/joy/Textarea';
 import Stack from '@mui/joy/Stack';
-import Select from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
 import Typography from '@mui/joy/Typography';
 import Card from '@mui/joy/Card';
 import CardActions from '@mui/joy/CardActions';
 import CardOverflow from '@mui/joy/CardOverflow';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import axios from 'axios';
 
@@ -50,24 +48,10 @@ export default function Profile() {
         return <Evaluatorsidebar />;
       case "manager":
         return <Managersidebar />;
+      case "intern":
+          return <Internsidebar />;
       default:
         return null;
-    }
-  };
-
-  const handleSubmit = async (event) =>{
-    event.preventDefault();
-
-    const data = {
-      firstName: firstName,
-      lastName: lastName,
-    };
-
-    try{
-      const response = await axios.post('API_ENDPOINT', data);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -149,12 +133,15 @@ return (
                       <FormLabel>Date of Birth</FormLabel>
                       <Input size="sm" type="date" sx={{ flexGrow: 1 }} />
                   </FormControl>
-                  <FormControl sx={{ width: '175px'}}>
-                      <FormLabel>Gender</FormLabel>
-                      <Select size="sm">
-                         <Option value="male"> Male </Option>
-                         <Option value="female"> Female </Option>
-                       </Select>
+                  <FormControl sx={{ display: { sm: "contents" } }}>
+                    <FormLabel>Gender</FormLabel>
+                    <Input
+                      size="sm"
+                      value={data.gender}
+                      type="text"
+                      //onChange={e => setData({ ...data, gender: e.target.value })}
+                      fullWidth
+                    />
                   </FormControl>
                   </Stack>
 
@@ -177,17 +164,7 @@ return (
                 </Stack>
                 </Stack>
                 </Stack>
-          
-          <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-            <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-            <Button variant="outlined" sx={{ borderColor: 'blue', textTransform: 'uppercase' }}>
-                Cancel
-           </Button>
-           <Button variant="solid" sx={{ borderColor: 'blue', textTransform: 'uppercase' }} onClick={handleSubmit}>
-             Save
-          </Button>
-          </CardActions>
-          </CardOverflow>
+         
           </Card>
 
         <Card>
@@ -249,17 +226,6 @@ return (
  
               </Stack>
               </Stack>
-          
-          <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-            <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-            <Button variant="outlined" sx={{ borderColor: 'blue', textTransform: 'uppercase' }}>
-                Cancel
-           </Button>
-           <Button variant="solid" sx={{ borderColor: 'blue', textTransform: 'uppercase' }}>
-             Save
-           </Button>
-            </CardActions>
-          </CardOverflow>
         </Card>
 
         <Card>
