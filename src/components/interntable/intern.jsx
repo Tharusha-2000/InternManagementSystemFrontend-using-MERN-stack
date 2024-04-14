@@ -241,6 +241,17 @@ function interndetails({ internId }) {
                             <Input size="sm" value={data.role} />
                           </FormControl>
                         </Grid>
+                        <Grid item xs={3} sm={4}>
+                          <FormControl>
+                            <FormLabel>phone number</FormLabel>
+                            <Input size="sm"
+                                 value={data.phonenumber}
+                                 onChange={(e) =>
+                                  setData({ ...data, phonenumber: e.target.value })
+                                }
+                                 />
+                          </FormControl>
+                        </Grid>
                        
                       </Stack>
 
@@ -357,7 +368,14 @@ function interndetails({ internId }) {
                       <FormLabel>Role</FormLabel>
                       <Input size="sm" value={data.role} />
                     </FormControl>
-                 
+                    <FormControl>
+                      <FormLabel>phone number</FormLabel>
+                      <Input size="sm" value={data.phonenumber}
+                       onChange={(e) =>
+                        setData({ ...data, phonenumber: e.target.value })
+                      }
+                      />
+                    </FormControl>
 
                     <div>
                       <FormControl sx={{ display: { sm: "contents" } }}>
