@@ -25,6 +25,9 @@ import Evaluation from './Pages/admin_page/Evaluation';
 import ProfileCreate from './Pages/admin_page/ProfileCreate';
 
 
+import Interntable from './components/interntable/interntable.jsx';
+import Intern from './components/interntable/intern.jsx';
+
 
 import Test from './test.jsx';
 import Test2 from './test2.jsx';
@@ -52,7 +55,6 @@ import ManagerEvaluation from './Pages/manager_page/ManagerEvaluation';
 import ManagerViewProfile from './Pages/manager_page/ManagerViewProfile';
 
 
-
 function App() {
   const [user,setUsers] = useState();  
   return (
@@ -69,8 +71,10 @@ function App() {
         <Route path="/Varify" element={<Varify/>}> </Route>
         <Route path="/security" element={<Security />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
-    
-
+        
+       
+        <Route path="/interntable" element={<Interntable/>}> </Route>
+        <Route path="/intern" element={<Intern/>}> </Route>
         <Route path="/Test" element={<Test/>}> </Route>
         <Route path="/Test2" element={<Test2/>}> </Route>
         <Route path="/Test3" element={<Test3/>}> </Route>
@@ -120,7 +124,7 @@ function App() {
             <Route path="/interndashboard" element={<InternDashboard/>}></Route>
             <Route path="/internprofile" element={<InternProfile />}></Route>
             <Route path="/internevaluation" element={<InternEvaluation />}></Route>
-            
+           
 
 
 

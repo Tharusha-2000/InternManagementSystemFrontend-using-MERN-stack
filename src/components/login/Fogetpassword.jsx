@@ -7,7 +7,7 @@ import image2 from '../../assets/photo2.jpg';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import {BASE_URL} from '../../config';
 function Fogetpassword() {
     const [value, setValue] =useState({ email: ''})
     const [error, setError] =useState(null)
@@ -23,7 +23,7 @@ function Fogetpassword() {
       return;
     }
 
-    axios.post('http://localhost:8001/api/users/generateOTP&sendmail', value)
+    axios.post(`${BASE_URL}generateOTP&sendmail`, value)
           .then(result => {
               if(result.data){
                   window.alert(result.data.msg);

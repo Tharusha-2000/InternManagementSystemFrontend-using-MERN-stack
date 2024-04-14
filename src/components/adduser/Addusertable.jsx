@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from '../../config';
 
 import {
   Button,
@@ -45,13 +46,14 @@ function Addusertable({ rows }) {
  
   useEffect(() => {
     axios
-      .get("http://localhost:8001/api/users/user",{
+      .get(`${BASE_URL}users`,{
         headers: {
         Authorization: `Bearer ${token}`,
     },
   })
 
       .then((result) => {
+        console.log(result.data.users); 
         setFilteredData(result.data.users);
         setData(result.data.users);
         
@@ -59,7 +61,7 @@ function Addusertable({ rows }) {
       .catch((err) => console.log(err));
   }, []);
  
-  {/* handel change password*/}
+  {/* handel change role*/}
 
   const functionopenpopup = (userId) => {
     setSelectedUserId(userId);
@@ -71,7 +73,7 @@ function Addusertable({ rows }) {
 
   function handleRoleChange() {
     axios
-      .put(`http://localhost:8001/api/users/user/${selectedUserId}`, 
+      .put(`${BASE_URL}users/${selectedUserId}`, 
       {role: selectedRole},
       {headers: {
          Authorization: `Bearer ${token}` 
@@ -103,7 +105,7 @@ function Addusertable({ rows }) {
   function handleDelete(id) {
     if (window.confirm("Are you sure you want to delete this user?")) {
       axios
-        .delete(`http://localhost:8001/api/users/user/${id}`,{
+        .delete(`${BASE_URL}users/${id}`,{
           headers: {
           Authorization: `Bearer ${token}`,
       },
@@ -152,16 +154,14 @@ const Filter = (event) => {
    <Grid> 
    <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
    <div>
-     <br />
+    <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
       <Typography variant="h4" gutterBottom align="center">
         User List
       </Typography>
-      <br />
+      <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
 
-     <Grid sx={{ justifyContent: "space-between",mb:4 }}>
+     <Grid sx={{ justifyContent: "space-between",mb:4 ,display: "flex", alignItems: "center" }}>
     
-       <Adduser/>
-        <br />
         <Paper
           component="form"
           sx={{
@@ -171,19 +171,22 @@ const Filter = (event) => {
             width: "100vh",
             borderRadius: "20px",
             boxShadow: 3,
-            marginLeft: "1%"
+            marginLeft: "1%",
           }}
         >
-          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 3, flex: 1 }} placeholder="Search Users" />
+         
+          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 2, flex: 1 }} placeholder="Search Users" />
           <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
             <SearchIcon />
           </IconButton>
         </Paper>
-       
+        <Box sx={{ marginRight: "12%" }}>
+        <Adduser />
+        </Box>
       </Grid>
-      <br />
-      <br />
+      <Divider/>
+      
       <TableContainer>
         <Table>
           <TableHead>
