@@ -179,18 +179,18 @@ if (!passwordRegex.test(values.Newpassword)) {
                       </Button>
                     </Box>
                     <Box width="45%">
-                    <Button
-  type="button"
-  fullWidth
-  variant="outlined"
-  sx={{ mt: 3, mb: 2 }}
-  onClick={(event) => {
-    event.preventDefault();
-    setValues({ Newpassword: "", Oldpassword: "", Confirmpassword: "" });
-  }}
->
-  Cancel
-</Button>
+                        <Button
+                              type="button"
+                              fullWidth
+                              variant="outlined"
+                              sx={{ mt: 3, mb: 2 }}
+                              onClick={(event) => {
+                                event.preventDefault();
+                                setValues({ Newpassword: "", Oldpassword: "", Confirmpassword: "" });
+                              }}
+                            >
+                              Cancel
+                       </Button>
                     </Box>
                   </Box>
                 </Box>
