@@ -15,13 +15,13 @@ function test() {
   const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}user`, {
+    axios.get(`${BASE_URL}/user`, {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then(result => {
       setData(result.data.user);
       console.log(result.data.user);  
-      //setImageUrl(result.data.user.image);
+      setImageUrl(result.data.user.image[0]);
     }).catch(err => console.log(err));
   }, []);
 
@@ -44,8 +44,7 @@ function test() {
     });
     console.log(response.data);
   }
-
-console.log(imageUrl);
+console.log()
   return (
     <div>
       <form onSubmit={submitImage}>
