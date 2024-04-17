@@ -63,7 +63,7 @@ function App() {
    <BrowserRouter>
       <TokenCheck setUsers={setUsers} />
       <Routes>
-        <Route path="/Login" element={<Login setUsers={setUsers}/>} > </Route>
+        <Route path="/" element={<Login setUsers={setUsers}/>} > </Route>
 
         <Route path="/Addusertable" element={<Addusertable />}> </Route>
         <Route path="/Adduser" element={<Adduser />}> </Route>
@@ -160,7 +160,7 @@ function TokenCheck({ setUsers }) {
       if (decodedToken.exp * 1000 < new Date().getTime()) {
         setUsers(null);
         localStorage.removeItem('token');
-        navigate('/Login');
+        navigate('/');
       } else {
         setUsers(decodedToken);
       }
