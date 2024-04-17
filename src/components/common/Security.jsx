@@ -16,6 +16,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
+import { BASE_URL } from '../../config';
+
 const defaultTheme = createTheme();
 
 export default function Security() {
@@ -75,7 +77,7 @@ if (!passwordRegex.test(values.Newpassword)) {
 
     const token = localStorage.getItem("token");
     axios
-      .put("http://localhost:8001/api/users/secure", values, {
+      .put(`${BASE_URL}secure`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -177,18 +179,18 @@ if (!passwordRegex.test(values.Newpassword)) {
                       </Button>
                     </Box>
                     <Box width="45%">
-                    <Button
-  type="button"
-  fullWidth
-  variant="outlined"
-  sx={{ mt: 3, mb: 2 }}
-  onClick={(event) => {
-    event.preventDefault();
-    setValues({ Newpassword: "", Oldpassword: "", Confirmpassword: "" });
-  }}
->
-  Cancel
-</Button>
+                        <Button
+                              type="button"
+                              fullWidth
+                              variant="outlined"
+                              sx={{ mt: 3, mb: 2 }}
+                              onClick={(event) => {
+                                event.preventDefault();
+                                setValues({ Newpassword: "", Oldpassword: "", Confirmpassword: "" });
+                              }}
+                            >
+                              Cancel
+                       </Button>
                     </Box>
                   </Box>
                 </Box>
