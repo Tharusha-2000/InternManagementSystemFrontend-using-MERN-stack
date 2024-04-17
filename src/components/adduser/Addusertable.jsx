@@ -148,8 +148,7 @@ const Filter = (event) => {
 
 
 
-
-  return (
+return (
 <Grid>  
    <Grid> 
    <Paper style={{ maxWidth: "100%", overflow: "auto" }}>

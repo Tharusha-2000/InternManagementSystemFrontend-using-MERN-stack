@@ -49,6 +49,7 @@ function Adduser() {
     return;
     }
   const token = localStorage.getItem('token');
+  
   axios.post(`${BASE_URL}/register`, data,{
             headers: {
             Authorization: `Bearer ${token}`,
