@@ -48,14 +48,14 @@ function CreateNew() {
                     window.alert(result.data.msg);
                     console.log(result.data.msg);
                        if(result.status === 201 ) {
-                               navigate('/Login');
+                               navigate('/');
                       }
                 }
             }) 
             .catch(err => {
                 if (err.response){
                     window.alert(err.response.data.msg);
-                    navigate('/Login');
+                    navigate('/');
                  }
             })
 
