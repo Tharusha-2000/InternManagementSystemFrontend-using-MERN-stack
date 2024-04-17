@@ -1,19 +1,20 @@
 import React from 'react';
-import Internsidebar from '../common/Internsidebar';
-import Header from '../common/Header';
+import Managersidebar from '../../components/common/Managersidebar';
+import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
 
 
-export default function InternDashboard() {
+export default function ManagerViewProfile() {
   return (
     <>
     <Header />
     <Box height={60} />
     <Box sx={{ display: 'flex' }}>
-    <Internsidebar />
+    <Managersidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       <h1>intern dashboard </h1>
+       <h1>manager view profile </h1>
       </Box>
       </Box>
       </>
   )}
+

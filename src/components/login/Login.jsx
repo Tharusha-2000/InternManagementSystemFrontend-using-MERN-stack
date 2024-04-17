@@ -14,7 +14,7 @@ import axios from 'axios';
 import {useNavigate } from 'react-router-dom';
 import  {jwtDecode} from 'jwt-decode';
 import image from '../../assets/photo1.jpeg'
-
+import {BASE_URL} from '../../config';
 
 const defaultTheme = createTheme();
 
@@ -41,7 +41,7 @@ function Login() {
        }
        
 
-      axios.post('http://localhost:8001/api/users/login', values)
+      axios.post(`${BASE_URL}login`, values)
              .then(result => {
                  if(result.data) {
                      window.alert(result.data.msg);

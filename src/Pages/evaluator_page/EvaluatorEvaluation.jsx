@@ -1,6 +1,6 @@
 import React from 'react';
-import Evaluatorsidebar from '../common/Evaluatorsidebar';
-import Header from '../common/Header';
+import Evaluatorsidebar from '../../components/common/Evaluatorsidebar';
+import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
 
 

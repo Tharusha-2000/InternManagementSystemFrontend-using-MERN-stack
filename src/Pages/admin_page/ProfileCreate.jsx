@@ -1,10 +1,11 @@
 import React from 'react';
-import AdminSidebar from '../common/AdminSidebar';
-import Header from '../common/Header';
+import AdminSidebar from '../../components/common/AdminSidebar';
+import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
+import InternTable from '../../components/interntable/interntable';
 
 
-export default function CVupload() {
+export default function ProfileCreate() {
   return (
     <>
     <Header />
@@ -12,7 +13,7 @@ export default function CVupload() {
     <Box sx={{ display: 'flex' }}>
     <AdminSidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       <h1>CV upload </h1>
+         <InternTable />
       </Box>
       </Box>
       </>

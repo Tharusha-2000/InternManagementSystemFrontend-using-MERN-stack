@@ -17,41 +17,43 @@ import Security from './components/common/Security.jsx';
 import Profile from './components/common/Profile.jsx'
 
 
-import AdminDashboard from './components/admin_page/AdminDashboard';
-import Registration from './components/admin_page/Registration';
-import CVupload from './components/admin_page/CVupload.jsx';
-import Evaluation from './components/admin_page/Evaluation';
-//import Profile from './components/admin_page/Profile';
-import ProfileCreate from './components/admin_page/ProfileCreate';
+import AdminDashboard from './Pages/admin_page/AdminDashboard';
+import Registration from './Pages/admin_page/Registration';
+import CVupload from './Pages/admin_page/CVupload.jsx';
+import Evaluation from './Pages/admin_page/Evaluation';
+//import Profile from './Pages/admin_page/Profile';
+import ProfileCreate from './Pages/admin_page/ProfileCreate';
 
 
+import Interntable from './components/interntable/interntable.jsx';
+import Intern from './components/interntable/intern.jsx';
+import Project from './components/project/project.jsx';
+import EvaluationFormAdmin from './components/EvaluationFormNew/EvaluationFormAdmin.jsx';
 
 import Test from './test.jsx';
 import Test2 from './test2.jsx';
 import Test3 from './Test3.jsx';
 
 
-import EvaluatorDashboard from './components/evaluator_page/EvaluatorDashboard';
-import EvaluatorEvaluation from './components/evaluator_page/EvaluatorEvaluation';
-import EvaluatorViewProfile from './components/evaluator_page/EvaluatorViewProfile';
+import EvaluatorDashboard from './Pages/evaluator_page/EvaluatorDashboard';
+import EvaluatorEvaluation from './Pages/evaluator_page/EvaluatorEvaluation';
+import EvaluatorViewProfile from './Pages/evaluator_page/EvaluatorViewProfile';
 
 
 
-import MentorDashboard from './components/mentor_page/MentorDashboard';
-import MentorEvaluation from './components/mentor_page/MentorEvaluation';
-import MentorViewProfile from './components/mentor_page/MentorViewProfile';
+import MentorDashboard from './Pages/mentor_page/MentorDashboard';
+import MentorEvaluation from './Pages/mentor_page/MentorEvaluation';
+import MentorViewProfile from './Pages/mentor_page/MentorViewProfile';
 
 
-import InternDashboard from './components/intern_page/InternDashboard';
-import InternProfile from './components/intern_page/InternProfile';
-import InternEvaluation from './components/intern_page/InternEvaluation';
+import InternDashboard from './Pages/intern_page/InternDashboard';
+import InternProfile from './Pages/intern_page/InternProfile';
+import InternEvaluation from './Pages/intern_page/InternEvaluation';
 
 
-
-import ManagerDashboard from './components/manager_page/ManagerDashboard';
-import ManagerEvaluation from './components/manager_page/ManagerEvaluation';
-import ManagerViewProfile from './components/manager_page/ManagerViewProfile';
-
+import ManagerDashboard from './Pages/manager_page/ManagerDashboard';
+import ManagerEvaluation from './Pages/manager_page/ManagerEvaluation';
+import ManagerViewProfile from './Pages/manager_page/ManagerViewProfile';
 
 
 function App() {
@@ -70,8 +72,14 @@ function App() {
         <Route path="/Varify" element={<Varify/>}> </Route>
         <Route path="/security" element={<Security />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
-    
+        
+       
+        <Route path="/interntable" element={<Interntable/>}> </Route>
+        <Route path="/intern" element={<Intern/>}> </Route>
+        <Route path="/project" element={<Project/>}> </Route>
 
+        <Route path="/evaluationForm" element={<EvaluationFormAdmin/>}> </Route>
+        
         <Route path="/Test" element={<Test/>}> </Route>
         <Route path="/Test2" element={<Test2/>}> </Route>
         <Route path="/Test3" element={<Test3/>}> </Route>
@@ -121,7 +129,7 @@ function App() {
             <Route path="/interndashboard" element={<InternDashboard/>}></Route>
             <Route path="/internprofile" element={<InternProfile />}></Route>
             <Route path="/internevaluation" element={<InternEvaluation />}></Route>
-            <Route path="/interntable" element={<Interntable/>}></Route>
+           
 
 
 
