@@ -8,17 +8,17 @@ import {
   TableHead, 
   TableRow,
   IconButton,
+  FormControlLabel,
   Button, 
   TextField,
   Box 
 } from '@mui/material';
-import Fab from '@mui/material/Fab';
+import { styled } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { BASE_URL } from "../../config";
-
-
-
+import { Paper } from '@mui/material'
+import Switch from '@mui/material/Switch';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -26,16 +26,19 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 
-
-
-const TaskTable = () => {
+function TaskTable()  {
   // State for tasks and data
   const [tasks, setTasks] = useState([]);
-  const [data, setData] = useState({ title: '' });
+  const [data, setData] = useState({ 
+    title: '' ,
+    isComplete: false
+});
 
 
   const [open, setOpen] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
+
+  const token = localStorage.getItem('token');
   
   const handleClickOpen = (task) => {
     setCurrentTask(task);
@@ -45,9 +48,42 @@ const TaskTable = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  
+  
+   {/* handel complete notcomplete profile button*/}
 
-
-
+   const Android12Switch = styled(Switch)(({ theme }) => ({
+    padding: 8,
+    '& .MuiSwitch-track': {
+      borderRadius: 22 / 2,
+      '&::before, &::after': {
+        content: '""',
+        position: 'absolute',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        width: 16,
+        height: 16,
+      },
+      '&::before': {
+        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+          theme.palette.getContrastText(theme.palette.primary.main),
+        )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+        left: 12,
+      },
+      '&::after': {
+        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+          theme.palette.getContrastText(theme.palette.primary.main),
+        )}" d="M19,13H5V11H19V13Z" /></svg>')`,
+        right: 12,
+      },
+    },
+    '& .MuiSwitch-thumb': {
+      boxShadow: 'none',
+      width: 16,
+      height: 16,
+      margin: 2,
+    },
+  }));
 
 
   // Fetch tasks on component mount
@@ -55,7 +91,7 @@ const TaskTable = () => {
     fetchTasks();
   }, []);
 
-  const token = localStorage.getItem('token');
+
   
   // Function to fetch tasks
   const fetchTasks = async () => {
@@ -65,15 +101,14 @@ const TaskTable = () => {
         Authorization: `Bearer ${token}`,
       },
     });
-
-    setData(response.data);
-    setTasks(response.data);
-    console.log(response.data);
+    const responseData = Array.isArray(response.data) ? response.data : [response.data];
+    setTasks(responseData);
+    console.log(responseData);
   };
 
   // Function to add a task
   const addTask = async () => {
-    const token = localStorage.getItem('token');
+  
     if (data.title) {
       await axios.post(`${BASE_URL}task`, data, {
         headers: {
@@ -85,7 +120,7 @@ const TaskTable = () => {
     }
   };
 
-    {/* delect user*/}
+    {/* delect task*/}
 
 function handleDelete(id) {
         
@@ -112,13 +147,16 @@ function handleDelete(id) {
     
     {/* update task*/}
 
-function handleupdate(id){
-        const data = {
-          title: currentTask.title,
-        };
-
-     axios
-         .put(`${BASE_URL}task/${id}`, data ,{
+const handleupdate = async(id)=>{
+ // const isComplete = tasks.find(task => task._id === id).isComplete;
+  const data = {
+    title: currentTask.title,
+  
+  };
+  console.log(data.isComplete);
+         console.log(data);
+    await axios
+         .put(`${BASE_URL}task/${id}`, data,{
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -136,9 +174,41 @@ function handleupdate(id){
 
 
 
+ //   console.log(isComplete); 
+
+ const handleSwitchChange = async (id, isComplete) => {
+    // Create the data object
+    const data = {
+      isComplete: isComplete
+    };
+  
+    // Send the PUT request
+    await axios.put(`${BASE_URL}task/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      console.log(response.data);
+      setTasks(tasks.map(task => task._id === id ? { ...task, isComplete: isComplete } : task));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+ 
+    //send the email to the user
+
+     if(isComplete===true){
 
 
 
+        console.log(id);
+     }
+
+
+
+
+  };
 
 
 
@@ -149,37 +219,62 @@ function handleupdate(id){
   // Render component
   return (
     <div>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <TextField
-          value={data.title}
-          onChange={e => setData({ ...data, title: e.target.value })}
-          placeholder="Add a task"
-          fullWidth
-          size="small"
-        />
-        <Button variant="contained" color="primary" onClick={addTask} size="small">
-          AddTask
-        </Button>
-      </Box>
-      <TableContainer>
+      
+      <TableContainer component={Paper}>
         <Table>
           <TableHead>
+          
             <TableRow>
-              <TableCell>Task</TableCell>
+            <Box display="flex" justifyContent="space-between" alignItems="center" style={{ marginTop: '30px' }}>
+                <TextField
+                value={data.title}
+                onChange={(e) => setData({ ...data, title: e.target.value })}
+                placeholder="Add a task"
+                fullWidth
+                size="small"
+                />
+                <Button variant="contained" color="primary" onClick={addTask} >
+                    +ADD
+                </Button>
+            </Box>
+
+
             </TableRow>
+            <TableRow>
+              <TableCell  align="right" style={{ fontSize: '20px',fontWeight: 'bold' }}>To do List</TableCell>
+              <TableCell> { }</TableCell>
+            </TableRow>
+           
           </TableHead>
           <TableBody>
             {tasks.map((task) => (
               <TableRow key={task._id}>
                 <TableCell>{task.title}</TableCell>
                 <TableCell>
-                  <IconButton aria-label="delete"   onClick={() => handleDelete(task._id)} >
+                  <IconButton aria-label="delete"   onClick={() => handleDelete(task._id)} style={{ marginRight: '10px' }} >
                      <DeleteIcon />
                   </IconButton>
 
-                  <IconButton size="small" color="primary" aria-label="edit" onClick={() => handleClickOpen(task)}>
+                  <IconButton size="small" color="primary" aria-label="edit" style={{ marginRight: '10px' }} onClick={() => handleClickOpen(task)}>
                     <EditIcon />
                   </IconButton>
+
+                  <FormControlLabel
+                      control={
+                        <Android12Switch
+                          checked={task.isComplete}
+                          onChange={(e) => {
+                           // Update the task's status in the local state
+                          setCurrentTask({ ...currentTask, isComplete: e.target.checked });
+                           // Call the function to update the task's status in the database
+                           handleSwitchChange(task._id, e.target.checked);  
+                           }}
+                          
+                        />
+                        
+                      }
+                      label="complete"
+                    />
                 </TableCell>
 
 
@@ -219,7 +314,11 @@ function handleupdate(id){
             </Button>
         </DialogActions>
      </Dialog>
+
     </div>
+    
+
+
   );
 };
 
