@@ -95,7 +95,7 @@ function Addusertable({ rows }) {
         if ( err.response.status ===403 ) {
           window.alert(err.response.data.msg);
            localStorage.removeItem('token');
-           navigate("/Login");
+           navigate("/");
         }
       });
   }
@@ -120,7 +120,7 @@ function Addusertable({ rows }) {
         if ( err.response.status ===403 ) {
           window.alert(err.response.data.msg);
           localStorage.removeItem('token');
-           navigate("/Login");
+           navigate("/");
         }
     });
   }
