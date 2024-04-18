@@ -599,6 +599,8 @@ export default function InternCvList() {
 
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from '../../../config';
+
 import {
   Paper,
   Table,
@@ -615,7 +617,7 @@ import {
   Stack,
   Autocomplete,
   Grid,
-IconButton  } from "@mui/material";
+  IconButton  } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { TextField } from "@mui/material";
@@ -632,11 +634,9 @@ import { Tab } from "bootstrap";
 
 
 export default function InternCvList({ rows }) {
-  //const [DialogIsOpen, setDialogIsOpen] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("");
-  const [selectedUserId, setSelectedUserId] = useState(null);
+
   const [data, setData] = useState([]);
-  const [open, openchange] = useState(false);
+
   
   const [filteredData, setFilteredData] = useState([]);
   
@@ -649,7 +649,7 @@ export default function InternCvList({ rows }) {
  
   useEffect(() => {
     axios
-      .get("http://localhost:8001/api/users/user",{
+      .get(`${BASE_URL}users`,{
         headers: {
         Authorization: `Bearer ${token}`,
     },
