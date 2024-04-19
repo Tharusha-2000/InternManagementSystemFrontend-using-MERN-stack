@@ -111,9 +111,10 @@ function Addusertable({ rows }) {
       },
     })
         .then((result) => {
-          setData(data.filter((user) => user._id !== id));
+        
           console.log(result.data.msg);
-           window.location.reload(); 
+             // Update the users in the state
+             setFilteredData(data.filter((user) => user._id!== id));
         })
         .catch((err) => {
           console.log(err);

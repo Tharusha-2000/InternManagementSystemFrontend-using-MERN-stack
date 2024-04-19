@@ -1,61 +1,100 @@
-import React from 'react'
-import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
-import FileUpload from './test2.jsx';
-import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
-import VideocamRoundedIcon from '@mui/icons-material/VideocamRounded';
-import CardOverflow from '@mui/joy/CardOverflow';
-import CardActions from '@mui/joy/CardActions';
-import Button from '@mui/joy/Button';
-
-function Test3() {
+import React from 'react';
+import { BASE_URL } from "./config";
+import axios from 'axios';
+// This component represents a single notification
+function Notification({ task, onVerify, onCancel }) {
   return (
-    
-    <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Portfolio projects</Typography>
-            <Typography level="body-sm">
-              Share a few snippets of your work.
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack spacing={2} sx={{ my: 1 }}>
-           
-            <FileUpload
-              icon={<InsertDriveFileRoundedIcon />}
-              fileName="Tech design requirements.pdf"
-              fileSize="200 kB"
-              progress={100}
-            />
-            <FileUpload
-              icon={<VideocamRoundedIcon />}
-              fileName="Dashboard prototype recording.mp4"
-              fileSize="16 MB"
-              progress={40}
-            />
-          </Stack>
-          <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-            <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-              <Button size="sm" variant="outlined" color="neutral">
-                Cancel
-              </Button>
-              <Button size="sm" variant="solid">
-                Save
-              </Button>
-            </CardActions>
-          </CardOverflow>
-        </Card> 
-          
-
-
-       
-
-
-
-  )
+    <div>
+      <h2>{task.title}</h2>
+      <button onClick={() => onVerify(task._id)}>Verify</button>
+      <button onClick={() => onCancel(task._id)}>Cancel</button>
+    </div>
+  );
 }
 
-export default Test3
+// This component fetches the tasks and renders the notifications
+class NotificationList extends React.Component {
+  state = {
+    tasks: [],
+  };
+ 
+  componentDidMount() {
+    const token = localStorage.getItem("token");
+    // Fetch the tasks from the server
+    axios
+    .get(`${BASE_URL}taskNotify`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }) 
+    .then(response => {
+      console.log(response.data);
+      this.setState({ tasks: response.data });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
+
+  handleVerify = (taskId) => {
+    // Code to handle verification goes here
+    console.log(`Task ${taskId} has been verified.`);
+    const token = localStorage.getItem("token");
+    const isVerified = { isVerified: true };
+    axios
+       .put(`${BASE_URL}taskVerify/${taskId}`,isVerified)
+       .then(response => {
+          console.log(`Task ${taskId} has been verified.`);
+          console.log(response);
+      // Update the task in the state
+        this.setState(prevState => ({
+             tasks: prevState.tasks.map(task => 
+             task._id === taskId ? { ...task, isVerified: true } : task )
+      }));
+    })
+    .catch(error => {
+       console.error(error);
+    })
+  };
+
+  handleCancel = (taskId) => {
+    // Code to handle cancellation goes here
+    console.log(`Task ${taskId} has been cancelled.`);
+    const isVerified = { isVerified: false};
+    axios
+       .put(`${BASE_URL}taskVerify/${taskId}`,isVerified)
+       .then(response => {
+          console.log(`Task ${taskId} has been verified.`);
+          console.log(response);
+          
+     // Update the task in the state
+      this.setState(prevState => ({
+        tasks: prevState.tasks.filter(task => task._id !== taskId)
+      }));
+  
+    })
+    .catch(error => {
+       console.error(error);
+    })
+    
+
+
+
+
+  };
+
+  render() {
+    return (
+      <div>
+         {this.state.tasks.filter(task => !task.isVerified).map(task => (
+        <Notification
+          key={task._id}
+          task={task}
+          onVerify={this.handleVerify}
+          onCancel={this.handleCancel}
+        />
+      ))}
+      </div>
+    );
+  }
+}
+
+export default NotificationList;

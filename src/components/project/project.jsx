@@ -183,7 +183,7 @@ const handleupdate = async(id)=>{
     };
   
     // Send the PUT request
-    await axios.put(`${BASE_URL}task/${id}`, data, {
+    await axios.put(`${BASE_URL}task/${id}`,data,{
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -200,7 +200,7 @@ const handleupdate = async(id)=>{
 
      if(isComplete===true){
 
-
+       
 
         console.log(id);
      }

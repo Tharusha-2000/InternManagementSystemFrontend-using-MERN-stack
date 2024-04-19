@@ -28,6 +28,7 @@ import ProfileCreate from './Pages/admin_page/ProfileCreate';
 import Interntable from './components/interntable/interntable.jsx';
 import Intern from './components/interntable/intern.jsx';
 import Project from './components/project/project.jsx';
+import Projectdonelist from './components/project/projectdonelist.jsx'
 import EvaluationFormAdmin from './components/EvaluationFormNew/EvaluationFormAdmin.jsx';
 
 import Test from './test.jsx';
@@ -77,7 +78,7 @@ function App() {
         <Route path="/interntable" element={<Interntable/>}> </Route>
         <Route path="/intern" element={<Intern/>}> </Route>
         <Route path="/project" element={<Project/>}> </Route>
-
+        <Route path="/projectdonelist" element={<Projectdonelist/>}> </Route>
         <Route path="/evaluationForm" element={<EvaluationFormAdmin/>}> </Route>
         
         <Route path="/Test" element={<Test/>}> </Route>

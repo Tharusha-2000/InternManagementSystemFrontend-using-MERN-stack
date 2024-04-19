@@ -484,23 +484,33 @@ function interndetails({ internId }) {
                           />
                         </FormControl>
                       </Stack>
-
-                      <Stack spacing={1}>
-                        <FormLabel>Mentor Name</FormLabel>
-                        <FormControl
-                          sx={{
-                            display: { sm: "flex-column", md: "flex-row" },
-                            gap: 2,
-                          }}
-                        >
-                          <Input size="sm"
-                                 placeholder="Mentor Name"
-                                 value={data.mentor}
-                                 type="text"
-                                 onChange={(e) =>
-                                  setData({ ...data, mentor: e.target.value })
-                                  } />
-                        </FormControl>
+                      <Stack direction="row" spacing={1}>
+                        <FormControl>
+                          <FormLabel>mentor Name</FormLabel>
+                          <Input
+                            size="sm"
+                            placeholder="mentor name"
+                            value={data.mentor}  
+                            onChange={(e) =>
+                              setData({ ...data, mentor: e.target.value })
+                            }
+                            type="text"
+                               
+                          />
+                       </FormControl>
+                      <FormControl sx={{ flexGrow: 1 }}>
+                      <FormLabel>Mentor Email</FormLabel>
+                      <Input
+                        size="sm"
+                        type="email"
+                        startDecorator={<EmailRoundedIcon />}
+                        value={data.mentorEmail}
+                        onChange={(e) =>
+                          setData({ ...data, mentorEmail: e.target.value })
+                        }
+                        sx={{ flexGrow: 1 }}
+                      />
+                    </FormControl>
                       </Stack>
                     </Stack>
                   </Stack>
