@@ -100,10 +100,12 @@ function interndetails({ internId }) {
      .then((response) => {
        window.alert(response.data.msg);
        window.location.reload(); 
-       console.log(response.data);
+       console.log(response.data.msg);
      })
      .catch((error) => {
        console.log(error);
+       window.alert("Failed to update");
+       handleClose();
      })
 
   };

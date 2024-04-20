@@ -1,49 +1,48 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from '../../config';
-
+import { jwtDecode } from "jwt-decode";
 import {
-  Button,
-  Dialog,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
   Paper,
   Box,
   Typography,
   Grid,
-  DialogContent,
-  DialogTitle,
   IconButton,
-  Stack,
 
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { styled } from '@mui/material/styles';
 import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import { useNavigate } from "react-router-dom";
-import Switch from '@mui/material/Switch';
 import Interndetails from "../interntable/intern";
+import ProjectTask from "../project/project";
 
-function internTable({ rows }) {
+
+function internlist({ rows }) {
   //const [DialogIsOpen, setDialogIsOpen] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("");
+  const [role, setRole] = useState("");
   const [data, setData] = useState([]);
   
   const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
   const [isComplete, setIsComplete] = useState(false);
+
   {/* get details in database */}
   const token = localStorage.getItem('token');
- 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setRole(decodedToken.role);
+    }
+  }, []);
  
   useEffect(() => {
     axios
@@ -63,43 +62,6 @@ function internTable({ rows }) {
       })
       .catch((err) => console.log(err));
   }, []);
-
-
-   {/* handel complete notcomplete profile button*/}
-
-  const Android12Switch = styled(Switch)(({ theme }) => ({
-    padding: 8,
-    '& .MuiSwitch-track': {
-      borderRadius: 22 / 2,
-      '&::before, &::after': {
-        content: '""',
-        position: 'absolute',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        width: 16,
-        height: 16,
-      },
-      '&::before': {
-        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-          theme.palette.getContrastText(theme.palette.primary.main),
-        )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
-        left: 12,
-      },
-      '&::after': {
-        backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-          theme.palette.getContrastText(theme.palette.primary.main),
-        )}" d="M19,13H5V11H19V13Z" /></svg>')`,
-        right: 12,
-      },
-    },
-    '& .MuiSwitch-thumb': {
-      boxShadow: 'none',
-      width: 16,
-      height: 16,
-      margin: 2,
-    },
-  }));
-
 
 
 // creating filter function
@@ -130,7 +92,7 @@ const Filter = (event) => {
    <div>
     <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
       <Typography variant="h4" gutterBottom align="center">
-        Intern List
+        Intern Details
       </Typography>
       <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
 
@@ -188,7 +150,7 @@ const Filter = (event) => {
                   
                 }}
               >
-                Actions
+                Details
               </TableCell>
             </TableRow>
           </TableHead>
@@ -204,16 +166,8 @@ const Filter = (event) => {
                 <TableCell sx={{ fontSize: "1em" }}>{intern.email}</TableCell>
                 <TableCell>
                  <Box display="flex" alignItems="center">
-                    <Interndetails internId={intern._id} />
-                    <FormControlLabel
-                      control={
-                        <Android12Switch
-                          checked={intern.interviewScore}
-                          onChange={(e) => setIsComplete(e.target.checked)}
-                        />
-                      }
-                      label="complete"
-                    />
+                   { role !== 'admin' && <Interndetails internId={intern._id} />}
+                    <ProjectTask  internId={intern._id}/>
                   </Box>
                 </TableCell>
               </TableRow>
@@ -225,11 +179,8 @@ const Filter = (event) => {
    </Paper>
    </Grid>
 
-    
-      
- </Grid>
-  
-  );
+</Grid>
+ );
 }
 
-export default internTable;
+export default internlist;

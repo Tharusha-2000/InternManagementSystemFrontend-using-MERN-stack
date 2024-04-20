@@ -27,7 +27,7 @@ import Typography from "@mui/joy/Typography";
 import Card from "@mui/joy/Card";
 import TaskIcon from '@mui/icons-material/Task';
 
-function internTaskTable() {
+function internTaskTable({ internId }) {
   // State for tasks and data
   const [tasks, setTasks] = useState([]);
   const [open, setOpen] = useState(false);
@@ -83,7 +83,7 @@ function internTaskTable() {
 
   // Function to fetch tasks
   const fetchTasks = async () => {
-    const response = await axios.get(`${BASE_URL}task`, {
+    const response = await axios.get(`${BASE_URL}task/${internId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -103,14 +103,14 @@ function internTaskTable() {
   <div>
    
     <IconButton
-       // size="large"
+        size="small"
         color="primary"
         style={{ marginRight: "10px" }}
         onClick={() => handleClickOpen()}
      >
-        <TaskIcon style={{ fontSize: '35px' }}/>
+        <TaskIcon />
      </IconButton>
-    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"  maxWidth="lg"  >
     <DialogTitle id="form-dialog-title"> PROJECT TASK LIST <IconButton onClick={handleClose} style={{float:'right'}}><CloseIcon color="primary"></CloseIcon></IconButton></DialogTitle>
     <DialogContent>
     <div>

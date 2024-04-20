@@ -21,14 +21,15 @@ import AdminDashboard from './Pages/admin_page/AdminDashboard';
 import Registration from './Pages/admin_page/Registration';
 import CVupload from './Pages/admin_page/CVupload.jsx';
 import Evaluation from './Pages/admin_page/Evaluation';
-//import Profile from './Pages/admin_page/Profile';
 import ProfileCreate from './Pages/admin_page/ProfileCreate';
+import ShowTask from './Pages/admin_page/showTask.jsx';
+
 
 
 import Interntable from './components/interntable/interntable.jsx';
 import Intern from './components/interntable/intern.jsx';
 import Project from './components/project/project.jsx';
-import Projectdonelist from './components/project/projectdonelist.jsx'
+import Projectinternlist from './components/project/projectinternlist.jsx'
 import EvaluationFormAdmin from './components/EvaluationFormNew/EvaluationFormAdmin.jsx';
 
 import Test from './test.jsx';
@@ -38,13 +39,13 @@ import Test3 from './Test3.jsx';
 
 import EvaluatorDashboard from './Pages/evaluator_page/EvaluatorDashboard';
 import EvaluatorEvaluation from './Pages/evaluator_page/EvaluatorEvaluation';
-import EvaluatorViewProfile from './Pages/evaluator_page/EvaluatorViewProfile';
+import EvaluatorviewInternDetails from './Pages/evaluator_page/EvaluatorviewInternDetails.jsx';
 
 
 
 import MentorDashboard from './Pages/mentor_page/MentorDashboard';
 import MentorEvaluation from './Pages/mentor_page/MentorEvaluation';
-import MentorViewProfile from './Pages/mentor_page/MentorViewProfile';
+import MentorViewInternDetails from './Pages/mentor_page/MentorViewInternDetails.jsx';
 import MentorTaskApprove from './Pages/mentor_page/MentorTaskApprove';
 
 import InternDashboard from './Pages/intern_page/InternDashboard';
@@ -55,7 +56,7 @@ import InternProjectTask from './Pages/intern_page/InternProjectTask';
 
 import ManagerDashboard from './Pages/manager_page/ManagerDashboard';
 import ManagerEvaluation from './Pages/manager_page/ManagerEvaluation';
-import ManagerViewProfile from './Pages/manager_page/ManagerViewProfile';
+import ManagerViewInternDetails  from './Pages/manager_page/ManagerViewInternDetails.jsx';
 
 
 function App() {
@@ -79,7 +80,7 @@ function App() {
         <Route path="/interntable" element={<Interntable/>}> </Route>
         <Route path="/intern" element={<Intern/>}> </Route>
         <Route path="/project" element={<Project/>}> </Route>
-        <Route path="/projectdonelist" element={<Projectdonelist/>}> </Route>
+        <Route path="/projectinternlist" element={<Projectinternlist/>}> </Route>
         
         <Route path="/evaluationForm" element={<EvaluationFormAdmin/>}> </Route>
         
@@ -99,7 +100,8 @@ function App() {
             <Route path="/evaluation" element={<Evaluation />}></Route>
             
             <Route path="/profilecreate" element={<ProfileCreate />}></Route>
-           
+            <Route path="/showInternTask" element={<ShowTask/>}></Route>
+            
 
 
 
@@ -109,7 +111,7 @@ function App() {
 
             <Route path="/evaluatordashboard" element={<EvaluatorDashboard/>}></Route>
             <Route path="/evaluatorevaluation" element={<EvaluatorEvaluation />}></Route>
-            <Route path="/evaluatorviewprofile" element={<EvaluatorViewProfile />}></Route>
+            <Route path="/evaluatorviewInternDetails" element={<EvaluatorviewInternDetails />}></Route>
           
             
 
@@ -120,7 +122,7 @@ function App() {
 
             <Route path="/mentordashboard" element={<MentorDashboard/>}></Route>
             <Route path="/mentorevaluation" element={<MentorEvaluation />}></Route>
-            <Route path="/mentorviewprofile" element={<MentorViewProfile />}></Route>
+            <Route path="/mentorviewInternDetails" element={<MentorViewInternDetails />}></Route>
             <Route path="/mentortaskApprove" element={<MentorTaskApprove />}></Route>
 
 
@@ -142,7 +144,7 @@ function App() {
 
             <Route path="/managerdashboard" element={<ManagerDashboard/>}></Route>
             <Route path="/managerevaluation" element={<ManagerEvaluation />}></Route>
-            <Route path="/managerviewprofile" element={<ManagerViewProfile />}></Route>
+            <Route path="/managerviewInternDetails" element={<ManagerViewInternDetails />}></Route>
             
 
         </Routes>
