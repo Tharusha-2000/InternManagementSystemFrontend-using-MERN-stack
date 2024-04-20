@@ -1,15 +1,14 @@
+import Mentorsidebar from '../../components/common/Mentorsidebar';
+import Header from '../../components/common/Header';
 import React, { useState, useEffect } from 'react';
-import { BASE_URL } from "./config";
+import { BASE_URL } from '../../config';
 import axios from 'axios';
-import { Card, Box, Typography, Divider, Stack , CardOverflow, CardActions, Button } from '@mui/joy';
-import { TableRow, TableCell, Table,
-  TableBody,
-  TableContainer,
-  TableHead } from '@mui/material';
+import { Card, Box, Typography, Divider, Stack ,CardActions, Button } from '@mui/joy';
+import { TableRow, TableCell, Table,TableBody,TableContainer,TableHead } from '@mui/material';
 
 
 // ProjectdoneList component fetches tasks  
-function ProjectdoneList() {
+function ProjectdoneListToApprove() {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
@@ -67,6 +66,12 @@ function ProjectdoneList() {
   };
 
   return (
+   <>
+    <Header />
+    <Box height={60} />
+    <Box sx={{ display: 'flex' }}>
+    <Mentorsidebar />
+    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
     <Card>
        <Divider />
       <Stack spacing={1} sx={{ my: 1 }}>
@@ -87,6 +92,7 @@ function ProjectdoneList() {
                 sx={{
                   fontWeight: "bold",
                   fontSize: "1em",
+                  width: '25%', 
                 }}
               >
                 Intern Name
@@ -109,13 +115,13 @@ function ProjectdoneList() {
                 <TableCell  sx={{  width: '50%' }}>  
                   <Typography variant="subtitle1">{task.title}</Typography>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{  width: '25%' }}>
                   <Typography variant="subtitle2">{task._userId.fname} {task._userId.lname}</Typography>
                 </TableCell>
                 <TableCell>
                   <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-                    <Button variant="solid" type="submit" onClick={() => handleVerify(task._id)}>Verify</Button>
-                    <Button variant="outlined" color="neutral" onClick={() => handleCancel(task._id)}>Cancel</Button>
+                    <Button variant="solid" type="submit" size="small" onClick={() => handleVerify(task._id)}>Verify</Button>
+                    <Button variant="outlined" color="neutral" size="small" onClick={() => handleCancel(task._id)}>Cancel</Button>
                   </CardActions>
                 </TableCell>
               </TableRow>
@@ -128,7 +134,12 @@ function ProjectdoneList() {
 
        </Stack>
     </Card>
+
+   </Box>
+   </Box>
+    </>
   );
+
 }
 
-export default ProjectdoneList;
+export default ProjectdoneListToApprove;

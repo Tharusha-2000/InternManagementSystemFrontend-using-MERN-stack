@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const projectdonelist = () => {
+export default function Projectdonelist () {
   return (
     <div>projectdonelist</div>
   )

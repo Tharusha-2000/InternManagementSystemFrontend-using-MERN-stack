@@ -302,45 +302,42 @@ return (
                     </Stack>
                   </Stack>
                 </Card>
-       
+                  <Card>
+                    <Box sx={{ mb: 1 }}>
+                      <Typography level="title-md">Bio</Typography>
+                      <Typography level="body-sm">
+                        Write a short introduction to be displayed on your profile
+                      </Typography>
+                    </Box>
+                    <Divider />
+                    <Stack spacing={2} sx={{ my: 1 }}>
 
-
-        <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography level="title-md">Bio</Typography>
-            <Typography level="body-sm">
-              Write a short introduction to be displayed on your profile
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack spacing={2} sx={{ my: 1 }}>
-
-            <Textarea
-              size="sm"
-              minRows={4}
-              sx={{ mt: 1.5 }}
-              placeholder="Description"
-              value={data.Bio}
-                      type="text"
-                      onChange={(e) =>
-                            setData({ ...data, Bio: e.target.value })
-                        } 
-            />
-            <FormHelperText sx={{ mt: 0.75, fontSize: 'xs' }}>
-              275 characters left
-            </FormHelperText>
-          </Stack>
-          <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-            <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-            <Button variant="outlined"   color="neutral"   onClick={handleCancel} >
-                Cancel
-           </Button>
-           <Button variant="solid" type="submit"  onClick={handleSubmit}>
-             Save
-           </Button>
-            </CardActions>
-          </CardOverflow>
-        </Card>
+                      <Textarea
+                        size="sm"
+                        minRows={4}
+                        sx={{ mt: 1.5 }}
+                        placeholder="Description"
+                        value={data.Bio}
+                                type="text"
+                                onChange={(e) =>
+                                      setData({ ...data, Bio: e.target.value })
+                                  } 
+                      />
+                      <FormHelperText sx={{ mt: 0.75, fontSize: 'xs' }}>
+                        275 characters left
+                      </FormHelperText>
+                    </Stack>
+                    <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
+                      <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
+                      <Button variant="outlined"   color="neutral"   onClick={handleCancel} >
+                          Cancel
+                    </Button>
+                    <Button variant="solid" type="submit"  onClick={handleSubmit}>
+                      Save
+                    </Button>
+                      </CardActions>
+                    </CardOverflow>
+                  </Card>
       </Stack>
     </Box>
     </Box>

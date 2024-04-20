@@ -45,7 +45,7 @@ import EvaluatorViewProfile from './Pages/evaluator_page/EvaluatorViewProfile';
 import MentorDashboard from './Pages/mentor_page/MentorDashboard';
 import MentorEvaluation from './Pages/mentor_page/MentorEvaluation';
 import MentorViewProfile from './Pages/mentor_page/MentorViewProfile';
-
+import MentorTaskApprove from './Pages/mentor_page/MentorTaskApprove';
 
 import InternDashboard from './Pages/intern_page/InternDashboard';
 import InternProfile from './Pages/intern_page/InternProfile';
@@ -79,6 +79,7 @@ function App() {
         <Route path="/intern" element={<Intern/>}> </Route>
         <Route path="/project" element={<Project/>}> </Route>
         <Route path="/projectdonelist" element={<Projectdonelist/>}> </Route>
+        
         <Route path="/evaluationForm" element={<EvaluationFormAdmin/>}> </Route>
         
         <Route path="/Test" element={<Test/>}> </Route>
@@ -119,7 +120,7 @@ function App() {
             <Route path="/mentordashboard" element={<MentorDashboard/>}></Route>
             <Route path="/mentorevaluation" element={<MentorEvaluation />}></Route>
             <Route path="/mentorviewprofile" element={<MentorViewProfile />}></Route>
-          
+            <Route path="/mentortaskApprove" element={<MentorTaskApprove />}></Route>
 
 
 
