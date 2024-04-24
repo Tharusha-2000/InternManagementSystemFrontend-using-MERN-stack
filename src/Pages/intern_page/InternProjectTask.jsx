@@ -8,7 +8,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   FormControlLabel,
   TextField,
@@ -17,29 +16,21 @@ import { styled } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { BASE_URL } from "../../config";
-import { Paper } from "@mui/material";
 import Switch from "@mui/material/Switch";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import Divider from "@mui/joy/Divider";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import FormHelperText from "@mui/joy/FormHelperText";
-import Input from "@mui/joy/Input";
 import IconButton from "@mui/joy/IconButton";
-import Textarea from "@mui/joy/Textarea";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import Card from "@mui/joy/Card";
-import CardActions from "@mui/joy/CardActions";
-import CardOverflow from "@mui/joy/CardOverflow";
+
 
 function TaskTable() {
     // State for tasks and data
@@ -63,9 +54,8 @@ function TaskTable() {
       setOpen(false);
     };
   
-    {
-      /* handel complete notcomplete profile button*/
-    }
+   
+    // handel complete notcomplete profile button
   
     const Android12Switch = styled(Switch)(({ theme }) => ({
       padding: 8,
@@ -121,21 +111,22 @@ function TaskTable() {
   
     // Function to add a task
     const addTask = async () => {
-      if (data.title) {
-        await axios.post(`${BASE_URL}task`, data, {
+      if(!data.title) {
+        window.alert('Please fill the required fields')
+        return;
+    } 
+      await axios.post(`${BASE_URL}task`, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         setData({ title: "" });
         fetchTasks();
-      }
+      
     };
   
-    {
+    
       /* delect task*/
-    }
-  
     function handleDelete(id) {
       if (window.confirm("Are you sure you want to delete this task?")) {
         axios
@@ -157,12 +148,10 @@ function TaskTable() {
       }
     }
   
-    {
-      /* update task*/
-    }
+    {/* update task*/}
   
     const handleupdate = async (id) => {
-      // const isComplete = tasks.find(task => task._id === id).isComplete;
+      
       const data = {
         title: currentTask.title,
       };
@@ -183,8 +172,6 @@ function TaskTable() {
           console.log(error);
         });
     };
-  
-    //   console.log(isComplete);
   
     const handleSwitchChange = async (id, isComplete) => {
       // Create the data object

@@ -53,7 +53,7 @@ function Addusertable({ rows }) {
   })
 
       .then((result) => {
-        console.log(result.data.users); 
+       // console.log(result.data.users); 
         setFilteredData(result.data.users);
         setData(result.data.users);
         
@@ -229,6 +229,7 @@ return (
           </TableHead>
           <TableBody>
             {filteredData.map((user) => (
+
               <TableRow key={user._id}>
                 <TableCell sx={{ fontSize: "1em" }}>
                   {" "}
