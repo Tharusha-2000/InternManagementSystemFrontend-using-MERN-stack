@@ -38,6 +38,7 @@ function Fogetpassword() {
                 .catch(err => {
                   if (err.response) {
                       window.alert(err.response.data.msg);
+                       navigate('/');
                   }
               })
        
