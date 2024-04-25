@@ -12,17 +12,18 @@ import { useDropzone } from 'react-dropzone';
 import { Box } from '@mui/system';
 import 'firebase/storage';
 import 'firebase/firestore';
-import { UploadFile } from '@mui/icons-material';
+//import { UploadFile } from '@mui/icons-material';
 import { getStorage, 
         ref, 
         uploadBytesResumable, 
         getDownloadURL
        } from "firebase/storage";
 import app from './firebase-config';
+import UploadStatusContext from './UploadStatusContext';
 import { BASE_URL } from '../../../config';
 
 
-export default function EditCvfile({open, handleClose, internName}) {
+export default function EditCvfile({open, handleClose, internName, internId}) {
   const [file, setFile] = useState(null);
   const [fileUrl, setFileUrl] = useState(null);
   const [inputs , setInputs ] = useState({});
@@ -115,15 +116,20 @@ useEffect(() => {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        const userData = { ...inputs, fileURL: fileUrl };
-        console.log("userData:", userData);
-        await axios.post(`${BASE_URL}users`, userData);
+        const fileData = { fileURL: fileUrl, userId: internId };
+        console.log("fileData:", fileData);
+        
+        await axios.post("http://localhost:8000/api/cvfiles", fileData);
         window.location.reload();
-      } catch (error) {
+      }catch (error) {
         console.log(error);
+        if (error.response && error.response.status === 404) {
+          alert('Error: Route not found');
+        } else {
+          alert('An unknown error occurred');
+        }
       }
     };
-  
 
 
 

@@ -629,21 +629,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import Swal from "sweetalert2";
 import EditCVfiles from "./EditCVfiles";
 import ViewCVfiles from "./ViewCVfiles";
-import { Tab } from "bootstrap";
 
 
 
 export default function InternCvList({ rows }) {
 
   const [data, setData] = useState([]);
-
-  
   const [filteredData, setFilteredData] = useState([]);
-  
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  {/* get details in database */}
+  // get details in database 
   const token = localStorage.getItem('token');
  
  
@@ -668,7 +664,6 @@ export default function InternCvList({ rows }) {
 // creating filter function
 const Filter = (event) => {
   const searchTerm = event.target.value.toLowerCase();
-  
   setFilteredData(
     data.filter(
       (f) =>
@@ -691,7 +686,7 @@ const handleChangeRowsPerPage = (event) => {
   setPage(0);
 };
 
-
+{/*
 // delete user row
 const deleteUser = (id) => {
   Swal.fire({
@@ -719,17 +714,38 @@ const deleteApi = async (id) => {
     console.error('Error deleting document:', error);
   }
 };
+*/}
+
+
+const deleteApi = async (id) => {
+  try {
+    const token = localStorage.getItem('token');
+    await axios.delete(`http://localhost:8000/api/cvfiles/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    Swal.fire("Deleted!", "CV file has been deleted.", "success");
+    setData(data.filter((item) => item._id !== id)); 
+  } catch (error) {
+    console.error('Error deleting CV file:', error);
+  }
+};
+
 
 // open and close function
 const [openEdit, setOpenEdit] = useState(false);
 const [openView, setOpenView] = useState(false);
-const handleEditOpen = () => {
+const [internId, setInternId] = useState(null);
+const handleEditOpen = (id) => {
+  setInternId(id);
   setOpenEdit(true);
 };
 const handleEditClose = () => {
   setOpenEdit(false);
 };
-const handleViewOpen = () => {
+const handleViewOpen = (id) => {
+  setInternId(id);
   setOpenView(true);
 };
 const handleViewClose = () => {
@@ -737,10 +753,12 @@ const handleViewClose = () => {
 };
 
 
+
+
 return (
 <>
-  <ViewCVfiles open={openView} handleClose={handleViewClose} />
-  <EditCVfiles open={openEdit} handleClose={handleEditClose} />
+  <ViewCVfiles open={openView} handleClose={handleViewClose} userId={internId} />
+  <EditCVfiles open={openEdit} handleClose={handleEditClose} internId={internId} />
    <Paper sx={{ Width: "100%", overflow: "auto", padding: "12px"}}>
       <Typography variant="h4" gutterBottom align="center" component="div">
        Intern CV List
@@ -813,10 +831,17 @@ return (
                    <TableCell sx={{ fontSize: "1em" }}>{user.email}</TableCell>*/}
                 <TableCell align="left">
                           {user.cv}
-                          <Button variant="contained" color="primary" onClick={handleViewOpen}>
-                            <AccountCircleIcon />
+                          <Button 
+                              variant="contained" 
+                              color="primary" 
+                              onClick={() => handleViewOpen(user._id)}
+                          > View CV
+                            {/*<AccountCircleIcon />*/}
                           </Button>
                 </TableCell>
+                <TableCell align="left">
+                    
+                  </TableCell>
                 <TableCell align="left">
                     <Stack spacing={2} direction="row">
                             <EditIcon
@@ -826,7 +851,7 @@ return (
                                 cursor: "pointer",
                               }}
                               classname="cursor-pointer"
-                              onClick={handleEditOpen}
+                              onClick={() => handleEditOpen(user._id)}
                             />
                             <DeleteIcon
                               style={{
@@ -834,7 +859,7 @@ return (
                                 color: "darkred",
                                 cursor: "pointer",
                               }}
-                              onClick={() => { deleteUser(user.id); }}
+                              onClick={() => { deleteApi(user.id); }}
                             />
                     </Stack>
                   </TableCell>
@@ -846,7 +871,7 @@ return (
       <TablePagination
             rowsPerPageOptions={[10, 20, 50]}
             component="div"
-            //count={rows.length}
+            count={(rows || []).length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
