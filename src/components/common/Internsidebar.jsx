@@ -168,6 +168,27 @@ export default function Internsidebar() {
               </ListItemButton>
             </ListItem>
         
+
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/internprojectTask")}}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <SettingsApplicationsOutlinedIcon sx={{ color: indigo[900] }} /> 
+                </ListItemIcon>
+                <ListItemText primary="Project Task" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
         
 
             <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/security")}}>
