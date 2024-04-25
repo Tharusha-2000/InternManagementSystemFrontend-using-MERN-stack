@@ -1,15 +1,12 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import MuiAppBar from '@mui/material/AppBar';
 import { useAppStore } from './appStore';
@@ -21,30 +18,15 @@ const AppBar = styled(MuiAppBar, {
   zIndex: theme.zIndex.drawer + 1,
 }));
 
-
-
-
 export default function Header() {
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const updateOpen = useAppStore((state) => state.updateOpen);
   const dopen = useAppStore((state) => state.dopen);
-
-  const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
   };
 
   const handleMobileMenuOpen = (event) => {
@@ -52,34 +34,11 @@ export default function Header() {
   };
  
   function userLogout(){
-    if (window.confirm('Are you sure you want to log out?')) {
-      localStorage.removeItem('token');
-      navigate('/Login');
-    }
+     if (window.confirm('Are you sure you want to log out?')) {
+          localStorage.removeItem('token');
+          navigate('/Login');
+        }
   }
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={()=>{handleMenuClose()}}>example1</MenuItem>
-      <MenuItem onClick={()=>{handleMenuClose()}}>example2</MenuItem>
-      <MenuItem onClick={()=>{handleMenuClose()}}>example3</MenuItem>
-    </Menu>
-  );
-
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -97,21 +56,6 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="show 1 new notifications"
-          color="inherit"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-        >
-          <Badge badgeContent={1} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
       <MenuItem onClick={(event) => {event.stopPropagation(); userLogout();}}>
         <IconButton
           size="large"
@@ -157,24 +101,12 @@ export default function Header() {
                         textDecoration: 'none',
             }}
           >
-            99X
+            Zionlogy
           </Typography>
       
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             
-            <IconButton
-              size="large"
-              aria-label="show 1 new notifications"
-              color="inherit"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-            >
-              <Badge badgeContent={1} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
             <IconButton
               size="large"
               edge="end"
@@ -201,7 +133,7 @@ export default function Header() {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
+      
     </Box>
   );
 }

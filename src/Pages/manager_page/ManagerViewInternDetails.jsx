@@ -1,19 +1,20 @@
 import React from 'react';
-import Mentorsidebar from '../../components/common/Mentorsidebar';
+import Managersidebar from '../../components/common/Managersidebar';
 import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
+import InternTable from '../../components/project/projectinternlist';
 
-
-export default function MentorViewProfile() {
+export default function ManagerViewProfile() {
   return (
     <>
     <Header />
     <Box height={60} />
     <Box sx={{ display: 'flex' }}>
-    <Mentorsidebar />
+    <Managersidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       <h1>mentor vp </h1>
+       <InternTable/>
       </Box>
       </Box>
       </>
   )}
+

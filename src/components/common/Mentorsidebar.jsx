@@ -170,7 +170,7 @@ export default function Mentorsidebar() {
         
                   
                   
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/mentorviewprofile")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/mentorviewInternDetails")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -187,7 +187,30 @@ export default function Mentorsidebar() {
                 >
                   <PermContactCalendarOutlinedIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
-                <ListItemText primary="View Profile" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="View Profile & Task" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+
+
+
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/mentortaskApprove")}}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <SettingsApplicationsOutlinedIcon sx={{ color: indigo[900] }} /> 
+                </ListItemIcon>
+                <ListItemText primary="ProjectTask approment" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
         

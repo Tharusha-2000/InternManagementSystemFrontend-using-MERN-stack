@@ -187,7 +187,7 @@ export default function Evaluatorsidebar() {
                 >
                   <PermContactCalendarOutlinedIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
-                <ListItemText primary="View Profile" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="View profile & task" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
         
