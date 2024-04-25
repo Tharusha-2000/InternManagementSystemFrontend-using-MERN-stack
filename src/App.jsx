@@ -22,7 +22,7 @@ import Registration from './Pages/admin_page/Registration';
 import CVupload from './Pages/admin_page/CVupload.jsx';
 import Evaluation from './Pages/admin_page/Evaluation';
 import ProfileCreate from './Pages/admin_page/ProfileCreate';
-import ShowTask from './Pages/admin_page/showTask.jsx';
+import ShowTask from './Pages/admin_page/ShowTask.jsx';
 
 
 
