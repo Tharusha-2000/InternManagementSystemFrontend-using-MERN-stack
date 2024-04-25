@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { Button, Dialog, DialogTitle,InputLabel, DialogContent,IconButton, TextField, Grid, FormControl, FormLabel,RadioGroup, FormControlLabel, Radio, Select, MenuItem,Typography} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { BASE_URL } from '../../config';
@@ -45,18 +44,20 @@ function Adduser() {
     }
     const nameRegex = /^[A-Za-z]+$/;
     if (!nameRegex.test(data.fname)||!nameRegex.test(data.lname)) {
-    window.alert('name must only contain letters.')
-    return;
+        window.alert('name must only contain letters.')
+        return;
     }
+
   const token = localStorage.getItem('token');
+  
   axios.post(`${BASE_URL}/register`, data,{
             headers: {
             Authorization: `Bearer ${token}`,
         },
-   })
-        .then(result => {   
+   }).then(result => {   
               if (result.data) {
                  window.alert(result.data.msg);
+                 
                  if(result.status === 201 ) {
                     handleClose();
                     window.location.reload(); 

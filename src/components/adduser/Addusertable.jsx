@@ -53,7 +53,7 @@ function Addusertable({ rows }) {
   })
 
       .then((result) => {
-        console.log(result.data.users); 
+       // console.log(result.data.users); 
         setFilteredData(result.data.users);
         setData(result.data.users);
         
@@ -111,9 +111,10 @@ function Addusertable({ rows }) {
       },
     })
         .then((result) => {
-          setData(data.filter((user) => user._id !== id));
+        
           console.log(result.data.msg);
-           window.location.reload(); 
+             // Update the users in the state
+             setFilteredData(data.filter((user) => user._id!== id));
         })
         .catch((err) => {
           console.log(err);
@@ -148,8 +149,7 @@ const Filter = (event) => {
 
 
 
-
-  return (
+return (
 <Grid>  
    <Grid> 
    <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
@@ -229,6 +229,7 @@ const Filter = (event) => {
           </TableHead>
           <TableBody>
             {filteredData.map((user) => (
+
               <TableRow key={user._id}>
                 <TableCell sx={{ fontSize: "1em" }}>
                   {" "}
