@@ -1,75 +1,3 @@
-/*import * as React from 'react';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
-import Slide from '@mui/material/Slide';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
-export default function ViewCvfile({ open, handleClose }) {
-  const [cvFiles, setCvFiles] = useState([]);
-  const [fileUrl, setFileUrl] = useState(''); // Assuming fileUrl is a state variable
-
-  useEffect(() => {
-    const fetchCvFiles = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/cvfiles');
-        setCvFiles(response.data);
-      } catch (error) {
-        console.error('Failed to fetch CV files:', error);
-      }
-    };
-
-    fetchCvFiles();
-  }, []);
-
-  return (
-    <React.Fragment>
-      <Dialog
-        fullScreen
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Transition}
-      >
-        <AppBar sx={{ position: 'relative' }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Curriculum Vitae
-            </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              close
-            </Button>
-          </Toolbar>
-        </AppBar>
-
-        {cvFiles.map((cvFile) => (
-          <div key={cvFile.fileName}>
-            <h2>{cvFile.fileName}</h2>
-            <a href={cvFile.fileURL} target="_blank" rel="noopener noreferrer">View File</a>
-          </div>
-        ))}
-      </Dialog>
-    </React.Fragment>
-  );
-}
-*/
-
 import * as React from 'react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -165,7 +93,7 @@ export default function ViewCvfile({ open, handleClose, userId }) {
        {cvFiles.map((cvFile) => (
           <div key={cvFile.fileName}>
             <h2>{cvFile.fileName}</h2>
-            <Button variant="contained" onClick={() => viewFile('CVFILES/assignment 02.pdf')}>
+            <Button variant="contained" onClick={() => viewFile('CVFILES/CV File.pdf')}>
   View File
 </Button>
           </div>
