@@ -170,7 +170,7 @@ export default function Managersidebar() {
         
                   
                   
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/managerviewprofile")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/managerviewInternDetails")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -187,7 +187,7 @@ export default function Managersidebar() {
                 >
                   <PermContactCalendarOutlinedIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
-                <ListItemText primary="View Profile" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="View Profile & Task" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
         
