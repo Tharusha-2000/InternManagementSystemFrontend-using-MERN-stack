@@ -39,7 +39,7 @@
     "react-responsive": "^9.0.2",
     "react-router-dom": "^6.21.2",
     "recharts": "^2.12.2",
-    "sweetalert2": "^11.10.7",
+    "sweetalert2": "^11.6.13",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
