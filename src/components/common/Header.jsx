@@ -36,7 +36,7 @@ export default function Header() {
   function userLogout(){
      if (window.confirm('Are you sure you want to log out?')) {
           localStorage.removeItem('token');
-          navigate('/Login');
+          navigate('/');
         }
   }
   const mobileMenuId = 'primary-search-account-menu-mobile';
