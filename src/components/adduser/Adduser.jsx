@@ -21,7 +21,7 @@ function Adduser() {
     department: "",
   });
 
-  console.log(data);
+  //console.log(data);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -50,14 +50,14 @@ function Adduser() {
 
   const token = localStorage.getItem('token');
   
-  axios.post(`${BASE_URL}/register`, data,{
+  axios.post(`${BASE_URL}register`, data,{
             headers: {
             Authorization: `Bearer ${token}`,
         },
    }).then(result => {   
               if (result.data) {
                  window.alert(result.data.msg);
-                 
+
                  if(result.status === 201 ) {
                     handleClose();
                     window.location.reload(); 
