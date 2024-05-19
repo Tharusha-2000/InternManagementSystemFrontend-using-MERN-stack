@@ -101,7 +101,7 @@ useEffect(() => {
               }
             );
     }
-
+{/*
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
@@ -119,7 +119,36 @@ useEffect(() => {
         }
       }
     };
+  */}
 
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const fileData = { fileURL: fileUrl, userId: internId };
+    console.log("fileData:", fileData);
+
+    // Fetch the existing file for the user
+    /*const response = await axios.get(`http://localhost:8000/api/cvfiles/user/${internId}`); */
+    const response = await axios.get(`http://localhost:8000/api/users/${internId}/cvfiles`);
+
+    // If a file already exists, show an error message and return
+    if (response.data && response.data.fileURL) {
+      alert('A file already exists for this user');
+      return;
+    }
+
+    // If no file exists, upload the new file
+    /*await axios.post("http://localhost:8000/api/cvfiles", fileData); */
+    window.location.reload();
+  } catch (error) {
+    console.log(error);
+    if (error.response && error.response.status === 404) {
+      alert('Error: Route not found');
+    } else {
+      alert('An unknown error occurred');
+    }
+  }
+};
 
 
 

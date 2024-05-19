@@ -21,7 +21,6 @@ import {
   IconButton  } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-import { TextField } from "@mui/material";
 import { db } from './firebase-config';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -88,8 +87,8 @@ const handleChangeRowsPerPage = (event) => {
 };
 
 
-// delete user row
-const deleteUser = (id) => {
+// delete user cv file
+const deleteFile = async (id) => {
   Swal.fire({
     title: "Are you sure?",
     text: "You won't be able to revert this!",
@@ -98,41 +97,49 @@ const deleteUser = (id) => {
     confirmButtonText: "Yes, delete it!",
     confirmButtonColor: "#d33",
     cancelButtonColor: "#3085d6",
-  }).then((result) => {
+  }).then(async (result) => {
     if (result.value) {
-      deleteApi(id);
+      try {
+      await deleteFromFirestore(id);
+      await deleteFromDB(id);
+      Swal.fire("Deleted!", "CV file has been deleted.", "success");
+    } catch (error) {
+      console.error('Error deleting document:', error);
     }
+  }
   });
 }; 
 
-const deleteApi = async (id) => {
+const deleteFromFirestore = async (id) => {
   try {
     const userDoc = doc(db, "cvfiles", id);
     await deleteDoc(userDoc);
-    Swal.fire("Deleted!", "CV file has been deleted.", "success");
-    getUsers();
+    //getUsers();
   } catch (error) {
     console.error('Error deleting document:', error);
+    throw error;
   }
 };
 
 
-/*
-const deleteApi = async (id) => {
+
+const deleteFromDB = async (id) => {
   try {
     const token = localStorage.getItem('token');
-    await axios.delete(`http://localhost:8000/api/cvfiles/${id}`, {
+    /*await axios.delete(`http://localhost:8000/api/cvfiles/${id}`, { */
+    await axios.delete(`http://localhost:8000/api/users/${id}/cvfiles`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    Swal.fire("Deleted!", "CV file has been deleted.", "success");
-    setData(data.filter((item) => item._id !== id)); 
+   /* setData(data.filter((item) => item._id !== id)); */
+   setData(data.filter((item) => item._id !== id));
   } catch (error) {
     console.error('Error deleting CV file:', error);
+    throw error;
   }
 };
-*/
+
 
 // open and close function
 const [openEdit, setOpenEdit] = useState(false);
@@ -215,8 +222,7 @@ return (
                   fontSize: "1em",
                 }}>
                   Status
-                {/*<span className={`status ${row.status}`}>{row.status}</span>
-                {row.hasFile ? 'Completed' : 'Pending'}*/}
+                
               </TableCell>
               <TableCell align="left"></TableCell>
             </TableRow>
@@ -228,21 +234,17 @@ return (
                   {" "}
                   {user.fname} {user.lname}{" "}
                 </TableCell>
-                {/*<TableCell sx={{ fontSize: "1em" }}>{user.role}</TableCell>
-                   <TableCell sx={{ fontSize: "1em" }}>{user.email}</TableCell>*/}
+            
                 <TableCell align="left">
                           {user.cv}
                           <Button 
                               variant="contained" 
                               color="primary" 
                               onClick={() => handleViewOpen(user._id)}
-                          > View CV
-                            {/*<AccountCircleIcon />*/}
+                          > 
+                          <AccountCircleIcon />
                           </Button>
                 </TableCell>
-                <TableCell align="left">
-                    
-                  </TableCell>
                 <TableCell align="left">
                     <Stack spacing={2} direction="row">
                             <EditIcon
@@ -260,7 +262,7 @@ return (
                                 color: "darkred",
                                 cursor: "pointer",
                               }}
-                              onClick={() => { deleteApi(user.id); }}
+                              onClick={() => { deleteFile(user._id); }}
                             />
                     </Stack>
                   </TableCell>
