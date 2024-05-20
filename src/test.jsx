@@ -10,7 +10,7 @@ import { storage } from "./firebaseconfig"
 import { uuidv4 } from '@firebase/util'
 function Test() {
   const [cv, setCV] = useState(null);
-  const [cvUrl, setCVUrl] = useState(null);
+  const [cvUrl, setcvUrl] = useState(null);
   const [progress, setProgress] = useState(0);
   const token = localStorage.getItem('token');
   const [oldImagePath, setOldImagePath] = useState(null);
@@ -48,13 +48,13 @@ function Test() {
       setOldImagePath(cvPath);
       console.log(oldImagePath);
 
-        setCvUrl(downloadURL)
+        setcvUrl(downloadURL)
        // setImage(downloadURL);
        console.log(downloadURL);
         console.log(cvUrl);
        
         axios
-           .post(`${BASE_URL}uploadImage`,{cvUrl:downloadURL}, {
+           .put(`${BASE_URL}uploadcv`,{cvUrl:downloadURL}, {
              headers: { Authorization: `Bearer ${token}` },
            })
            .then((response) => {
@@ -78,7 +78,7 @@ function Test() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((result) => {
-        setCVUrl(result.data.user.cvUrl);
+        setcvUrl(result.data.user.cvUrl);
         console.log(result.data.user.cvUrl);
       })
       .catch((err) => console.log(err));
