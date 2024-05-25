@@ -120,9 +120,6 @@ const Filter = (event) => {
 };
 
 
-
-
-
   return (
  <Grid>  
    <Grid> 
