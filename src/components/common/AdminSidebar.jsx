@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -12,17 +13,18 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
-import SwitchAccountOutlinedIcon from '@mui/icons-material/SwitchAccountOutlined';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import PermContactCalendarOutlinedIcon from '@mui/icons-material/PermContactCalendarOutlined';
 import SettingsApplicationsOutlinedIcon from '@mui/icons-material/SettingsApplicationsOutlined';
+import TuneIcon from '@mui/icons-material/Tune';
+import RecentActorsOutlinedIcon from '@mui/icons-material/RecentActorsOutlined';
 import { indigo } from '@mui/material/colors';
 import {useNavigate} from "react-router-dom";
 import { useAppStore } from './appStore';
+import { useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -78,21 +80,33 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function Sidebar() {
 
   const theme = useTheme();
-  //const [open, setOpen] = React.useState(true);  // change as true
   const navigate = useNavigate();
- // const updateOpen = useAppStore((state) => state.updateOpen);
   const open = useAppStore((state) => state.dopen);
-  const [selected, setSelected] = React.useState("");
+  const [selected, setSelected] = useState("");
+  const location = useLocation();
 
-  {/*const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+  useEffect(() => {
+    const currentPath = location.pathname;
+    
+    if (currentPath.includes("/registration")) {
+      setSelected("Registration");
+    } else if (currentPath.includes("/evaluation")) {
+      setSelected("Evaluation");
+    } else if (currentPath.includes("/profilecreate")) {
+      setSelected("Profile Create");
+    } else if (currentPath.includes("/cvupload")) {
+      setSelected("CV upload");
+    } else if (currentPath.includes("/profile")) {
+      setSelected("Profile");
+    } else if (currentPath.includes("/showInternTask")) {
+      setSelected("View Task");
+    } else if (currentPath.includes("/security")) {
+      setSelected("Security");
+    } else {
+      setSelected("Dashboard");
+    }
+  }, [location]);
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  }; */}
-
-  
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -106,13 +120,20 @@ export default function Sidebar() {
         </DrawerHeader>   
         <Divider />
         <List>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/AdminDashboard")}}>
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { setSelected("Dashboard"); navigate("/AdminDashboard"); }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  
+                  borderRadius: '18px',
+                  padding: 1.5,
+                  border: '5px solid white',
+                  backgroundColor: selected === "Dashboard" ? 'lightblue' : 'inherit',
+                  '&:hover': {
+                    backgroundColor: 'lightblue',
+                    borderRadius: '18px',
+                  },
                 }}
               >
                 <ListItemIcon
@@ -135,7 +156,14 @@ export default function Sidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  backgroundColor: selected === "Registration" ? 'rgba(0, 0, 0, 0.04)' : 'inherit', 
+                  borderRadius: '18px',
+                  padding: 1.5,
+                  border: '5px solid white',
+                  backgroundColor: selected === "Registration" ? 'lightblue' : 'inherit',
+                  '&:hover': {
+                    backgroundColor: 'lightblue',
+                    borderRadius: '18px',
+                  },
                 }}
               >
                 <ListItemIcon
@@ -151,12 +179,20 @@ export default function Sidebar() {
               </ListItemButton>
             </ListItem>
 
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/evaluation")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Evaluation");navigate("/evaluation")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  borderRadius: '18px',
+                  padding: 1.5,
+                  border: '5px solid white',
+                  backgroundColor: selected === "Evaluation" ? 'lightblue' : 'inherit',
+                  '&:hover': {
+                    backgroundColor: 'lightblue',
+                    borderRadius: '18px',
+                  },
                 }}
               >
                 <ListItemIcon
@@ -172,13 +208,20 @@ export default function Sidebar() {
               </ListItemButton>
             </ListItem>
         
-                  
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/profilecreate")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Profile Create");navigate("/profilecreate")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  borderRadius: '18px',
+                  padding: 1.5,
+                  border: '5px solid white',
+                  backgroundColor: selected === "Profile Create" ? 'lightblue' : 'inherit', 
+                  '&:hover': {
+                    backgroundColor: 'lightblue', 
+                    borderRadius: '18px',
+                  },
                 }}
               >
                 <ListItemIcon
@@ -188,18 +231,26 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <SwitchAccountOutlinedIcon sx={{ color: indigo[900] }} /> 
+                  <RecentActorsOutlinedIcon  sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Profile Create" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
         
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/cvupload")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("CV upload");navigate("/cvupload")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  borderRadius: '18px',
+                  padding: 1.5,
+                  border: '5px solid white',
+                  backgroundColor: selected === "CV upload" ? 'lightblue' : 'inherit', 
+                  '&:hover': {
+                    backgroundColor: 'lightblue', 
+                    borderRadius: '18px',
+                  },
                 }}
               >
                 <ListItemIcon
@@ -215,12 +266,20 @@ export default function Sidebar() {
               </ListItemButton>
             </ListItem>
                   
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/profile")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Profile");navigate("/profile")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  borderRadius: '18px',
+                  padding: 1.5,
+                  border: '5px solid white',
+                  backgroundColor: selected === "Profile" ? 'lightblue' : 'inherit', 
+                  '&:hover': {
+                    backgroundColor: 'lightblue', 
+                    borderRadius: '18px',
+                  },
                 }}
               >
                 <ListItemIcon
@@ -237,12 +296,20 @@ export default function Sidebar() {
             </ListItem>
             
 
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/showInternTask")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("View Task");navigate("/showInternTask")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  borderRadius: '18px',
+                  padding: 1.5,
+                  border: '5px solid white',
+                  backgroundColor: selected === "View Task" ? 'lightblue' : 'inherit',
+                  '&:hover': {
+                    backgroundColor: 'lightblue',
+                    borderRadius: '18px',
+                  },
                 }}
               >
                 <ListItemIcon
@@ -252,18 +319,26 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <PermContactCalendarOutlinedIcon sx={{ color: indigo[900] }} /> 
+                  <TuneIcon sx={{ color: indigo[900] }} /> 
                 </ListItemIcon>
                 <ListItemText primary="View Task" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
         
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/security")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Security");navigate("/security")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  borderRadius: '18px',
+                  padding: 1.5,
+                  border: '5px solid white',
+                  backgroundColor: selected === "Security" ? 'lightblue' : 'inherit', 
+                  '&:hover': {
+                    backgroundColor: 'lightblue', 
+                    borderRadius: '18px',
+                  },
                 }}
               >
                 <ListItemIcon
@@ -282,7 +357,6 @@ export default function Sidebar() {
         
         </List>
       </Drawer>
-
     </Box>
   );
 }
