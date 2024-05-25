@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { BASE_URL } from '../../../config';
-
+import { BASE_URL } from '../../config';
 import {
   Paper,
   Table,
@@ -21,7 +20,7 @@ import {
   IconButton  } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-import { db } from './firebase-config';
+//import { db } from './firebase-config';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import DeleteIcon from "@mui/icons-material/Delete";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -126,13 +125,11 @@ const deleteFromFirestore = async (id) => {
 const deleteFromDB = async (id) => {
   try {
     const token = localStorage.getItem('token');
-    /*await axios.delete(`http://localhost:8000/api/cvfiles/${id}`, { */
     await axios.delete(`http://localhost:8000/api/users/${id}/cvfiles`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-   /* setData(data.filter((item) => item._id !== id)); */
    setData(data.filter((item) => item._id !== id));
   } catch (error) {
     console.error('Error deleting CV file:', error);

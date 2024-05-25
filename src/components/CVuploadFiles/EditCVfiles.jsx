@@ -1,32 +1,29 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import { Button,
+         TextField,
+         Dialog,
+         DialogActions,
+         DialogContent,
+         DialogContentText,
+         DialogTitle } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import { Box } from '@mui/system';
 import 'firebase/storage';
 import 'firebase/firestore';
-//import { UploadFile } from '@mui/icons-material';
 import { getStorage, 
         ref, 
         uploadBytesResumable, 
-        getDownloadURL
-       } from "firebase/storage";
-import app from './firebase-config';
-import { BASE_URL } from '../../../config';
+        getDownloadURL } from "firebase/storage";
+//import app from './firebase-config';
+import { BASE_URL } from '../../config';
 
 
 export default function EditCvfile({open, handleClose, internName, internId}) {
   const [file, setFile] = useState(null);
   const [fileUrl, setFileUrl] = useState(null);
   const [inputs , setInputs ] = useState({});
-
   const {getRootProps, getInputProps} = useDropzone({
     onDrop: (acceptedFiles) => {
       setFile(acceptedFiles[0]);
@@ -35,12 +32,12 @@ export default function EditCvfile({open, handleClose, internName, internId}) {
   });
 
     
-useEffect(() => {
-  if (file) {
-    const fileName = `${new Date().getTime()}_${file.name}`;
-    uploadFile(file, fileName);
-  }
-}, [file]);
+  useEffect(() => {
+    if (file) {
+      const fileName = `${new Date().getTime()}_${file.name}`;
+      uploadFile(file, fileName);
+    }
+  }, [file]);
 
 
       const uploadFile = async (file) => {
@@ -51,10 +48,7 @@ useEffect(() => {
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       
-      
-      
 
-      // Listen for state changes, errors, and completion of the upload.
               uploadTask.on('state_changed',
               (snapshot) => {
                 // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
@@ -101,44 +95,34 @@ useEffect(() => {
               }
             );
     }
-{/*
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-        const fileData = { fileURL: fileUrl, userId: internId };
-        console.log("fileData:", fileData);
-        
-        await axios.post("http://localhost:8000/api/cvfiles", fileData);
-        window.location.reload();
-      }catch (error) {
-        console.log(error);
-        if (error.response && error.response.status === 404) {
-          alert('Error: Route not found');
-        } else {
-          alert('An unknown error occurred');
-        }
-      }
-    };
-  */}
 
 const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    const fileData = { fileURL: fileUrl, userId: internId };
+    const fileData = { cvfileURL: fileUrl, userId: internId };
     console.log("fileData:", fileData);
 
+    const token = localStorage.getItem("token");
+
     // Fetch the existing file for the user
-    /*const response = await axios.get(`http://localhost:8000/api/cvfiles/user/${internId}`); */
-    const response = await axios.get(`http://localhost:8000/api/users/${internId}/cvfiles`);
+    const response = await axios.get(`${BASE_URL}${internId}/cvfiles`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     // If a file already exists, show an error message and return
-    if (response.data && response.data.fileURL) {
+    if (response.data && response.data.cvfileURL) {
       alert('A file already exists for this user');
       return;
     }
 
     // If no file exists, upload the new file
-    /*await axios.post("http://localhost:8000/api/cvfiles", fileData); */
+    await axios.put(`${BASE_URL}${internId}/cvfiles`, fileData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     window.location.reload();
   } catch (error) {
     console.log(error);
@@ -149,7 +133,6 @@ const handleSubmit = async (e) => {
     }
   }
 };
-
 
 
 
