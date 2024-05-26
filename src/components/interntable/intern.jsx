@@ -27,7 +27,7 @@ import CardActions from "@mui/joy/CardActions";
 import CardOverflow from "@mui/joy/CardOverflow";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-
+import image3  from "../../assets/Unknown_person.jpg"
 function interndetails({ internId }) {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState({
@@ -38,7 +38,7 @@ function interndetails({ internId }) {
     gender: "",
     email: "",
   });
-
+  const [imageUrl, setImageUrl] = useState(null);
   console.log(data);
 
   useEffect(() => {
@@ -53,6 +53,7 @@ function interndetails({ internId }) {
         .then((result) => {
           setData(result.data.intern);
           console.log(result.data.intern);
+          setImageUrl(result.data.intern.imageUrl);
         })
         .catch((err) => console.log(err));
     }
@@ -166,12 +167,11 @@ function interndetails({ internId }) {
                         maxHeight={200}
                         sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
                       >
-                        <img
-                          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                          srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                          loading="lazy"
-                          alt=""
-                        />
+                         <img
+                        src={imageUrl || image3} 
+                        loading="lazy"
+                        alt=""
+                       />
                       </AspectRatio>
                       <IconButton
                         aria-label="upload new picture"
@@ -296,11 +296,10 @@ function interndetails({ internId }) {
                           sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
                         >
                           <img
-                            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                            srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                            loading="lazy"
-                            alt=""
-                          />
+                           src={imageUrl || image3} 
+                           loading="lazy"
+                           alt=""
+                       />
                         </AspectRatio>
                         <IconButton
                           aria-label="upload new picture"
