@@ -51,7 +51,7 @@ function EvaluationInternList() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/users/Evinterns")
+      .get("http://localhost:8900/api/users/Evinterns")
       .then((result) => {
         console.log(result.data); // Log the data to see what's returned
         setInterns(result.data);
@@ -68,7 +68,7 @@ function EvaluationInternList() {
 
   const handleDelete = (id) => {
     axios
-      .delete("http://localhost:8000/api/users/deleteeformData", {
+      .delete("http://localhost:8900/api/users/deleteeformData", {
         data: { id },
       })
       .then((response) => {
