@@ -19,7 +19,7 @@ import {BASE_URL} from '../../config';
 const defaultTheme = createTheme();
 
 function Login() {
-    console.log("login");
+    //console.log("login");
     const [values, setValues] =useState({
         email: '',
         password: ''
@@ -32,15 +32,13 @@ function Login() {
     
   
     const handleSubmit = (event) => {
-        console.log(values)
+       // console.log(values)
         event.preventDefault();
        if(!values.email || !values.password) {
-            setError('result')
             window.alert('Please fill the required fields')
             return;
        }
        
-
       axios.post(`${BASE_URL}login`, values)
              .then(result => {
                  if(result.data) {
@@ -48,8 +46,7 @@ function Login() {
                      const token = result.data.token;
                      localStorage.setItem("token", token);
                      const decodedToken = jwtDecode(token);
-                     console.log(decodedToken);
-                     console.log("hi");
+                   
                  
                       const role = decodedToken.role;
               
@@ -64,18 +61,16 @@ function Login() {
                         }else if(role === 'manager')  {
                               navigate('/managerdashboard')
                         } else{
-                           setError('result')
                            window.alert('Invalid role')
                         } 
                  } else {
-                setError('result')
                 window.alert(result.data.msg)
                 }
-                        })
+         })
           .catch(err => {
-             if (err.response) {
-                 window.alert(err.response.data.msg);
-              }
+              if (err.response) {
+                   window.alert(err.response.data.msg);
+                }
 
             })
 
