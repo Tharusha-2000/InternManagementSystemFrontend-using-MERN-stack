@@ -52,6 +52,7 @@ function EvaluationinternListMentor() {
   const handleClose = () => {
     setOpen(false);
   };
+  const [refreshKey, setRefreshKey] = useState(0);
   
 
   return (
@@ -85,7 +86,15 @@ function EvaluationinternListMentor() {
                       <AssignmentIndIcon />
                     </IconButton>
 
-                    <Dialog
+                   
+                  </TableCell>
+                  <TableCell align="center">
+    {row.isMentorFormFilled ? "Completed" : "Pending"}
+  </TableCell>
+                </TableRow>
+              ))}
+
+<Dialog
                       open={open}
                       onClose={handleClose}
                       maxWidth="md"
@@ -99,15 +108,10 @@ function EvaluationinternListMentor() {
                           jobPerformanceCriteriasMentor={selectedIntern?.jobPerformanceCriteriasMentor  }
                           coreValuesCriteriasMentor={selectedIntern?.coreValuesCriteriasMentor}
                           handleClose={handleClose}
+                          setRefreshKey={setRefreshKey} refreshKey={refreshKey}
                         />
                       </DialogContent>
                     </Dialog>
-                  </TableCell>
-                  <TableCell align="center">
-    {row.isMentorFormFilled ? "Completed" : "Pending"}
-  </TableCell>
-                </TableRow>
-              ))}
           </TableBody>
         </Table>
       </TableContainer>
