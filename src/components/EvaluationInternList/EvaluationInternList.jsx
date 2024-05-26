@@ -29,7 +29,7 @@ function EvaluationInternList() {
   const [selectedMentorName, setSelectedMentorName] = useState("");
   const [selectedEvaluationFormDetailsId, setSelectedEvaluationFormDetailsId] =
     useState("");
-  const [saveDialogOpen, setSaveDialogOpen] = useState(false); // Add this line
+  const [saveDialogOpen, setSaveDialogOpen] = useState(false); 
   const [completedDialogOpen, setCompletedDialogOpen] = useState(false); // to implement dialog box for notify completed evaluation forms
   const [refreshKey, setRefreshKey] = useState(0); // to refresh the page after save the evaluation form
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -87,7 +87,7 @@ function EvaluationInternList() {
       </Typography>
       <Table
         aria-label="simple table"
-        sx={{ minWidth: 650, backgroundColor: "#f5f5f5" }}
+        sx={{ minWidth: 650 }}
       >
         <TableHead sx={{ backgroundColor: "#e0e0e0" }}>
           <TableRow>
@@ -114,6 +114,7 @@ function EvaluationInternList() {
             <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
               
               </TableCell>
+              
           </TableRow>
         </TableHead>
         <TableBody>
@@ -168,7 +169,7 @@ function EvaluationInternList() {
         />
       </Dialog>
 
-      {/*Add this dialog box for notify succesfully saved pop up*/}
+      {/*Added this dialog box for notify succesfully saved pop up*/}
       <Dialog open={saveDialogOpen} onClose={() => setSaveDialogOpen(false)}>
         <DialogContent style={{ padding: "20px" }}>
           <Typography variant="h5" align="center" gutterBottom>
@@ -211,7 +212,7 @@ function EvaluationInternList() {
       >
         <DialogContent>
           <Typography variant="h6" align="center">
-            Are you sure you want to delete this intern?
+            Are you sure you want to delete this interns evaluation form?
           </Typography>
         </DialogContent>
         <DialogActions>

@@ -14,7 +14,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EvaluationFormAdminEv from "./EvaluationFormAdminEv";
 import EvaluationFormAdminMen from "./EvaluationFormAdminMen";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
 
 function EvaluationFormAdminFu({
   internName,
@@ -28,9 +27,7 @@ function EvaluationFormAdminFu({
   const [selectedEvaluator, setSelectedEvaluator] = useState("");
   const [additionalCriteria, setAdditionalCriteria] = useState([]);
   const [additionalCriteria2, setAdditionalCriteria2] = useState([]);
-  const navigate = useNavigate();
-
-  const [evaluatorError, setEvaluatorError] = useState(false); //for evaluator validation
+  const [evaluatorError, setEvaluatorError] = useState(false);
   const [initialCriteria] = useState([
     "System Proficiency",
     "Quality of work - Free from errors and mistakes. Accuracy, quality of work in general",
@@ -46,26 +43,20 @@ function EvaluationFormAdminFu({
     "Decision-making - The ability to make decisions and the quality and timeliness of those decisions",
     "Compliance and Professionalism",
   ]);
-
-  const [jobPerformanceCriteriasMentor, setJobPerformanceCriteriasMentor] =
-    useState([]);
-  const [coreValuesCriteriasMentor, setCoreValuesCriteriasMentor] = useState(
-    []
-  );
+  const [jobPerformanceCriteriasMentor, setJobPerformanceCriteriasMentor] = useState([]);
+  const [coreValuesCriteriasMentor, setCoreValuesCriteriasMentor] = useState([]);
   const [dateError, setDateError] = useState(false);
 
   const handleSave = () => {
     if (!evaluationDate) {
-      //validation for date
       setDateError(true);
-      alert("Please select a date.");
+      alert("Please select a date.");//validation for date field
       return;
     }
 
     if (!selectedEvaluator) {
-      //validation for evaluator
       setEvaluatorError(true);
-      alert("Please select an evaluator.");
+      alert("Please select an evaluator.");//select evaluator validation
       return;
     }
     saveEvaluator(
@@ -76,9 +67,9 @@ function EvaluationFormAdminFu({
       coreValuesCriteriasMentor
     );
 
-    
     onSave(); 
   };
+
   const saveEvaluator = (
     selectedEvaluator,
     initialCriteria,
@@ -86,10 +77,8 @@ function EvaluationFormAdminFu({
     jobPerformanceCriteriasMentor,
     coreValuesCriteriasMentor
   ) => {
-    const jobPerformanceCriteriasEvaluator =
-      initialCriteria.concat(additionalCriteria);
-    const coreValuesCriteriasEvaluator =
-      initialCriteria2.concat(additionalCriteria2);
+    const jobPerformanceCriteriasEvaluator = initialCriteria.concat(additionalCriteria);
+    const coreValuesCriteriasEvaluator = initialCriteria2.concat(additionalCriteria2);
 
     axios
       .post("http://localhost:8000/api/users/evaluatorname", {
@@ -103,7 +92,6 @@ function EvaluationFormAdminFu({
       })
       .then((response) => {
         console.log(response.data);
-        
       })
       .catch((error) => {
         console.error("There was an error!", error);
@@ -136,7 +124,7 @@ function EvaluationFormAdminFu({
             value={evaluationDate}
             onChange={(e) => {
               setEvaluationDate(e.target.value);
-              setDateError(false); // Reset dateError when a date is selected
+              setDateError(false);
             }}
             InputLabelProps={{ shrink: true }}
             style={{ width: "650px" }}
@@ -147,14 +135,14 @@ function EvaluationFormAdminFu({
       </Container>
 
       <Container maxWidth="md">
-      <Accordion sx={{ backgroundColor: '#D3D3D3' }}>
+        <Accordion sx={{ backgroundColor: '#D3D3D3' }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
             style={{ height: "60px" }}
           >
-            <Typography>Click here to see evaluotor evaluation form and select evaluator</Typography>
+            <Typography>Click here to see evaluator evaluation form and select evaluator</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <EvaluationFormAdminEv
@@ -188,9 +176,7 @@ function EvaluationFormAdminFu({
             <EvaluationFormAdminMen
               mentorName={mentorName}
               evaluationFormDetailsId={evaluationFormDetailsId}
-              setJobPerformanceCriteriasMentor={
-                setJobPerformanceCriteriasMentor
-              }
+              setJobPerformanceCriteriasMentor={setJobPerformanceCriteriasMentor}
               setCoreValuesCriteriasMentor={setCoreValuesCriteriasMentor}
             />
           </AccordionDetails>
@@ -201,22 +187,22 @@ function EvaluationFormAdminFu({
           variant="contained"
           color="primary"
           style={{ margin: "10px", width: "100px", height: "40px" }}
-          onClick={() => handleSave(selectedEvaluator)}
+          onClick={handleSave}
         >
           Save
         </Button>
         <Button
-  variant="outlined"
-  style={{
-    margin: "8px",
-    borderColor: "blue",
-    width: "100px",
-    height: "40px",
-  }}
-  onClick={onClose} // replace this with the actual path
->
-  Cancel
-</Button>
+          variant="outlined"
+          style={{
+            margin: "8px",
+            borderColor: "blue",
+            width: "100px",
+            height: "40px",
+          }}
+          onClick={onClose}
+        >
+          Cancel
+        </Button>
       </Box>
     </div>
   );

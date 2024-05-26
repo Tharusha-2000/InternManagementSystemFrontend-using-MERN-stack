@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, Typography, Box, InputLabel, Select, MenuItem, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Radio, TextField, Button, FormControl } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
+import { BASE_URL } from '../../config';
 
 function EvaluationFormAdminEv({ evaluationFormDetailsId,handleSave, additionalCriteria, setAdditionalCriteria, additionalCriteria2, setAdditionalCriteria2,initialCriteria, initialCriteria2,  setSelectedEvaluator,selectedEvaluator, evaluatorError, setEvaluatorError  }) {
     
@@ -17,19 +18,24 @@ function EvaluationFormAdminEv({ evaluationFormDetailsId,handleSave, additionalC
 
 
     useEffect(() => {
-        console.log("Evaluation Form Details ID in EvaluationFormAdminEv component:", evaluationFormDetailsId);
-      
-        axios.get('http://localhost:8000/api/users/evaluators')
-          .then(response => {
-            setEvaluators(response.data);
-          })
-          .catch(error => {
-            console.error('There was an error!', error);
-          });
-      
-        console.log(selectedEvaluator);
-      }, [evaluationFormDetailsId, selectedEvaluator]); // Both dependencies in a single array
+      const token = localStorage.getItem("token");
     
+      axios.get(`${BASE_URL}evaluators`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(response => {
+        setEvaluators(response.data); // response.data should be an array of evaluator names
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
+    
+      console.log(selectedEvaluator);
+    }, [evaluationFormDetailsId, selectedEvaluator]); // Both dependencies in a single array
+
+
      
       const handleChange = (event) => {
         setSelectedEvaluator(event.target.value);

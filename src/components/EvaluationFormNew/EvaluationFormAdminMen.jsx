@@ -22,7 +22,8 @@ function EvaluationFormAdminMen({ mentorName: selectedMentorName, evaluationForm
     "Initiative and creativity -  The ability to  proceed with a task without being told every detail and the ability to make constructive suggestions.",
     "Cooperation - Willingness to work harmoniously with others in getting a job done.",
     "Decision-making - The ability to make decisions and the quality and timeliness of those decisions",
-    "Compliance and Professionalism"
+    "Compliance and Professionalism",
+    "This is new initial crititia",
     // Add more initial criteria as needed
   ];
 
@@ -69,21 +70,7 @@ function EvaluationFormAdminMen({ mentorName: selectedMentorName, evaluationForm
     }, [additionalCriteria3, additionalCriteria4]);
 
 
-  const saveMentorEvaluation = () => {
-    const jobPerformanceCriteriasMentor = [...initialCriteria3, ...additionalCriteria3];
-    const coreValuesCriteriasMentor = [...initialCriteria4, ...additionalCriteria4];
-
-    axios
-      .post("http://localhost:8000/api/users/evaluatorname", {
-        id: evaluationFormDetailsId,
-        mentorName,
-        jobPerformanceCriteriasMentor,
-        coreValuesCriteriasMentor,
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
-  };
+  
 
   return (
     <div>
@@ -248,7 +235,7 @@ function EvaluationFormAdminMen({ mentorName: selectedMentorName, evaluationForm
         <TextField
           value={ratings4[index] ? ratings4[index] * 20 + '%' : ''}
           disabled={true}
-          // Add your other TextField properties here
+          
         />
       </TableCell>
       {index >= initialCriteria4.length && (
