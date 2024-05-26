@@ -22,6 +22,8 @@ function EvaluationFormMentor({
   jobPerformanceCriteriasMentor,
   coreValuesCriteriasMentor,
   handleClose,
+  setRefreshKey, // Add this line
+  refreshKey, // Add this line
 }) {
   const [actionTakenMentor, setActionTakenMentor] = useState("");
   const [commentMentor, setCommentMentor] = useState("");
@@ -383,14 +385,17 @@ function EvaluationFormMentor({
           justifyContent="flex-end"
           style={{ marginTop: "20px" }}
         >
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ marginLeft: "20px" }}
-            onClick={onSave}
-          >
-            Save
-          </Button>
+       <Button
+  variant="contained"
+  color="primary"
+  style={{ marginLeft: "20px" }}
+  onClick={() => {
+    onSave();
+    setRefreshKey(refreshKey + 1); // Corrected here
+  }}
+>
+  Save
+</Button>
           <Button
             variant="contained"
             color="secondary"
