@@ -20,7 +20,7 @@ function EvaluationinternListEvaluator() {
         const userId = decoded.payloadObj.id; // replace 'id' with the property that holds the user ID in your JWT payload
   
         const response = await axios.get(
-          `http://localhost:8000/api/users/getInternsByEvaluator/${userId}`
+          `http://localhost:8900/api/users/getInternsByEvaluator/${userId}`
         );
         console.log(response.data);
         setRows(response.data);
