@@ -1,475 +1,3 @@
-/*import React from 'react';
-import AdminSidebar from '../../components/common/AdminSidebar';
-import Header from '../../components/common/Header';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
-import EventRepeatIcon from '@mui/icons-material/EventRepeat';
-import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
-import ContactPageIcon from '@mui/icons-material/ContactPage';
-import BarChart from "./charts/BarChart";
-import PieChart from './charts/PieChart';
-
-
-export default function AdminDashboard() {
-  return (
-    <>
-    <div className="bgcolor">
-    <Header />
-    <Box height={70} />
-    <Box sx={{ display: 'flex' }}>
-    <AdminSidebar />
-    
-    <Box  component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Grid container spacing={2}>
-            <Grid item xs={8}>
-              <Stack spacing={2} direction="row">
-                <Card sx={{ maxWidth: 49 + "%", height: 140 }} className="gradient">
-                     <CardContent>
-                      <div>
-                       <SwitchAccountIcon />
-                      </div>
-                        <Typography gutterBottom variant="h6" component="div">
-                          43
-                        </Typography>
-                        <Typography gutterBottom variant="body2" component="div" sx={{color:"#13135f"}}>
-                          Total Interns
-                        </Typography>
-                       
-                      </CardContent>
-                </Card>
-                <Card sx={{ maxWidth: 49 + "%", height: 140 }} className="gradient">
-                     <CardContent>
-                      <div>
-                        <ContactPageIcon />
-                      </div>
-                        <Typography gutterBottom variant="h6" component="div">
-                          15
-                        </Typography>
-                        <Typography gutterBottom variant="body2" component="div" sx={{color:"#13135f"}}>
-                          New Interns
-                        </Typography>
-                      
-                      </CardContent>
-                </Card>
-              </Stack>
-            </Grid>
-        <Grid item xs={4}>
-        <Stack spacing={2} >
-                  <Card sx={{ maxWidth: 345 }}>
-                     <CardContent>
-                     <Stack spacing={2} direction="row">
-                        <div className="iconstyle">
-                         <PublishedWithChangesIcon />
-                         </div>
-                         <div className='paddingall'>
-                          <span className='progressPercentage'>40%</span>
-                          <br />
-                          <span className='progressName'>Evalauation Progress</span>
-                         </div>
-                      </Stack>
-                      </CardContent>
-                </Card>
-                <Card sx={{ maxWidth: 345 }}>
-                     <CardContent>
-                     <Stack spacing={2} direction="row">
-                        <div className="iconstyle">
-                         <EventRepeatIcon />
-                         </div>
-                         <div className='paddingall'>
-                          <span className='progressPercentage'>70%</span>
-                          <br />
-                          <span className='progressName'>Mentoring Progress</span>
-                         </div>
-                      </Stack>
-                      </CardContent>
-                </Card>
-        </Stack>    
-        </Grid>
-          </Grid>
-        <Box height={20} />
-        <Grid container spacing={2}>
-            <Grid item xs={8}>
-                <Card sx={{ height: 60 + "vh" }}>
-                     <CardContent>
-                          <BarChart />
-                      </CardContent>
-                </Card>
-            </Grid>
-            <Grid item xs={4}>
-                <Card sx={{ height: 60 + "vh"  }}>
-                     <CardContent>
-                         <PieChart />
-                      </CardContent>
-                </Card>
-            </Grid>
-          </Grid>
-     
-  </Box>
-  </Box>
-  </div>
-  </>
-  );
-}
-*/
-
-/*
-import React from 'react';
-import AdminSidebar from '../../components/common/AdminSidebar';
-import Header from '../../components/common/Header';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
-import EventRepeatIcon from '@mui/icons-material/EventRepeat';
-import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
-import ContactPageIcon from '@mui/icons-material/ContactPage';
-import BarChart from "../admin_page/charts/BarChart";
-import PieChart from '../admin_page/charts/PieChart';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import TimerIcon from '@mui/icons-material/Timer';
-
-export default function InternDashboard() {
-  return (
-    <>
-    <div className="bgcolor">
-    <Header />
-    <Box height={70} />
-    <Box sx={{ display: 'flex' }}>
-    <AdminSidebar />
-    
-   <Box  component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Grid container spacing={2}>
-            <Grid item xs={8}>
-              <Stack spacing={2} direction="row">
-                <Card sx={{ maxWidth: 79 + "%", height: 140 }} className="gradient">
-                     <CardContent>
-                      <div>
-                       <SwitchAccountIcon />
-                      </div>
-                        <Typography gutterBottom variant="h6" component="div">
-                          43
-                        </Typography>
-                        <Typography gutterBottom variant="body2" component="div" sx={{color:"#13135f"}}>
-                          Total Interns
-                        </Typography>
-                       
-                      </CardContent>
-                </Card>
-                <Card sx={{ maxWidth: 49 + "%", height: 140 }} className="gradient">
-                     <CardContent>
-                      <div>
-                        <ContactPageIcon />
-                      </div>
-                        <Typography gutterBottom variant="h6" component="div">
-                          15
-                        </Typography>
-                        <Typography gutterBottom variant="body2" component="div" sx={{color:"#13135f"}}>
-                          New Interns
-                        </Typography>
-                      
-                      </CardContent>
-                </Card>
-                </Stack>
-                <Stack spacing={2} direction="row">
-                <Card sx={{ maxWidth: 49 + "%", height: 140 }} className="gradient">
-                     <CardContent>
-                      <div>
-                        <GroupAddIcon />
-                      </div>
-                        <Typography gutterBottom variant="h6" component="div">
-                          10
-                        </Typography>
-                        <Typography gutterBottom variant="body2" component="div" sx={{color:"#13135f"}}>
-                          Assign Mentors
-                        </Typography>
-                      </CardContent>
-                </Card>
-                <Card sx={{ maxWidth: 49 + "%", height: 140 }} className="gradient">
-                     <CardContent>
-                      <div>
-                        <GroupAddIcon />
-                      </div>
-                        <Typography gutterBottom variant="h6" component="div">
-                          5
-                        </Typography>
-                        <Typography gutterBottom variant="body2" component="div" sx={{color:"#13135f"}}>
-                          Assign Evaluators
-                        </Typography>
-                      </CardContent>
-                </Card>
-                <Card sx={{ maxWidth: 49 + "%", height: 140 }} className="gradient">
-                     <CardContent>
-                      <div>
-                        <TimerIcon />
-                      </div>
-                        <Typography gutterBottom variant="h6" component="div">
-                          7 Days
-                        </Typography>
-                        <Typography gutterBottom variant="body2" component="div" sx={{color:"#13135f"}}>
-                          Average Evaluation Period
-                        </Typography>
-                      </CardContent>
-                </Card>
-              </Stack>
-            </Grid>
-        <Grid item xs={4}>
-        <Stack spacing={2} >
-                  <Card sx={{ maxWidth: 345 }}>
-                     <CardContent>
-                     <Stack spacing={2} direction="row">
-                        <div className="iconstyle">
-                         <PublishedWithChangesIcon />
-                         </div>
-                         <div className='paddingall'>
-                          <span className='progressPercentage'>40%</span>
-                          <br />
-                          <span className='progressName'>Evaluation Progress</span>
-                         </div>
-                      </Stack>
-                      </CardContent>
-                </Card>
-                <Card sx={{ maxWidth: 345 }}>
-                     <CardContent>
-                     <Stack spacing={2} direction="row">
-                        <div className="iconstyle">
-                         <EventRepeatIcon />
-                         </div>
-                         <div className='paddingall'>
-                          <span className='progressPercentage'>70%</span>
-                          <br />
-                          <span className='progressName'>Mentoring Progress</span>
-                         </div>
-                      </Stack>
-                      </CardContent>
-                </Card>
-        </Stack>    
-        </Grid>
-          </Grid>
-        <Box height={20} />
-        <Grid container spacing={2}>
-            <Grid item xs={8}>
-                <Card sx={{ height: 60 + "vh" }}>
-                     <CardContent>
-                          <BarChart />
-                      </CardContent>
-                </Card>
-            </Grid>
-            <Grid item xs={4}>
-                <Card sx={{ height: 60 + "vh"  }}>
-                     <CardContent>
-                         <PieChart />
-                      </CardContent>
-                </Card>
-            </Grid>
-          </Grid>
-  
-  </Box>
-  </Box>
-  </div>
-  </>
-  );
-}
-
-
-
-import React from 'react';
-import AdminSidebar from '../../components/common/AdminSidebar';
-import Header from '../../components/common/Header';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
-import EventRepeatIcon from '@mui/icons-material/EventRepeat';
-import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
-import ContactPageIcon from '@mui/icons-material/ContactPage';
-import BarChart from "../admin_page/charts/BarChart";
-import PieChart from '../admin_page/charts/PieChart';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import TimerIcon from '@mui/icons-material/Timer';
-
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { rgbToHex } from '@mui/material';
-
-export default function InternDashboard() {
-  return (
-    <>
-    <div className="bgcolor">
-    <Header />
-    <Box height={70} />
-    <Box sx={{ display: 'flex' }}>
-    <AdminSidebar />
-    
-   <Box  component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Grid container spacing={2}>
-            <Grid item xs={8}>
-              <Stack spacing={2} direction="row">
-              
-    <Card sx={{ maxWidth: 5000, bgcolor: "gray" }} >
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
-      />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <Stack spacing={10} direction="row">
-                <Card sx={{ maxWidth: 70 + "%", height: 140 + "%" }} className="gradient">
-                     <CardContent>
-                      <div>
-                        <GroupAddIcon />
-                      </div>
-                        <Typography gutterBottom variant="h6" component="div">
-                          10
-                        </Typography>
-                        <Typography gutterBottom variant="body2" component="div" sx={{color:"#13135f"}}>
-                          Assign Mentors
-                        </Typography>
-                      </CardContent>
-                </Card>
-                <Card sx={{ maxWidth: 49 + "%", height: 140 + "%" }} className="gradient">
-                     <CardContent>
-                      <div>
-                        <GroupAddIcon />
-                      </div>
-                        <Typography gutterBottom variant="h6" component="div">
-                          10
-                        </Typography>
-                        <Typography gutterBottom variant="body2" component="div" sx={{color:"#13135f"}}>
-                          Assign Mentors
-                        </Typography>
-                      </CardContent>
-                </Card>
-                <Card sx={{ maxWidth: 49 + "%", height: 140 + "%" }} className="gradient">
-                     <CardContent>
-                      <div>
-                        <GroupAddIcon />
-                      </div>
-                        <Typography gutterBottom variant="h6" component="div">
-                          10
-                        </Typography>
-                        <Typography gutterBottom variant="body2" component="div" sx={{color:"#13135f"}}>
-                          Assign Mentors
-                        </Typography>
-                      </CardContent>
-                </Card>
-        </Stack>        
-        {/*<ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-      </ExpandMore>--}
-      </CardActions>
-    {/*<Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography>
-            Set aside off of the heat to let rest for 10 minutes, and then serve.
-          </Typography>
-        </CardContent>
-    </Collapse> ----}
-    </Card>
-                
-                </Stack>
-               
-            </Grid>
-        <Grid item xs={4}>
-        <Stack spacing={2} >
-                  <Card sx={{ maxWidth: 345 }}>
-                     <CardContent>
-                     <Stack spacing={2} direction="row">
-                        <div className="iconstyle">
-                         <PublishedWithChangesIcon />
-                         </div>
-                         <div className='paddingall'>
-                          <span className='progressPercentage'>40%</span>
-                          <br />
-                          <span className='progressName'>Evaluation Progress</span>
-                         </div>
-                      </Stack>
-                      </CardContent>
-                </Card>
-                <Card sx={{ maxWidth: 345 }}>
-                     <CardContent>
-                     <Stack spacing={2} direction="row">
-                        <div className="iconstyle">
-                         <EventRepeatIcon />
-                         </div>
-                         <div className='paddingall'>
-                          <span className='progressPercentage'>70%</span>
-                          <br />
-                          <span className='progressName'>Mentoring Progress</span>
-                         </div>
-                      </Stack>
-                      </CardContent>
-                </Card>
-        </Stack>    
-        </Grid>
-          </Grid>
-        <Box height={20} />
-        <Grid container spacing={2}>
-            <Grid item xs={8}>
-                <Card sx={{ height: 60 + "vh" }}>
-                     <CardContent>
-                          <BarChart />
-                      </CardContent>
-                </Card>
-            </Grid>
-            <Grid item xs={4}>
-                <Card sx={{ height: 60 + "vh"  }}>
-                     <CardContent>
-                         <PieChart />
-                      </CardContent>
-                </Card>
-            </Grid>
-          </Grid>
-  
-  </Box>
-  </Box>
-  </div>
-  </>
-  );
-}
-
-*/
-
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { BASE_URL } from "../../config";
@@ -502,6 +30,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CardContent from '@mui/material/CardContent';
 import CountBox from "./theme/CountBox";
 import CountCircle from "./theme/CountCircle";
+
 
 
 export default function AdminDashboard()  {
@@ -675,18 +204,21 @@ export default function AdminDashboard()  {
         </Box>
         
         { /* User display box */ }
+
         <Box
           gridColumn="span 4"
           gridRow="span 3"
-          backgroundColor={colors.primary[800]}
+          backgroundColor={colors.primary[900]}
           overflow="auto"
           sx={{
-            padding: '20px', // Add padding
-            borderRadius: '10px', // Round the corners
+            padding: '20px', 
+            borderRadius: '10px', 
           }}
         >
+          <Typography variant="h5" style={{ marginBottom: '10px',  fontWeight: 'bold'  }}>Recent users</Typography>
+         
           <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
+        <Box sx={{ borderBottom: 5, borderColor: 'divider' }} >
           <Tabs
             value={value}
             onChange={handleChange}
@@ -705,7 +237,7 @@ export default function AdminDashboard()  {
         </Box>
         
         <TabPanel value="0" > 
-           {internData.map((user) => (
+           {[...internData].reverse().map((user) => (
             <TableRow key={user._id}>
               <TableCell sx={{ fontSize: "1em", display: 'flex', alignItems: 'center' }}>
               <Avatar>{user.fname[0]}{user.lname[0]}</Avatar>
@@ -715,17 +247,18 @@ export default function AdminDashboard()  {
            ))}
          </TabPanel>
          <TabPanel value="1">
-              {mentorData.map((user) => (
+              {[...mentorData].reverse().map((user) => (
                 <TableRow key={user._id}>
                   <TableCell sx={{ fontSize: "1em", display: 'flex', alignItems: 'center' }}>
                   <Avatar>{user.fname[0]}{user.lname[0]}</Avatar>
                   <span style={{ marginLeft: '10px' }}>{user.fname} {user.lname}</span>
+                  {/*<span style={{ marginLeft: '10px' }}>Last Login: {new Date(user.lastLogin).toLocaleString()}</span>*/}
                   </TableCell>
                 </TableRow>
               ))}
           </TabPanel>
           <TabPanel value="2">  
-              {evaluatorData.map((user) => (    
+              {[...evaluatorData].reverse().map((user) => (    
                 <TableRow key={user._id}>
                   <TableCell sx={{ fontSize: "1em", display: 'flex', alignItems: 'center' }}>
                   <Avatar>{user.fname[0]}{user.lname[0]}</Avatar>
@@ -735,7 +268,7 @@ export default function AdminDashboard()  {
               ))}
           </TabPanel>
           <TabPanel value="4">
-              {managerData.map((user) => (
+              {[...managerData].reverse().map((user) => (
                 <TableRow key={user._id}>
                   <TableCell sx={{ fontSize: "1em", display: 'flex', alignItems: 'center' }}>
                   <Avatar>{user.fname[0]}{user.lname[0]}</Avatar>
@@ -746,7 +279,7 @@ export default function AdminDashboard()  {
           </TabPanel>
             
           </TabContext>
-        
+          </Box>
             {/*{mockTransactions.map((transaction, i) => (
             <Box
               key={`${transaction.txId}-${i}`}
@@ -778,7 +311,7 @@ export default function AdminDashboard()  {
               </Box>
             </Box>
           ))} */}
-        </Box>
+       
 
 
         {/* ROW 2 */}
@@ -789,19 +322,21 @@ export default function AdminDashboard()  {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          borderRadius= '20px'
+          borderRadius= '8px'
         >
           <CountBox
             title={`${internCount} / ${userCount}`}
             subtitle="Interns"
-            progress={progress1} 
+            progress={progress1}
             increase={`${internPercentage}%`}
             icon={
-              <EmailIcon
+              <PersonAddIcon
                 sx={{ color: colors.greenAccent[400], fontSize: "26px" }}
               />
             }
           />
+           
+             
         </Box>
         <Box
           gridColumn="span 2"
@@ -809,7 +344,7 @@ export default function AdminDashboard()  {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          borderRadius= '20px'
+          borderRadius= '8px'
         >
           <CountBox
             title={`${mentorCount} / ${userCount}`}
@@ -829,7 +364,7 @@ export default function AdminDashboard()  {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          borderRadius= '20px'
+          borderRadius= '8px'
         >
           <CountBox
             title={`${evaluatorCount} / ${userCount}`}
@@ -849,7 +384,7 @@ export default function AdminDashboard()  {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          borderRadius= '20px'
+          borderRadius= '8px'
         >
           <CountBox
             title="1,325,134"
@@ -869,7 +404,7 @@ export default function AdminDashboard()  {
         <Box
           gridColumn="span 4"
           gridRow="span 2"
-          backgroundColor={colors.primary[700]}
+          backgroundColor={colors.primary[900]}
           p="30px"
         >
           <Typography variant="h5" fontWeight="600">
@@ -896,21 +431,21 @@ export default function AdminDashboard()  {
         <Box
           gridColumn="span 4"
           gridRow="span 2"
-          backgroundColor={colors.primary[700]}
+          backgroundColor={colors.primary[900]}
         >
           <Typography
             variant="h5"
             fontWeight="600"
             sx={{ padding: "30px 30px 0 30px" }}
           >
-            Sales Quantity
+            progress
           </Typography>
            
         </Box>
         <Box
           gridColumn="span 4"
           gridRow="span 2"
-          backgroundColor={colors.primary[700]}
+          backgroundColor={colors.primary[900]}
           padding="30px"
         >
           <Typography
@@ -918,7 +453,7 @@ export default function AdminDashboard()  {
             fontWeight="600"
             sx={{ marginBottom: "15px" }}
           >
-            Geography Based Traffic
+            calender
           </Typography>
            
         </Box>

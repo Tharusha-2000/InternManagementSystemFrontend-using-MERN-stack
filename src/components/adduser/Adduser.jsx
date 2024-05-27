@@ -118,7 +118,7 @@ function Adduser() {
                         }}
                       >
                     <FormControlLabel value="intern" control={<Radio />} label="Intern" />
-                    <FormControlLabel value="evaluator " control={<Radio />} label="Evaluator" />
+                    <FormControlLabel value="evaluator" control={<Radio />} label="Evaluator" />
                     <FormControlLabel value="manager" control={<Radio />} label="Manager" />
                     <FormControlLabel value="admin" control={<Radio />} label="Admin" />
                     <FormControlLabel value="mentor" control={<Radio />} label="Mentor" />
