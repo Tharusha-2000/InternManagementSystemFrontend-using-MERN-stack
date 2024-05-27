@@ -21,6 +21,18 @@ import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import axios from 'axios';
 import { BASE_URL } from "../../config";
+import image3  from "../../assets/Unknown_person.jpg"
+
+import {
+  deleteObject,
+  getDownloadURL,
+  ref, uploadBytesResumable,
+} from "firebase/storage";
+import { storage } from "../../firebaseconfig"
+import { uuidv4 } from '@firebase/util'
+
+
+
 
 export default function Profile() {
  
@@ -36,8 +48,23 @@ export default function Profile() {
 
   const [originalData, setOriginalData] = useState({});
 
+
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const token = localStorage.getItem('token');
+  const [oldImagePath, setOldImagePath] = useState(null);
+
+
+  useEffect(() => {
+    if (image) {
+      uploadFile();
+    }
+  }, [image]);
+
+
  useEffect(() => {
-    const token = localStorage.getItem("token");
+   
     axios
       .get(`${BASE_URL}user`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -45,8 +72,9 @@ export default function Profile() {
       .then((result) => {
         setData(result.data.user);
         setOriginalData(result.data.user);
+        setImageUrl(result.data.user.imageUrl);
+        console.log(result.data.user.imageUrl);
        
-        //setImageUrl(result.data.user.image);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -55,9 +83,71 @@ export default function Profile() {
     // Reset the form data to the original data
     setData(originalData);
   };
+
+
+ // Upload file
+ const uploadFile =() => {
+
+  if (image === null) {
+     return;
+  }
+  const imagePath = `img/${image.name + uuidv4()}`;
+  const imageRef = ref(storage,imagePath);
+  const uploadFile = uploadBytesResumable(imageRef, image);
+
+  uploadFile.on('state_changed', (snapshot) => {
+    const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes * 100);
+    setProgress(progress)
+  }, (err) => {
+    console.log("error while uploading file", err);
+  }, () => {
+    setProgress(0);
+    getDownloadURL(uploadFile.snapshot.ref).then((downloadURL) => {
+      console.log('File available at', downloadURL);
+    
+    // Delete the previous image
+    if (oldImagePath) {
+      const oldImageRef = ref(storage, oldImagePath);
+      deleteObject(oldImageRef).then(() => {
+        console.log('Old image deleted');
+      }).catch((error) => {
+        console.log('Failed to delete old image', error);
+      });
+    }
+    console.log(imagePath);
+    // Save the path of the uploaded image
+    setOldImagePath(imagePath);
+    console.log(oldImagePath);
+    setImageUrl(downloadURL)
+    console.log(downloadURL);
+    console.log(imageUrl);
+     
+      axios
+         .put(`${BASE_URL}uploadImage`,{imageUrl:downloadURL}, {
+           headers: { Authorization: `Bearer ${token}` },
+         })
+         .then((response) => {
+            console.log(response.data.msg);
+         })
+         .catch((error) => {
+           console.log(error);
+         });
+
+    });
+    setImage(null);
+  });
+ 
+}
+
+
+
 const handleSubmit = (e) => {
    e.preventDefault();
-   const token = localStorage.getItem("token");
+
+     //update photo after the click save button it not uersfrienly so commented it
+    // uploadFile();
+
+    //other details
  axios
     .put(`${BASE_URL}updateinterns`, data, {
       headers: { Authorization: `Bearer ${token}` },
@@ -98,38 +188,49 @@ return (
             spacing={3}
             sx={{ display: { xs: 'none', md: 'flex' }, my: 1 }}
           >
-            <Stack direction="column" spacing={1}>
-              <AspectRatio
-                ratio="1"
-                maxHeight={200}
-                sx={{ flex: 1, minWidth: 120, borderRadius: '100%' }}
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                  srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                  loading="lazy"
-                  alt=""
-                />
-              </AspectRatio>
-              <IconButton
-                aria-label="upload new picture"
-                size="sm"
-                variant="outlined"
-                color="neutral"
-                sx={{
-                  bgcolor: 'background.body',
-                  position: 'absolute',
-                  zIndex: 2,
-                  borderRadius: '50%',
-                  left: 100,
-                  top: 170,
-                  boxShadow: 'sm',
-                }}
-              >
-                <EditRoundedIcon />
-              </IconButton>
-     
-            </Stack>
+           <Stack direction="column" spacing={1}>
+                  <AspectRatio
+                    ratio="1"
+                    maxHeight={200}
+                    sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
+                  >
+                    
+                    <img
+                        src={imageUrl || image3} 
+                        loading="lazy"
+                        alt=""
+                    />
+                  </AspectRatio>
+                  <input
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      id="icon-button-file"
+                      type="file"
+                      onChange={(event) => {
+                        setImage(event.target.files[0]);
+                      }}
+                    />
+                 <label htmlFor="icon-button-file">
+                  <IconButton
+                    aria-label="upload new picture"
+                    size="sm"
+                    variant="outlined"
+                    color="neutral"
+                    sx={{
+                      bgcolor: "background.body",
+                      position: "absolute",
+                      zIndex: 2,
+                      borderRadius: "50%",
+                      left: 100,
+                      top: 170,
+                      boxShadow: "sm",
+                    }}
+                     component="span"
+                  >
+                    <EditRoundedIcon />
+                  </IconButton>
+                </label>  
+                </Stack>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
             <Stack spacing={1}>
                 <FormLabel>Name</FormLabel>
@@ -333,7 +434,7 @@ return (
                           Cancel
                     </Button>
                     <Button variant="solid" type="submit"  onClick={handleSubmit}>
-                      Save
+                        Save
                     </Button>
                       </CardActions>
                     </CardOverflow>
