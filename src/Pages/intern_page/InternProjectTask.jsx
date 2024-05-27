@@ -114,7 +114,14 @@ function TaskTable() {
     // Function to add a task
     const addTask = async () => {
       if(!data.title) {
-        window.alert('Please fill the required fields')
+        Swal.fire({ position: "top",
+          text:"Please fill the required fields",
+          customClass: {
+            container: 'my-swal',
+            confirmButton: 'my-swal-button' 
+          }
+       })
+      //  window.alert('Please fill the required fields')
         return;
      } 
       await axios.post(`${BASE_URL}task`, data, {
@@ -129,24 +136,53 @@ function TaskTable() {
     
       /* delect task*/
     function handleDelete(id) {
-      if (window.confirm("Are you sure you want to delete this task?")) {
-        axios
-          .delete(`${BASE_URL}task/${id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then(() => {
-            // Remove the deleted task from the local state
-            setTasks(tasks.filter((task) => task._id !== id));
-          })
-          .catch((err) => {
-            console.log(err);
-            if (err.response.status === 403) {
-              window.alert(err.response.data.msg);
-            }
-          });
-      }
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this task!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        width: '400px',
+      }).then((result) => {
+        if (result.value) {
+          axios
+            .delete(`${BASE_URL}task/${id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then(() => {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Task has been deleted.",
+                icon: "success",
+                width: '400px',
+              });
+              // Remove the deleted task from the local state
+              setTasks(tasks.filter((task) => task._id !== id));
+            })
+            .catch((err) => {
+              console.log(err);
+              if (err.response.status === 403) {
+                Swal.fire({
+                  position: "top",
+                  text: err.response.data.msg,
+                  customClass: {
+                    container: 'my-swal',
+                    confirmButton: 'my-swal-button'
+                  }
+                })
+                // window.alert(err.response.data.msg);
+                .then(() => {
+                  localStorage.removeItem('token');
+                  navigate("/Login");
+                })
+              }
+            });
+        }
+      });
     }
   
     {/* update task*/}
@@ -165,9 +201,18 @@ function TaskTable() {
           },
         })
         .then((response) => {
-          window.alert(response.data.msg);
+          Swal.fire({ position: "top",
+          text:response.data.msg,
+          customClass: {
+            container: 'my-swal',
+            confirmButton: 'my-swal-button' 
+          }
+       })
+         // window.alert(response.data.msg);
+         .then(() => {
           window.location.reload();
           console.log(response.data);
+         })
         })
         .catch((error) => {
           console.log(error);

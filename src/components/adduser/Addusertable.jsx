@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from '../../config';
-
+import Swal from "sweetalert2";
 import {
   Button,
   Dialog,
@@ -72,6 +72,19 @@ function Addusertable({ rows }) {
   };
 
   function handleRoleChange() {
+    console.log(selectedRole);
+    if (!selectedRole) {
+      Swal.fire({
+        position: "top",
+        text: "Please select a user",
+        customClass: {
+          container: 'my-swal',
+          confirmButton: 'my-swal-button'
+        }
+      });
+      return; // Exit the function
+    }
+  
     axios
       .put(`${BASE_URL}users/${selectedUserId}`, 
       {role: selectedRole},
@@ -87,45 +100,74 @@ function Addusertable({ rows }) {
         setData(updateData);
         setFilteredData(updateData);
         console.log(result.data.msg);
+        Swal.fire({ position: "top", text:result.data.msg
+          ,customClass: {container: 'my-swal',
+           confirmButton: 'my-swal-button'} })
         closepopup();
+        setSelectedRole(null);
      
       })
       .catch((err) => {
         console.log(err);
         if ( err.response.status ===403 ) {
-          window.alert(err.response.data.msg);
+          Swal.fire({ position: "top", text:err.response.data.msg
+          ,customClass: {container: 'my-swal',
+          confirmButton: 'my-swal-button'} })
+
+         // window.alert(err.response.data.msg);
+         .then(() => {
            localStorage.removeItem('token');
            navigate("/Login");
+         });
         }
       });
   }
   
   {/* delect user*/}
 
-  function handleDelete(id) {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      axios
-        .delete(`${BASE_URL}users/${id}`,{
-          headers: {
-          Authorization: `Bearer ${token}`,
-      },
-    })
-        .then((result) => {
-        
-          console.log(result.data.msg);
-             // Update the users in the state
-             setFilteredData(data.filter((user) => user._id!== id));
-        })
-        .catch((err) => {
-          console.log(err);
-        if ( err.response.status ===403 ) {
-          window.alert(err.response.data.msg);
-          localStorage.removeItem('token');
-           navigate("/Login");
-        }
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      width: '400px',
+    
+    }).then((result) => {
+      if (result.value) {
+        axios
+          .delete(`${BASE_URL}users/${id}`,{
+            headers: {
+            Authorization: `Bearer ${token}`,
+        },
+      })
+          .then((result) => {
+            Swal.fire({ title: "Deleted!",
+                        text: "User has been deleted.",
+                        icon: "success",
+                        width: '400px',
+                     } );
+            setFilteredData(data.filter((user) => user._id !== id));
+          })
+          .catch((err) => {
+            console.log(err);
+            if (err.response.status === 403) {
+               Swal.fire({ position: "top", text: err.response.data.msg
+                          ,customClass: {container: 'my-swal',
+                                confirmButton: 'my-swal-button'} })
+                // window.alert(err.response.data.msg);
+               .then(() => {
+                localStorage.removeItem('token');
+                navigate("/Login");
+               })
+            }
+          });
+      }
     });
-  }
-}
+  };
   
 
 

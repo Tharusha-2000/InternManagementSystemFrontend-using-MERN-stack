@@ -22,7 +22,7 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import axios from "axios";
 import { BASE_URL } from "../../config";
 import image3 from "../../assets/Unknown_person.jpg"
-
+import Swal from "sweetalert2";
 
 import {
   deleteObject,
@@ -172,7 +172,10 @@ const handleSubmit = (e) => {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((response) => {
-      window.alert(response.data.msg);
+      Swal.fire({ position: "top", text: response.data.msg 
+      ,customClass: {container: 'my-swal',
+      confirmButton: 'my-swal-button'} });
+     // window.alert(response.data.msg);
       console.log(response.data);
     })
     .catch((error) => {
