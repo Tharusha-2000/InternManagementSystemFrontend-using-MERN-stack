@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -12,17 +13,15 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
-import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 import SwitchAccountOutlinedIcon from '@mui/icons-material/SwitchAccountOutlined';
-import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 import PermContactCalendarOutlinedIcon from '@mui/icons-material/PermContactCalendarOutlined';
 import SettingsApplicationsOutlinedIcon from '@mui/icons-material/SettingsApplicationsOutlined';
 import { indigo } from '@mui/material/colors';
 import {useNavigate} from "react-router-dom";
 import { useAppStore } from './appStore';
+import { useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -77,19 +76,29 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function Managersidebar() {
   const theme = useTheme();
-  //const [open, setOpen] = React.useState(true);  // change as true
   const navigate = useNavigate();
- // const updateOpen = useAppStore((state) => state.updateOpen);
   const open = useAppStore((state) => state.dopen);
+  const [selected, setSelected] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    const currentPath = location.pathname;
+    
+    if (currentPath.includes("/profile")) {
+      setSelected("Profile");
+    } else if (currentPath.includes("/managerevaluation")) {
+      setSelected("Evaluation");
+    } else if (currentPath.includes("/managerviewInternDetails")) {
+      setSelected("View Profile & Task");
+    } else if (currentPath.includes("/security")) {
+      setSelected("Security");
+    } else {
+      setSelected("Dashboard");
+    }
+  }, [location]);
 
 
-  {/*const handleDrawerOpen = () => {
-    setOpen(true);
-  };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  }; */}
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -103,12 +112,20 @@ export default function Managersidebar() {
         </DrawerHeader>   
         <Divider />
         <List>
-            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/managerdashboard")}}>
+            <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Dashboard"); navigate("/managerdashboard")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  borderRadius: '18px',
+                  padding: 1.5,
+                  border: '5px solid white',
+                  backgroundColor: selected === "Dashboard" ? 'lightblue' : 'inherit',
+                  '&:hover': {
+                    backgroundColor: 'lightblue',
+                    borderRadius: '18px',
+                  },
                 }}
               >
                 <ListItemIcon
@@ -125,12 +142,20 @@ export default function Managersidebar() {
             </ListItem>
 
       
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/profile")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Profile"); navigate("/profile")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  borderRadius: '18px',
+                  padding: 1.5,
+                  border: '5px solid white',
+                  backgroundColor: selected === "Profile" ? 'lightblue' : 'inherit',
+                  '&:hover': {
+                    backgroundColor: 'lightblue',
+                    borderRadius: '18px',
+                  },
                 }}
               >
                 <ListItemIcon
@@ -147,12 +172,20 @@ export default function Managersidebar() {
             </ListItem>
 
 
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/managerevaluation")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Evaluation"); navigate("/managerevaluation")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  borderRadius: '18px',
+                  padding: 1.5,
+                  border: '5px solid white',
+                  backgroundColor: selected === "Evaluation" ? 'lightblue' : 'inherit',
+                  '&:hover': {
+                    backgroundColor: 'lightblue',
+                    borderRadius: '18px',
+                  },
                 }}
               >
                 <ListItemIcon
@@ -170,12 +203,20 @@ export default function Managersidebar() {
         
                   
                   
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/managerviewInternDetails")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("View Profile & Task"); navigate("/managerviewInternDetails")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  borderRadius: '18px',
+                  padding: 1.5,
+                  border: '5px solid white',
+                  backgroundColor: selected === "View Profile & Task" ? 'lightblue' : 'inherit',
+                  '&:hover': {
+                    backgroundColor: 'lightblue',
+                    borderRadius: '18px',
+                  },
                 }}
               >
                 <ListItemIcon
@@ -192,12 +233,20 @@ export default function Managersidebar() {
             </ListItem>
         
 
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{navigate("/security")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Security"); navigate("/security")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  borderRadius: '18px',
+                  padding: 1.5,
+                  border: '5px solid white',
+                  backgroundColor: selected === "Security" ? 'lightblue' : 'inherit',
+                  '&:hover': {
+                    backgroundColor: 'lightblue',
+                    borderRadius: '18px',
+                  },
                 }}
               >
                 <ListItemIcon

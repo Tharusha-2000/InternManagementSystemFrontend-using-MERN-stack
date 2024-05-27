@@ -95,6 +95,7 @@ function TaskTable() {
       fetchTasks();
     }, []);
   
+
     // Function to fetch tasks
     const fetchTasks = async () => {
       const response = await axios.get(`${BASE_URL}task`, {
@@ -109,21 +110,21 @@ function TaskTable() {
       console.log(responseData);
     };
   
+
     // Function to add a task
     const addTask = async () => {
       if(!data.title) {
         window.alert('Please fill the required fields')
         return;
-    } 
+     } 
       await axios.post(`${BASE_URL}task`, data, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+             headers: {
+               Authorization: `Bearer ${token}`,
+             },
         });
         setData({ title: "" });
         fetchTasks();
-      
-    };
+      };
   
     
       /* delect task*/
