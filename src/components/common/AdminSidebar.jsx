@@ -84,7 +84,7 @@ export default function Sidebar() {
   const open = useAppStore((state) => state.dopen);
   const [selected, setSelected] = React.useState("");
 
-  {/*const handleDrawerOpen = () => {
+{/*const handleDrawerOpen = () => {
     setOpen(true);
   };
 
@@ -92,7 +92,7 @@ export default function Sidebar() {
     setOpen(false);
   }; */}
 
-  
+
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -129,7 +129,7 @@ export default function Sidebar() {
             </ListItem>
 
       
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Registration");navigate("/registration");}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Registration")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
