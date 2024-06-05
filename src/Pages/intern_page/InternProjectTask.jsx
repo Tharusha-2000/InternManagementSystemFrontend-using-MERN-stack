@@ -116,16 +116,27 @@ function TaskTable() {
       if(!data.title) {
         window.alert('Please fill the required fields')
         return;
-     } 
-      await axios.post(`${BASE_URL}task`, data, {
-             headers: {
-               Authorization: `Bearer ${token}`,
-             },
+      } 
+    
+      try {
+        await axios.post(`${BASE_URL}task`, data, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
         setData({ title: "" });
         fetchTasks();
-      };
-  
+      } catch (error) {
+        
+        if (error.response) {
+          window.alert(error.response.data.msg);
+        } else {
+        
+          window.alert('Error', error.message);
+        }
+      }
+    };
+          
     
       /* delect task*/
     function handleDelete(id) {
