@@ -1,0 +1,68 @@
+.dashboard {
+    padding: 20px;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .evaluation-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .summary {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .cardHoverEffect {
+    transition: transform .3s; /* Animation */
+  }
+  
+  .cardHoverEffect:hover {
+    transform: scale(.95); /* Scales the card up to 105% when hovered */
+  }
+  .charts {
+    margin-bottom: 20px;
+    display: flex;
+  justify-content: space-between;
+    
+  }
+  
+  .detailed-scores {
+    margin-bottom: 20px;
+  }
+  
+  .comments, .actions {
+    margin-bottom: 40px;
+    
+  }
+  
+  .comment-box {
+    background-color:  #c2e1fc;
+    padding: 10px;
+    margin: 10px 0;
+    border-left: 4px solid #cccccc;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+/* card styles  */
+.cardStyle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 262px;
+    height: 280px;
+    background-color: #c0dfff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+/* end of card styles */

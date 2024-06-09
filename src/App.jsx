@@ -30,7 +30,7 @@ import Interntable from './components/interntable/interntable.jsx';
 import Intern from './components/interntable/intern.jsx';
 import Project from './components/project/project.jsx';
 import Projectinternlist from './components/project/projectinternlist.jsx'
-import EvaluationFormAdmin from './components/EvaluationFormNew/EvaluationFormAdmin.jsx';
+
 
 import Test from './test.jsx';
 import Test2 from './test2.jsx';
@@ -82,7 +82,7 @@ function App() {
         <Route path="/project" element={<Project/>}> </Route>
         <Route path="/projectinternlist" element={<Projectinternlist/>}> </Route>
         
-        <Route path="/evaluationForm" element={<EvaluationFormAdmin/>}> </Route>
+     
         
         <Route path="/Test" element={<Test/>}> </Route>
         <Route path="/Test2" element={<Test2/>}> </Route>

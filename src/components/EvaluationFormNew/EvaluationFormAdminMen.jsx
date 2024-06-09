@@ -115,7 +115,7 @@ function EvaluationFormAdminMen({ mentorName: selectedMentorName, evaluationForm
 
 <Container maxWidth="md">
   <Typography variant="h5" align="left" style={{ margin: "20px 0", fontWeight: "bold" }}>
-  Criterias for Assessing Job Performance 
+  CRITERIAS FOR ASSASING JOB PERFORMANCE
   </Typography>
   <br></br>
   <TableContainer component={Paper}>
@@ -194,7 +194,7 @@ function EvaluationFormAdminMen({ mentorName: selectedMentorName, evaluationForm
 
 <Container maxWidth="md">
   <Typography variant="h5" align="left" style={{ margin: "20px 0", fontWeight: "bold" }}>
-  CORE VALUES AND OBJECTIVES
+  CRITERIAS FOR CORE VALUES AND OBJECTIVES
   </Typography>
   <br></br>
   <TableContainer component={Paper}>
@@ -271,7 +271,7 @@ function EvaluationFormAdminMen({ mentorName: selectedMentorName, evaluationForm
 
 <Container maxWidth="md">
   <Typography variant="h5" align="left" style={{ margin: "20px 0", fontWeight: "bold" }}>
-    Overall Performance 
+    OVERALL PERFOMANCE
   </Typography>
   <br></br>
   <TableContainer component={Paper}>
@@ -322,7 +322,7 @@ function EvaluationFormAdminMen({ mentorName: selectedMentorName, evaluationForm
 
 <Container maxWidth="md"  >
 <Typography variant="h5" align="left" style={{ margin: "20px 0", fontWeight: "bold" }}>
-  Action Taken
+  ACTION TAKEN
   </Typography>
 </Container>
 
