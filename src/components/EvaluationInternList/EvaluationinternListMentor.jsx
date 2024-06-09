@@ -16,6 +16,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 function EvaluationinternListMentor() {
+  const [refreshKey, setRefreshKey] = useState(0);
   const [rows, setRows] = useState([]);
   useEffect(() => {
     const fetchMentorDetails = async () => {
@@ -35,7 +36,7 @@ function EvaluationinternListMentor() {
     };
 
     fetchMentorDetails();
-  }, []);
+  }, [refreshKey]);
 
   const [open, setOpen] = useState(false);
   const [selectedIntern, setSelectedIntern] = useState(null);
@@ -52,8 +53,6 @@ function EvaluationinternListMentor() {
   const handleClose = () => {
     setOpen(false);
   };
-  const [refreshKey, setRefreshKey] = useState(0);
-  
 
   return (
     <div>
@@ -85,33 +84,31 @@ function EvaluationinternListMentor() {
                     <IconButton onClick={() => handleClickOpen(row)}>
                       <AssignmentIndIcon />
                     </IconButton>
-
-                   
                   </TableCell>
                   <TableCell align="center">
-    {row.isMentorFormFilled ? "Completed" : "Pending"}
-  </TableCell>
+                    {row.isMentorFormFilled ? "Completed" : "Pending"}
+                  </TableCell>
                 </TableRow>
               ))}
 
-<Dialog
-                      open={open}
-                      onClose={handleClose}
-                      maxWidth="md"
-                      fullWidth
-                    >
-                      <DialogTitle>Evaluation Form</DialogTitle>
-                      <DialogContent>
-                        <EvaluationFormMentor
-                          internId={selectedIntern?.internId}
-                          internName={selectedIntern?.internName}
-                          jobPerformanceCriteriasMentor={selectedIntern?.jobPerformanceCriteriasMentor  }
-                          coreValuesCriteriasMentor={selectedIntern?.coreValuesCriteriasMentor}
-                          handleClose={handleClose}
-                          setRefreshKey={setRefreshKey} refreshKey={refreshKey}
-                        />
-                      </DialogContent>
-                    </Dialog>
+            <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+              <DialogTitle>Evaluation Form</DialogTitle>
+              <DialogContent>
+                <EvaluationFormMentor
+                  internId={selectedIntern?.internId}
+                  internName={selectedIntern?.internName}
+                  jobPerformanceCriteriasMentor={
+                    selectedIntern?.jobPerformanceCriteriasMentor
+                  }
+                  coreValuesCriteriasMentor={
+                    selectedIntern?.coreValuesCriteriasMentor
+                  }
+                  handleClose={handleClose}
+                  setRefreshKey={setRefreshKey}
+                  refreshKey={refreshKey}
+                />
+              </DialogContent>
+            </Dialog>
           </TableBody>
         </Table>
       </TableContainer>

@@ -110,7 +110,7 @@ function EvaluationFormAdminEv({ evaluationFormDetailsId,handleSave, additionalC
       <Container maxWidth="md">
 
       <Typography variant="h5" align="left" style={{ margin: "20px 0", fontWeight: "bold" }}>
-        Criterias for Assessing Job Performance
+      CRITERIAS FOR ASSASING JOB PERFORMANCE
         </Typography>
         <br></br>
         <TableContainer component={Paper}>
@@ -184,7 +184,7 @@ function EvaluationFormAdminEv({ evaluationFormDetailsId,handleSave, additionalC
 
 <Container maxWidth="md">
   <Typography variant="h5" align="left" style={{ margin: "20px 0", fontWeight: "bold" }}>
-  CORE VALUES AND OBJECTIVES
+  CRITERIAS FOR CORE VALUES AND OBJECTIVES
   </Typography>
   <br></br>
   <TableContainer component={Paper}>
@@ -270,7 +270,7 @@ function EvaluationFormAdminEv({ evaluationFormDetailsId,handleSave, additionalC
 
 <Container maxWidth="md">
   <Typography variant="h5" align="left" style={{ margin: "20px 0", fontWeight: "bold" }}>
-    Overall Performance
+    OVERALL PERFORMANCE
   </Typography>
   <br></br>
   <TableContainer component={Paper}>
