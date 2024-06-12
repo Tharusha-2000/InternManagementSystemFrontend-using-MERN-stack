@@ -12,7 +12,7 @@ import MuiAppBar from '@mui/material/AppBar';
 import { useAppStore } from './appStore';
 import { useNavigate } from 'react-router-dom';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-
+import Swal from "sweetalert2";
 const AppBar = styled(MuiAppBar, {
  })(({  theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
@@ -33,11 +33,22 @@ export default function Header() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
  
-  function userLogout(){
-     if (window.confirm('Are you sure you want to log out?')) {
-          localStorage.removeItem('token');
-          navigate('/Login');
-        }
+  function userLogout() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to log out?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, log out',
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+     
+    }).then((result) => {
+      if (result.value) {
+        localStorage.removeItem('token');
+        navigate('/Login');
+      }
+    });
   }
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (

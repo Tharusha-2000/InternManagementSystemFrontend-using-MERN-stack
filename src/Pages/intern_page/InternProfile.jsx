@@ -22,6 +22,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import axios from 'axios';
 import { BASE_URL } from "../../config";
 import image3  from "../../assets/Unknown_person.jpg"
+import Swal from "sweetalert2";
 
 import {
   deleteObject,
@@ -34,8 +35,14 @@ import { uuidv4 } from '@firebase/util'
 
 
 
-export default function Profile() {
+export default function InternProfile() {
  
+ 
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+  
+
   const [data, setData] = useState({
     fname: "",
     lname: "",
@@ -52,10 +59,22 @@ export default function Profile() {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [progress, setProgress] = useState(0);
-  const token = localStorage.getItem('token');
   const [oldImagePath, setOldImagePath] = useState(null);
 
 
+  if (userRole !== 'intern') {
+    Swal.fire({
+      text: 'You do not have permission to access this function.',
+      icon: 'error',
+      width: '400px',
+      customClass: {
+        container: 'my-swal',
+        confirmButton: 'my-swal-button' 
+      }
+    });
+   
+    return null; // Do not render the component
+  }
   useEffect(() => {
     if (image) {
       uploadFile();
@@ -153,7 +172,10 @@ const handleSubmit = (e) => {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((response) => {
-      window.alert(response.data.msg);
+      Swal.fire({ position: "top", text: response.data.msg 
+                  ,customClass: {container: 'my-swal',
+                   confirmButton: 'my-swal-button'} });
+   //   window.alert(response.data.msg);
       console.log(response.data);
     })
     .catch((error) => {

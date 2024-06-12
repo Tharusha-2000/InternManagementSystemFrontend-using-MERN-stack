@@ -28,7 +28,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Swal from "sweetalert2";
 import EditCVfiles from "./EditCVfiles";
 import ViewCVfiles from "./ViewCVfiles";
-
+import { jwtDecode } from "jwt-decode";
 
 
 export default function InternCvList({ rows }) {
@@ -40,7 +40,11 @@ export default function InternCvList({ rows }) {
 
   // get details in database 
   const token = localStorage.getItem('token');
- 
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+  if (userRole !== 'admin') {
+    return null; // Do not render the component
+  }
  
   useEffect(() => {
     axios
