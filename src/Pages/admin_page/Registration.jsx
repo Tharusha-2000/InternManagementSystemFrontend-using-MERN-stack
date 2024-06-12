@@ -9,6 +9,10 @@ import Addusertable from '../../components/adduser/Addusertable';
 
 
 export default function Registration() {
+
+  const token = localStorage.getItem('token');
+ 
+ 
   return (
     <>
     <Header />

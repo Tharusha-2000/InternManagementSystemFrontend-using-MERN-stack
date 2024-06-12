@@ -15,6 +15,8 @@ import {useNavigate } from 'react-router-dom';
 import  {jwtDecode} from 'jwt-decode';
 import image from '../../assets/photo1.jpeg'
 import {BASE_URL} from '../../config';
+import Swal from "sweetalert2";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const defaultTheme = createTheme();
 
@@ -25,56 +27,58 @@ function Login() {
         password: ''
     })
 
-    
+    const [loading, setLoading] = useState(false);
     const [error, setError] =useState(null)
     const navigate = useNavigate()
     axios.defaults.withCredentials = true;
     
   
     const handleSubmit = (event) => {
-       // console.log(values)
-        event.preventDefault();
-       if(!values.email || !values.password) {
-            window.alert('Please fill the required fields')
-            return;
-       }
-       
+      event.preventDefault();
+      if(!values.email || !values.password) {
+        Swal.fire({ position: "top", text: "Please fill the required fields" 
+                        ,customClass: { confirmButton: 'my-button' }});
+        return;
+      }
+      setLoading(true); 
+   
+    
       axios.post(`${BASE_URL}login`, values)
-             .then(result => {
-                 if(result.data) {
-                     window.alert(result.data.msg);
-                     const token = result.data.token;
-                     localStorage.setItem("token", token);
-                     const decodedToken = jwtDecode(token);
-                   
-                 
-                      const role = decodedToken.role;
-              
-                        if(role === 'admin') {
-                              navigate('/AdminDashboard');
-                        } else if(role === 'intern')  {
-                              navigate('/interndashboard')
-                        }else if(role === 'mentor')  {
-                              navigate('/mentordashboard')
-                        }else if(role === 'evaluator')  {
-                              navigate('/evaluatordashboard')  
-                        }else if(role === 'manager')  {
-                              navigate('/managerdashboard')
-                        } else{
-                           window.alert('Invalid role')
-                        } 
-                 } else {
-                window.alert(result.data.msg)
-                }
-         })
-          .catch(err => {
-              if (err.response) {
-                   window.alert(err.response.data.msg);
-                }
-
-            })
-
-    }   
+        .then(result => {
+        
+          if(result.data) {
+            setLoading(false);
+           // Swal.fire({ position: "top", text: result.data.msg });
+            const token = result.data.token;
+            localStorage.setItem("token", token);
+            const decodedToken = jwtDecode(token);
+            const role = decodedToken.role;
+    
+            if(role === 'admin') {
+              navigate('/AdminDashboard');
+            } else if(role === 'intern')  {
+              navigate('/interndashboard')
+            } else if(role === 'mentor')  {
+              navigate('/mentordashboard')
+            } else if(role === 'evaluator')  {
+              navigate('/evaluatordashboard')  
+            } else if(role === 'manager')  {
+              navigate('/managerdashboard')
+            } else {
+              Swal.fire({ position: "top", text:"Invalid role"  ,customClass: { confirmButton: 'my-button' }});
+            } 
+          } else {
+            Swal.fire({ position: "top", text: result.data.msg  ,customClass: { confirmButton: 'my-button' }});
+          }
+        })
+        .catch(err => {
+          setLoading(false); 
+          
+          if (err.response) {
+            Swal.fire({ position: "top", text: err.response.data.msg  ,customClass: { confirmButton: 'my-button' }});
+          }
+        })
+    }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -140,8 +144,9 @@ function Login() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={loading}
               >
-                Login in
+                {loading ? <CircularProgress size={24} /> : 'Log in'}
               </Button>
              
               <Grid container>

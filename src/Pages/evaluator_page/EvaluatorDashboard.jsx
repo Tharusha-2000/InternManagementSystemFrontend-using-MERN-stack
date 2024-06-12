@@ -2,9 +2,18 @@ import React from 'react';
 import Evaluatorsidebar from '../../components/common/Evaluatorsidebar';
 import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
-
+import { jwtDecode } from "jwt-decode";
 
 export default function EvaluatorDashboard() {
+  
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+  if (userRole !== 'evaluator') {
+    return null; // Do not render the component
+  }
+
+
   return (
     <>
     <Header />

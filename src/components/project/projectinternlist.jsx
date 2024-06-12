@@ -26,7 +26,7 @@ import ProjectTask from "../project/project";
 
 
 function internlist({ rows }) {
-  //const [DialogIsOpen, setDialogIsOpen] = useState(false);
+
   const [role, setRole] = useState("");
   const [data, setData] = useState([]);
   
@@ -37,7 +37,7 @@ function internlist({ rows }) {
   {/* get details in database */}
   const token = localStorage.getItem('token');
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    //const token = localStorage.getItem("token");
     if (token) {
       const decodedToken = jwtDecode(token);
       setRole(decodedToken.role);

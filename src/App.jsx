@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, BrowserRouter, Link ,useNavigate } from 'react-router-dom';
 import React,{ useEffect, useState } from 'react';
 import {jwtDecode} from 'jwt-decode';
-
+import './App.css';
 
 import Login from './components/login/Login';
 import Addusertable from './components/adduser/Addusertable';
@@ -61,9 +61,13 @@ import ManagerViewInternDetails  from './Pages/manager_page/ManagerViewInternDet
 
 function App() {
   const [user,setUsers] = useState();  
+  
+
+
   return (
    
-   <BrowserRouter>
+  <BrowserRouter>
+   
       <TokenCheck setUsers={setUsers} />
       <Routes>
         <Route path="/Login" element={<Login setUsers={setUsers}/>} > </Route>
@@ -148,7 +152,7 @@ function App() {
             
 
         </Routes>
-
+     
    </BrowserRouter>    
   
   );

@@ -14,12 +14,23 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+
 import { BASE_URL } from '../../config';
 
 
+
 function EvaluationinternListMentor() {
+
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
   const [refreshKey, setRefreshKey] = useState(0);
   const [rows, setRows] = useState([]);
+  
+  if(userRole !== 'mentor'){
+      return null; // Do not render the component
+    }
+  
   useEffect(() => {
     const fetchMentorDetails = async () => {
       try {
