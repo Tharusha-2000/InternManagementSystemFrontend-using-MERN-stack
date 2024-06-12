@@ -15,6 +15,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import Dialog from "@mui/material/Dialog";
 import EvaluationFormEvaluator from "../EvaluationFormNew/EvaluationFormEvaluator";
+import { BASE_URL } from '../../config';
 
 function EvaluationinternListEvaluator() {
   const [rows, setRows] = useState([]); // Store the interns data here
@@ -35,9 +36,14 @@ function EvaluationinternListEvaluator() {
        // const token = localStorage.getItem("token"); // 'token' is the key you're using to store the JWT
         const decoded = KJUR.jws.JWS.parse(token);
         const userId = decoded.payloadObj.id; // replace 'id' with the property that holds the user ID in your JWT payload
-
+  
         const response = await axios.get(
-          `http://localhost:8900/api/users/getInternsByEvaluator/${userId}`
+          `${BASE_URL}getInternsByEvaluator/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
         );
         console.log(response.data);
         setRows(response.data);
@@ -45,9 +51,9 @@ function EvaluationinternListEvaluator() {
         console.error(err);
       }
     };
-
+  
     fetchInternDetails();
-  },  [refreshKey]);
+  }, [refreshKey]);
 
   const handleClickOpen = (row) => {
     if (row.isEvaluated) {
@@ -66,39 +72,30 @@ function EvaluationinternListEvaluator() {
 
   return (
     <div>
-     <TableContainer component={Paper}>
+<TableContainer component={Paper}>
   <Table sx={{ minWidth: 650 }} aria-label="simple table">
     <TableHead>
       <TableRow>
-        <TableCell>Intern Name</TableCell>
-        <TableCell align="center">Evaluate Before</TableCell>
-        <TableCell align="center">Evaluation Form</TableCell>
-        <TableCell align="center">Status</TableCell>
+        <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>Intern Name</TableCell>
+        <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }} align="center">Evaluate Before</TableCell>
+        <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }} align="center">Evaluation Form</TableCell>
+        <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }} align="center">Status</TableCell>
       </TableRow>
     </TableHead>
     <TableBody>
-      {rows.map((row) => (
-        <TableRow
-          key={row.name}
-          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-        >
-          <TableCell component="th" scope="row">
-            {row.name}
-          </TableCell>
-          <TableCell align="center">
-            {new Date(row.evaluate_before).toISOString().substring(0, 10)}
-          </TableCell>
-          <TableCell align="center">
+      {rows.map((row, index) => (
+        <TableRow key={index} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+          <TableCell component="th" scope="row" sx={{ fontSize: "1rem" }}>{row.name}</TableCell>
+          <TableCell align="center" sx={{ fontSize: "1rem" }}>{new Date(row.evaluate_before).toISOString().substring(0, 10)}</TableCell>
+          <TableCell align="center" sx={{ fontSize: "1rem" }}>
             <IconButton onClick={() => handleClickOpen(row)}>
               <AssignmentIndIcon />
             </IconButton>
           </TableCell>
-          <TableCell align="center">
-            {row.isEvaluated ? "Evaluated" : "Not Evaluated"}
-          </TableCell>
+          <TableCell align="center" sx={{ fontSize: "1rem" }}>{row.isEvaluated ? "Evaluated" : "Not Evaluated"}</TableCell>
         </TableRow>
       ))}
-          </TableBody>
+    </TableBody>
 
           <Dialog
   open={open}

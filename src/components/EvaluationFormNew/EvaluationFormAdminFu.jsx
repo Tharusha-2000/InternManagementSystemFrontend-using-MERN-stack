@@ -14,6 +14,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EvaluationFormAdminEv from "./EvaluationFormAdminEv";
 import EvaluationFormAdminMen from "./EvaluationFormAdminMen";
 import axios from "axios";
+import { BASE_URL } from '../../config';
 
 function EvaluationFormAdminFu({
   internName,
@@ -46,6 +47,7 @@ function EvaluationFormAdminFu({
   const [jobPerformanceCriteriasMentor, setJobPerformanceCriteriasMentor] = useState([]);
   const [coreValuesCriteriasMentor, setCoreValuesCriteriasMentor] = useState([]);
   const [dateError, setDateError] = useState(false);
+  const token = localStorage.getItem('token'); 
 
   const handleSave = () => {
     if (!evaluationDate) {
@@ -79,9 +81,9 @@ function EvaluationFormAdminFu({
   ) => {
     const jobPerformanceCriteriasEvaluator = initialCriteria.concat(additionalCriteria);
     const coreValuesCriteriasEvaluator = initialCriteria2.concat(additionalCriteria2);
-
+  
     axios
-      .post("http://localhost:8900/api/users/evaluatorname", {
+      .post(`${BASE_URL}evaluatorname`, {
         id: evaluationFormDetailsId,
         evaluatorName: selectedEvaluator,
         jobPerformanceCriteriasEvaluator,
@@ -89,6 +91,10 @@ function EvaluationFormAdminFu({
         jobPerformanceCriteriasMentor,
         coreValuesCriteriasMentor,
         evaluateBefore: evaluationDate,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
       .then((response) => {
         console.log(response.data);
