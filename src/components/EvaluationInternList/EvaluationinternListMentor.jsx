@@ -14,6 +14,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { BASE_URL } from '../../config';
+
 
 function EvaluationinternListMentor() {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -26,7 +28,11 @@ function EvaluationinternListMentor() {
         const userId = decoded.payloadObj.id; // replace 'sub' with the property that holds the user ID in your JWT payload
 
         const response = await axios.get(
-          `http://localhost:8900/api/users/checkMentor/${userId}`
+          `${BASE_URL}checkMentor/${userId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
         );
         console.log(response.data);
         setRows(response.data);

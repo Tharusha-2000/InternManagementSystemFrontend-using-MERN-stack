@@ -20,8 +20,11 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EvaluationFormAdminFu from "../EvaluationFormNew/EvaluationFormAdminFu";
+import { BASE_URL } from '../../config';
+
 
 function EvaluationInternList() {
+  const token = localStorage.getItem('token'); 
   const [interns, setInterns] = useState([]);
   const [error, setError] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -51,7 +54,11 @@ function EvaluationInternList() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8900/api/users/Evinterns")
+      .get(`${BASE_URL}Evinterns`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
       .then((result) => {
         console.log(result.data); // Log the data to see what's returned
         setInterns(result.data);
@@ -61,15 +68,18 @@ function EvaluationInternList() {
         setError(err.message);
       });
   }, [refreshKey]);
-
+  
   if (error) {
     return <div>Error: {error}</div>;
   }
-
+  
   const handleDelete = (id) => {
     axios
-      .delete("http://localhost:8900/api/users/deleteeformData", {
+      .delete(`${BASE_URL}deleteeformData`, {
         data: { id },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
       .then((response) => {
         console.log(response.data);
@@ -86,74 +96,73 @@ function EvaluationInternList() {
         All Evaluations
       </Typography>
       <Table
-        aria-label="simple table"
-        sx={{ minWidth: 650 }}
+  aria-label="simple table"
+  sx={{ minWidth: 650 }}
+>
+  <TableHead>
+    <TableRow>
+      <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+        Intern Name
+      </TableCell>
+      <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+        Mentor Name
+      </TableCell>
+      <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+        Status
+      </TableCell>
+      <TableCell
+        sx={{
+          fontWeight: "bold",
+          fontSize: "1.2rem",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
-        <TableHead sx={{ backgroundColor: "#e0e0e0" }}>
-          <TableRow>
-            <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-              Intern Name
-            </TableCell>
-            <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-              Mentor Name
-            </TableCell>
-            <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-              Status
-            </TableCell>
-            <TableCell
-              sx={{
-                fontWeight: "bold",
-                fontSize: "1.2rem",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              Evaluation Form
-            </TableCell>
-            <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-              
-              </TableCell>
-              
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {interns.map((intern, index) => (
-            <TableRow
-              key={index}
-              sx={{ "&:nth-of-type(odd)": { backgroundColor: "#fafafa" } }}
-            >
-              <TableCell sx={{ fontSize: "1rem" }}>{intern.name}</TableCell>
-              <TableCell sx={{ fontSize: "1rem" }}>{intern.mentor}</TableCell>
-              <TableCell sx={{ fontSize: "1rem" }}>
-                {intern.eformStatus}
-              </TableCell>
-              <TableCell
-                sx={{
-                  fontSize: "1rem",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <IconButton onClick={() => handleClick(intern)}>
-                  <AssignmentIndIcon />
-                </IconButton>
-              </TableCell>
-              <TableCell sx={{ fontSize: "1rem" }}>
-                <Button
-                  onClick={() => {
-                    setToBeDeletedId(intern.evaluationFormDetailsId);
-                    setConfirmDialogOpen(true);
-                  }}
-                >
-                  <DeleteForeverIcon />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+        Evaluation Form
+      </TableCell>
+      <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+        
+      </TableCell>
+        
+    </TableRow>
+  </TableHead>
+  <TableBody>
+    {interns.map((intern, index) => (
+      <TableRow
+        key={index}
+      >
+        <TableCell sx={{ fontSize: "1rem" }}>{intern.name}</TableCell>
+        <TableCell sx={{ fontSize: "1rem" }}>{intern.mentor}</TableCell>
+        <TableCell sx={{ fontSize: "1rem" }}>
+          {intern.eformStatus}
+        </TableCell>
+        <TableCell
+          sx={{
+            fontSize: "1rem",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <IconButton onClick={() => handleClick(intern)}>
+            <AssignmentIndIcon />
+          </IconButton>
+        </TableCell>
+        <TableCell sx={{ fontSize: "1rem" }}>
+          <Button
+            onClick={() => {
+              setToBeDeletedId(intern.evaluationFormDetailsId);
+              setConfirmDialogOpen(true);
+            }}
+          >
+            <DeleteForeverIcon />
+          </Button>
+        </TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>
 
       <Dialog open={openDialog} onClose={handleClose} maxWidth="md" fullWidth>
         <EvaluationFormAdminFu

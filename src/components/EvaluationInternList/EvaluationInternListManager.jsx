@@ -12,6 +12,7 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import EvaluationFormManager from '../EvaluationFormNew/EvaluationFormManager';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box } from '@mui/material';
+import { BASE_URL } from '../../config';
 
 
 
@@ -20,18 +21,28 @@ function EvaluationInternListManager() {
   const [open, setOpen] = useState(false);
   const [selectedEvaluationFormDetails, setSelectedEvaluationFormDetails] = useState(null); // New state
   const [mentor, setMentor] = useState(null);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchInternDetails = async () => {
       try {
-        const response = await axios.get('http://localhost:8900/api/users/getInternsForManager');
-        setRows(response.data);
+        const token = localStorage.getItem("token"); // 'token' is the key you're using to store the JWT
+  
+        const response = await axios.get(
+          `${BASE_URL}getInternsForManager`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
         console.log(response.data);
+        setRows(response.data);
       } catch (err) {
         console.error(err);
       }
     };
-
+  
     fetchInternDetails();
   }, []);
 
@@ -49,40 +60,37 @@ function EvaluationInternListManager() {
     <div>
       <h1>Evaluated intern list</h1>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Intern Name</TableCell>
-              <TableCell align="right">Evaluator Name</TableCell>
-              <TableCell align="right">Mentor Name</TableCell>
-              <TableCell align="right">Evaluations</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row._id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.fname + ' ' + row.lname}
-                </TableCell>
-                <TableCell align="right">
-                  {row.evaluationFormDetails.evaluator}
-                </TableCell>
-                <TableCell align="right">
-                  {row.mentor}
-                </TableCell>
-                <TableCell align="right">
-                  <IconButton onClick={() => handleClickOpen(row)}> {/* Updated line */}
-                    <AssignmentIndIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableHead>
+      <TableRow>
+        <TableCell sx={{ fontWeight: "bold", fontSize: "1em" }}>Intern Name</TableCell>
+        <TableCell align="right" sx={{ fontWeight: "bold", fontSize: "1em" }}>Evaluator Name</TableCell>
+        <TableCell align="right" sx={{ fontWeight: "bold", fontSize: "1em" }}>Mentor Name</TableCell>
+        <TableCell align="right" sx={{ fontWeight: "bold", fontSize: "1em" }}>Evaluations</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      {rows.map((row) => (
+        <TableRow key={row._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+          <TableCell component="th" scope="row" sx={{ fontSize: "1em" }}>
+            {row.fname + ' ' + row.lname}
+          </TableCell>
+          <TableCell align="right" sx={{ fontSize: "1em" }}>
+            {row.evaluationFormDetails.evaluator}
+          </TableCell>
+          <TableCell align="right" sx={{ fontSize: "1em" }}>
+            {row.mentor}
+          </TableCell>
+          <TableCell align="right">
+            <IconButton onClick={() => handleClickOpen(row)} sx={{ fontSize: "1em" }}>
+              <AssignmentIndIcon />
+            </IconButton>
+          </TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  </Table>
+</TableContainer>
 
       <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="md">
   <DialogTitle>
