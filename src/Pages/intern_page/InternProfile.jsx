@@ -35,8 +35,14 @@ import { uuidv4 } from '@firebase/util'
 
 
 
-export default function Profile() {
+export default function InternProfile() {
  
+ 
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+  
+
   const [data, setData] = useState({
     fname: "",
     lname: "",
@@ -53,10 +59,22 @@ export default function Profile() {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [progress, setProgress] = useState(0);
-  const token = localStorage.getItem('token');
   const [oldImagePath, setOldImagePath] = useState(null);
 
 
+  if (userRole !== 'intern') {
+    Swal.fire({
+      text: 'You do not have permission to access this function.',
+      icon: 'error',
+      width: '400px',
+      customClass: {
+        container: 'my-swal',
+        confirmButton: 'my-swal-button' 
+      }
+    });
+   
+    return null; // Do not render the component
+  }
   useEffect(() => {
     if (image) {
       uploadFile();

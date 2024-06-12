@@ -22,6 +22,9 @@ import { indigo } from '@mui/material/colors';
 import {useNavigate} from "react-router-dom";
 import { useAppStore } from './appStore';
 import { useLocation } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
+import Swal from "sweetalert2";
+
 
 const drawerWidth = 240;
 
@@ -80,6 +83,10 @@ export default function Managersidebar() {
   const open = useAppStore((state) => state.dopen);
   const [selected, setSelected] = useState("");
   const location = useLocation();
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+
 
   useEffect(() => {
     const currentPath = location.pathname;
@@ -97,6 +104,19 @@ export default function Managersidebar() {
     }
   }, [location]);
 
+  if (userRole !== 'manager') {
+    Swal.fire({
+      text: 'You do not have permission to access this function.',
+      icon: 'error',
+      width: '400px',
+      customClass: {
+        container: 'my-swal',
+        confirmButton: 'my-swal-button' 
+      }
+    });
+   
+    return null; // Do not render the component
+  }
 
 
 

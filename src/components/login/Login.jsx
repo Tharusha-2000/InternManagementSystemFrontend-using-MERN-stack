@@ -146,7 +146,7 @@ function Login() {
                 sx={{ mt: 3, mb: 2 }}
                 disabled={loading}
               >
-                {loading ? <CircularProgress size={24} /> : 'Login in'}
+                {loading ? <CircularProgress size={24} /> : 'Log in'}
               </Button>
              
               <Grid container>

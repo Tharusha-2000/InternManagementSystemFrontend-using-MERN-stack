@@ -30,6 +30,8 @@ import IconButton from "@mui/joy/IconButton";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import Card from "@mui/joy/Card";
+import { jwtDecode } from "jwt-decode";
+import Swal from "sweetalert2";
 
 
 function TaskTable() {
@@ -42,9 +44,13 @@ function TaskTable() {
   
     const [open, setOpen] = useState(false);
     const [currentTask, setCurrentTask] = useState(null);
-  
-    const token = localStorage.getItem("token");
-  
+    const token = localStorage.getItem('token');
+    const decodedToken = jwtDecode(token);
+    const userRole = decodedToken.role;
+
+   if (userRole !== 'intern') {
+      return null; // Do not render the component
+    }
     const handleClickOpen = (task) => {
       setCurrentTask(task);
       setOpen(true);

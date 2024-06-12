@@ -14,9 +14,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { jwtDecode } from "jwt-decode";
 
 function EvaluationinternListMentor() {
+
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+   if(userRole !== 'mentor'){
+      return null; // Do not render the component
+    }
   const [rows, setRows] = useState([]);
+  
   useEffect(() => {
     const fetchMentorDetails = async () => {
       try {

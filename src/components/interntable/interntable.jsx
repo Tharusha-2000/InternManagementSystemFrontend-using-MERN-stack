@@ -32,6 +32,8 @@ import Divider from "@mui/material/Divider";
 import { useNavigate } from "react-router-dom";
 import Switch from '@mui/material/Switch';
 import Interndetails from "../interntable/intern";
+import { jwtDecode } from "jwt-decode";
+
 
 function internTable({ rows }) {
   //const [DialogIsOpen, setDialogIsOpen] = useState(false);
@@ -43,7 +45,11 @@ function internTable({ rows }) {
   const [isComplete, setIsComplete] = useState(false);
   {/* get details in database */}
   const token = localStorage.getItem('token');
- 
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+  if (userRole !== 'admin') {
+    return null; // Do not render the component
+  }
  
   useEffect(() => {
     axios

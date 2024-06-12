@@ -29,6 +29,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Divider from "@mui/material/Divider";
 import Adduser from "./Adduser";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 function Addusertable({ rows }) {
   //const [DialogIsOpen, setDialogIsOpen] = useState(false);
@@ -42,8 +43,12 @@ function Addusertable({ rows }) {
 
   {/* get details in database */}
   const token = localStorage.getItem('token');
- 
- 
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+  if (userRole !== 'admin') {
+    return null; // Do not render the component
+  }
+
   useEffect(() => {
     axios
       .get(`${BASE_URL}users`,{

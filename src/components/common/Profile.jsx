@@ -32,8 +32,6 @@ import {
 import { storage } from "../../firebaseconfig"
 import { uuidv4 } from '@firebase/util'
 
-
-
 export default function Profile() {
   const [role, setRole] = useState("");
   const [data, setData] = useState({
@@ -54,6 +52,22 @@ export default function Profile() {
   const [progress, setProgress] = useState(0);
   const token = localStorage.getItem('token');
   const [oldImagePath, setOldImagePath] = useState(null);
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+ 
+  if (userRole === 'intern') {
+    Swal.fire({
+      text: 'You do not have permission to access this function.',
+      icon: 'error',
+      width: '400px',
+      customClass: {
+        container: 'my-swal',
+        confirmButton: 'my-swal-button' 
+      }
+    });
+   
+    return null; // Do not render the component
+  }
 
   useEffect(() => {
   
