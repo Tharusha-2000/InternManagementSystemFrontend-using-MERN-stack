@@ -4,7 +4,7 @@ import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
 
 import EvaluationInternList from '../../components/EvaluationInternList/EvaluationInternList';
-import EvaluationFormAdmin from '../../components/EvaluationFormNew/EvaluationFormAdmin';
+
 
 
 export default function Evalauation() {

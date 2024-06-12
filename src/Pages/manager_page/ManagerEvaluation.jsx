@@ -3,6 +3,8 @@ import Managersidebar from '../../components/common/Managersidebar';
 import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
 import { jwtDecode } from "jwt-decode";
+import EvaluationInternListManager from '../../components/EvaluationInternList/EvaluationInternListManager';
+
 
 export default function ManagerEvaluation() {
 
@@ -20,7 +22,9 @@ export default function ManagerEvaluation() {
     <Box sx={{ display: 'flex' }}>
     <Managersidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       <h1>manager evaluation </h1>
+      
+       <EvaluationInternListManager/>
+      
       </Box>
       </Box>
       </>

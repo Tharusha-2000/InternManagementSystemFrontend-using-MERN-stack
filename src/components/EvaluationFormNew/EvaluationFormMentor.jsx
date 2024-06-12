@@ -5,16 +5,11 @@ import {
   Box,
   InputLabel,
   TextField,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Paper,
-  Radio,
   Button,
+  TableContainer,
+  Paper,
 } from "@mui/material";
+import EvaluationFormTableTemp from "./EvaluationFormTableTemp";
 
 function EvaluationFormMentor({
   internId,
@@ -22,78 +17,87 @@ function EvaluationFormMentor({
   jobPerformanceCriteriasMentor,
   coreValuesCriteriasMentor,
   handleClose,
-  setRefreshKey, // Add this line
-  refreshKey, // Add this line
+  setRefreshKey,
+  refreshKey,
 }) {
   const [actionTakenMentor, setActionTakenMentor] = useState("");
   const [commentMentor, setCommentMentor] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
-
-
-  const [ratings, setRatings] = React.useState(
+  const [ratings, setRatings] = useState(
     Array(jobPerformanceCriteriasMentor.length).fill(0)
   );
-  const [coreValuesRatings, setCoreValuesRatings] = React.useState(
+  const [coreValuesRatings, setCoreValuesRatings] = useState(
     Array(coreValuesCriteriasMentor.length).fill(0)
   );
-  const [overallPerformanceRating, setOverallPerformanceRating] =
-    React.useState(0);
+  const [overallPerformanceRating, setOverallPerformanceRating] = useState(0);
 
-  const handleRadioChange = (event, index) => {
-    const newRatings = [...ratings];
-    newRatings[index] = Number(event.target.value);
-    setRatings(newRatings);
+  const handleOverallPerformanceRadioChange = (rating) => {
+    setOverallPerformanceRating(Number(rating));
   };
 
-  const handleCoreValuesRadioChange = (event, index) => {
-    const newRatings = [...coreValuesRatings];
-    newRatings[index] = Number(event.target.value);
-    setCoreValuesRatings(newRatings);
-  };
-
-  const handleOverallPerformanceRadioChange = (event) => {
-    setOverallPerformanceRating(Number(event.target.value));
-  };
+  // ...
 
   const onSave = async () => {
-    if (!validateForm()) {
-      window.alert("Please fill out all fields."); // Show an alert to the user
-      
+    if (!validateInputs()) {
       return;
     }
-    handleClose(); 
+
+    handleClose();
     try {
-      const response = await fetch(`http://localhost:8900/api/users/storeMentorScores/${internId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          coreValuesScoresMentor: coreValuesRatings.map(rating => rating * 20),
-          jobPerformanceScoresMentor: ratings.map(rating => rating * 20),
-          overall_performance_mentor: overallPerformanceRating * 20,
-          action_taken_mentor: actionTakenMentor,
-          comment_mentor: commentMentor,
-        }),
-      });
-  
+      const response = await fetch(
+        `http://localhost:8900/api/users/storeMentorScores/${internId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            coreValuesScoresMentor: coreValuesRatings.map(
+              (rating) => rating * 20
+            ),
+            jobPerformanceScoresMentor: ratings.map((rating) => rating * 20),
+            overall_performance_mentor: overallPerformanceRating * 20,
+            action_taken_mentor: actionTakenMentor,
+            comment_mentor: commentMentor,
+          }),
+        }
+      );
+
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
-  
+
       const data = await response.json();
       console.log(data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
-  const validateForm = () => {
-    if (actionTakenMentor === "" || commentMentor === "") {
-      return false;
+
+  const validateInputs = () => {
+    let errors = [];
+
+    if (actionTakenMentor.trim() === "") {
+      errors.push("Action Taken cannot be empty");
     }
 
-    if (ratings.includes(0) || coreValuesRatings.includes(0) || overallPerformanceRating === 0) {
+    if (commentMentor.trim() === "") {
+      errors.push("Comment cannot be empty");
+    }
+
+    if (ratings.some((rating) => rating === 0)) {
+      errors.push("All Job Performance Criteria must be rated");
+    }
+
+    if (coreValuesRatings.some((rating) => rating === 0)) {
+      errors.push("All Core Values Criteria must be rated");
+    }
+
+    if (overallPerformanceRating === 0) {
+      errors.push("Overall Performance must be rated");
+    }
+
+    if (errors.length > 0) {
+      alert(errors.join("\n"));
       return false;
     }
 
@@ -102,8 +106,6 @@ function EvaluationFormMentor({
 
   return (
     <div>
-      
-     
       <Typography variant="h4" align="center" style={{ margin: "20px 0" }}>
         Mentor
       </Typography>
@@ -156,46 +158,10 @@ function EvaluationFormMentor({
           Criterias for Assessing Job Performance mentor
         </Typography>
         <br></br>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell align="left" colSpan={1}>
-                  <Typography variant="h6">criteria</Typography>
-                </TableCell>
-                {["a", "b", "c", "d", "e"].map((value, num) => (
-                  <TableCell key={value} align="center">
-                    <Typography variant="h6">{num + 1}</Typography>
-                  </TableCell>
-                ))}
-                <TableCell align="center">
-                  <Typography variant="h6">Weight</Typography>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {jobPerformanceCriteriasMentor.map((criteria, index) => (
-                <TableRow key={index}>
-                  <TableCell component="th" scope="row">
-                    {criteria}
-                  </TableCell>
-                  {["a", "b", "c", "d", "e"].map((value, num) => (
-                    <TableCell key={num} align="center">
-                      <Radio
-                        value={num + 1}
-                        checked={ratings[index] === num + 1}
-                        onChange={(event) => handleRadioChange(event, index)}
-                      />
-                    </TableCell>
-                  ))}
-                  <TableCell align="center">
-                    {ratings[index] ? ratings[index] * 20 + "%" : ""}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <EvaluationFormTableTemp
+          criterias={jobPerformanceCriteriasMentor}
+          onRatingsChange={setRatings}
+        />
 
         <br></br>
         {/*---------------------------table 4 start*/}
@@ -210,50 +176,10 @@ function EvaluationFormMentor({
           CORE VALUES AND OBJECTIVES mentor
         </Typography>
         <br></br>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell align="left" colSpan={1}>
-                  <Typography variant="h6">criteria</Typography>
-                </TableCell>
-                {["a", "b", "c", "d", "e"].map((value, num) => (
-                  <TableCell key={num} align="center">
-                    <Typography variant="h6">{num + 1}</Typography>
-                  </TableCell>
-                ))}
-                <TableCell align="center">
-                  <Typography variant="h6">Weight</Typography>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {coreValuesCriteriasMentor.map((criteria, index) => (
-                <TableRow key={index}>
-                  <TableCell component="th" scope="row">
-                    {criteria}
-                  </TableCell>
-                  {["a", "b", "c", "d", "e"].map((value, num) => (
-                    <TableCell key={num} align="center">
-                      <Radio
-                        value={num + 1}
-                        checked={coreValuesRatings[index] === num + 1}
-                        onChange={(event) =>
-                          handleCoreValuesRadioChange(event, index)
-                        }
-                      />
-                    </TableCell>
-                  ))}
-                  <TableCell align="center">
-                    {coreValuesRatings[index]
-                      ? coreValuesRatings[index] * 20 + "%"
-                      : ""}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <EvaluationFormTableTemp
+          criterias={coreValuesCriteriasMentor}
+          onRatingsChange={setCoreValuesRatings}
+        />
       </Container>
 
       {/*-----------------------------overall performans mentor---------------------------------*/}
@@ -268,44 +194,10 @@ function EvaluationFormMentor({
         </Typography>
         <br></br>
         <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell align="right" colSpan={1}>
-                  <Typography variant="h6"></Typography>
-                </TableCell>
-                {["a", "b", "c", "d", "e"].map((value, num) => (
-                  <TableCell key={num} align="center">
-                    <Typography variant="h6">{num + 1}</Typography>
-                  </TableCell>
-                ))}
-                <TableCell align="center">
-                  <Typography variant="h6">Weight</Typography>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Overall performance
-                </TableCell>
-                {["a", "b", "c", "d", "e"].map((value, num) => (
-                  <TableCell key={num} align="center">
-                    <Radio
-                      value={num + 1}
-                      checked={overallPerformanceRating === num + 1}
-                      onChange={handleOverallPerformanceRadioChange}
-                    />
-                  </TableCell>
-                ))}
-                <TableCell align="center">
-                  {overallPerformanceRating
-                    ? overallPerformanceRating * 20 + "%"
-                    : ""}
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+          <EvaluationFormTableTemp
+            criterias={["Overall performance"]}
+            onRatingsChange={handleOverallPerformanceRadioChange}
+          />
         </TableContainer>
       </Container>
 
@@ -339,13 +231,13 @@ function EvaluationFormMentor({
           alignItems="flex-end"
           justifyContent="space-between"
         >
-          <TextField 
-  multiline 
-  rows={4} 
-  sx={{ width: "700px" }} 
-  value={actionTakenMentor} 
-  onChange={(e) => setActionTakenMentor(e.target.value)}
-/>
+          <TextField
+            multiline
+            rows={4}
+            sx={{ width: "700px" }}
+            value={actionTakenMentor}
+            onChange={(e) => setActionTakenMentor(e.target.value)}
+          />
         </Box>
       </Container>
       <Container maxWidth="md">
@@ -367,13 +259,13 @@ function EvaluationFormMentor({
           alignItems="flex-end"
           justifyContent="space-between"
         >
-          <TextField 
-  multiline 
-  rows={4} 
-  sx={{ width: "700px" }} 
-  value={commentMentor} 
-  onChange={(e) => setCommentMentor(e.target.value)}
-/>
+          <TextField
+            multiline
+            rows={4}
+            sx={{ width: "700px" }}
+            value={commentMentor}
+            onChange={(e) => setCommentMentor(e.target.value)}
+          />
         </Box>
       </Container>
       <br></br>
@@ -385,17 +277,17 @@ function EvaluationFormMentor({
           justifyContent="flex-end"
           style={{ marginTop: "20px" }}
         >
-       <Button
-  variant="contained"
-  color="primary"
-  style={{ marginLeft: "20px" }}
-  onClick={() => {
-    onSave();
-    setRefreshKey(refreshKey + 1); // Corrected here
-  }}
->
-  Save
-</Button>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ marginLeft: "20px" }}
+            onClick={() => {
+              onSave();
+              setRefreshKey(refreshKey + 1); // Corrected here
+            }}
+          >
+            Save
+          </Button>
           <Button
             variant="contained"
             color="secondary"
