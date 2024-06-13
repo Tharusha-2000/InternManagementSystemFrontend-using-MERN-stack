@@ -181,10 +181,6 @@ function TaskTable() {
                   }
                 })
                 // window.alert(err.response.data.msg);
-                .then(() => {
-                  localStorage.removeItem('token');
-                  navigate("/Login");
-                })
               }
             });
         }

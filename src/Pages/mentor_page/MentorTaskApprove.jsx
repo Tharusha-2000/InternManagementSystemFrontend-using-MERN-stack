@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Card, Box, Typography, Divider, Stack ,CardActions, Button } from '@mui/joy';
 import { TableRow, TableCell, Table,TableBody,TableContainer,TableHead } from '@mui/material';
 import { jwtDecode } from "jwt-decode";
-
+import VerifiedIcon from '@mui/icons-material/Verified';
 // ProjectdoneList component fetches tasks  
 
 function ProjectdoneListToApprove() {
@@ -19,7 +19,7 @@ function ProjectdoneListToApprove() {
     }
 
 
-  useEffect(() => {
+  useEffect((taskId) => {
    // const token = localStorage.getItem("token");
     // Fetch the tasks from the server
     axios
@@ -28,7 +28,9 @@ function ProjectdoneListToApprove() {
       }) 
       .then(response => {
         console.log(response.data);
-        setTasks(response.data);
+        const sortedTasks = response.data.sort((a, b) => a.isVerified - b.isVerified);
+        setTasks(sortedTasks);
+       
       })
       .catch(error => {
         console.error(error);
@@ -47,8 +49,11 @@ function ProjectdoneListToApprove() {
       .then(response => {
         console.log(`Task ${taskId} has been verified.`);
         console.log(response);
-        // Update the task in the state
-        setTasks(prevTasks => prevTasks.filter(task => task._id !== taskId));
+       // Update the task in the state
+      setTasks(prevTasks => {
+        const updatedTasks = prevTasks.map(task => task._id === taskId ? {...task, isVerified: true} : task);
+        return updatedTasks.sort((a, b) => a.isVerified - b.isVerified);
+      });
       })
       .catch(error => {
         console.error(error);
@@ -127,11 +132,18 @@ function ProjectdoneListToApprove() {
                   <Typography variant="subtitle2">{task._userId.fname} {task._userId.lname}</Typography>
                 </TableCell>
                 <TableCell>
-                  <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-                    <Button variant="solid" type="submit" size="small" onClick={() => handleVerify(task._id)}>Verify</Button>
-                    <Button variant="outlined" color="neutral" size="small" onClick={() => handleCancel(task._id)}>Cancel</Button>
-                  </CardActions>
-                </TableCell>
+                {task.isVerified ? (
+                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                   <VerifiedIcon color="success" />
+                   <Typography variant="subtitle2" color="success" sx={{ ml: 1 }}>Verified</Typography>
+                 </Box>
+                  ) : (
+                    <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
+                        <Button variant="solid" type="submit" size="small" onClick={() => handleVerify(task._id)}>Verify</Button>
+                        <Button variant="solid" color="neutral" size="small" onClick={() => handleCancel(task._id)}>Cancel</Button>
+                    </CardActions>
+                     )}
+                   </TableCell>
               </TableRow>
 
               ))}

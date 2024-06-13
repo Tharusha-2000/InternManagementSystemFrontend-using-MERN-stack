@@ -1,103 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { BASE_URL } from './config';
-import axios from 'axios';
-import {
-  deleteObject,
-  getDownloadURL,
-  ref, uploadBytesResumable,
-} from "firebase/storage";
-import { storage } from "./firebaseconfig"
-import { uuidv4 } from '@firebase/util'
+import React from 'react';
+import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
+
+
 function Test() {
-  const [cv, setCV] = useState(null);
-  const [cvUrl, setcvUrl] = useState(null);
-  const [progress, setProgress] = useState(0);
-  const token = localStorage.getItem('token');
-  const [oldImagePath, setOldImagePath] = useState(null);
-  // Upload file
-  const uploadFile =() => {
+  const navigate = useNavigate();
 
-    if (cv === null) {
-       return;
+
+  let timerInterval;
+  Swal.fire({
+    title: "NEW USER ?",
+    text: "if this first logging change password!",
+    icon: "question",
+    timer: 2000,
+    timerProgressBar: true,
+    showCancelButton: true,
+    confirmButtonText: "Yes, change it!",
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    didOpen: () => {
+      const swal2popup = document.querySelector('.swal2-popup');
+      const swal2actions = document.querySelector('.swal2-actions');
+      const swal2loading = document.querySelector('.swal2-loading');
+      swal2popup.style.position = 'fixed';
+      swal2popup.style.top = '5%';
+      swal2popup.style.right = '1%';
+      swal2popup.style.width = '300px'; // Adjust width as needed
+      swal2popup.style.height = '270px'; // Adjust height as needed
+      swal2popup.style.fontSize = '12px';
+      swal2loading.style.position = 'absolute';
+      swal2loading.style.bottom = `${swal2actions.offsetHeight}px`;
+      timerInterval = setInterval(() => {
+        const timeLeft = Swal.getTimerLeft();
+        if (timeLeft !== undefined) {
+          console.log(timeLeft);
+        }
+      }, 100);
+    },
+    willClose: () => {
+      clearInterval(timerInterval);
     }
-    const cvPath = `cv/${cv.name + uuidv4()}`;
-    const cvRef = ref(storage,cvPath);
-    const uploadFile = uploadBytesResumable(cvRef, cv);
-
-    uploadFile.on('state_changed', (snapshot) => {
-      const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes * 100);
-      setProgress(progress)
-    }, (err) => {
-      console.log("error while uploading file", err);
-    }, () => {
-      setProgress(0);
-      getDownloadURL(uploadFile.snapshot.ref).then((downloadURL) => {
-        console.log('File available at', downloadURL);
-      
-      // Delete the previous cv
-      if (oldImagePath) {
-        const oldImageRef = ref(storage, oldImagePath);
-        deleteObject(oldImageRef).then(() => {
-          console.log('Old image deleted');
-        }).catch((error) => {
-          console.log('Failed to delete old image', error);
-        });
-      }
-      console.log(cvPath);
-      // Save the path of the uploaded image
-      setOldImagePath(cvPath);
-      console.log(oldImagePath);
-
-        setcvUrl(downloadURL)
-       // setImage(downloadURL);
-       console.log(downloadURL);
-        console.log(cvUrl);
-       
-        axios
-           .put(`${BASE_URL}uploadcv`,{cvUrl:downloadURL}, {
-             headers: { Authorization: `Bearer ${token}` },
-           })
-           .then((response) => {
-             window.alert(response.data.msg);
-             console.log(response.data);
-           })
-           .catch((error) => {
-             console.log(error);
-           });
-
-      });
-      setCV(null);
-    });
-   
-  }
- 
-  useEffect(() => {
-   // const token = localStorage.getItem("token");
-    axios
-      .get(`${BASE_URL}user`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((result) => {
-        setcvUrl(result.data.user.cvUrl);
-        console.log(result.data.user.cvUrl);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  }).then((result) => {
+    if (result.isConfirmed) {
+      navigate("/security");
+    } else if (result.dismiss === Swal.DismissReason.timer) {
+      console.log("I was closed by the timer");
+    }
+  });
 
   return (
     <div className="App container mt-3">
       <div className='d-flex coloum'>
-        <input type="file" className="form-control"
-          id="img-upload"
-          accept="image/*"
-          onChange={(event) => {
-            setCV(event.target.files[0]);
-          }}
-          />
-        {cvUrl && <img src={cvUrl} alt="Preview" />}
-          <button className="btn btn-success mx-3" onClick={uploadFile}>Upload</button>
+        hi test
       </div>
-
     </div>
   );
 }
