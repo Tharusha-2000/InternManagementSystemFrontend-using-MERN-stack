@@ -10,7 +10,7 @@ import {
   Paper,
 } from "@mui/material";
 import EvaluationFormTableTemp from "./EvaluationFormTableTemp";
-
+import { BASE_URL } from '../../config';
 function EvaluationFormMentor({
   internId,
   internName,
@@ -33,7 +33,7 @@ function EvaluationFormMentor({
   const handleOverallPerformanceRadioChange = (rating) => {
     setOverallPerformanceRating(Number(rating));
   };
-
+  const token = localStorage.getItem("token");
   // ...
 
   const onSave = async () => {
@@ -44,11 +44,12 @@ function EvaluationFormMentor({
     handleClose();
     try {
       const response = await fetch(
-        `http://localhost:8900/api/users/storeMentorScores/${internId}`,
+        `${BASE_URL}storeMentorScores/${internId}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
           },
           body: JSON.stringify({
             coreValuesScoresMentor: coreValuesRatings.map(

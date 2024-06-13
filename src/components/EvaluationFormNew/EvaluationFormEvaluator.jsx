@@ -8,12 +8,14 @@ import {
   Button,
 } from "@mui/material";
 import EvaluationFormTableTemp from "./EvaluationFormTableTemp";
+import { BASE_URL } from '../../config';
 
 function EvaluationFormEvaluator({ internId, internName, jobPerformanceCriteriasEvaluator, coreValuesCriteriasEvaluator, handleClose, setRefreshKey, ...props}) {
   const [ratings, setRatings] = useState([]);
   const [coreValuesRatings, setCoreValuesRatings] = useState([]);
   const [overallPerformanceRating, setOverallPerformanceRating] = useState(null);
   const [comment, setComment] = useState('');
+  const token = localStorage.getItem("token");
 
   const onSave = async () => {
     let errors = [];
@@ -50,12 +52,15 @@ if (coreValuesRatings.some(rating => rating === 0)) {
     };
   
     try {
-      const response = await fetch(`http://localhost:8900/api/users/postEvaluatorResultById/${internId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+      const response = await fetch(
+        `${BASE_URL}postEvaluatorResultById/${internId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(data),
       });
   
       if (!response.ok) {

@@ -333,7 +333,7 @@ function EvaluationFormAdminMen({ mentorName: selectedMentorName, evaluationForm
 </Container>
 <Container  maxWidth="md"  >
         <Box display="flex" flexDirection="column" alignItems="flex-end" justifyContent="space-between">
-          <TextField multiline rows={4} sx={{ width: '700px' }} />
+          <TextField multiline rows={4} sx={{ width: '700px' }}  disabled/>
         </Box>
       </Container>
 <Container  maxWidth="md"  >
@@ -343,7 +343,7 @@ function EvaluationFormAdminMen({ mentorName: selectedMentorName, evaluationForm
 </Container>
 <Container  maxWidth="md">
         <Box display="flex" flexDirection="column" alignItems="flex-end" justifyContent="space-between">
-          <TextField multiline rows={4} sx={{ width: '700px' }} />
+          <TextField multiline rows={4} sx={{ width: '700px' }} disabled/>
         </Box>
       </Container>
 
