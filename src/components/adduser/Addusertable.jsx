@@ -30,6 +30,7 @@ import Divider from "@mui/material/Divider";
 import Adduser from "./Adduser";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import CircularProgress from '@mui/material/CircularProgress';
 
 function Addusertable({ rows }) {
   //const [DialogIsOpen, setDialogIsOpen] = useState(false);
@@ -37,7 +38,7 @@ function Addusertable({ rows }) {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [data, setData] = useState([]);
   const [open, openchange] = useState(false);
-  
+  const [isLoading, setIsLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
 
@@ -50,6 +51,7 @@ function Addusertable({ rows }) {
   }
 
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get(`${BASE_URL}users`,{
         headers: {
@@ -61,10 +63,22 @@ function Addusertable({ rows }) {
        // console.log(result.data.users); 
         setFilteredData(result.data.users);
         setData(result.data.users);
-        
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => { console.log(err);
+                        setIsLoading(false);
+                      });
+
   }, []);
+
+  if (isLoading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </div>
+    );
+   
+  }
  
   {/* handel change role*/}
 
