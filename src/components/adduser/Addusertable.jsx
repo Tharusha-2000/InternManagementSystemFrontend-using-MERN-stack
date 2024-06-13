@@ -135,10 +135,9 @@ function Addusertable({ rows }) {
 
          // window.alert(err.response.data.msg);
          .then(() => {
-           localStorage.removeItem('token');
-
-           navigate("/");
-       });
+            localStorage.removeItem('token');
+            navigate("/");
+         });
         }
       });
   }
