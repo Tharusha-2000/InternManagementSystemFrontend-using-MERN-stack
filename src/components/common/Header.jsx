@@ -48,6 +48,7 @@ export default function Header() {
       if (result.value) {
         localStorage.removeItem('token');
         navigate('/');
+       
       }
     });
 
