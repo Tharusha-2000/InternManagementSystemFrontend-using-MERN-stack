@@ -2,7 +2,7 @@ import React from 'react';
 import Managersidebar from '../../components/common/Managersidebar';
 import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
-import InternTable from '../../components/project/projectinternlist';
+import Projectinternlistable from '../../components/project/projectinternlist';
 
 export default function ManagerViewProfile() {
   return (
@@ -12,7 +12,7 @@ export default function ManagerViewProfile() {
     <Box sx={{ display: 'flex' }}>
     <Managersidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       <InternTable/>
+       <Projectinternlistable/>
       </Box>
       </Box>
       </>

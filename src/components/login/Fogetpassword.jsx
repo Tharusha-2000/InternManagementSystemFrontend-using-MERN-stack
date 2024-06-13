@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {BASE_URL} from '../../config';
+import Swal from 'sweetalert2';
 function Fogetpassword() {
     const [value, setValue] =useState({ email: ''})
     const [error, setError] =useState(null)
@@ -19,14 +20,22 @@ function Fogetpassword() {
     event.preventDefault();
     if(!value.email ){
       setError('result')
-      window.alert('Please fill the required fields')
+      Swal.fire({ position: "top",
+      text: "Please fill the required fields",
+      customClass: { confirmButton: 'my-button' }
+     });
+     // window.alert('Please fill the required fields')
       return;
     }
 
     axios.post(`${BASE_URL}generateOTP&sendmail`, value)
           .then(result => {
               if(result.data){
-                  window.alert(result.data.msg);
+                Swal.fire({ position: "top",
+                text:result.data.msg,
+                customClass: { confirmButton: 'my-button' }
+               });
+               //window.alert(result.data.msg);
                   console.log(result.data.msg);
                      if(result.status === 201 ) {
                      // console.log(result.data.code);
@@ -37,8 +46,18 @@ function Fogetpassword() {
               }) 
                 .catch(err => {
                   if (err.response) {
-                      window.alert(err.response.data.msg);
-                       navigate('/');
+
+                    Swal.fire({ position: "top",
+                    text:err.response.data.msg,
+                    customClass: { confirmButton: 'my-button' }
+                   })
+                   // window.alert(err.response.data.msg);
+
+                      .then(() => {
+                         navigate('/');
+                    
+                  });
+  
                   }
               })
        

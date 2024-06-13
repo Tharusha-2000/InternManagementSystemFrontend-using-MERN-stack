@@ -21,6 +21,16 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import axios from "axios";
 import { BASE_URL } from "../../config";
+import image3 from "../../assets/Unknown_person.jpg"
+import Swal from "sweetalert2";
+
+import {
+  deleteObject,
+  getDownloadURL,
+  ref, uploadBytesResumable,
+} from "firebase/storage";
+import { storage } from "../../firebaseconfig"
+import { uuidv4 } from '@firebase/util'
 
 export default function Profile() {
   const [role, setRole] = useState("");
@@ -35,8 +45,32 @@ export default function Profile() {
     employmentType: ''
   });
   const [originalData, setOriginalData] = useState({});
+
+ 
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const token = localStorage.getItem('token');
+  const [oldImagePath, setOldImagePath] = useState(null);
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+ 
+  if (userRole === 'intern') {
+    Swal.fire({
+      text: 'You do not have permission to access this function.',
+      icon: 'error',
+      width: '400px',
+      customClass: {
+        container: 'my-swal',
+        confirmButton: 'my-swal-button' 
+      }
+    });
+   
+    return null; // Do not render the component
+  }
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
+  
     if (token) {
       const decodedToken = jwtDecode(token);
       setRole(decodedToken.role);
@@ -57,9 +91,15 @@ export default function Profile() {
         return null;
     }
   };
+  useEffect(() => {
+    if (image) {
+      uploadFile();
+    }
+  }, [image]);
+
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+  
     axios
       .get(`${BASE_URL}user`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -67,8 +107,8 @@ export default function Profile() {
       .then((result) => {
         setData(result.data.user);
         setOriginalData(result.data.user);
-       
-        //setImageUrl(result.data.user.image);
+        setImageUrl(result.data.user.imageUrl);
+        console.log(result.data.user.imageUrl);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -77,15 +117,79 @@ export default function Profile() {
     // Reset the form data to the original data
     setData(originalData);
   };
+
+    // Upload file
+    const uploadFile =() => {
+
+      if (image === null) {
+         return;
+      }
+      const imagePath = `img/${image.name + uuidv4()}`;
+      const imageRef = ref(storage,imagePath);
+      const uploadFile = uploadBytesResumable(imageRef, image);
+  
+      uploadFile.on('state_changed', (snapshot) => {
+        const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes * 100);
+        setProgress(progress)
+      }, (err) => {
+        console.log("error while uploading file", err);
+      }, () => {
+        setProgress(0);
+        getDownloadURL(uploadFile.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', downloadURL);
+        
+        // Delete the previous image
+        if (oldImagePath) {
+          const oldImageRef = ref(storage, oldImagePath);
+          deleteObject(oldImageRef).then(() => {
+            console.log('Old image deleted');
+          }).catch((error) => {
+            console.log('Failed to delete old image', error);
+          });
+        }
+        console.log(imagePath);
+        // Save the path of the uploaded image
+        setOldImagePath(imagePath);
+        console.log(oldImagePath);
+  
+          setImageUrl(downloadURL)
+         console.log(downloadURL);
+          console.log(imageUrl);
+         
+          axios
+             .put(`${BASE_URL}uploadImage`,{imageUrl:downloadURL}, {
+               headers: { Authorization: `Bearer ${token}` },
+             })
+             .then((response) => {
+                console.log(response.data.msg);
+             })
+             .catch((error) => {
+               console.log(error);
+             });
+  
+        });
+        setImage(null);
+      });
+     
+    }
+
 const handleSubmit = (e) => {
    e.preventDefault();
-   const token = localStorage.getItem("token");
- axios
+ 
+   
+    //update photo after the click save button it not uersfrienly so commented it
+    // uploadFile();
+
+    //other details
+   axios
     .put(`${BASE_URL}updateuser`, data, {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((response) => {
-      window.alert(response.data.msg);
+      Swal.fire({ position: "top", text: response.data.msg 
+      ,customClass: {container: 'my-swal',
+      confirmButton: 'my-swal-button'} });
+     // window.alert(response.data.msg);
       console.log(response.data);
     })
     .catch((error) => {
@@ -134,13 +238,22 @@ const handleSubmit = (e) => {
                     maxHeight={200}
                     sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
                   >
-                    <img
-                      src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                      srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                      loading="lazy"
-                      alt=""
+                     <img
+                        src={imageUrl || image3} 
+                        loading="lazy"
+                        alt=""
                     />
                   </AspectRatio>
+                  <input
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      id="icon-button-file"
+                      type="file"
+                      onChange={(event) => {
+                        setImage(event.target.files[0]);
+                      }}
+                    />
+                 <label htmlFor="icon-button-file">
                   <IconButton
                     aria-label="upload new picture"
                     size="sm"
@@ -155,9 +268,11 @@ const handleSubmit = (e) => {
                       top: 170,
                       boxShadow: "sm",
                     }}
+                     component="span"
                   >
                     <EditRoundedIcon />
                   </IconButton>
+                </label>  
                 </Stack>
                 <Stack spacing={2} sx={{ flexGrow: 1 }}>
                   <Stack spacing={1}>
@@ -247,13 +362,22 @@ const handleSubmit = (e) => {
                       maxHeight={108}
                       sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
                     >
-                      <img
-                        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                        srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+                       <img
+                        src={imageUrl || image3} 
                         loading="lazy"
                         alt=""
-                      />
+                    />
                     </AspectRatio>
+                    <input
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      id="icon-button-file"
+                      type="file"
+                      onChange={(event) => {
+                        setImage(event.target.files[0])  
+                      }}
+                    />
+                 <label htmlFor="icon-button-file">
                     <IconButton
                       aria-label="upload new picture"
                       size="sm"
@@ -268,9 +392,12 @@ const handleSubmit = (e) => {
                         top: 180,
                         boxShadow: "sm",
                       }}
+                      component="span"
                     >
                       <EditRoundedIcon />
                     </IconButton>
+
+                    </label>
                   </Stack>
                   <Stack spacing={1} sx={{ flexGrow: 1 }}>
                     <FormLabel>Name</FormLabel>

@@ -15,6 +15,8 @@ import {useNavigate } from 'react-router-dom';
 import  {jwtDecode} from 'jwt-decode';
 import image from '../../assets/photo1.jpeg'
 import {BASE_URL} from '../../config';
+import Swal from "sweetalert2";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const defaultTheme = createTheme();
 
@@ -25,56 +27,105 @@ function Login() {
         password: ''
     })
 
-    
+    const [loading, setLoading] = useState(false);
     const [error, setError] =useState(null)
     const navigate = useNavigate()
     axios.defaults.withCredentials = true;
-    
+ 
   
     const handleSubmit = (event) => {
-       // console.log(values)
-        event.preventDefault();
-       if(!values.email || !values.password) {
-            window.alert('Please fill the required fields')
-            return;
-       }
-       
+      event.preventDefault();
+      if(!values.email || !values.password) {
+        Swal.fire({ position: "top", text: "Please fill the required fields" 
+                        ,customClass: { confirmButton: 'my-button' }});
+        return;
+      }
+      setLoading(true); 
+   
+    
       axios.post(`${BASE_URL}login`, values)
-             .then(result => {
-                 if(result.data) {
-                     window.alert(result.data.msg);
-                     const token = result.data.token;
-                     localStorage.setItem("token", token);
-                     const decodedToken = jwtDecode(token);
-                   
-                 
-                      const role = decodedToken.role;
+        .then(result => {
+        
+          if(result.data) {
+            setLoading(false);
+           // Swal.fire({ position: "top", text: result.data.msg });
+            const token = result.data.token;
+            localStorage.setItem("token", token);
+            const decodedToken = jwtDecode(token);
+            const role = decodedToken.role;
+    
+            if(role === 'admin') {
+              navigate('/AdminDashboard');
+            } else if(role === 'intern')  {
+              navigate('/interndashboard').then(() => showPopup());
+            } else if(role === 'mentor')  {
+              navigate('/mentordashboard').then(() => showPopup());
+            } else if(role === 'evaluator')  {
+              navigate('/evaluatordashboard').then(() => showPopup());  
+            } else if(role === 'manager')  {
+              navigate('/managerdashboard').then(() => showPopup());
+            } else {
+              Swal.fire({ position: "top", text:"Invalid role"  ,customClass: { confirmButton: 'my-button' }});
+              return;
+            } 
+               
+    // Show the popup after navigation
+      let timerInterval;
+      Swal.fire({
+        title: "NEW USER ?",
+        text: "if this first logging change password!",
+        icon: "question",
+        timer: 2000,
+        timerProgressBar: true,
+        showCancelButton: true,
+        confirmButtonText: "Yes, change it!",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        didOpen: () => {
+          const swal2popup = document.querySelector('.swal2-popup');
+          const swal2actions = document.querySelector('.swal2-actions');
+          const swal2loading = document.querySelector('.swal2-loading');
+          swal2popup.style.position = 'fixed';
+          swal2popup.style.top = '5%';
+          swal2popup.style.right = '1%';
+          swal2popup.style.width = '300px'; // Adjust width as needed
+          swal2popup.style.height = '270px'; // Adjust height as needed
+          swal2popup.style.fontSize = '12px';
+          swal2loading.style.position = 'absolute';
+          swal2loading.style.bottom = `${swal2actions.offsetHeight}px`;
+          timerInterval = setInterval(() => {
+            const timeLeft = Swal.getTimerLeft();
+            if (timeLeft !== undefined) {
+              console.log(timeLeft);
+            }
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/security");
+        } else if (result.dismiss === Swal.DismissReason.timer) {
+          console.log("I was closed by the timer");
+        }
+      });
+    
               
-                        if(role === 'admin') {
-                              navigate('/AdminDashboard');
-                        } else if(role === 'intern')  {
-                              navigate('/interndashboard')
-                        }else if(role === 'mentor')  {
-                              navigate('/mentordashboard')
-                        }else if(role === 'evaluator')  {
-                              navigate('/evaluatordashboard')  
-                        }else if(role === 'manager')  {
-                              navigate('/managerdashboard')
-                        } else{
-                           window.alert('Invalid role')
-                        } 
-                 } else {
-                window.alert(result.data.msg)
-                }
-         })
-          .catch(err => {
-              if (err.response) {
-                   window.alert(err.response.data.msg);
-                }
+     
 
-            })
-
-    }   
+          } else {
+            Swal.fire({ position: "top", text: result.data.msg  ,customClass: { confirmButton: 'my-button' }});
+          }
+        })
+        .catch(err => {
+          setLoading(false); 
+          
+          if (err.response) {
+            Swal.fire({ position: "top", text: err.response.data.msg  ,customClass: { confirmButton: 'my-button' }});
+          }
+        })
+      }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -140,9 +191,11 @@ function Login() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={loading}
               >
-                Login in
+                {loading ? <CircularProgress size={24} /> : 'Log in'}
               </Button>
+             
               <Grid container>
                 <Grid item xs>
                   <Link href="/Forgetpassword" variant="body2">

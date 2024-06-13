@@ -3,13 +3,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, BrowserRouter, Link ,useNavigate } from 'react-router-dom';
 import React,{ useEffect, useState } from 'react';
 import {jwtDecode} from 'jwt-decode';
-
+import './App.css';
 
 import Login from './components/login/Login';
 import Addusertable from './components/adduser/Addusertable';
 import Adduser from './components/adduser/Adduser';
-//import Dashboard from './components/Dashboard';
-//import Header from './components/common/Header';
 import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
@@ -30,7 +28,7 @@ import Interntable from './components/interntable/interntable.jsx';
 import Intern from './components/interntable/intern.jsx';
 import Project from './components/project/project.jsx';
 import Projectinternlist from './components/project/projectinternlist.jsx'
-import EvaluationFormAdmin from './components/EvaluationFormNew/EvaluationFormAdmin.jsx';
+
 
 import Test from './test.jsx';
 import Test2 from './test2.jsx';
@@ -62,20 +60,11 @@ import Box from '@mui/material/Box';
 
 function App() {
   const [user,setUsers] = useState();  
-  const [loading, setLoading] = useState(true);
 
-   useEffect(() => {
-    setTimeout(() => setLoading(false), 2000); // 2000 is in ms
-  }, []);
   return (
    
-   <BrowserRouter>
-     {loading ? (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <CircularProgress />
-      </Box>
-    ) : (
-     <>
+  <BrowserRouter>
+   
       <TokenCheck setUsers={setUsers} />
       <Routes>
         <Route path="/" element={<Login setUsers={setUsers}/>} > </Route>
@@ -94,7 +83,7 @@ function App() {
         <Route path="/project" element={<Project/>}> </Route>
         <Route path="/projectinternlist" element={<Projectinternlist/>}> </Route>
         
-        <Route path="/evaluationForm" element={<EvaluationFormAdmin/>}> </Route>
+     
         
         <Route path="/Test" element={<Test/>}> </Route>
         <Route path="/Test2" element={<Test2/>}> </Route>
@@ -160,8 +149,7 @@ function App() {
             
 
         </Routes>
-     </> 
-     )}
+
    </BrowserRouter>    
   
   );

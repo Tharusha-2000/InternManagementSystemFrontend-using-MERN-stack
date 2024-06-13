@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Button, Dialog, DialogTitle,InputLabel, DialogContent,IconButton, TextField, Grid, FormControl, FormLabel,RadioGroup, FormControlLabel, Radio, Select, MenuItem,Typography} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { BASE_URL } from '../../config';
-
+import Swal from "sweetalert2";
 function Adduser() {
   
   const [open, setOpen] = useState(false);
@@ -21,7 +21,7 @@ function Adduser() {
     department: "",
   });
 
-  console.log(data);
+  //console.log(data);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,19 +33,54 @@ function Adduser() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const dob = new Date(data.dob);
+    const today = new Date();
+  
     if(!data.fname||!data.lname||!data.dob||!data.role ||!data.gender ||!data.email || !data.password) {
-        window.alert('Please fill the required fields')
+      Swal.fire({ position: "top",
+          text:"Please fill the required fields",
+          customClass: {
+            container: 'my-swal',
+            confirmButton: 'my-swal-button' 
+          }
+       })
+       //window.alert('Please fill the required fields')
         return;
     }
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/;
     if (!passwordRegex.test(data.password)) {
-        window.alert('Password must be at least 6 characters long and contain at least one letter and one number.')
+      Swal.fire({ position: "top",
+      text:"Password must be at least 6 characters long and contain at least one letter and one number.",
+      customClass: {
+        container: 'my-swal',
+        confirmButton: 'my-swal-button' 
+      }
+      })
+      // window.alert('Password must be at least 6 characters long and contain at least one letter and one number.')
         return;
     }
     const nameRegex = /^[A-Za-z]+$/;
     if (!nameRegex.test(data.fname)||!nameRegex.test(data.lname)) {
-        window.alert('name must only contain letters.')
+      Swal.fire({ position: "top",
+      text:"name must only contain letters.",
+      customClass: {
+        container: 'my-swal',
+        confirmButton: 'my-swal-button' 
+      }
+      })
+      //  window.alert('name must only contain letters.')
         return;
+    }
+    if (dob >= today) {
+      Swal.fire({ position: "top",
+      text:"Date of birth must be in the past.",
+      customClass: {
+        container: 'my-swal',
+        confirmButton: 'my-swal-button' 
+      }
+      })
+     // window.alert('Date of birth must be in the past.');
+      return;
     }
 
   const token = localStorage.getItem('token');
@@ -56,12 +91,20 @@ function Adduser() {
         },
    }).then(result => {   
               if (result.data) {
-                 window.alert(result.data.msg);
-                 
+                // window.alert(result.data.msg);
+                 Swal.fire({ position: "top",
+                             text:result.data.msg,
+                             customClass: {
+                              container: 'my-swal',
+                              confirmButton: 'my-swal-button' 
+                            }
+                            })
+              .then(() => {           
                  if(result.status === 201 ) {
                     handleClose();
                     window.location.reload(); 
                 }
+              });
             } 
         
         })
@@ -118,7 +161,7 @@ function Adduser() {
                         }}
                       >
                     <FormControlLabel value="intern" control={<Radio />} label="Intern" />
-                    <FormControlLabel value="evaluator " control={<Radio />} label="Evaluator" />
+                    <FormControlLabel value="evaluator" control={<Radio />} label="Evaluator" />
                     <FormControlLabel value="manager" control={<Radio />} label="Manager" />
                     <FormControlLabel value="admin" control={<Radio />} label="Admin" />
                     <FormControlLabel value="mentor" control={<Radio />} label="Mentor" />

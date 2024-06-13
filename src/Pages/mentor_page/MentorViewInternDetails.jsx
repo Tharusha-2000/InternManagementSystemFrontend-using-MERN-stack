@@ -2,7 +2,7 @@ import React from 'react';
 import Mentorsidebar from '../../components/common/Mentorsidebar';
 import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
-import InternTable from '../../components/project/projectinternlist';
+import Projectinternlistable from '../../components/project/projectinternlist';
 export default function MentorViewProfile() {
   return (
     <>
@@ -11,7 +11,7 @@ export default function MentorViewProfile() {
     <Box sx={{ display: 'flex' }}>
     <Mentorsidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <InternTable/>
+        <Projectinternlistable/>
       </Box>
       </Box>
       </>

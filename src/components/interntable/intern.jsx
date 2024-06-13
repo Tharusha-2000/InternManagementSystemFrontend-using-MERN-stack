@@ -27,6 +27,8 @@ import CardActions from "@mui/joy/CardActions";
 import CardOverflow from "@mui/joy/CardOverflow";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import image3  from "../../assets/Unknown_person.jpg";
+import Swal from "sweetalert2";
 
 function interndetails({ internId }) {
   const [open, setOpen] = useState(false);
@@ -38,7 +40,7 @@ function interndetails({ internId }) {
     gender: "",
     email: "",
   });
-
+  const [imageUrl, setImageUrl] = useState(null);
   console.log(data);
 
   useEffect(() => {
@@ -53,6 +55,7 @@ function interndetails({ internId }) {
         .then((result) => {
           setData(result.data.intern);
           console.log(result.data.intern);
+          setImageUrl(result.data.intern.imageUrl);
         })
         .catch((err) => console.log(err));
     }
@@ -81,13 +84,26 @@ function interndetails({ internId }) {
       !data.interviewFeedback||
       !data.mentor
     ) {
-      window.alert("Please fill the required fields");
+      Swal.fire({ position: "top",
+      text:"Please fill the required fields",
+      customClass: {
+        container: 'my-swal',
+        confirmButton: 'my-swal-button' 
+      }
+      })
       return;
     }
 
     const nameRegex = /^[A-Za-z]+$/;
     if (!nameRegex.test(data.fname) || !nameRegex.test(data.lname)) {
-      window.alert("name must only contain letters.");
+      Swal.fire({ position: "top",
+      text:"name must only contain letters.",
+      customClass: {
+        container: 'my-swal',
+        confirmButton: 'my-swal-button' 
+      }
+      })
+     // window.alert("name must only contain letters.");
       return;
     }
     const token = localStorage.getItem("token");
@@ -98,13 +114,29 @@ function interndetails({ internId }) {
         },
       })
      .then((response) => {
-       window.alert(response.data.msg);
+      Swal.fire({ position: "top",
+      text:response.data.msg,
+      customClass: {
+        container: 'my-swal',
+        confirmButton: 'my-swal-button' 
+      }
+      })
+     //  window.alert(response.data.msg);
+     .then(() => {
        window.location.reload(); 
        console.log(response.data.msg);
      })
+     })
      .catch((error) => {
        console.log(error);
-       window.alert("Failed to update");
+       Swal.fire({ position: "top",
+       text:"Failed to update",
+       customClass: {
+         container: 'my-swal',
+         confirmButton: 'my-swal-button' 
+       }
+       })
+      // window.alert("Failed to update");
        handleClose();
      })
 
@@ -166,12 +198,11 @@ function interndetails({ internId }) {
                         maxHeight={200}
                         sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
                       >
-                        <img
-                          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                          srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                          loading="lazy"
-                          alt=""
-                        />
+                         <img
+                        src={imageUrl || image3} 
+                        loading="lazy"
+                        alt=""
+                       />
                       </AspectRatio>
                       <IconButton
                         aria-label="upload new picture"
@@ -296,11 +327,10 @@ function interndetails({ internId }) {
                           sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
                         >
                           <img
-                            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                            srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                            loading="lazy"
-                            alt=""
-                          />
+                           src={imageUrl || image3} 
+                           loading="lazy"
+                           alt=""
+                       />
                         </AspectRatio>
                         <IconButton
                           aria-label="upload new picture"
