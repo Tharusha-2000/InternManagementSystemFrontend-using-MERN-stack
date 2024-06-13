@@ -23,13 +23,13 @@ import Divider from "@mui/material/Divider";
 import { useNavigate } from "react-router-dom";
 import Interndetails from "../interntable/intern";
 import ProjectTask from "../project/project";
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 function internlist({ rows }) {
 
   const [role, setRole] = useState("");
   const [data, setData] = useState([]);
-  
+  const [isLoading, setIsLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
   const [isComplete, setIsComplete] = useState(false);
@@ -45,6 +45,7 @@ function internlist({ rows }) {
   }, []);
  
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get(`${BASE_URL}interns`,{
         headers: {
@@ -56,12 +57,23 @@ function internlist({ rows }) {
         console.log(result.data.interns); 
         setFilteredData(result.data.interns);
         setData(result.data.interns);
+        setIsLoading(false);
         if (result.data.interns.interviewScore) {
           setIsComplete(true);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {console.log(err);
+                      setIsLoading(false); } );
   }, []);
+
+  if (isLoading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </div>
+    );
+   
+  }
 
 
 // creating filter function
