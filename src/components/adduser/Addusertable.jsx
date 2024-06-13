@@ -140,6 +140,7 @@ function Addusertable({ rows }) {
          });
         }
       });
+    
   }
   
   {/* delect user*/}
