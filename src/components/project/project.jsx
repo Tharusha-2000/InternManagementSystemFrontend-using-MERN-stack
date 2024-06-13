@@ -24,6 +24,7 @@ import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import Card from "@mui/joy/Card";
 import TaskIcon from '@mui/icons-material/Task';
+import TaskPieChart from './projectpiechart';
 
 function internTaskTable({ internId }) {
   // State for tasks and data
@@ -74,6 +75,12 @@ function internTaskTable({ internId }) {
     },
   }));
 
+
+
+
+
+
+  
   // Fetch tasks on component mount
   useEffect(() => {
     fetchTasks();
@@ -99,7 +106,7 @@ function internTaskTable({ internId }) {
   // Render component
   return (
   <div>
-   
+    
     <IconButton
         size="small"
         color="primary"
@@ -111,6 +118,17 @@ function internTaskTable({ internId }) {
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"  maxWidth="lg"  >
     <DialogTitle id="form-dialog-title"> PROJECT TASK LIST <IconButton onClick={handleClose} style={{float:'right'}}><CloseIcon color="primary"></CloseIcon></IconButton></DialogTitle>
     <DialogContent>
+
+    <div>
+     
+   {tasks.length > 0 ? (
+       <TaskPieChart tasks={tasks} />
+     ) : (
+       <Typography>No tasks to display in the chart</Typography>
+     )}
+      
+    </div>
+
     <div>
       <Stack
         spacing={4}

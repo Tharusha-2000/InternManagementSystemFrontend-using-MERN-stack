@@ -34,23 +34,29 @@ function Fogetpassword() {
                 Swal.fire({ position: "top",
                 text:result.data.msg,
                 customClass: { confirmButton: 'my-button' }
-               });
+               }) ; 
                //window.alert(result.data.msg);
                   console.log(result.data.msg);
                      if(result.status === 201 ) {
                      // console.log(result.data.code);
                           navigate('/Varify',{ state: { email: value.email ,code:result.data.code} });
                       }
+                     
                  
                 }
               }) 
                 .catch(err => {
                   if (err.response) {
+                    console.log(err.response.data.msg);
                     Swal.fire({ position: "top",
                     text:err.response.data.msg,
+                    
                     customClass: { confirmButton: 'my-button' }
+                   })
+                   .then(() => {
+                    navigate('/Login');
+                  
                    });
-                   // window.alert(err.response.data.msg);
                   }
               })
        
