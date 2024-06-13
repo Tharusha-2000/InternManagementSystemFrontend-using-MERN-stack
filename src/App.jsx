@@ -8,8 +8,6 @@ import './App.css';
 import Login from './components/login/Login';
 import Addusertable from './components/adduser/Addusertable';
 import Adduser from './components/adduser/Adduser';
-//import Dashboard from './components/Dashboard';
-//import Header from './components/common/Header';
 import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
