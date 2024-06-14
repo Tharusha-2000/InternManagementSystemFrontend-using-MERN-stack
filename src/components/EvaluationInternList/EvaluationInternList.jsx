@@ -14,13 +14,16 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Grid,
+  InputBase,
+  Divider,
 } from "@mui/material";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EvaluationFormAdminFu from "../EvaluationFormNew/EvaluationFormAdminFu";
 import { BASE_URL } from '../../config';
+import SearchIcon from '@mui/icons-material/Search';
+
 
 
 function EvaluationInternList() {
@@ -62,6 +65,7 @@ function EvaluationInternList() {
       .then((result) => {
         console.log(result.data); // Log the data to see what's returned
         setInterns(result.data);
+        setFilteredData(result.data); // Set filteredData state here
       })
       .catch((err) => {
         console.log(err);
@@ -89,12 +93,48 @@ function EvaluationInternList() {
         console.error(error);
       });
   };
+  //search bar
+  
+  const [filteredData, setFilteredData] = useState([]);
+
+  const handleSearch = (event) => {
+    const searchTerm = event.target.value.toLowerCase();
+    const filtered = interns.filter(intern => intern.name.toLowerCase().includes(searchTerm));
+    setFilteredData(filtered);
+  };
+  useEffect(() => {
+    setFilteredData(interns);
+  }, [interns]);
+
 
   return (
     <TableContainer component={Paper}>
-      <Typography variant="h3" gutterBottom>
+      <Typography variant="h4" gutterBottom align="center">
         All Evaluations
       </Typography>
+      <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
+      <Grid sx={{ justifyContent: "space-between", mb: 4, display: "flex", alignItems: "center" }}>
+      <Paper
+        component="form"
+        sx={{
+          p: "2px 4px",
+          display: "flex",
+          alignItems: "center",
+          width: "100vh",
+          borderRadius: "20px",
+          boxShadow: 3,
+          marginLeft: "1%",
+        }}
+      >
+        <InputBase type="text" onChange={handleSearch} sx={{ ml: 2, flex: 1 }} placeholder="Search Interns" />
+        <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
+        <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+    </Grid>
+
+
       <Table
   aria-label="simple table"
   sx={{ minWidth: 650 }}
@@ -128,7 +168,7 @@ function EvaluationInternList() {
     </TableRow>
   </TableHead>
   <TableBody>
-    {interns.map((intern, index) => (
+  {filteredData.map((intern, index) => (
       <TableRow
         key={index}
       >

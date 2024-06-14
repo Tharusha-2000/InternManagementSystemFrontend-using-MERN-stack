@@ -13,6 +13,11 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import Dialog from "@mui/material/Dialog";
+import { Typography } from "@mui/material";
+import { Divider } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import InputBase from "@mui/material/InputBase";
+import SearchIcon from "@mui/icons-material/Search";
 import EvaluationFormEvaluator from "../EvaluationFormNew/EvaluationFormEvaluator";
 import { BASE_URL } from '../../config';
 
@@ -20,24 +25,23 @@ function EvaluationinternListEvaluator() {
   const [rows, setRows] = useState([]); // Store the interns data here
   const [open, setOpen] = useState(false); // State to control the dialog
   const [selectedIntern, setSelectedIntern] = useState(null); // Add this state variable
+  const [filteredData, setFilteredData] = useState([]); // Add this state variable
   const [refreshKey, setRefreshKey] = useState(0);
   useEffect(() => {
     const fetchInternDetails = async () => {
       try {
-        const token = localStorage.getItem("token"); // 'token' is the key you're using to store the JWT
+        const token = localStorage.getItem("token");
         const decoded = KJUR.jws.JWS.parse(token);
-        const userId = decoded.payloadObj.id; // replace 'id' with the property that holds the user ID in your JWT payload
+        const userId = decoded.payloadObj.id;
   
-        const response = await axios.get(
-          `${BASE_URL}getInternsByEvaluator/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
+        const response = await axios.get(`${BASE_URL}getInternsByEvaluator/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
-        );
+        });
         console.log(response.data);
         setRows(response.data);
+        setFilteredData(response.data); // Initialize filteredData with the fetched data
       } catch (err) {
         console.error(err);
       }
@@ -58,9 +62,44 @@ function EvaluationinternListEvaluator() {
   const handleClose = () => {
     setOpen(false);
   };
+  // Add this function to handle the search functionality
+  const handleSearch = (event) => {
+    const searchTerm = event.target.value.toLowerCase();
+    const filtered = rows.filter(intern => intern.name.toLowerCase().includes(searchTerm));
+    setFilteredData(filtered); // Update filteredData based on search
+  };
+
 
   return (
     <div>
+
+<Typography variant="h4" gutterBottom align="center">
+        All Evaluations
+      </Typography>
+      <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
+      <Grid sx={{ justifyContent: "space-between", mb: 4, display: "flex", alignItems: "center" }}>
+      <Paper
+        component="form"
+        sx={{
+          p: "2px 4px",
+          display: "flex",
+          alignItems: "center",
+          width: "100vh",
+          borderRadius: "20px",
+          boxShadow: 3,
+          marginLeft: "1%",
+        }}
+      >
+        <InputBase type="text"  onChange={handleSearch} sx={{ ml: 2, flex: 1 }} placeholder="Search Interns" />
+        <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
+        <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+    </Grid>
+
+
+
 <TableContainer component={Paper}>
   <Table sx={{ minWidth: 650 }} aria-label="simple table">
     <TableHead>
@@ -72,7 +111,7 @@ function EvaluationinternListEvaluator() {
       </TableRow>
     </TableHead>
     <TableBody>
-      {rows.map((row, index) => (
+    {filteredData.map((row, index) => (
         <TableRow key={index} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
           <TableCell component="th" scope="row" sx={{ fontSize: "1rem" }}>{row.name}</TableCell>
           <TableCell align="center" sx={{ fontSize: "1rem" }}>{new Date(row.evaluate_before).toISOString().substring(0, 10)}</TableCell>
