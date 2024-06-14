@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios"; // Make sure to install this package
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { KJUR } from "jsrsasign"; // Make sure to install this package
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Make sure to install this package
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { KJUR } from 'jsrsasign'; // Make sure to install this package
+import { jwtDecode } from "jwt-decode";
 import IconButton from "@mui/material/IconButton";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -23,10 +24,18 @@ import { BASE_URL } from '../../config';
 
 function EvaluationinternListEvaluator() {
   const [rows, setRows] = useState([]); // Store the interns data here
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
   const [open, setOpen] = useState(false); // State to control the dialog
   const [selectedIntern, setSelectedIntern] = useState(null); // Add this state variable
   const [filteredData, setFilteredData] = useState([]); // Add this state variable
   const [refreshKey, setRefreshKey] = useState(0);
+  
+  if (userRole !== 'evaluator') {
+    return null; // Do not render the component
+  }
+
   useEffect(() => {
     const fetchInternDetails = async () => {
       try {
@@ -68,6 +77,8 @@ function EvaluationinternListEvaluator() {
     const filtered = rows.filter(intern => intern.name.toLowerCase().includes(searchTerm));
     setFilteredData(filtered); // Update filteredData based on search
   };
+
+
 
 
   return (

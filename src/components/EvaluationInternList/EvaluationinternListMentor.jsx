@@ -22,9 +22,19 @@ import SearchIcon from "@mui/icons-material/Search";
 import { BASE_URL } from '../../config';
 
 
+
 function EvaluationinternListMentor() {
+
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
   const [refreshKey, setRefreshKey] = useState(0);
   const [rows, setRows] = useState([]);
+  
+  if(userRole !== 'mentor'){
+      return null; // Do not render the component
+    }
+  
   useEffect(() => {
     const fetchMentorDetails = async () => {
       try {
