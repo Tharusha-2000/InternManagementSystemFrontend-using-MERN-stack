@@ -110,7 +110,7 @@ function EvaluationInternList() {
   return (
     <TableContainer component={Paper}>
       <Typography variant="h4" gutterBottom align="center">
-        All Evaluations
+        All Evaluations 
       </Typography>
       <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
       <Grid sx={{ justifyContent: "space-between", mb: 4, display: "flex", alignItems: "center" }}>
