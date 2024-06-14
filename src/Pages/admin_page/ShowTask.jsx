@@ -2,7 +2,7 @@ import React from 'react';
 import AdminSidebar from '../../components/common/AdminSidebar';
 import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
-import InternTable from '../../components/project/projectinternlist';
+import Projectinternlistable from '../../components/project/projectinternlist';
 
 
 
@@ -14,7 +14,7 @@ export default function ShowTask() {
     <Box sx={{ display: 'flex' }}>
     <AdminSidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-      <InternTable/>
+      <Projectinternlistable/>
       
       </Box>
       </Box>

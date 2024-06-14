@@ -30,7 +30,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CardContent from '@mui/material/CardContent';
 import CountBox from "../admin_page/theme/CountBox";
 import CountCircle from "../admin_page/theme/CountCircle";
-
+import { jwtDecode } from "jwt-decode";
 
 
 export default function MentorDashboard()  {
@@ -45,7 +45,12 @@ export default function MentorDashboard()  {
   const [evaluatorData, setEvaluatorData] = useState([]);
   const [managerData, setManagerData] = useState([]);
   const token = localStorage.getItem('token');
-
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+   if(userRole !== 'manager'){
+      return null; // Do not render the component
+    }
+    
   const [userCount, setUserCount] = useState(0);
   const [internCount, setInternCount] = useState(0);
   const [mentorCount, setMentorCount] = useState(0);
@@ -57,7 +62,7 @@ export default function MentorDashboard()  {
   const internPercentage = ((internCount / userCount) * 100).toFixed(2);
   const mentorPercentage = ((mentorCount / userCount) * 100).toFixed(2);
   const evaluatorPercentage = ((evaluatorCount / userCount) * 100).toFixed(2);
-
+ 
     // set the date 
     useEffect(() => {
       axios

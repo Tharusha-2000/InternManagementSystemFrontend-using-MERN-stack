@@ -5,14 +5,22 @@ import { BASE_URL } from '../../config';
 import axios from 'axios';
 import { Card, Box, Typography, Divider, Stack ,CardActions, Button } from '@mui/joy';
 import { TableRow, TableCell, Table,TableBody,TableContainer,TableHead } from '@mui/material';
+import { jwtDecode } from "jwt-decode";
 
 // ProjectdoneList component fetches tasks  
 
 function ProjectdoneListToApprove() {
   const [tasks, setTasks] = useState([]);
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+   if(userRole !== 'mentor'){
+      return null; // Do not render the component
+    }
+
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+   // const token = localStorage.getItem("token");
     // Fetch the tasks from the server
     axios
       .get(`${BASE_URL}taskNotify`, {
@@ -30,7 +38,7 @@ function ProjectdoneListToApprove() {
   const handleVerify = (taskId) => {
   
 
-    const token = localStorage.getItem("token");
+   // const token = localStorage.getItem("token");
     const isVerified = { isVerified: true };
     axios
       .put(`${BASE_URL}taskVerify/${taskId}`, isVerified,{
@@ -48,7 +56,7 @@ function ProjectdoneListToApprove() {
   };
 
   const handleCancel = (taskId) => {
-    const token = localStorage.getItem("token");
+   // const token = localStorage.getItem("token");
     const isVerified = { isVerified: false };
     axios
       .put(`${BASE_URL}taskVerify/${taskId}`, isVerified,{
