@@ -69,8 +69,8 @@ function CreateNew() {
                                navigate('/');
                       }
 
-                })
-              }     
+                  });
+                }
             }) 
             .catch(err => {
                 if (err.response){
