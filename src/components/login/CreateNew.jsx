@@ -64,20 +64,23 @@ function CreateNew() {
                   //  window.alert(result.data.msg);
                   .then(() => {
                     console.log(result.data.msg);
-                    if(result.status === 201) {
-                      navigate('/Login');
-                    }
-                  });
+
+                       if(result.status === 201 ) {
+                               navigate('/');
+                      }
+
                 }
             }) 
             .catch(err => {
                 if (err.response){
+
                   Swal.fire({ position: "top",
                   text:err.response.data.msg,
                   customClass: { confirmButton: 'my-button' }
                   });
                   // window.alert(err.response.data.msg);
-                    navigate('/Login');
+                    navigate('/');
+
                  }
             })
 

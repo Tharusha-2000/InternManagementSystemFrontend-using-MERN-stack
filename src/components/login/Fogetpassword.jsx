@@ -48,15 +48,21 @@ function Fogetpassword() {
                 .catch(err => {
                   if (err.response) {
                     console.log(err.response.data.msg);
+
                     Swal.fire({ position: "top",
                     text:err.response.data.msg,
                     
                     customClass: { confirmButton: 'my-button' }
                    })
-                   .then(() => {
-                    navigate('/Login');
-                  
-                   });
+
+                   // window.alert(err.response.data.msg);
+
+                      .then(() => {
+                         navigate('/');
+                    
+                  });
+  
+
                   }
               })
        

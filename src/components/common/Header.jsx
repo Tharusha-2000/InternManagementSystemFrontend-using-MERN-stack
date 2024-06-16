@@ -33,6 +33,7 @@ export default function Header() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
  
+
   function userLogout() {
     Swal.fire({
       title: 'Are you sure?',
@@ -49,6 +50,7 @@ export default function Header() {
         navigate('/Login');
       }
     });
+
   }
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
