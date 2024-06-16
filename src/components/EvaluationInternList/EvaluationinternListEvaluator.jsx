@@ -21,6 +21,7 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import EvaluationFormEvaluator from "../EvaluationFormNew/EvaluationFormEvaluator";
 import { BASE_URL } from '../../config';
+import Swal from "sweetalert2";
 
 function EvaluationinternListEvaluator() {
   const [rows, setRows] = useState([]); // Store the interns data here
@@ -61,7 +62,11 @@ function EvaluationinternListEvaluator() {
 
   const handleClickOpen = (row) => {
     if (row.isEvaluated) {
-      alert('You already have filled the form');
+      Swal.fire({
+        title: 'Already Evaluated',
+        text: 'This evaluation form has already been evaluated.',
+        icon: 'info',
+      });
     } else {
       setSelectedIntern(row);
       setOpen(true);

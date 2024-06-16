@@ -20,7 +20,8 @@ import Grid from "@mui/material/Grid";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { BASE_URL } from '../../config';
-
+import { jwtDecode } from 'jwt-decode';
+import Swal from "sweetalert2";
 
 
 function EvaluationinternListMentor() {
@@ -62,7 +63,12 @@ function EvaluationinternListMentor() {
 
   const handleClickOpen = (intern) => {
     if (intern.isMentorFormFilled) {
-      alert("You have already completed the form");
+     Swal.fire({
+  title: 'Notice',
+  text: 'You have already completed the form',
+  icon: 'info',
+  confirmButtonText: 'OK'
+});
     } else {
       setSelectedIntern(intern);
       setOpen(true);
@@ -184,6 +190,24 @@ const handleSearch = (event) => {
             </TableCell>
           </TableRow>
         ))}
+            <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+              <DialogTitle>Evaluation Form</DialogTitle>
+              <DialogContent>
+                <EvaluationFormMentor
+                  internId={selectedIntern?.internId}
+                  internName={selectedIntern?.internName}
+                  jobPerformanceCriteriasMentor={
+                    selectedIntern?.jobPerformanceCriteriasMentor
+                  }
+                  coreValuesCriteriasMentor={
+                    selectedIntern?.coreValuesCriteriasMentor
+                  }
+                  handleClose={handleClose}
+                  setRefreshKey={setRefreshKey}
+                  refreshKey={refreshKey}
+                />
+              </DialogContent>
+            </Dialog>
     </TableBody>
   </Table>
 </TableContainer>

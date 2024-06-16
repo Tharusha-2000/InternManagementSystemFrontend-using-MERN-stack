@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import EvaluationFormTableTemp from "./EvaluationFormTableTemp";
 import { BASE_URL } from '../../config';
+import Swal from 'sweetalert2'; 
+
 function EvaluationFormMentor({
   internId,
   internName,
@@ -98,7 +100,14 @@ function EvaluationFormMentor({
     }
 
     if (errors.length > 0) {
-      alert(errors.join("\n"));
+      Swal.fire({ position: "top",
+        title: 'Validation Error',
+        html: errors.join("<br>"),
+        customClass: {
+          container: 'my-swal',
+          confirmButton: 'my-swal-button' 
+        }
+     })
       return false;
     }
 

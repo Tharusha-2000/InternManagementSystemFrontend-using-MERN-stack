@@ -23,6 +23,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EvaluationFormAdminFu from "../EvaluationFormNew/EvaluationFormAdminFu";
 import { BASE_URL } from '../../config';
 import SearchIcon from '@mui/icons-material/Search';
+import Swal from "sweetalert2";
 
 
 
@@ -43,12 +44,17 @@ function EvaluationInternList() {
 
   const handleClick = (intern) => {
     if (intern.eformStatus === "created") {
-      setCompletedDialogOpen(true); // Open the "already created" dialog
+      // Correct usage of SweetAlert2
+      Swal.fire({
+        title: 'Already Created',
+        text: 'This evaluation form has already been created.',
+        icon: 'info',
+      });
     } else {
       setSelectedInternName(intern.name);
       setSelectedMentorName(intern.mentor);
       setSelectedEvaluationFormDetailsId(intern.evaluationFormDetailsId);
-      setOpenDialog(true); // Open the normal dialog
+      setOpenDialog(true); // Open the normal dialog for other statuses
     }
   };
   const handleClose = () => {
@@ -190,15 +196,33 @@ function EvaluationInternList() {
           </IconButton>
         </TableCell>
         <TableCell sx={{ fontSize: "1rem" }}>
-          <Button
-            onClick={() => {
-              setToBeDeletedId(intern.evaluationFormDetailsId);
-              setConfirmDialogOpen(true);
-            }}
-          >
-            <DeleteForeverIcon />
-          </Button>
-        </TableCell>
+  <Button
+    onClick={() => {
+      // Show the confirmation dialog
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Directly pass `intern.evaluationFormDetailsId` to `handleDelete`
+          handleDelete(intern.evaluationFormDetailsId);
+          Swal.fire(
+            'Deleted!',
+            'The intern\'s evaluation form has been deleted.',
+            'success'
+          )
+        }
+      })
+    }}
+  >
+    <DeleteForeverIcon />
+  </Button>
+</TableCell>
       </TableRow>
     ))}
   </TableBody>
@@ -218,41 +242,9 @@ function EvaluationInternList() {
         />
       </Dialog>
 
-      {/*Added this dialog box for notify succesfully saved pop up*/}
-      <Dialog open={saveDialogOpen} onClose={() => setSaveDialogOpen(false)}>
-        <DialogContent style={{ padding: "20px" }}>
-          <Typography variant="h5" align="center" gutterBottom>
-            Successfully saved
-          </Typography>
-          <Typography variant="subtitle1" align="center">
-            notified respected evaluators and mentors
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setSaveDialogOpen(false)} // Close the dialog when clicked
-          >
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
+    
 
-      {/*Add this dialog box for notify completed evaluation forms*/}
-      <Dialog
-        open={completedDialogOpen}
-        onClose={() => setCompletedDialogOpen(false)}
-      >
-        <DialogContent>
-          <Typography variant="h6" align="center">
-            Already created the evaluation form
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setCompletedDialogOpen(false)}>OK</Button>
-        </DialogActions>
-      </Dialog>
+   
 
       {/*Added this confirmation dialog box for confirm delete*/}
       <Dialog
