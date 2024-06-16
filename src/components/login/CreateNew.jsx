@@ -69,6 +69,7 @@ function CreateNew() {
                                navigate('/');
                       }
 
+                  });
                 }
             }) 
             .catch(err => {

@@ -57,61 +57,61 @@ function Login() {
             if(role === 'admin') {
               navigate('/AdminDashboard');
             } else if(role === 'intern')  {
-              navigate('/interndashboard').then(() => showPopup());
+              navigate('/interndashboard');
             } else if(role === 'mentor')  {
-              navigate('/mentordashboard').then(() => showPopup());
+              navigate('/mentordashboard');
             } else if(role === 'evaluator')  {
-              navigate('/evaluatordashboard').then(() => showPopup());  
+              navigate('/evaluatordashboard');  
             } else if(role === 'manager')  {
-              navigate('/managerdashboard').then(() => showPopup());
+              navigate('/managerdashboard');
             } else {
               Swal.fire({ position: "top", text:"Invalid role"  ,customClass: { confirmButton: 'my-button' }});
               return;
             } 
                
-    // Show the popup after navigation
-      let timerInterval;
-      Swal.fire({
-        title: "NEW USER ?",
-        text: "if this first logging change password!",
-        icon: "question",
-        timer: 2000,
-        timerProgressBar: true,
-        showCancelButton: true,
-        confirmButtonText: "Yes, change it!",
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        didOpen: () => {
-          const swal2popup = document.querySelector('.swal2-popup');
-          const swal2actions = document.querySelector('.swal2-actions');
-          const swal2loading = document.querySelector('.swal2-loading');
-          swal2popup.style.position = 'fixed';
-          swal2popup.style.top = '5%';
-          swal2popup.style.right = '1%';
-          swal2popup.style.width = '300px'; // Adjust width as needed
-          swal2popup.style.height = '270px'; // Adjust height as needed
-          swal2popup.style.fontSize = '12px';
-          swal2loading.style.position = 'absolute';
-          swal2loading.style.bottom = `${swal2actions.offsetHeight}px`;
-          timerInterval = setInterval(() => {
-            const timeLeft = Swal.getTimerLeft();
-            if (timeLeft !== undefined) {
-              console.log(timeLeft);
-            }
-          }, 100);
-        },
-        willClose: () => {
-          clearInterval(timerInterval);
-        }
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate("/security");
-        } else if (result.dismiss === Swal.DismissReason.timer) {
-          console.log("I was closed by the timer");
-        }
-      });
-    
-              
+            // Show the popup after navigation
+              let timerInterval;
+              Swal.fire({
+                title: "NEW USER ?",
+                text: "if this first logging change password!",
+                icon: "question",
+                timer: 3000,
+                timerProgressBar: true,
+                showCancelButton: true,
+                confirmButtonText: "Yes, change it!",
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                didOpen: () => {
+                  const swal2popup = document.querySelector('.swal2-popup');
+                  const swal2actions = document.querySelector('.swal2-actions');
+                  const swal2loading = document.querySelector('.swal2-loading');
+                  swal2popup.style.position = 'fixed';
+                  swal2popup.style.top = '5%';
+                  swal2popup.style.right = '1%';
+                  swal2popup.style.width = '300px'; // Adjust width as needed
+                  swal2popup.style.height = '270px'; // Adjust height as needed
+                  swal2popup.style.fontSize = '12px';
+                  swal2loading.style.position = 'absolute';
+                  swal2loading.style.bottom = `${swal2actions.offsetHeight}px`;
+                  timerInterval = setInterval(() => {
+                    const timeLeft = Swal.getTimerLeft();
+                    if (timeLeft !== undefined) {
+                      console.log(timeLeft);
+                    }
+                  }, 100);
+                },
+                willClose: () => {
+                  clearInterval(timerInterval);
+                }
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  navigate("/security");
+                } else if (result.dismiss === Swal.DismissReason.timer) {
+                  console.log("I was closed by the timer");
+                }
+              });
+            
+                      
      
 
           } else {
