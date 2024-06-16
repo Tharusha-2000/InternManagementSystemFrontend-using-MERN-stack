@@ -66,3 +66,17 @@
   }
 
 /* end of card styles */
+
+.swal-simple {
+  background-color: #fff; /* White background to mimic browser alert */
+  border: 1px solid #ccc; /* Simple border */
+}
+
+.swal-title-simple {
+  color: #333; /* Dark text for visibility */
+}
+
+.swal-icon-simple {
+  width: 48px; /* Smaller icon */
+  height: 48px; /* Smaller icon */
+}

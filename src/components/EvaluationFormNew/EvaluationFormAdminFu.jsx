@@ -15,6 +15,10 @@ import EvaluationFormAdminEv from "./EvaluationFormAdminEv";
 import EvaluationFormAdminMen from "./EvaluationFormAdminMen";
 import axios from "axios";
 import { BASE_URL } from '../../config';
+import Swal from 'sweetalert2';
+import "./EvaluationFormManager.css";
+
+
 
 function EvaluationFormAdminFu({
   internName,
@@ -48,17 +52,28 @@ function EvaluationFormAdminFu({
   const [coreValuesCriteriasMentor, setCoreValuesCriteriasMentor] = useState([]);
   const [dateError, setDateError] = useState(false);
   const token = localStorage.getItem('token'); 
-
   const handleSave = () => {
     if (!evaluationDate) {
       setDateError(true);
-      alert("Please select a date.");//validation for date field
+      Swal.fire({ position: "top",
+        text:"Please fill the required fields",
+        customClass: {
+          container: 'my-swal',
+          confirmButton: 'my-swal-button' 
+        }
+     })// Validation for date field using SweetAlert
       return;
     }
-
+  
     if (!selectedEvaluator) {
       setEvaluatorError(true);
-      alert("Please select an evaluator.");//select evaluator validation
+      Swal.fire({ position: "top",
+        text:"Please Select a Evaluator",
+        customClass: {
+          container: 'my-swal',
+          confirmButton: 'my-swal-button' 
+        }
+     }) // Select evaluator validation using SweetAlert
       return;
     }
     saveEvaluator(
@@ -68,8 +83,8 @@ function EvaluationFormAdminFu({
       jobPerformanceCriteriasMentor,
       coreValuesCriteriasMentor
     );
-
-    onSave(); 
+  
+    onSave();
   };
 
   const saveEvaluator = (
@@ -98,6 +113,13 @@ function EvaluationFormAdminFu({
       })
       .then((response) => {
         console.log(response.data);
+        // SweetAlert2 success notification
+        Swal.fire({
+          title: 'Success!',
+          text: 'Evaluation form successfully saved.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
       })
       .catch((error) => {
         console.error("There was an error!", error);

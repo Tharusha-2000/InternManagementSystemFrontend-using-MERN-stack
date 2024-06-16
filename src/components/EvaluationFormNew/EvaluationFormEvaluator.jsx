@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import EvaluationFormTableTemp from "./EvaluationFormTableTemp";
 import { BASE_URL } from '../../config';
+import Swal from "sweetalert2";
+
 
 function EvaluationFormEvaluator({ internId, internName, jobPerformanceCriteriasEvaluator, coreValuesCriteriasEvaluator, handleClose, setRefreshKey, ...props}) {
   const [ratings, setRatings] = useState([]);
@@ -40,7 +42,16 @@ if (coreValuesRatings.some(rating => rating === 0)) {
     }
   
     if (errors.length > 0) {
-      alert(`Please fill the following fields correctly: \n${errors.join('\n')}`);
+      
+      Swal.fire({ position: "top",
+        title: 'Please fill all the following fields: ',
+        html: errors.join("<br>"),
+        customClass: {
+          container: 'my-swal',
+          confirmButton: 'my-swal-button' 
+        }
+     })
+      
       return;
     }
   

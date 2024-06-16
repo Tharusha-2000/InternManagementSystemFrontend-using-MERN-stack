@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  Radar,
-} from "recharts";
+
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/system";
