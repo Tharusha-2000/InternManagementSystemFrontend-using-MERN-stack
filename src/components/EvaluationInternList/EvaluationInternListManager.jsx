@@ -7,6 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { Typography } from '@mui/material';
+import { Divider } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
 import { IconButton, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import EvaluationFormManager from '../EvaluationFormNew/EvaluationFormManager';
@@ -22,27 +27,23 @@ function EvaluationInternListManager() {
   const [selectedEvaluationFormDetails, setSelectedEvaluationFormDetails] = useState(null); // New state
   const [mentor, setMentor] = useState(null);
   const token = localStorage.getItem("token");
+  const [filteredRows, setFilteredRows] = useState([]); // Add this state variable
+
 
   useEffect(() => {
     const fetchInternDetails = async () => {
       try {
-        const token = localStorage.getItem("token"); // 'token' is the key you're using to store the JWT
-  
-        const response = await axios.get(
-          `${BASE_URL}getInternsForManager`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
+        const response = await axios.get(`${BASE_URL}getInternsForManager`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
           }
-        );
-        console.log(response.data);
+        });
         setRows(response.data);
+        setFilteredRows(response.data); // Initialize filteredRows with all data
       } catch (err) {
         console.error(err);
       }
     };
-  
     fetchInternDetails();
   }, []);
 
@@ -55,10 +56,44 @@ function EvaluationInternListManager() {
   const handleClose = () => {
     setOpen(false);
   };
+  // Add this function to handle the search functionality
+  const handleSearch = (event) => {
+    const searchTerm = event.target.value.toLowerCase();
+    const filtered = rows.filter(intern => 
+      intern.fname.toLowerCase().includes(searchTerm) || 
+      intern.lname.toLowerCase().includes(searchTerm) // Assuming you want to search by first or last name
+    );
+    setFilteredRows(filtered); // Update filteredRows based on search
+  };
 
   return (
     <div>
-      <h1>Evaluated intern list</h1>
+     
+
+      <Typography variant="h4" gutterBottom align="center">
+        All Evaluations
+      </Typography>
+      <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
+      <Grid sx={{ justifyContent: "space-between", mb: 4, display: "flex", alignItems: "center" }}>
+      <Paper
+        component="form"
+        sx={{
+          p: "2px 4px",
+          display: "flex",
+          alignItems: "center",
+          width: "100vh",
+          borderRadius: "20px",
+          boxShadow: 3,
+          marginLeft: "1%",
+        }}
+      >
+        <InputBase type="text" onChange={handleSearch}  sx={{ ml: 2, flex: 1 }} placeholder="Search Interns" />
+        <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
+        <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+    </Grid>
       <TableContainer component={Paper}>
   <Table sx={{ minWidth: 650 }} aria-label="simple table">
     <TableHead>
@@ -70,7 +105,7 @@ function EvaluationInternListManager() {
       </TableRow>
     </TableHead>
     <TableBody>
-      {rows.map((row) => (
+    {filteredRows.map((row) => (
         <TableRow key={row._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
           <TableCell component="th" scope="row" sx={{ fontSize: "1em" }}>
             {row.fname + ' ' + row.lname}

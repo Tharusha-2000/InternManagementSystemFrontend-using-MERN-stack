@@ -14,13 +14,17 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Grid,
+  InputBase,
+  Divider,
 } from "@mui/material";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EvaluationFormAdminFu from "../EvaluationFormNew/EvaluationFormAdminFu";
 import { BASE_URL } from '../../config';
+import SearchIcon from '@mui/icons-material/Search';
+import Swal from "sweetalert2";
+
 
 
 function EvaluationInternList() {
@@ -40,12 +44,17 @@ function EvaluationInternList() {
 
   const handleClick = (intern) => {
     if (intern.eformStatus === "created") {
-      setCompletedDialogOpen(true); // Open the "already created" dialog
+      // Correct usage of SweetAlert2
+      Swal.fire({
+        title: 'Already Created',
+        text: 'This evaluation form has already been created.',
+        icon: 'info',
+      });
     } else {
       setSelectedInternName(intern.name);
       setSelectedMentorName(intern.mentor);
       setSelectedEvaluationFormDetailsId(intern.evaluationFormDetailsId);
-      setOpenDialog(true); // Open the normal dialog
+      setOpenDialog(true); // Open the normal dialog for other statuses
     }
   };
   const handleClose = () => {
@@ -62,6 +71,7 @@ function EvaluationInternList() {
       .then((result) => {
         console.log(result.data); // Log the data to see what's returned
         setInterns(result.data);
+        setFilteredData(result.data); // Set filteredData state here
       })
       .catch((err) => {
         console.log(err);
@@ -89,12 +99,48 @@ function EvaluationInternList() {
         console.error(error);
       });
   };
+  //search bar
+  
+  const [filteredData, setFilteredData] = useState([]);
+
+  const handleSearch = (event) => {
+    const searchTerm = event.target.value.toLowerCase();
+    const filtered = interns.filter(intern => intern.name.toLowerCase().includes(searchTerm));
+    setFilteredData(filtered);
+  };
+  useEffect(() => {
+    setFilteredData(interns);
+  }, [interns]);
+
 
   return (
     <TableContainer component={Paper}>
-      <Typography variant="h3" gutterBottom>
-        All Evaluations
+      <Typography variant="h4" gutterBottom align="center">
+        All Evaluations test
       </Typography>
+      <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
+      <Grid sx={{ justifyContent: "space-between", mb: 4, display: "flex", alignItems: "center" }}>
+      <Paper
+        component="form"
+        sx={{
+          p: "2px 4px",
+          display: "flex",
+          alignItems: "center",
+          width: "100vh",
+          borderRadius: "20px",
+          boxShadow: 3,
+          marginLeft: "1%",
+        }}
+      >
+        <InputBase type="text" onChange={handleSearch} sx={{ ml: 2, flex: 1 }} placeholder="Search Interns" />
+        <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
+        <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+    </Grid>
+
+
       <Table
   aria-label="simple table"
   sx={{ minWidth: 650 }}
@@ -128,7 +174,7 @@ function EvaluationInternList() {
     </TableRow>
   </TableHead>
   <TableBody>
-    {interns.map((intern, index) => (
+  {filteredData.map((intern, index) => (
       <TableRow
         key={index}
       >
@@ -150,15 +196,33 @@ function EvaluationInternList() {
           </IconButton>
         </TableCell>
         <TableCell sx={{ fontSize: "1rem" }}>
-          <Button
-            onClick={() => {
-              setToBeDeletedId(intern.evaluationFormDetailsId);
-              setConfirmDialogOpen(true);
-            }}
-          >
-            <DeleteForeverIcon />
-          </Button>
-        </TableCell>
+  <Button
+    onClick={() => {
+      // Show the confirmation dialog
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Directly pass `intern.evaluationFormDetailsId` to `handleDelete`
+          handleDelete(intern.evaluationFormDetailsId);
+          Swal.fire(
+            'Deleted!',
+            'The intern\'s evaluation form has been deleted.',
+            'success'
+          )
+        }
+      })
+    }}
+  >
+    <DeleteForeverIcon />
+  </Button>
+</TableCell>
       </TableRow>
     ))}
   </TableBody>
@@ -178,41 +242,9 @@ function EvaluationInternList() {
         />
       </Dialog>
 
-      {/*Added this dialog box for notify succesfully saved pop up*/}
-      <Dialog open={saveDialogOpen} onClose={() => setSaveDialogOpen(false)}>
-        <DialogContent style={{ padding: "20px" }}>
-          <Typography variant="h5" align="center" gutterBottom>
-            Successfully saved
-          </Typography>
-          <Typography variant="subtitle1" align="center">
-            notified respected evaluators and mentors
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setSaveDialogOpen(false)} // Close the dialog when clicked
-          >
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
+    
 
-      {/*Add this dialog box for notify completed evaluation forms*/}
-      <Dialog
-        open={completedDialogOpen}
-        onClose={() => setCompletedDialogOpen(false)}
-      >
-        <DialogContent>
-          <Typography variant="h6" align="center">
-            Already created the evaluation form
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setCompletedDialogOpen(false)}>OK</Button>
-        </DialogActions>
-      </Dialog>
+   
 
       {/*Added this confirmation dialog box for confirm delete*/}
       <Dialog
