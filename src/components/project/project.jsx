@@ -25,6 +25,8 @@ import Typography from "@mui/joy/Typography";
 import Card from "@mui/joy/Card";
 import TaskIcon from '@mui/icons-material/Task';
 import TaskPieChart from './projectpiechart';
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
 
 function internTaskTable({ internId }) {
   // State for tasks and data
@@ -115,19 +117,32 @@ function internTaskTable({ internId }) {
      >
         <TaskIcon />
      </IconButton>
-    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"  maxWidth="lg"  >
+    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"  maxWidth="md" >
     <DialogTitle id="form-dialog-title"> PROJECT TASK LIST <IconButton onClick={handleClose} style={{float:'right'}}><CloseIcon color="primary"></CloseIcon></IconButton></DialogTitle>
     <DialogContent>
 
-    <div>
-     
-   {tasks.length > 0 ? (
-       <TaskPieChart tasks={tasks} />
-     ) : (
-       <Typography>No tasks to display in the chart</Typography>
-     )}
-      
-    </div>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Paper elevation={1} style={{ padding: '10px', marginBottom: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '90%', margin: 'auto' }}>
+        <Typography variant="h6" style={{ marginBottom: '20px', textAlign: 'center',fontWeight: 'bold', color: 'black', fontSize: '2em'  }}>Task Summary</Typography>
+          <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+          
+            <Typography style={{ fontWeight: 'bold', color: 'black' }}> Total Tasks: {tasks.length}</Typography>
+            <Typography style={{ fontWeight: 'bold', color: 'green',paddingLeft: '45px' }}>Completed Tasks: {tasks.filter(task => task.isVerified).length}</Typography>
+            <Typography style={{ fontWeight: 'bold', color: 'red' }}>Tasks  To Do: {tasks.filter(task => !task.isVerified).length}</Typography>
+          </div>
+          <div style={{ width: '100%', maxWidth: '500px' }}>
+            {tasks.length > 0 ? (
+              <div style={{ padding: '20px', textAlign: 'center' }}>
+                <TaskPieChart tasks={tasks} />
+              </div> 
+            ) : (
+              <Typography> </Typography>
+            )}
+          </div>
+        </Paper>
+      </Grid>
+    </Grid>
 
     <div>
       <Stack
