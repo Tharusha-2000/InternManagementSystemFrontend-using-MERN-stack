@@ -138,7 +138,9 @@ function Addusertable({ rows }) {
            localStorage.removeItem('token');
 
            navigate("/");
+            });
         }
+               
       });
   }
   
