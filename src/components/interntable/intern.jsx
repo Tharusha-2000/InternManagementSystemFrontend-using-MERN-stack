@@ -575,7 +575,7 @@ const handleMentorChange = (event) => {
                       <Stack direction="row" spacing={2}>
   <FormControl sx={{ flexGrow: 1, position: "relative", minWidth: 100, maxWidth: '178px'  }}>
     <FormLabel htmlFor="mentor-select" sx={{ mb: 1, color: "#20262D", }}>
-      Select email
+      Mentor Email
     </FormLabel>
     <select
       defaultValue={data.mentorEmail} // Set the default value to the mentor email if available
