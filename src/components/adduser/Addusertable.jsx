@@ -136,13 +136,14 @@ function Addusertable({ rows }) {
          // window.alert(err.response.data.msg);
          .then(() => {
            localStorage.removeItem('token');
-           navigate("/Login");
-         });
+
+           navigate("/");
         }
       });
   }
   
   {/* delect user*/}
+
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -180,11 +181,12 @@ function Addusertable({ rows }) {
                 // window.alert(err.response.data.msg);
                .then(() => {
                 localStorage.removeItem('token');
-                navigate("/Login");
+                navigate("/");
                })
             }
           });
       }
+
     });
   };
   

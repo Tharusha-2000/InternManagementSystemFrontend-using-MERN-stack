@@ -8,8 +8,6 @@ import './App.css';
 import Login from './components/login/Login';
 import Addusertable from './components/adduser/Addusertable';
 import Adduser from './components/adduser/Adduser';
-//import Dashboard from './components/Dashboard';
-//import Header from './components/common/Header';
 import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
@@ -57,12 +55,11 @@ import InternProjectTask from './Pages/intern_page/InternProjectTask';
 import ManagerDashboard from './Pages/manager_page/ManagerDashboard';
 import ManagerEvaluation from './Pages/manager_page/ManagerEvaluation';
 import ManagerViewInternDetails  from './Pages/manager_page/ManagerViewInternDetails.jsx';
-
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 function App() {
   const [user,setUsers] = useState();  
-  
-
 
   return (
    
@@ -70,7 +67,7 @@ function App() {
    
       <TokenCheck setUsers={setUsers} />
       <Routes>
-        <Route path="/Login" element={<Login setUsers={setUsers}/>} > </Route>
+        <Route path="/" element={<Login setUsers={setUsers}/>} > </Route>
 
         <Route path="/Addusertable" element={<Addusertable />}> </Route>
         <Route path="/Adduser" element={<Adduser />}> </Route>
@@ -100,7 +97,7 @@ function App() {
 
             <Route path="/AdminDashboard" element={<AdminDashboard/>}></Route>
             <Route path="/registration" element={<Registration />}></Route>
-            <Route path="/cvupload" element={<CVupload/>}></Route>
+             <Route path="/cvupload" element={<CVupload/>}></Route> 
             <Route path="/evaluation" element={<Evaluation />}></Route>
             
             <Route path="/profilecreate" element={<ProfileCreate />}></Route>
@@ -152,7 +149,7 @@ function App() {
             
 
         </Routes>
-     
+
    </BrowserRouter>    
   
   );
@@ -169,7 +166,7 @@ function TokenCheck({ setUsers }) {
       if (decodedToken.exp * 1000 < new Date().getTime()) {
         setUsers(null);
         localStorage.removeItem('token');
-        navigate('/Login');
+        navigate('/');
       } else {
         setUsers(decodedToken);
       }

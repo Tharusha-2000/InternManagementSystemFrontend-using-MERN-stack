@@ -46,11 +46,18 @@ function Fogetpassword() {
               }) 
                 .catch(err => {
                   if (err.response) {
+
                     Swal.fire({ position: "top",
                     text:err.response.data.msg,
                     customClass: { confirmButton: 'my-button' }
-                   });
+                   })
                    // window.alert(err.response.data.msg);
+
+                      .then(() => {
+                         navigate('/');
+                    
+                  });
+  
                   }
               })
        
