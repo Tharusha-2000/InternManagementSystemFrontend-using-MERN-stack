@@ -47,7 +47,8 @@ export default function Header() {
     }).then((result) => {
       if (result.value) {
         localStorage.removeItem('token');
-        navigate('/Login');
+        navigate('/');
+       
       }
     });
 

@@ -68,6 +68,7 @@ function CreateNew() {
                        if(result.status === 201 ) {
                                navigate('/');
                       }
+
                   });
                 }
             }) 

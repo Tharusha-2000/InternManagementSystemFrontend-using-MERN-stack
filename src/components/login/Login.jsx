@@ -57,13 +57,13 @@ function Login() {
             if(role === 'admin') {
               navigate('/AdminDashboard');
             } else if(role === 'intern')  {
-              navigate('/interndashboard').then(() => showPopup());
+              navigate('/interndashboard');
             } else if(role === 'mentor')  {
-              navigate('/mentordashboard').then(() => showPopup());
+              navigate('/mentordashboard');
             } else if(role === 'evaluator')  {
-              navigate('/evaluatordashboard').then(() => showPopup());  
+              navigate('/evaluatordashboard');  
             } else if(role === 'manager')  {
-              navigate('/managerdashboard').then(() => showPopup());
+              navigate('/managerdashboard');
             } else {
               Swal.fire({ position: "top", text:"Invalid role"  ,customClass: { confirmButton: 'my-button' }});
               return;
