@@ -32,12 +32,22 @@ function TaskBarChart({ tasks }) {
     scales: {
       x: {
         beginAtZero: true,
+        ticks: {
+          font: {
+            size: 14, // Increase the font size for x-axis labels
+          },
+        },
       },
       y: {
         beginAtZero: true,
+        ticks: {
+          font: {
+            size: 14, // Increase the font size for y-axis labels
+          },
+        },
       },
     },
-  };
+    }
 
   return (
     <div style={{ position: 'relative', width: '100%', margin: 'auto' }}>

@@ -61,11 +61,7 @@ const EmailForm = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Paper style={{ padding: '20px', marginTop: '20px' }}>
-        <Typography variant="h6" align="center">
-          Send Email
-        </Typography>
+   
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <TextField
             label="To"
@@ -102,8 +98,7 @@ const EmailForm = () => {
             Send
           </Button>
         </form>
-      </Paper>
-    </Container>
+     
   );
 };
 
