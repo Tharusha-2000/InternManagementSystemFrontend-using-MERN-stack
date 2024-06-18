@@ -203,7 +203,7 @@ export default function EvaluatorDashboard() {
             alert('Failed to delete the event');
           }
         };
-
+         const [formData, setFormData] = useState({ userId: '', leaveDate: '', reason: '' });
         const [leaveopen, setLeaveopen] = useState(false);
         const [formData, setFormData] = useState({ userId: '', leaveDate: '', reason: '' });
         const handleLeaveClickOpen = () => {
