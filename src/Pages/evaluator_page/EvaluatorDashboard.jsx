@@ -205,6 +205,7 @@ export default function EvaluatorDashboard() {
         };
 
         const [leaveopen, setLeaveopen] = useState(false);
+        const [formData, setFormData] = useState({ userId: '', leaveDate: '', reason: '' });
         const handleLeaveClickOpen = () => {
           setLeaveopen(true);
         };
