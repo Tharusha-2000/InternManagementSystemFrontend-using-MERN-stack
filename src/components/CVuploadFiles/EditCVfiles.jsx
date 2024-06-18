@@ -1,6 +1,14 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useState, useCallback } from 'react';
+import { BASE_URL } from '../../config';
 import axios from 'axios';
+import {
+  deleteObject,
+  getDownloadURL,
+  ref, uploadBytesResumable,
+} from "firebase/storage";
+import { storage } from "../../firebaseconfig"
+import { uuidv4 } from '@firebase/util'
 import { Button,
          TextField,
          Dialog,
@@ -10,130 +18,84 @@ import { Button,
          DialogTitle } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import { Box } from '@mui/system';
-import 'firebase/storage';
-import 'firebase/firestore';
-import { getStorage, 
-        ref, 
-        uploadBytesResumable, 
-        getDownloadURL } from "firebase/storage";
-//import app from './firebase-config';
-import { BASE_URL } from '../../config';
 
 
-export default function EditCvfile({open, handleClose, internName, internId}) {
-  const [file, setFile] = useState(null);
-  const [fileUrl, setFileUrl] = useState(null);
+
+export default function EditCvfile({open, handleClose, internId}) {
+
+  const [cv, setCV] = useState(null);
+  const [cvUrl, setcvUrl] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const token = localStorage.getItem('token');
   const [inputs , setInputs ] = useState({});
+  const [oldCvPath, setOldImagePath] = useState(null);
   const {getRootProps, getInputProps} = useDropzone({
     onDrop: (acceptedFiles) => {
-      setFile(acceptedFiles[0]);
-      setFileUrl(URL.createObjectURL(acceptedFiles[0]));
+      setCV(acceptedFiles[0]);
+      setcvUrl(URL.createObjectURL(acceptedFiles[0]));
     }
   });
 
-    
-  useEffect(() => {
-    if (file) {
-      const fileName = `${new Date().getTime()}_${file.name}`;
-      uploadFile(file, fileName);
-    }
-  }, [file]);
 
+          const uploadFile = useCallback(() => {
+            return new Promise((resolve, reject) => {
+              if (cv === null) {
+                reject('No file selected');
+                return;
+              }
 
-      const uploadFile = async (file) => {
-      const storage = getStorage(app);
-      const folder = "CVFILES/";
-      const fileName = `${new Date().getTime()}_${file.name}`;
-      const storageRef = ref(storage, 'CVFILES/' + file.name);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+              const cvPath = `cv/${cv.name + uuidv4()}`;
+              const cvRef = ref(storage,cvPath);
+              const uploadTask = uploadBytesResumable(cvRef, cv);
+            
 
-      
-
-              uploadTask.on('state_changed',
-              (snapshot) => {
-                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+              uploadTask.on('state_changed', (snapshot) => {
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log('Upload is ' + progress + '% done');
-                switch (snapshot.state) {
-                  case 'paused':
-                    console.log('Upload is paused');
-                    break;
-                  case 'running':
-                    console.log('Upload is running');
-                    break;
-                }
+                setProgress(progress);
               }, 
               (error) => {
-                // A full list of error codes is available at
-                // https://firebase.google.com/docs/storage/web/handle-errors
-                switch (error.code) {
-                  case 'storage/unauthorized':
-                    // User doesn't have permission to access the object
-                    break;
-                  case 'storage/canceled':
-                    // User canceled the upload
-                    break;
-
-                  // ...
-
-                  case 'storage/unknown':
-                    // Unknown error occurred, inspect error.serverResponse
-                    break;
-                }
-              }, 
+                console.log(error);
+                reject(error);
+              },
               () => {
-                // Upload completed successfully, now we can get the download URL
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                   console.log('File available at (DownloadURL) - ', downloadURL);
-                  setInputs((prev) => {
-                    return {
-                      ...prev,
-                      [fileName]: downloadURL,
-                    };
+              
+                // Delete the previous cv 
+                if (oldCvPath) {
+                  const oldCvRef = ref(storage, oldCvPath);
+                  deleteObject(oldCvRef).then(() => {
+                    console.log('Old CV deleted');
+                  }).catch((error) => {
+                    console.log('Failed to delete old CV', error);
                   });
+                }
+                console.log(cvPath);
+                // Save the path of the uploaded cv
+                setOldImagePath(cvPath);
+                console.log(oldCvPath);
+
+
+                const fileData = { cvUrl: downloadURL, userId: internId };
+                const token = localStorage.getItem("token");
+
+                axios.put(`${BASE_URL}${internId}/uploadcv`, fileData, {
+                  headers: { Authorization: `Bearer ${token}` },
+                })
+                .then((response) => {
+                  window.alert(response.data.msg);
+                  console.log(response.data);
+                })
+                .catch((error) => {
+                  console.log(error);
                 });
-              }
-            );
-    }
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const fileData = { cvfileURL: fileUrl, userId: internId };
-    console.log("fileData:", fileData);
-
-    const token = localStorage.getItem("token");
-
-    // Fetch the existing file for the user
-    const response = await axios.get(`${BASE_URL}${internId}/cvfiles`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+                setCV(null);
+                resolve(downloadURL);
+                });
+              });
+        });
     });
-
-    // If a file already exists, show an error message and return
-    if (response.data && response.data.cvfileURL) {
-      alert('A file already exists for this user');
-      return;
-    }
-
-    // If no file exists, upload the new file
-    await axios.put(`${BASE_URL}${internId}/cvfiles`, fileData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    window.location.reload();
-  } catch (error) {
-    console.log(error);
-    if (error.response && error.response.status === 404) {
-      alert('Error: Route not found');
-    } else {
-      alert('An unknown error occurred');
-    }
-  }
-};
-
 
 
 
@@ -142,18 +104,25 @@ const handleSubmit = async (e) => {
       <Dialog
         open={open}
         onClose={handleClose}
-        maxWidth="md" // Increase the width of the dialog box
+        maxWidth="md" 
         PaperProps={{
           component: 'form',
-          style: { height: '80%' }, // Increase the height of the dialog box
-          onSubmit: handleSubmit,
+          style: { height: '80%' }, 
+          onSubmit: (e) => {
+            e.preventDefault();
+            uploadFile().then((downloadURL) => {
+              window.alert(response.data.msg);
+            }).catch((error) => {
+              console.log('File upload failed', error);
+            });
+          },
     
         }}
       >
-        <DialogTitle>{`Upload File for ${internName}`}</DialogTitle>
+        <DialogTitle>Upload File </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To upload a file, please select it here. We will process it accordingly.
+            To upload a file, please select it here. 
           </DialogContentText>
           <TextField
             required
@@ -164,7 +133,7 @@ const handleSubmit = async (e) => {
             type="text"
             fullWidth
             variant="standard"
-            value={file ? file.name : ''}
+            value={cv ? cv.name : ''}
             InputProps={{
               readOnly: true,
             }}
@@ -174,7 +143,7 @@ const handleSubmit = async (e) => {
             style={{ display: 'none' }}
             id="hidden-file"
             accept="application/pdf"
-            onChange={(e) => setFile((prev) => e.target.files[0])}
+            onChange={(e) => setCV((prev) => e.target.files[0])}
           />
           <Box {...getRootProps()} 
                     sx={{ 
@@ -184,10 +153,10 @@ const handleSubmit = async (e) => {
                             height:"300px" 
                         }}>
             <input {...getInputProps()} />
-            {fileUrl ? (
-              <object data={fileUrl} type="application/pdf" width="100%" height="100%">
-                <p>It appears you don't have a PDF plugin for this browser. No biggie... you can 
-                      <a href={fileUrl}>click here to download the PDF file.</a></p>
+            {cvUrl ? (
+              <object data={cvUrl} type="application/pdf" width="100%" height="100%">
+                <p>It appears you don't have a PDF plugin for this browser.
+                      <a href={cvUrl}>click here to download the PDF file.</a></p>
               </object>
             ) : (
               <p>Drag 'n' drop some files here, or click to select files</p>
