@@ -222,7 +222,9 @@ export default function Evaluatorsidebar() {
         
                   
                   
+
             <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("View profile & task"); navigate("/evaluatorviewprofile")}}>
+
               <ListItemButton
                 sx={{
                   minHeight: 48,
