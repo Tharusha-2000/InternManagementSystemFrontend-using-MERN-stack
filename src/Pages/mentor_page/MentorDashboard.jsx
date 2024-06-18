@@ -65,7 +65,6 @@ export default function MentorDashboard()  {
   });
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
-  const colors = tokens;
   const [value, setValue] = useState('0');
   const handleChange = (event, newValue) => {
       setValue(newValue);
