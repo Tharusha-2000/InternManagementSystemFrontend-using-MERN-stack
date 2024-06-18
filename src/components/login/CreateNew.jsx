@@ -53,9 +53,7 @@ function CreateNew() {
      axios.put(`${BASE_URL}resetPassword`, {email:email,password:values.password})
           // console.log(email);
           // console.log(values);
-         
-       
-       .then(result => {
+         .then(result => {
                 if(result.data){
                   Swal.fire({ position: "top",
                   text:result.data.msg,
@@ -64,13 +62,13 @@ function CreateNew() {
                   //  window.alert(result.data.msg);
                   .then(() => {
                     console.log(result.data.msg);
-
-                       if(result.status === 201 ) {
-                               navigate('/');
+                      if(result.status === 201 ) {
+                               navigate('/Login');
                       }
 
-                }
-            }) 
+                })
+             }
+            })
             .catch(err => {
                 if (err.response){
 
@@ -79,7 +77,7 @@ function CreateNew() {
                   customClass: { confirmButton: 'my-button' }
                   });
                   // window.alert(err.response.data.msg);
-                    navigate('/');
+                    navigate('/Login');
 
                  }
             })

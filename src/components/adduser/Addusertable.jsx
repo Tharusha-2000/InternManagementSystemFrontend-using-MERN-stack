@@ -137,7 +137,7 @@ function Addusertable({ rows }) {
          .then(() => {
            localStorage.removeItem('token');
 
-           navigate("/");
+           navigate("/Login");
             });
         }
                
@@ -183,7 +183,7 @@ function Addusertable({ rows }) {
                 // window.alert(err.response.data.msg);
                .then(() => {
                 localStorage.removeItem('token');
-                navigate("/");
+                navigate("/Login");
                })
             }
           });
