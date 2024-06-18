@@ -29,7 +29,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Swal from "sweetalert2";
 import EditCVfiles from "./EditCVfiles";
 import ViewCVfiles from "./ViewCVfiles";
-
+import { jwtDecode } from "jwt-decode";
 
 
 export default function InternCvList({ rows }) {
@@ -39,7 +39,7 @@ export default function InternCvList({ rows }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const token = localStorage.getItem('token');
- 
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -50,6 +50,14 @@ export default function InternCvList({ rows }) {
   };
 
   
+
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+  if (userRole !== 'admin') {
+    return null; // Do not render the component
+  }
+ 
+
   useEffect(() => {
     axios
       .get(`${BASE_URL}users`,{

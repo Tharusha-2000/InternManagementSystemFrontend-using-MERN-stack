@@ -30,6 +30,8 @@ import IconButton from "@mui/joy/IconButton";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import Card from "@mui/joy/Card";
+import { jwtDecode } from "jwt-decode";
+import Swal from "sweetalert2";
 
 
 function TaskTable() {
@@ -42,9 +44,13 @@ function TaskTable() {
   
     const [open, setOpen] = useState(false);
     const [currentTask, setCurrentTask] = useState(null);
-  
-    const token = localStorage.getItem("token");
-  
+    const token = localStorage.getItem('token');
+    const decodedToken = jwtDecode(token);
+    const userRole = decodedToken.role;
+
+   if (userRole !== 'intern') {
+      return null; // Do not render the component
+    }
     const handleClickOpen = (task) => {
       setCurrentTask(task);
       setOpen(true);
@@ -114,7 +120,14 @@ function TaskTable() {
     // Function to add a task
     const addTask = async () => {
       if(!data.title) {
-        window.alert('Please fill the required fields')
+        Swal.fire({ position: "top",
+          text:"Please fill the required fields",
+          customClass: {
+            container: 'my-swal',
+            confirmButton: 'my-swal-button' 
+          }
+       })
+      //  window.alert('Please fill the required fields')
         return;
      } 
       await axios.post(`${BASE_URL}task`, data, {
@@ -129,24 +142,49 @@ function TaskTable() {
     
       /* delect task*/
     function handleDelete(id) {
-      if (window.confirm("Are you sure you want to delete this task?")) {
-        axios
-          .delete(`${BASE_URL}task/${id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then(() => {
-            // Remove the deleted task from the local state
-            setTasks(tasks.filter((task) => task._id !== id));
-          })
-          .catch((err) => {
-            console.log(err);
-            if (err.response.status === 403) {
-              window.alert(err.response.data.msg);
-            }
-          });
-      }
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this task!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        width: '400px',
+      }).then((result) => {
+        if (result.value) {
+          axios
+            .delete(`${BASE_URL}task/${id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then(() => {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Task has been deleted.",
+                icon: "success",
+                width: '400px',
+              });
+              // Remove the deleted task from the local state
+              setTasks(tasks.filter((task) => task._id !== id));
+            })
+            .catch((err) => {
+              console.log(err);
+              if (err.response.status === 403) {
+                Swal.fire({
+                  position: "top",
+                  text: err.response.data.msg,
+                  customClass: {
+                    container: 'my-swal',
+                    confirmButton: 'my-swal-button'
+                  }
+                })
+                // window.alert(err.response.data.msg);
+              }
+            });
+        }
+      });
     }
   
     {/* update task*/}
@@ -165,9 +203,18 @@ function TaskTable() {
           },
         })
         .then((response) => {
-          window.alert(response.data.msg);
-          window.location.reload();
+          Swal.fire({ position: "top",
+          text:response.data.message,
+          customClass: {
+            container: 'my-swal',
+            confirmButton: 'my-swal-button' 
+          }
+       })
+         // window.alert(response.data.msg);
+         .then(() => {
+           window.location.reload();
           console.log(response.data);
+         })
         })
         .catch((error) => {
           console.log(error);

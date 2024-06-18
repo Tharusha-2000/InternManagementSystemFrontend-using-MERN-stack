@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import image2 from "../../assets/photo2.jpg";
 import React  from "react";
 
-
+import Swal from "sweetalert2";
 import PropTypes from "prop-types";
 import { Input as BaseInput } from "@mui/base/Input";
 import { Box, styled } from "@mui/system";
@@ -189,17 +189,24 @@ function Varify() {
 
 
   const resendOTP = () => {
-    //console.log("hi")
+    
     if(!email){
-     window.alert('cannot resend OTP without email address')
+      Swal.fire({ position: "top",
+      text: "cannot resend OTP without email address",
+      customClass: { confirmButton: 'my-button' }
+     });
+    // window.alert('cannot resend OTP without email address')
      return;
     }
   axios.post(`${BASE_URL}generateOTP&sendmail`,{email:email})
     .then(result => {
-        console.log("hi");
         if(result.data){
              if(result.status === 201 ) {
-                 window.alert(result.data.msg);   
+              Swal.fire({ position: "top",
+              text: result.data.msg,
+              customClass: { confirmButton: 'my-button' }
+             });
+              //  window.alert(result.data.msg);   
                }
             }
           });
@@ -209,26 +216,28 @@ function Varify() {
   const handleSubmit = () => {
 
      console.log(otp);
-
-    
      axios.get(`${BASE_URL}verifyOTP?&code=${otp}` )
-      
        .then(result => {
            if(result.data){
-                 console.log("hi");
-                 window.alert(result.data.msg);
+            Swal.fire({ position: "top",
+                   text: result.data.msg,
+                   customClass: { confirmButton: 'my-button' }
+                  });
+              //window.alert(result.data.msg);
                   if(result.status === 201 ) {
                       navigate('/CreateNew' ,{state: { email:email} });
                       }
                   }
                }).catch(err => {
                   if (err.response) {
-                     console.log("hhhhh");
-                     window.alert(err.response.data.msg);
+                    Swal.fire({ position: "top",
+                    text: err.response.data.msg,
+                    customClass: { confirmButton: 'my-button' }
+                   });
+               //  window.alert(err.response.data.msg);
                   }
                 });
-
-  };
+};
 
 
   return (

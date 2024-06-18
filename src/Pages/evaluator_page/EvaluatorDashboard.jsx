@@ -33,10 +33,17 @@ import Calender from '../../components/common/Calendar';
 import Calendar from '../../components/common/Calendar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import LeaveManagement from '../../components/common/Leave';
-
-
+import { jwtDecode } from "jwt-decode";
 
 export default function EvaluatorDashboard() {
+  
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
+  if (userRole !== 'evaluator') {
+    return null; // Do not render the component
+  }
+  
   const [data, setData] = useState({
     _id: "",
     fname: "",
@@ -239,6 +246,7 @@ export default function EvaluatorDashboard() {
           })
           .catch((error) => console.log(error));
       };
+
 
   return (
     <>

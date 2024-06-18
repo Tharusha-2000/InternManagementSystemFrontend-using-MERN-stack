@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate,useLocation } from "react-router-dom";
 import {BASE_URL} from '../../config';
-
+import Swal from "sweetalert2";
 function CreateNew() {
     const location = useLocation();
     const navigate = useNavigate();
@@ -25,37 +25,62 @@ function CreateNew() {
         //console.log(values)
         e.preventDefault();
          if(!values.password || !values.confirmpassword) {
-              window.alert('Please fill the required fields')
+          Swal.fire({ position: "top",
+           text:"Please fill the required fields",
+           customClass: { confirmButton: 'my-button' }
+          });  
+         // window.alert('Please fill the required fields')
               return;
           }
          if(values.password !== values.confirmpassword) {
-          window.alert('Password and Confirm Password should be same')
+          Swal.fire({ position: "top",
+          text:"Password and Confirm Password should be same",
+          customClass: { confirmButton: 'my-button' }
+         });  
+         // window.alert('Password and Confirm Password should be same')
           return;
          }
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/;
          if (!passwordRegex.test(values.password)){
-            window.alert('Password must be at least 6 characters long and contain at least one letter and one number.')
+           Swal.fire({ position: "top",
+           text:"Password must be at least 6 characters long and contain at least one letter and one number.",
+           customClass: { confirmButton: 'my-button' }
+           }); 
+           // window.alert('Password must be at least 6 characters long and contain at least one letter and one number.')
             return;
          }
 
      axios.put(`${BASE_URL}resetPassword`, {email:email,password:values.password})
           // console.log(email);
           // console.log(values);
-         
-       
-       .then(result => {
+         .then(result => {
                 if(result.data){
-                    window.alert(result.data.msg);
+                  Swal.fire({ position: "top",
+                  text:result.data.msg,
+                  customClass: { confirmButton: 'my-button' }
+                  })
+                  //  window.alert(result.data.msg);
+                  .then(() => {
                     console.log(result.data.msg);
-                       if(result.status === 201 ) {
-                               navigate('/Login');
+                      if(result.status === 201 ) {
+                               navigate('/');
                       }
+
+
+                  });
                 }
             }) 
+
             .catch(err => {
                 if (err.response){
-                    window.alert(err.response.data.msg);
-                    navigate('/Login');
+
+                  Swal.fire({ position: "top",
+                  text:err.response.data.msg,
+                  customClass: { confirmButton: 'my-button' }
+                  });
+                  // window.alert(err.response.data.msg);
+                    navigate('/');
+
                  }
             })
 

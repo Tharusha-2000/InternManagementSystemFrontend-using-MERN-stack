@@ -29,14 +29,28 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import CloseIcon from '@mui/icons-material/Close';
 import { tokens } from "../admin_page/theme/theme";
+
 import Calender from '../../components/common/Calendar';
 import Calendar from '../../components/common/Calendar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import LeaveManagement from '../../components/common/Leave';
+import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import EmailIcon from "@mui/icons-material/Email";
+import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import TrafficIcon from "@mui/icons-material/Traffic";
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import { red } from '@mui/material/colors';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import CardContent from '@mui/material/CardContent';
+import CountBox from "../admin_page/theme/CountBox";
+import CountCircle from "../admin_page/theme/CountCircle";
+import { jwtDecode } from "jwt-decode";
 
 
-
-export default function MentorDashboard() {
+export default function MentorDashboard()  {
+  const colors = tokens;
   const [currentDate, setCurrentDate] = useState(new Date());
   const [leaveApplications, setLeaveApplications] = useState([]);
   const [data, setData] = useState({
@@ -62,7 +76,14 @@ export default function MentorDashboard() {
   const [managerData, setManagerData] = useState([]);
   const [adminData, setAdminData] = useState([]);
   const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
 
+   if(userRole == 'mentor'){
+
+      return null; // Do not render the component
+    }
+    
   const [userCount, setUserCount] = useState(0);
   const [internCount, setInternCount] = useState(0);
   const [mentorCount, setMentorCount] = useState(0);

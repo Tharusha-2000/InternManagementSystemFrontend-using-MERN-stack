@@ -59,7 +59,13 @@ export default function AdminDashboard() {
   const [evaluatorData, setEvaluatorData] = useState([]);
   const [managerData, setManagerData] = useState([]);
   const [adminData, setAdminData] = useState([]);
+
   const token = localStorage.getItem('token');
+   const decodedToken = jwtDecode(token);
+   const userRole = decodedToken.role;
+   if (userRole !== 'admin') {
+     return null; // Do not render the component
+   }
 
   const [userCount, setUserCount] = useState(0);
   const [internCount, setInternCount] = useState(0);

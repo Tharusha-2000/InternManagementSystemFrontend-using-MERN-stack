@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Grid,
-} from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Grid } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { BASE_URL } from "../../config";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -27,9 +22,19 @@ import CardActions from "@mui/joy/CardActions";
 import CardOverflow from "@mui/joy/CardOverflow";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import image3  from "../../assets/Unknown_person.jpg"
+import image3 from "../../assets/Unknown_person.jpg";
+import Swal from "sweetalert2";
+import Select from "@mui/joy/Select";
+import Option from "@mui/joy/Option";
+import { MenuItem } from "@mui/material";
+
 function interndetails({ internId }) {
   const [open, setOpen] = useState(false);
+  // Assuming you have a state variable for mentors similar to evaluators
+  const [mentors, setMentors] = useState([]);
+  const [selectedMentorEmail, setSelectedMentorEmail] = useState("");
+  const [selectedMentorName, setSelectedMentorName] = useState("");
+
   const [data, setData] = useState({
     fname: "",
     lname: "",
@@ -37,29 +42,34 @@ function interndetails({ internId }) {
     role: "",
     gender: "",
     email: "",
+    mentorEmail: "", // New field
+    mentorName: "", // New field
   });
   const [imageUrl, setImageUrl] = useState(null);
   console.log(data);
 
   useEffect(() => {
     if (open) {
-       const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
       axios
         .get(`${BASE_URL}interns/${internId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((result) => {
           setData(result.data.intern);
           console.log(result.data.intern);
           setImageUrl(result.data.intern.imageUrl);
+             // Pre-fill mentor email and name if available in the data
+        if (result.data.intern.mentorEmail && result.data.intern.mentor) {
+          setSelectedMentorEmail(result.data.intern.mentorEmail);
+          setSelectedMentorName(result.data.intern.mentor);
+        }
         })
         .catch((err) => console.log(err));
     }
   }, [open]);
-
-
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -77,40 +87,113 @@ function interndetails({ internId }) {
       !data.dob ||
       !data.role ||
       !data.gender ||
-      !data.email||
-      !data.interviewScore||
-      !data.interviewFeedback||
-      !data.mentor
+      !data.email ||
+      !data.interviewScore ||
+      !data.interviewFeedback ||
+      (!data.mentorEmail || !data.mentor)
     ) {
-      window.alert("Please fill the required fields");
+      Swal.fire({
+        position: "top",
+        text: "Please fill the required fields",
+        customClass: {
+          container: "my-swal",
+          confirmButton: "my-swal-button",
+        },
+      });
       return;
     }
 
     const nameRegex = /^[A-Za-z]+$/;
     if (!nameRegex.test(data.fname) || !nameRegex.test(data.lname)) {
-      window.alert("name must only contain letters.");
+      Swal.fire({
+        position: "top",
+        text: "name must only contain letters.",
+        customClass: {
+          container: "my-swal",
+          confirmButton: "my-swal-button",
+        },
+      });
+      // window.alert("name must only contain letters.");
       return;
     }
     const token = localStorage.getItem("token");
-  axios
-     .put(`${BASE_URL}interns/${internId}`, data ,{
+    axios
+      .put(`${BASE_URL}interns/${internId}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-     .then((response) => {
-       window.alert(response.data.msg);
-       window.location.reload(); 
-       console.log(response.data.msg);
-     })
-     .catch((error) => {
-       console.log(error);
-       window.alert("Failed to update");
-       handleClose();
-     })
-
+      .then((response) => {
+        Swal.fire({
+          position: "top",
+          text: response.data.msg,
+          customClass: {
+            container: "my-swal",
+            confirmButton: "my-swal-button",
+          },
+        })
+          //  window.alert(response.data.msg);
+          .then(() => {
+            window.location.reload();
+            console.log(response.data.msg);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+        Swal.fire({
+          position: "top",
+          text: "Failed to update",
+          customClass: {
+            container: "my-swal",
+            confirmButton: "my-swal-button",
+          },
+        });
+        // window.alert("Failed to update");
+        handleClose();
+      });
   };
+  // Fetch mentors from the backend
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
+    axios.get(`${BASE_URL}getAllMentors`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      setMentors(response.data); // Assuming response.data is an array of mentor objects
+      console.log("Mentors fetched successfully!", response.data);
+    })
+    .catch((error) => {
+      console.error("There was an error fetching mentors!", error);
+    });
+  }, []);
+
+  // Mentor selection handler
+ // Modify the data object update within handleMentorChange to use "mentor" instead of "mentorName"
+const handleMentorChange = (event) => {
+  const email = event.target.value;
+  console.log("Selected email:", email); // Debugging: Check selected email
+
+  const selectedMentor = mentors.find(mentor => mentor.email === email);
+  console.log("Selected mentor:", selectedMentor); // Debugging: Check selected mentor object
+
+  if (selectedMentor) {
+    setSelectedMentorEmail(selectedMentor.email);
+    setSelectedMentorName(selectedMentor.fullName); // Assuming the mentor object has a fullName property
+
+    // Debugging: Log the state updates to confirm they're being set
+    console.log("Updating mentorEmail to:", selectedMentor.email);
+    console.log("Updating mentor to:", selectedMentor.fullName);
+
+    setData(prevData => ({
+      ...prevData,
+      mentorEmail: selectedMentor.email,
+      mentor: selectedMentor.fullName, // Changed from mentorName to mentor
+    }));
+  }
+};
   return (
     <div>
       <Button
@@ -167,11 +250,7 @@ function interndetails({ internId }) {
                         maxHeight={200}
                         sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
                       >
-                         <img
-                        src={imageUrl || image3} 
-                        loading="lazy"
-                        alt=""
-                       />
+                        <img src={imageUrl || image3} loading="lazy" alt="" />
                       </AspectRatio>
                       <IconButton
                         aria-label="upload new picture"
@@ -238,15 +317,18 @@ function interndetails({ internId }) {
                         <Grid item xs={3} sm={4}>
                           <FormControl>
                             <FormLabel>phone number</FormLabel>
-                            <Input size="sm"
-                                 value={data.phonenumber}
-                                 onChange={(e) =>
-                                  setData({ ...data, phonenumber: e.target.value })
-                                }
-                                 />
+                            <Input
+                              size="sm"
+                              value={data.phonenumber}
+                              onChange={(e) =>
+                                setData({
+                                  ...data,
+                                  phonenumber: e.target.value,
+                                })
+                              }
+                            />
                           </FormControl>
                         </Grid>
-                       
                       </Stack>
 
                       <div>
@@ -295,11 +377,7 @@ function interndetails({ internId }) {
                           maxHeight={108}
                           sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
                         >
-                          <img
-                           src={imageUrl || image3} 
-                           loading="lazy"
-                           alt=""
-                       />
+                          <img src={imageUrl || image3} loading="lazy" alt="" />
                         </AspectRatio>
                         <IconButton
                           aria-label="upload new picture"
@@ -363,10 +441,12 @@ function interndetails({ internId }) {
                     </FormControl>
                     <FormControl>
                       <FormLabel>phone number</FormLabel>
-                      <Input size="sm" value={data.phonenumber}
-                       onChange={(e) =>
-                        setData({ ...data, phonenumber: e.target.value })
-                      }
+                      <Input
+                        size="sm"
+                        value={data.phonenumber}
+                        onChange={(e) =>
+                          setData({ ...data, phonenumber: e.target.value })
+                        }
                       />
                     </FormControl>
 
@@ -435,28 +515,29 @@ function interndetails({ internId }) {
                       <Stack direction="row" spacing={2}>
                         <FormControl>
                           <FormLabel>GPA</FormLabel>
-                          <Input size="sm" 
-                                placeholder="GPA" 
-                                value={data.GPA}
-                                type="text"
-                                onChange={(e) =>
-                                 setData({ ...data, GPA: e.target.value })
-                                 }
-                                />
+                          <Input
+                            size="sm"
+                            placeholder="GPA"
+                            value={data.GPA}
+                            type="text"
+                            onChange={(e) =>
+                              setData({ ...data, GPA: e.target.value })
+                            }
+                          />
                         </FormControl>
                         <FormControl sx={{ flexGrow: 1 }}>
-                      <FormLabel>Email</FormLabel>
-                      <Input
-                        size="sm"
-                        type="email"
-                        startDecorator={<EmailRoundedIcon />}
-                        value={data.email}
-                        onChange={(e) =>
-                          setData({ ...data, email: e.target.value })
-                        }
-                        sx={{ flexGrow: 1 }}
-                      />
-                    </FormControl>
+                          <FormLabel>Email</FormLabel>
+                          <Input
+                            size="sm"
+                            type="email"
+                            startDecorator={<EmailRoundedIcon />}
+                            value={data.email}
+                            onChange={(e) =>
+                              setData({ ...data, email: e.target.value })
+                            }
+                            sx={{ flexGrow: 1 }}
+                          />
+                        </FormControl>
                       </Stack>
 
                       <Stack direction="row" spacing={2}>
@@ -466,10 +547,13 @@ function interndetails({ internId }) {
                             size="sm"
                             placeholder="Interview Score"
                             value={data.interviewScore}
-                                type="text"
-                                onChange={(e) =>
-                                 setData({ ...data, interviewScore: e.target.value })
-                                 }
+                            type="text"
+                            onChange={(e) =>
+                              setData({
+                                ...data,
+                                interviewScore: e.target.value,
+                              })
+                            }
                           />
                         </FormControl>
                         <FormControl sx={{ flexGrow: 1 }}>
@@ -477,42 +561,57 @@ function interndetails({ internId }) {
                           <Input
                             size="sm"
                             value={data.interviewFeedback}
-                                type="text"
-                                onChange={(e) =>
-                                 setData({ ...data, interviewFeedback: e.target.value })
-                                 }
+                            type="text"
+                            onChange={(e) =>
+                              setData({
+                                ...data,
+                                interviewFeedback: e.target.value,
+                              })
+                            }
                             placeholder="Interview FeedBack"
                           />
                         </FormControl>
                       </Stack>
-                      <Stack direction="row" spacing={1}>
-                        <FormControl>
-                          <FormLabel>mentor Name</FormLabel>
-                          <Input
-                            size="sm"
-                            placeholder="mentor name"
-                            value={data.mentor}  
-                            onChange={(e) =>
-                              setData({ ...data, mentor: e.target.value })
-                            }
-                            type="text"
-                               
-                          />
-                       </FormControl>
-                      <FormControl sx={{ flexGrow: 1 }}>
-                      <FormLabel>Mentor Email</FormLabel>
-                      <Input
-                        size="sm"
-                        type="email"
-                        startDecorator={<EmailRoundedIcon />}
-                        value={data.mentorEmail}
-                        onChange={(e) =>
-                          setData({ ...data, mentorEmail: e.target.value })
-                        }
-                        sx={{ flexGrow: 1 }}
-                      />
-                    </FormControl>
-                      </Stack>
+                      <Stack direction="row" spacing={2}>
+  <FormControl sx={{ flexGrow: 1, position: "relative", minWidth: 100, maxWidth: '178px'  }}>
+    <FormLabel htmlFor="mentor-select" sx={{ mb: 1, color: "#20262D", }}>
+      Select email
+    </FormLabel>
+    <select
+      defaultValue={data.mentorEmail} // Set the default value to the mentor email if available
+      onChange={handleMentorChange}
+      aria-label="Select mentor"
+      style={{
+        appearance: "none",
+        width: "100%",
+        padding: "3px 0px 8px 12px",
+        border: "1px solid #C0C4CC",
+        borderRadius: "8px",
+        background: "white url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'><polyline points='6 9 12 15 18 9'></polyline></svg>\") no-repeat right 10px center",
+        cursor: "pointer",
+        fontSize: "14px",
+        color: "#20262D",
+      }}
+    >
+      <option value="" disabled>Select email</option>
+      {mentors.map((mentor, index) => (
+        <option key={index} value={mentor.email}>{mentor.email}</option>
+      ))}
+    </select>
+  </FormControl>
+  <FormControl sx={{ flexGrow: 1 }}>
+    <FormLabel>mentor Name</FormLabel>
+    <Input
+  size="sm"
+  placeholder="mentor name"
+  value={selectedMentorName}
+  onChange={(e) => setSelectedMentorName(e.target.value)}
+  type="text"
+  disabled={true}
+  style={{ color: "#36454F" }} // Adjust the color here to make it darker
+/>
+  </FormControl>
+</Stack>
                     </Stack>
                   </Stack>
                 </Card>
@@ -533,8 +632,8 @@ function interndetails({ internId }) {
                       value={data.Bio}
                       type="text"
                       onChange={(e) =>
-                            setData({ ...data, Bio: e.target.value })
-                        } 
+                        setData({ ...data, Bio: e.target.value })
+                      }
                       placeholder="Description"
                     />
                     <FormHelperText sx={{ mt: 0.75, fontSize: "xs" }}>
@@ -556,7 +655,6 @@ function interndetails({ internId }) {
                     </CardActions>
                   </CardOverflow>
                 </Card>
-
               </Stack>
             </Box>
           </Grid>

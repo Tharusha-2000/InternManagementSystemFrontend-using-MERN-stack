@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Managersidebar from '../../components/common/Managersidebar';
 import Header from '../../components/common/Header';
+
 import axios from "axios";
 import { BASE_URL } from "../../config";
 import { useNavigate } from 'react-router-dom';
@@ -26,11 +27,19 @@ import { tokens } from "../admin_page/theme/theme";
 import Calender from '../../components/common/Calendar';
 import Calendar from '../../components/common/Calendar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-
-
-
+import { jwtDecode } from "jwt-decode";
 
 export default function ManagerDashboard() {
+
+
+  const token = localStorage.getItem('token');
+    const decodedToken = jwtDecode(token);
+    const userRole = decodedToken.role;
+
+   if(userRole !== 'manager'){
+      return null; // Do not render the component
+    }
+
   const [data, setData] = useState({
     _id: "",
     fname: "",

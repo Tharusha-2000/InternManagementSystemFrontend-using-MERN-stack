@@ -24,12 +24,16 @@ import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import Card from "@mui/joy/Card";
 import TaskIcon from '@mui/icons-material/Task';
-
+import TaskPieChart from './projectpiechart';
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import TaskBarChart from './projectbarchart';
+import { CircularProgress, Container } from "@mui/material";
 function internTaskTable({ internId }) {
   // State for tasks and data
   const [tasks, setTasks] = useState([]);
   const [open, setOpen] = useState(false);
-  
+  const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("token");
 
@@ -74,6 +78,12 @@ function internTaskTable({ internId }) {
     },
   }));
 
+
+
+
+
+
+  
   // Fetch tasks on component mount
   useEffect(() => {
     fetchTasks();
@@ -99,18 +109,63 @@ function internTaskTable({ internId }) {
   // Render component
   return (
   <div>
-   
-    <IconButton
+    
+     <IconButton
         size="small"
         color="primary"
         style={{ marginRight: "10px" }}
         onClick={() => handleClickOpen()}
-     >
+      >
         <TaskIcon />
-     </IconButton>
-    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"  maxWidth="lg"  >
+      </IconButton>
+
+   <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"  maxWidth="md" >
     <DialogTitle id="form-dialog-title"> PROJECT TASK LIST <IconButton onClick={handleClose} style={{float:'right'}}><CloseIcon color="primary"></CloseIcon></IconButton></DialogTitle>
-    <DialogContent>
+     <DialogContent>
+
+     <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Paper elevation={1} style={{ padding: '10px', marginBottom: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '90%', margin: 'auto' }}>
+        <Typography variant="h6" style={{ marginBottom: '20px', textAlign: 'center',fontWeight: 'bold', color: 'black', fontSize: '2em'  }}>Task Summary</Typography>
+         <div>
+          <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+          
+            <Typography style={{ fontWeight: 'bold', color: 'black' }}> Total Tasks: {tasks.length}</Typography>
+            <Typography style={{ fontWeight: 'bold', color: 'green',paddingLeft: '45px' }}>Completed Tasks: {tasks.filter(task => task.isVerified).length}</Typography>
+            <Typography style={{ fontWeight: 'bold', color: 'red' }}>Tasks  To Do: {tasks.filter(task => !task.isVerified).length}</Typography>
+          </div>
+          <div style={{ width: '100%', maxWidth: '500px' }}>
+            {tasks.length > 0 ? (
+              <div style={{ padding: '20px', textAlign: 'center' }}>
+                <TaskPieChart tasks={tasks} />
+              </div> 
+            ) : (
+              <Typography> </Typography>
+            )}
+          </div>
+         </div>
+           
+     <Container maxWidth="sm">
+      <Typography variant="h4" align="center" gutterBottom style={{ fontWeight: 'bold'}}>
+        Task Overview
+      </Typography>
+      {loading ? (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress />
+        </Box>
+      ) : tasks.length > 0 ? (
+        <Box my={4}>
+          <TaskBarChart tasks={tasks} />
+        </Box>
+      ) : (
+        <Typography align="center">No tasks found</Typography>
+      )}
+    </Container>
+        </Paper>
+      </Grid>
+     </Grid>
+   
+  
     <div>
       <Stack
         spacing={4}
