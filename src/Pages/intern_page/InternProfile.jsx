@@ -117,13 +117,14 @@ export default function InternProfile() {
   uploadFile.on('state_changed', (snapshot) => {
     const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes * 100);
     setProgress(progress)
+
   }, (err) => {
     console.log("error while uploading file", err);
   }, () => {
     setProgress(0);
     getDownloadURL(uploadFile.snapshot.ref).then((downloadURL) => {
       console.log('File available at', downloadURL);
-    
+      console.log(progress);
     // Delete the previous image
     if (oldImagePath) {
       const oldImageRef = ref(storage, oldImagePath);

@@ -1,82 +1,52 @@
-import * as React from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
-import Box from '@mui/joy/Box';
-import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
-import IconButton from '@mui/joy/IconButton';
-import LinearProgress from '@mui/joy/LinearProgress';
-import Typography from '@mui/joy/Typography';
+import React, { useState, useEffect } from "react";
+import Barchart from './components/project/projectbarchart';
+import Typography from "@mui/material/Typography";
+import axios from "axios";
+import { BASE_URL } from "./config";
+import { Box, CircularProgress, Container } from "@mui/material";
 
-import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
+function Counter() {
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("token");
 
-export default function FileUpload(props) {
-  const { icon, fileName, fileSize, progress, sx, ...other } = props;
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const fetchTasks = async () => {
+    setLoading(true);
+    const response = await axios.get(`${BASE_URL}task`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const responseData = Array.isArray(response.data)
+      ? response.data
+      : [response.data];
+    setTasks(responseData);
+    setLoading(false);
+  };
+
+
+  
+
   return (
-    <Card
-      variant="outlined"
-      orientation="horizontal"
-      {...other}
-      sx={[
-        {
-          gap: 1.5,
-          alignItems: 'flex-start',
-        },
-        ...(Array.isArray(sx) ? sx : [sx]),
-      ]}
-    >
-      <AspectRatio
-        ratio="1"
-        variant="soft"
-        color="neutral"
-        sx={{
-          minWidth: 32,
-          borderRadius: '50%',
-          '--Icon-fontSize': '16px',
-        }}
-      >
-        <div>{icon ?? <InsertDriveFileRoundedIcon />}</div>
-      </AspectRatio>
-      <CardContent>
-        <Typography fontSize="sm">{fileName}</Typography>
-        <Typography level="body-xs">{fileSize}</Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <LinearProgress
-            color="neutral"
-            value={progress}
-            determinate
-            sx={[
-              {
-                ...(progress >= 100 && {
-                  color: 'var(--joy-palette-success-solidBg)',
-                }),
-              },
-            ]}
-          />
-          <Typography fontSize="xs">{progress}%</Typography>
+    <Container maxWidth="sm">
+      
+      {loading ? (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress />
         </Box>
-      </CardContent>
-      {progress >= 100 ? (
-        <AspectRatio
-          ratio="1"
-          variant="solid"
-          color="success"
-          sx={{
-            minWidth: 20,
-            borderRadius: '50%',
-            '--Icon-fontSize': '14px',
-          }}
-        >
-          <div>
-            <CheckRoundedIcon />
-          </div>
-        </AspectRatio>
+      ) : tasks.length > 0 ? (
+        <Box my={4}>
+          <Barchart tasks={tasks} />
+        </Box>
       ) : (
-        <IconButton variant="plain" color="danger" size="sm" sx={{ mt: -1, mr: -1 }}>
-          <RemoveCircleOutlineRoundedIcon />
-        </IconButton>
+        <Typography align="center">No tasks found</Typography>
       )}
-    </Card>
+    </Container>
   );
 }
+
+export default Counter;
