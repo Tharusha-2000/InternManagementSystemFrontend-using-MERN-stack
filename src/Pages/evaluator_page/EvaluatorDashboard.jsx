@@ -69,8 +69,6 @@ export default function EvaluatorDashboard() {
   const [evaluatorData, setEvaluatorData] = useState([]);
   const [managerData, setManagerData] = useState([]);
   const [adminData, setAdminData] = useState([]);
-  const token = localStorage.getItem('token');
-
   const [userCount, setUserCount] = useState(0);
   const [internCount, setInternCount] = useState(0);
   const [mentorCount, setMentorCount] = useState(0);
