@@ -47,7 +47,9 @@ export default function MentorDashboard()  {
   const token = localStorage.getItem('token');
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role;
-   if(userRole !== 'mentor'){
+
+   if(userRole == 'manager'){
+
       return null; // Do not render the component
     }
     

@@ -135,13 +135,16 @@ function Addusertable({ rows }) {
 
          // window.alert(err.response.data.msg);
          .then(() => {
-           localStorage.removeItem('token');
 
-           navigate("/Login");
-            });
+
+            localStorage.removeItem('token');
+            navigate("/");
+         });
+
         }
                
       });
+    
   }
   
   {/* delect user*/}
@@ -252,7 +255,9 @@ return (
       </Grid>
       <Divider/>
       
+      
       <TableContainer>
+        
         <Table>
           <TableHead>
             <TableRow>

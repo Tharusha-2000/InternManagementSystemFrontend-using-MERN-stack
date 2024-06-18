@@ -63,12 +63,14 @@ function CreateNew() {
                   .then(() => {
                     console.log(result.data.msg);
                       if(result.status === 201 ) {
-                               navigate('/Login');
+                               navigate('/');
                       }
 
-                })
-             }
-            })
+
+                  });
+                }
+            }) 
+
             .catch(err => {
                 if (err.response){
 
@@ -77,7 +79,7 @@ function CreateNew() {
                   customClass: { confirmButton: 'my-button' }
                   });
                   // window.alert(err.response.data.msg);
-                    navigate('/Login');
+                    navigate('/');
 
                  }
             })
