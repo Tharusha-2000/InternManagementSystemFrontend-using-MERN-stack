@@ -72,7 +72,7 @@ export default function MentorDashboard()  {
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role; 
         
-   if(userRole == 'mentor'){
+   if(userRole !== 'mentor'){
       return null; // Do not render the component
     }
 
