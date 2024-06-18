@@ -4,7 +4,6 @@ import Header from '../../components/common/Header';
 import '../../index.css';
 import Box from '@mui/material/Box';
 import InternCvList from '../../components/CVuploadFiles/InternCvList';
-//import UploadStatusContext from './CVuploadFiles/UploadStatusContext';
 
 export default function CVupload() {
 

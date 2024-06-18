@@ -1,42 +1,58 @@
 import React, { useState, useEffect } from 'react';
-import axios from "axios";
-import { BASE_URL } from "../../config";
 import Mentorsidebar from '../../components/common/Mentorsidebar';
 import Header from '../../components/common/Header';
+import axios from "axios";
+import { BASE_URL } from "../../config";
+import { useNavigate } from 'react-router-dom';
 import { Box, 
         Typography, 
-        Tabs, 
-        Tab, 
+        Modal,
         TableRow,
         TableCell,
-        Avatar } from "@mui/material";
-import TabPanel from '@mui/lab/TabPanel';
-import TabContext from '@mui/lab/TabContext';
+        Avatar,
+        Button,
+        IconButton,
+        Menu, 
+        MenuItem,
+        Table,
+        TableBody,
+        TableContainer,
+        TableHead,
+        Paper,
+        Dialog,
+        DialogTitle,
+        DialogContent,
+        DialogActions,
+        Select,
+        TextField } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
+import CloseIcon from '@mui/icons-material/Close';
 import { tokens } from "../admin_page/theme/theme";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
-//import Header from "../../components/Header";
-//import BarChart from "../admin_page/charts/BarChart";
-//import LineChart from "../admin_page/charts/PieChart";
-//import GeographyChart from "../../components/GeographyChart";
-//import BarChart from "../../components/BarChart";
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import { red } from '@mui/material/colors';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import CardContent from '@mui/material/CardContent';
-import CountBox from "../admin_page/theme/CountBox";
-import CountCircle from "../admin_page/theme/CountCircle";
+import Calender from '../../components/common/Calendar';
+import Calendar from '../../components/common/Calendar';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import LeaveManagement from '../../components/common/Leave';
 import { jwtDecode } from "jwt-decode";
 
 
 export default function MentorDashboard()  {
   const colors = tokens;
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [value, setValue] = React.useState('0');
+  const [leaveApplications, setLeaveApplications] = useState([]);
+  const [data, setData] = useState({
+    _id: "",
+    fname: "",
+    lname: "",
+    email: "",
+    jobtitle: '',
+    department: '',
+    employmentType: '',
+    schedules: [],
+  });
+  const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
+  const [value, setValue] = useState('0');
   const handleChange = (event, newValue) => {
       setValue(newValue);
   };
@@ -44,53 +60,68 @@ export default function MentorDashboard()  {
   const [mentorData, setMentorData] = useState([]);
   const [evaluatorData, setEvaluatorData] = useState([]);
   const [managerData, setManagerData] = useState([]);
-  const token = localStorage.getItem('token');
-  const decodedToken = jwtDecode(token);
-  const userRole = decodedToken.role;
-
-   if(userRole == 'manager'){
-
-      return null; // Do not render the component
-    }
-    
+  const [adminData, setAdminData] = useState([]);
   const [userCount, setUserCount] = useState(0);
   const [internCount, setInternCount] = useState(0);
   const [mentorCount, setMentorCount] = useState(0);
   const [evaluatorCount, setEvaluatorCount] = useState(0);  
+  const [managerCount, setManagerCount] = useState(0);
+  const [adminCount, setAdminCount] = useState(0);
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role; 
+        
+   if(userRole !== 'mentor'){
+      return null; // Do not render the component
+    }
 
-  const progress1 = (internCount / userCount).toString();
-  const progress2 = (mentorCount / userCount).toString();
-  const progress3 = (evaluatorCount / userCount).toString();
-  const internPercentage = ((internCount / userCount) * 100).toFixed(2);
-  const mentorPercentage = ((mentorCount / userCount) * 100).toFixed(2);
-  const evaluatorPercentage = ((evaluatorCount / userCount) * 100).toFixed(2);
- 
-    // set the date 
-    useEffect(() => {
-      axios
-      .get(`${BASE_URL}users`,{
+
+  useEffect(() => {
+      axios.get(`${BASE_URL}user`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((result) => {
-        const interns = result.data.users.filter(user => user.role === 'intern');
-        const mentors = result.data.users.filter(user => user.role === 'mentor');
-        const evaluators = result.data.users.filter(user => user.role === 'evaluator');
-        const managers = result.data.users.filter(user => user.role === 'manager');
-  
-        setInternData(interns);
-        setMentorData(mentors);
-        setEvaluatorData(evaluators);
-        setManagerData(managers);
-
-        setUserCount(result.data.users.length);
-        setInternCount(interns.length);
-        setMentorCount(mentors.length);
-        setEvaluatorCount(evaluators.length);
+          setData(result.data.user);
       })
       .catch((err) => console.log(err));
-      }, []);
+  }, [token]);
+
+
+    // set the date 
+    useEffect(() => {
+      axios.get(`${BASE_URL}allusers`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((result) => {
+        const fetchedUsers = result.data.users;
+        setUsers(fetchedUsers);
+
+        const fetchedInterns = fetchedUsers.filter(user => user.role === 'intern');
+        const fetchedMentors = fetchedUsers.filter(user => user.role === 'mentor');
+        const fetchedEvaluators = fetchedUsers.filter(user => user.role === 'evaluator');
+        const fetchedManagers = fetchedUsers.filter(user => user.role === 'manager');
+        const fetchedAdmins = fetchedUsers.filter(user => user.role === 'admin');
+ 
+
+        setInternData(fetchedInterns);
+        setMentorData(fetchedMentors);
+        setEvaluatorData(fetchedEvaluators);
+        setManagerData(fetchedManagers);
+        setAdminData(fetchedAdmins);
+
+        setUserCount(result.data.users.length);
+        setInternCount(fetchedInterns.length);
+        setMentorCount(fetchedMentors.length);
+        setEvaluatorCount(fetchedEvaluators.length);
+        setAdminCount(fetchedAdmins.length);
+        setManagerCount(fetchedManagers.length);
+      })
+      .catch((err) => console.log(err));
+    }, [token]);
 
       
       useEffect(() => {
@@ -102,373 +133,695 @@ export default function MentorDashboard()  {
           };
         }, []);
 
- 
- 
+
+        const [showInternList, setShowInternList] = useState(false);
+        const [internAnchorEl, setInternAnchorEl] = useState(null);
+        const handleInternListClick = (event) => {
+          setInternAnchorEl(event.currentTarget);
+          setShowInternList(!showInternList);
+        };
+        const handleInternListClose = () => {
+          setInternAnchorEl(null);
+          setShowInternList(false);
+        };
+        
+        const [showMentorList, setShowMentorList] = useState(false);
+        const [mentorAnchorEl, setMentorAnchorEl] = useState(null);
+        const handleMentorListClick = (event) => {
+          setMentorAnchorEl(event.currentTarget);
+          setShowMentorList(!showMentorList);
+        };        
+        const handleMentorListClose = () => {
+          setMentorAnchorEl(null);
+          setShowMentorList(false);
+        };
+
+        const [showEvaluatorList, setShowEvaluatorList] = useState(false);
+        const [evaluatorAnchorEl, setEvaluatorAnchorEl] = useState(null);
+        const handleEvaluatorListClick = (event) => {
+          setEvaluatorAnchorEl(event.currentTarget);
+          setShowEvaluatorList(!showEvaluatorList);
+        };
+        const handleEvaluatorListClose = () => {
+          setEvaluatorAnchorEl(null);
+          setShowEvaluatorList(false);
+        };
+
+        const [showManagerList, setShowManagerList] = useState(false);  
+        const [managerAnchorEl, setManagerAnchorEl] = useState(null);
+        const handleManagerListClick = (event) => {
+          setManagerAnchorEl(event.currentTarget);
+          setShowManagerList(!showManagerList);
+        }
+        const handleManagerListClose = () => {
+          setManagerAnchorEl(null);
+          setShowManagerList(false);
+        };
+
+        const [open, setOpen] = useState(false);
+
+        const handleOpen = () => setOpen(true);
+        const handleClose = () => setOpen(false);
+
+        const deleteSchedule = async (eventId) => {
+          try {
+            const response = await axios.delete(`${BASE_URL}${data._id}/schedule/${eventId}`, {
+              headers: {
+                'Authorization': `Bearer ${token}` 
+              }
+            });
+            console.log(response); 
+            if (response.status === 200) {
+              setData((prevData) => ({
+                ...prevData,
+                schedules: prevData.schedules.filter(schedule => schedule._id !== eventId)
+              }));
+            }
+          } catch (error) {
+            console.error('Error deleting schedule:', error);
+            alert('Failed to delete the event');
+          }
+        };
 
 
+        const [leaveOpen, setLeaveOpen] = useState(null);
+        const [formData, setFormData] = useState({ userId: '', leaveDate: '', reason: '' });
+        
+      
+        const handleLeaveClickOpen = (event) => {
+          setLeaveOpen(event.currentTarget);
+        };
+      
+        const handleLeaveClose = () => {
+          setLeaveOpen(null);
+        };
+       const handleLeaveChange = (event) => {
+          const { name, value } = event.target;
+          setFormData({ ...formData, [name]: value });
+        };
+        const handleSubmit = () => {
+          axios.post(`${BASE_URL}applyLeave`, formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then(() => {
+            handleClose();
+            axios.get(`${BASE_URL}getLeaveApplications`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((result) => {
+              const leaveApplications = result.data.leaveApplications.flatMap(application => ({
+                ...application,
+                user: {
+                  fname: application.user.fname,
+                  lname: application.user.lname,
+                  jobTitle: application.user.jobtitle,
+                  imageUrl: application.user.imageUrl, 
+                }
+              }));
+              setLeaveApplications(leaveApplications);
+            })
+            .catch((err) => console.log(err));
+          })
+          .catch((error) => console.log(error));
+      };
 
   return (
-    <div className="bgcolor">
+    <>
     <Header />
     <Box height={50} />
-    <Box sx={{ display: 'flex' , backgroundColor: colors.primary[400]}}>
+    <Box sx={{ display: 'flex' }}>
     <Mentorsidebar />
-    
-   <Box  component="main" sx={{ flexGrow: 1, p: 3 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-      
-      { /* Card 
-      <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          padding="10px 20px 20px 0px"
-        >
-      <Card sx={{ maxWidth: 5000,
-      bgcolor: red[500],
-        backgroundImage: `url('src/assets/CardBackgraound.jpg')`, // Add your image path here
-        backgroundSize: 'cover', // This will make the image cover the entire card
-        backgroundPosition: 'center', // This will center the image in the card
-      }} >
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
-      />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
-        </Typography>
-      </CardContent>
-      </Card> 
-      </Box> */}
-      </Box>
-
-      {/* GRID & CHARTS */}
+    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+       
+       
+       {/* GRID & CHARTS */}
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="100px"
-        gap="15px"
+        gap="13px"
       >
         {/* ROW 1 */}
 
         <Box
           gridColumn="span 8"
           gridRow="span 2"
-          backgroundColor={colors.primary[700]}
+          borderRadius={4}  
+          boxShadow="1px 2px 5px rgba(0, 0, 0, 0.2)"
+          style={{ backgroundColor: 'lightsteelblue', }}
           sx={{ maxWidth: 5000,
-              backgroundImage: `url('src/assets/R.jpeg')`, // Add your image path here
-              backgroundSize: 'cover', // This will make the image cover the entire card
-              backgroundPosition: 'center', // This will center the image in the card
+              backgroundImage: `url('src/assets/office.png')`,
+              backgroundSize: '50%',
+              backgroundPosition: 'right',
+              backgroundRepeat: 'no-repeat',
             }}
         >
-          <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
-            justifyContent="space-between"
+        <Box
+            mt="1px" 
+            p="1px"
+            display="inline"
             alignItems="right"
           >
-            <Box>
-              
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.blueAccent[200]}
-              >
-                Welcome to IMS
-              </Typography>
-            </Box>
-            <Box>
-            <Typography
-                variant="h6"
-                fontWeight="700"
-                color={colors.grey[100]}
-              >
-              <div>
-                <p>{currentDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-              </div>
-              </Typography>
-            </Box>
-          </Box>
-          {/*<Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
-          </Box>*/}
-        </Box>
-        
-        { /* User display box */ }
-
-        <Box
-          gridColumn="span 4"
-          gridRow="span 3"
-          backgroundColor={colors.primary[900]}
-          overflow="auto"
-          sx={{
-            padding: '20px', 
-            borderRadius: '10px', 
-          }}
-        >
-          <Typography variant="h5" style={{ marginBottom: '10px',  fontWeight: 'bold'  }}>Recent users</Typography>
-         
-          <TabContext value={value}>
-        <Box sx={{ borderBottom: 5, borderColor: 'divider' }} >
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            variant="scrollable"
-            scrollButtons
-            textColor= "secondary"
-            indicatorColor="secondary"
-            allowScrollButtonsMobile
-            aria-label="scrollable force tabs example"
-          >
-        <Tab value="0" label="Interns" />
-        <Tab value="1" label="Mentors" />
-        <Tab value="2" label="Evaluators" />
-        <Tab value="4" label="Managers" />
-          </Tabs>
-        </Box>
-        
-        <TabPanel value="0" > 
-           {[...internData].reverse().map((user) => (
-            <TableRow key={user._id}>
-              <TableCell sx={{ fontSize: "1em", display: 'flex', alignItems: 'center' }}>
-              <Avatar>{user.fname[0]}{user.lname[0]}</Avatar>
-              <span style={{ marginLeft: '10px' }}>{user.fname} {user.lname}</span>
-              </TableCell>
-             </TableRow>
-           ))}
-         </TabPanel>
-         <TabPanel value="1">
-              {[...mentorData].reverse().map((user) => (
-                <TableRow key={user._id}>
-                  <TableCell sx={{ fontSize: "1em", display: 'flex', alignItems: 'center' }}>
-                  <Avatar>{user.fname[0]}{user.lname[0]}</Avatar>
-                  <span style={{ marginLeft: '10px' }}>{user.fname} {user.lname}</span>
-                  {/*<span style={{ marginLeft: '10px' }}>Last Login: {new Date(user.lastLogin).toLocaleString()}</span>*/}
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TabPanel>
-          <TabPanel value="2">  
-              {[...evaluatorData].reverse().map((user) => (    
-                <TableRow key={user._id}>
-                  <TableCell sx={{ fontSize: "1em", display: 'flex', alignItems: 'center' }}>
-                  <Avatar>{user.fname[0]}{user.lname[0]}</Avatar>
-                  <span style={{ marginLeft: '10px' }}>{user.fname} {user.lname}</span>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TabPanel>
-          <TabPanel value="4">
-              {[...managerData].reverse().map((user) => (
-                <TableRow key={user._id}>
-                  <TableCell sx={{ fontSize: "1em", display: 'flex', alignItems: 'center' }}>
-                  <Avatar>{user.fname[0]}{user.lname[0]}</Avatar>
-                  <span style={{ marginLeft: '10px' }}>{user.fname} {user.lname}</span>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TabPanel>
-            
-          </TabContext>
-          </Box>
-            {/*{mockTransactions.map((transaction, i) => (
-            <Box
-              key={`${transaction.txId}-${i}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
+          <Box sx={{  paddingLeft: '20px'}}>
+          <Typography
+              variant="h4"
+              fontWeight="bold"
+              color= '#000066'
             >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction.txId}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-              >
-                ${transaction.cost} 
-              </Box>
-            </Box>
-          ))} */}
-       
-
-
-        {/* ROW 2 */}
-
-        <Box
-          gridColumn="span 2"
-          backgroundColor={colors.primary[700]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius= '8px'
-        >
-          <CountBox
-            title={`${internCount} / ${userCount}`}
-            subtitle="Interns"
-            progress={progress1}
-            increase={`${internPercentage}%`}
-            icon={
-              <PersonAddIcon
-                sx={{ color: colors.greenAccent[400], fontSize: "26px" }}
-              />
-            }
-          />
-           
-             
-        </Box>
-        <Box
-          gridColumn="span 2"
-          backgroundColor={colors.primary[700]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius= '8px'
-        >
-          <CountBox
-            title={`${mentorCount} / ${userCount}`}
-            subtitle="Mentors"
-            progress={progress2}
-            increase={`${mentorPercentage}%`}
-            icon={
-              <PointOfSaleIcon
-                sx={{ color: colors.greenAccent[400], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 2"
-          backgroundColor={colors.primary[700]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius= '8px'
-        >
-          <CountBox
-            title={`${evaluatorCount} / ${userCount}`}
-            subtitle="Evaluators"
-            progress={progress3}
-            increase={`${evaluatorPercentage}%`}
-            icon={
-              <PersonAddIcon
-                sx={{ color: colors.greenAccent[400], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 2"
-          backgroundColor={colors.primary[700]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius= '8px'
-        >
-          <CountBox
-            title="1,325,134"
-            subtitle="Traffic Received"
-            progress="0.75"
-            increase="+43%"
-            icon={
-              <TrafficIcon
-                sx={{ color: colors.greenAccent[400], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-
-
-        {/* ROW 3 */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[900]}
-          p="30px"
-        >
-          <Typography variant="h5" fontWeight="600">
-            Campaign
-          </Typography>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
-          >
-            <CountCircle size="115" />
-            {/*<Typography
-              variant="h6"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              $48,352 revenue generated
+              Hello <span style={{ color: colors.blueAccent[500] }}>{data.fname}</span>..!
             </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography> 
-          */}
+            <Typography
+                fontSize={14}
+                fontWeight="100"
+                color={colors.blueAccent[300]}
+                style={{ padding: '2px', marginBottom: '20px' }}
+              >
+                Welcome to the Intern Management System.....
+              </Typography>
+
+          </Box>
           </Box>
         </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[900]}
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-          >
-            progress
-          </Typography>
-           
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[900]}
-          padding="30px"
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "15px" }}
-          >
-            calender
-          </Typography>
-           
-        </Box>
+
+           {/* ROW 2 */}
+           <Box
+              gridColumn="span 4"
+              gridRow="span 7"
+              boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
+              display="flex"
+              alignItems="center"
+              borderRadius='18px'
+              flexDirection="column"
+              width="100%"  
+            >    
+            <Box
+               sx={{
+                 backgroundColor: colors.blueAccent[200], // dark blue color
+                 color: 'white',
+                 borderRadius: '12px 12px 0 0',
+                 width: '100%',
+                 textAlign: 'left',
+                 padding: '9px 15px',
+                 position: 'relative', // Add this line
+                }}
+             >       
+                        
+           <Typography variant="h6" component="h3" sx={{ fontSize: '1.2rem' }}>
+               Work Schedule
+            </Typography>
+             <Typography variant="subtitle1" component="div" sx={{ fontSize: '1rem', color: '#E97451' }} >
+                        {currentDate.toLocaleDateString('en-US', {
+                          weekday: 'short',
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric',
+                        })}
+                      </Typography>
+                      <IconButton
+                          variant="outlined"
+                          color="warning"
+                          onClick={handleOpen}
+                          sx={{
+                            position: 'absolute',
+                            bottom: '5%',
+                            right: '8px',
+                            padding: '12px 24px',
+                          }}
+                        >
+                          <CalendarMonthRoundedIcon sx={{ color: '#E97451', fontSize: '3rem' }} />
+                        </IconButton>
+                        <Modal
+                          open={open}
+                          onClose={handleClose}
+                          aria-labelledby="calendar-modal-title"
+                          aria-describedby="calendar-modal-description"
+                        >
+                          <Box sx={{
+                            marginTop: '5%', 
+                            marginLeft: '25%',
+                            height: '600px', 
+                            width: '700px', 
+                            backgroundColor: 'background.default', 
+                            position: 'relative', 
+                          }}>
+                            {/* Close Icon Button */}
+                            <IconButton
+                              onClick={handleClose}
+                              sx={{
+                                position: 'absolute',
+                                right: 8,
+                                top: 8,
+                                color: 'grey', 
+                              }}
+                            >
+                              <CloseIcon />
+                            </IconButton>
+
+                            <Calendar />
+                          </Box>
+                        </Modal>
+                    </Box>
+                    <Calender />
+                    <hr style={{ width: '85%', borderColor: 'darkblue', border: '2px solid darkblue' }} />
+                        <Box
+                          sx={{
+                            width: '100%',
+                            maxHeight: '300px',
+                            overflowY: 'auto', 
+                            padding: '1px 8px',
+                            backgroundColor: 'white', 
+                            borderRadius: '0 0 12px 12px',
+                            scrollbarWidth: 'thin',
+                            scrollbarColor: 'white white',
+                          }}
+                        >
+                           <ul style={{ listStyleType: 'none', padding: 0 }}>
+                              {data.schedules && data.schedules.map((schedule, index) => (
+                                <li key={index} style={{ display: 'flex', flexDirection: 'column',border: '1px solid lightblue', boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.2)' ,justifyContent: 'space-between', marginBottom: '8px', backgroundColor: 'white', borderRadius: '8px', padding: '8px', color: 'gray' }}>
+                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <Typography variant="body1" style={{ color: 'darkblue' }}>
+                                      {schedule.title}
+                                    </Typography>
+                                    <IconButton onClick={() => deleteSchedule(schedule._id)} sx={{ fontSize: '15px' }}>
+                                      <DeleteOutlineIcon sx={{ fontSize: 'inherit' }}/>
+                                    </IconButton>
+                                  </div>
+                                  <div style={{ alignSelf: 'flex-start' }}>
+                                    <Typography variant="body2">
+                                      {new Date(schedule.start).toLocaleString()} - {new Date(schedule.end).toLocaleString()}
+                                    </Typography>
+                                    </div>
+                                </li>
+                              ))}
+                            </ul>
+                        </Box>
+                 </Box>
+
+                {/* ROW 3 */}
+
+                <Box
+                      gridColumn="span 2"
+                      backgroundColor="white"
+                      border= "2px solid #91C1DE"	
+                      boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      borderRadius= '8px'
+                    >
+                      <Box 
+                          width="100%" 
+                          m="0 1px" 
+                          position="relative" 
+                          display="flex" 
+                          flexDirection="column" 
+                          justifyContent="center"
+                      > 
+                        <IconButton 
+                          aria-label="settings"
+                          sx={{ 
+                            position: 'absolute',
+                            top: -40, 
+                            right: 0,
+                          }} 
+                          onClick={handleInternListClick}
+                        >
+                          <ExpandMoreIcon />
+                        </IconButton>
+                        <Menu
+                            id="intern-menu"
+                            anchorEl={internAnchorEl}
+                            keepMounted
+                            open={Boolean(internAnchorEl)}
+                            onClose={handleInternListClose}
+                          >
+                            {showInternList && users.map((user) => (
+                              user.role.toLowerCase() === 'intern' && (
+                                <MenuItem onClick={handleInternListClose}>
+                                  <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
+                                <div>
+                                  {`${user.fname} ${user.lname}`}
+                                  <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
+                                    {user.jobtitle}
+                                  </Typography>
+                                </div>
+                                </MenuItem>
+                              )
+                            ))}
+                          </Menu>
+                        <Typography
+                          variant="h6"
+                          fontWeight="bold"
+                          sx={{ 
+                            position: 'absolute',
+                            top: -40, 
+                            left: 10,
+                            color: colors.blueAccent[200] 
+                          }}
+                        >
+                          Interns
+                        </Typography>
+                        <Typography
+                          variant="h5"
+                          fontWeight="bold"
+                          sx={{ 
+                            position: 'absolute',
+                            top: 2, 
+                            left: 50,
+                            color: colors.greenAccent[500] 
+                          }}
+                        >
+                         {`${internCount}`}
+                        </Typography>
+                      </Box>
+                    </Box>
+
+                    <Box
+                      gridColumn="span 2"
+                      backgroundColor="white"
+                      border= "2px solid #91C1DE"	
+                      boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      borderRadius= '8px'
+                    > 
+                    
+                  
+                      <Box 
+                      width="100%" 
+                      m="0 1px" 
+                      position="relative" 
+                      display="flex" 
+                      flexDirection="column" 
+                      justifyContent="center"
+                    >
+                      <IconButton 
+                        aria-label="settings"
+                        sx={{ 
+                          position: 'absolute',
+                          top: -40, 
+                          right: 0,
+                        }} 
+                        onClick={handleMentorListClick}
+                      >
+                        <ExpandMoreIcon />
+                      </IconButton>
+                      <Menu
+                        id="mentor-menu"
+                        anchorEl={mentorAnchorEl}
+                        keepMounted
+                        open={Boolean(mentorAnchorEl)}
+                        onClose={handleMentorListClose}
+                      >
+                        {showMentorList && users.map((user) => (
+                          user.role.toLowerCase() === 'mentor' && (
+                            <MenuItem onClick={handleMentorListClose}>
+                              <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
+                                <div>
+                                  {`${user.fname} ${user.lname}`}
+                                  <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
+                                    {user.jobtitle}
+                                  </Typography>
+                                </div>
+                            </MenuItem>
+                          )
+                        ))}
+                      </Menu>
+                        <Typography
+                          variant="h6"
+                          fontWeight="bold"
+                          sx={{ 
+                            position: 'absolute',
+                            top: -40, 
+                            left: 10,
+                            color: colors.blueAccent[200] 
+                          }}
+                        >
+                          Mentors
+                        </Typography>
+                        <Typography
+                          variant="h5"
+                          fontWeight="bold"
+                          sx={{ 
+                            position: 'absolute',
+                            top: 2, 
+                            left: 50,
+                            color: colors.greenAccent[500] 
+                          }}
+                        >
+                         {`${mentorCount}`}
+                        </Typography>
+                      </Box>
+                    </Box>
+
+                    <Box
+                      gridColumn="span 2"
+                      backgroundColor="white"
+                      border= "2px solid #91C1DE"	
+                      boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      borderRadius= '8px'
+                    >
+                      <Box 
+                          width="100%" 
+                          m="0 1px" 
+                          position="relative" 
+                          display="flex" 
+                          flexDirection="column" 
+                          justifyContent="center"
+                      > 
+                        <IconButton 
+                          aria-label="settings"
+                          sx={{ 
+                            position: 'absolute',
+                            top: -40, 
+                            right: 0,
+                          }} 
+                          onClick={handleEvaluatorListClick}
+                        >
+                          <ExpandMoreIcon />
+                        </IconButton>
+                        <Menu
+                            id="evaluator-menu"
+                            anchorEl={evaluatorAnchorEl}
+                            keepMounted
+                            open={Boolean(evaluatorAnchorEl)}
+                            onClose={handleEvaluatorListClose}
+                          >
+                            {showEvaluatorList && users.map((user) => (
+                              user.role.toLowerCase() === 'evaluator' && (
+                                <MenuItem onClick={handleEvaluatorListClose}>
+                                <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
+                                <div>
+                                  {`${user.fname} ${user.lname}`}
+                                  <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
+                                    {user.jobtitle}
+                                  </Typography>
+                                </div>
+                              </MenuItem>
+                              )
+                            ))}
+                          </Menu>
+                        <Typography
+                          variant="h6"
+                          fontWeight="bold"
+                          sx={{ 
+                            position: 'absolute',
+                            top: -40, 
+                            left: 10,
+                            color: colors.blueAccent[200] 
+                          }}
+                        >
+                          Evaluators
+                        </Typography>
+                        <Typography
+                          variant="h5"
+                          fontWeight="bold"
+                          sx={{ 
+                            position: 'absolute',
+                            top: 2, 
+                            left: 50,
+                            color: colors.greenAccent[500] 
+                          }}
+                        >
+                         {`${evaluatorCount}`}
+                        </Typography>
+                      </Box>
+                    </Box>
+
+                    <Box
+                      gridColumn="span 2"
+                      backgroundColor="white"
+                      border= "2px solid #91C1DE"	
+                      boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      borderRadius= '8px'
+                    >
+                      <Box 
+                          width="100%" 
+                          m="0 1px" 
+                          position="relative" 
+                          display="flex" 
+                          flexDirection="column" 
+                          justifyContent="center"
+                      > 
+                        <IconButton 
+                          aria-label="settings"
+                          sx={{ 
+                            position: 'absolute',
+                            top: -40, 
+                            right: 0,
+                          }} 
+                          onClick={handleManagerListClick}
+                        >
+                          <ExpandMoreIcon />
+                        </IconButton>
+                        <Menu
+                            id="manager-menu"
+                            anchorEl={managerAnchorEl}
+                            keepMounted
+                            open={Boolean(managerAnchorEl)}
+                            onClose={handleManagerListClose}
+                          >
+                            {showManagerList && users.map((user) => (
+                              user.role.toLowerCase() === 'manager' && (
+                                <MenuItem onClick={handleManagerListClose}>
+                                  <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
+                                <div>
+                                  {`${user.fname} ${user.lname}`}
+                                  <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
+                                    {user.jobtitle}
+                                  </Typography>
+                                </div>
+                                </MenuItem>
+                              )
+                            ))}
+                          </Menu>
+                        <Typography
+                          variant="h6"
+                          fontWeight="bold"
+                          sx={{ 
+                            position: 'absolute',
+                            top: -40, 
+                            left: 10,
+                            color: colors.blueAccent[200] 
+                          }}
+                        >
+                          Managers
+                        </Typography>
+                        <Typography
+                          variant="h5"
+                          fontWeight="bold"
+                          sx={{ 
+                            position: 'absolute',
+                            top: 2, 
+                            left: 50,
+                            color: colors.greenAccent[500] 
+                          }}
+                        >
+                         {`${managerCount}`}
+                        </Typography>
+                      </Box>
+                    </Box>
 
 
-        </Box>
-    </Box>
-    </Box>
-    </div>
-  );
-};
+                   {/* ROW 4 */}
+                     <Box
+                        gridColumn="span 8"
+                        gridRow="span 4"
+                        overflow="auto"
+                        borderRadius={2}
+                        p="1px"
+                      >
+                        <TableContainer component={Paper} sx={{ borderRadius: '10px' }}>
+                          <Table sx={{ minWidth: 680 }} aria-label="simple table">
+                            <TableHead>
+                              <TableRow sx={{ backgroundColor: colors.blueAccent[300] }}>
+                              <TableCell align="center" sx={{ height: '10px' }}>
+                              <Typography variant="h6" component="h3" sx={{ fontSize: '1.2rem', color: 'white' }}>
+                                  Employee Leave
+                               </Typography>
+                                </TableCell>
+                         </TableRow>
+                         <Box className="buttonContainer" >
+                            <Button variant="contained"  className="button" onClick={handleLeaveClickOpen}>+ Apply Leave</Button>
+                            <Menu
+                              id="leave-menu"
+                              sx={{ marginTop: '2px',marginLeft: '-305px', width: '3000px'}}
+                              anchorEl={leaveOpen}
+                              keepMounted
+                              open={Boolean(leaveOpen)}
+                              onClose={handleLeaveClose}
+                            >
+                              
+                              <MenuItem>
+                                <Select
+                                  value={formData.userId}
+                                  onChange={handleLeaveChange}
+                                  displayEmpty
+                                  inputProps={{ 'aria-label': 'Without label' }}
+                                  fullWidth
+                                  name="userId"
+                                  margin="dense"
+                                  autoFocus
+                                  sx={{ width: '524px', marginRight: '20px' }}
+                                >
+                                  <MenuItem value="" disabled>Select User</MenuItem>
+                                  {users.map((user) => (
+                                    <MenuItem key={user._id} value={user._id}>{user.fname} {user.lname}</MenuItem>
+                                  ))}
+                                </Select>
+                             
+                                <TextField
+                                  margin="dense"
+                                  name="leaveDate"
+                                  label="Leave Date"
+                                  type="date"
+                                  fullWidth
+                                  InputLabelProps={{ shrink: true }}
+                                  value={formData.leaveDate}
+                                  onChange={handleLeaveChange}
+                                />
+                              </MenuItem>
+                              <MenuItem>
+                                <TextField
+                                  margin="dense"
+                                  name="reason"
+                                  label="Reason For Leave"
+                                  type="text"
+                                  fullWidth
+                                  multiline
+                                  rows={4}
+                                  value={formData.reason}
+                                  onChange={handleLeaveChange}
+                                />
+                              </MenuItem>
+                              <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', color: 'blue' }}>
+                                <MenuItem onClick={handleSubmit}>Apply</MenuItem>
+                                <MenuItem onClick={handleLeaveClose}>Cancel</MenuItem>
+                              </Box>
+                            </Menu>
+                            </Box>
+                            </TableHead>
+                            <TableBody>
+
+                            <LeaveManagement />
+                            
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      </Box>
+               </Box>
+          </Box>
+      </Box>
+      </>
+  )}
