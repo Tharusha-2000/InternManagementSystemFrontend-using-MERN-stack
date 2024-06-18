@@ -75,22 +75,19 @@ export default function MentorDashboard()  {
   const [evaluatorData, setEvaluatorData] = useState([]);
   const [managerData, setManagerData] = useState([]);
   const [adminData, setAdminData] = useState([]);
-  const token = localStorage.getItem('token');
-  const decodedToken = jwtDecode(token);
-  const userRole = decodedToken.role;
-
-   if(userRole == 'mentor'){
-
-      return null; // Do not render the component
-    }
-    
   const [userCount, setUserCount] = useState(0);
   const [internCount, setInternCount] = useState(0);
   const [mentorCount, setMentorCount] = useState(0);
   const [evaluatorCount, setEvaluatorCount] = useState(0);  
   const [managerCount, setManagerCount] = useState(0);
   const [adminCount, setAdminCount] = useState(0);
-
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role; 
+        
+   if(userRole == 'mentor'){
+      return null; // Do not render the component
+    }
 
 
   useEffect(() => {
@@ -199,7 +196,6 @@ export default function MentorDashboard()  {
 
         const handleOpen = () => setOpen(true);
         const handleClose = () => setOpen(false);
-
 
         const deleteSchedule = async (eventId) => {
           try {
