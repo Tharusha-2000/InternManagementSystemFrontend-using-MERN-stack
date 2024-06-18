@@ -204,7 +204,7 @@ function TaskTable() {
         })
         .then((response) => {
           Swal.fire({ position: "top",
-          text:response.data.msg,
+          text:response.data.message,
           customClass: {
             container: 'my-swal',
             confirmButton: 'my-swal-button' 
@@ -212,7 +212,7 @@ function TaskTable() {
        })
          // window.alert(response.data.msg);
          .then(() => {
-          window.location.reload();
+           window.location.reload();
           console.log(response.data);
          })
         })
