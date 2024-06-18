@@ -15,13 +15,14 @@ import {
   Button, 
   Box, 
   Stack,
-  Autocomplete,
   Grid,
   IconButton  } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-//import { db } from './firebase-config';
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import {
+  deleteObject,
+  ref } from "firebase/storage";
+import { storage } from "../../firebaseconfig";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import EditIcon from '@mui/icons-material/Edit';
@@ -37,28 +38,35 @@ export default function InternCvList({ rows }) {
   const [filteredData, setFilteredData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  // get details in database 
   const token = localStorage.getItem('token');
  
- 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value, 10);
+    setPage(0);
+  };
+
+  
   useEffect(() => {
     axios
       .get(`${BASE_URL}users`,{
-        headers: {
-        Authorization: `Bearer ${token}`,
-    },
+        headers: { Authorization: `Bearer ${token}` },
   })
-  
       .then((result) => {
-        const internData = result.data.users.filter(user => user.role === 'intern');
+        const internData = result.data.users.filter(user => user.role === 'intern').map(user => ({
+        ...user,
+        status: user.cvUrl ? 'Available' : 'Pending',
+      }));
         setFilteredData(internData);
         setData(internData);
         
       })
       .catch((err) => console.log(err));
   }, []);
- 
+
 
 // creating filter function
 const Filter = (event) => {
@@ -76,14 +84,6 @@ const Filter = (event) => {
   );
 };
 
-const handleChangePage = (event, newPage) => {
-  setPage(newPage);
-};
-
-const handleChangeRowsPerPage = (event) => {
-  setRowsPerPage(+event.target.value);
-  setPage(0);
-};
 
 
 // delete user cv file
@@ -96,36 +96,42 @@ const deleteFile = async (id) => {
     confirmButtonText: "Yes, delete it!",
     confirmButtonColor: "#d33",
     cancelButtonColor: "#3085d6",
+    customClass: {
+      popup: 'swal-popup',
+    }
   }).then(async (result) => {
     if (result.value) {
       try {
-      await deleteFromFirestore(id);
-      await deleteFromDB(id);
-      Swal.fire("Deleted!", "CV file has been deleted.", "success");
-    } catch (error) {
-      console.error('Error deleting document:', error);
+        // Get the user's data
+        const user = data.find((item) => item._id === id);
+        if (!user) {
+          throw new Error('User not found');
+        }
+        const cvPath = user.cvUrl.replace('https://firebasestorage.googleapis.com/v0/b/zionlogy-4b6e6.appspot.com/o/', '');
+        const decodedCvPath = decodeURIComponent(cvPath.split('?')[0]);
+        // Delete the file from Firebase Storage
+        await deleteFromFirebaseStorage(decodedCvPath);
+        // Delete the cvUrl from MongoDB
+        await deleteFromDB(id);
+
+        Swal.fire({
+          title: "Deleted!",
+          text: "CV file has been deleted.",
+          icon: "success",
+          customClass: {
+            popup: 'swal-popup',
+          }
+        });
+      } catch (error) {
+        console.error('Error deleting document:', error);
+      }
     }
-  }
   });
-}; 
-
-const deleteFromFirestore = async (id) => {
-  try {
-    const userDoc = doc(db, "cvfiles", id);
-    await deleteDoc(userDoc);
-    //getUsers();
-  } catch (error) {
-    console.error('Error deleting document:', error);
-    throw error;
-  }
 };
-
-
-
 const deleteFromDB = async (id) => {
   try {
     const token = localStorage.getItem('token');
-    await axios.delete(`http://localhost:8000/api/users/${id}/cvfiles`, {
+    await axios.put(`${BASE_URL}${id}/deletecv`, {}, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -136,12 +142,24 @@ const deleteFromDB = async (id) => {
     throw error;
   }
 };
+const deleteFromFirebaseStorage = async (cvPath) => {
+  const cvRef = ref(storage, cvPath);
+
+  try {
+    await deleteObject(cvRef);
+    console.log(`File ${cvPath} deleted successfully`);
+  } catch (error) {
+    console.error(`Failed to delete file ${cvPath}: `, error);
+  }
+};
 
 
 // open and close function
 const [openEdit, setOpenEdit] = useState(false);
 const [openView, setOpenView] = useState(false);
 const [internId, setInternId] = useState(null);
+const [cvUrl, setCvUrl] = useState(null);
+
 const handleEditOpen = (id) => {
   setInternId(id);
   setOpenEdit(true);
@@ -149,8 +167,8 @@ const handleEditOpen = (id) => {
 const handleEditClose = () => {
   setOpenEdit(false);
 };
-const handleViewOpen = (id) => {
-  setInternId(id);
+const handleViewOpen = (cvUrl) => {
+  setCvUrl(cvUrl);
   setOpenView(true);
 };
 const handleViewClose = () => {
@@ -162,7 +180,7 @@ const handleViewClose = () => {
 
 return (
 <>
-  <ViewCVfiles open={openView} handleClose={handleViewClose} userId={internId} />
+  <ViewCVfiles open={openView} handleClose={handleViewClose} cvUrl={cvUrl} />
   <EditCVfiles open={openEdit} handleClose={handleEditClose} internId={internId} />
    <Paper sx={{ Width: "100%", overflow: "auto", padding: "12px"}}>
       <Typography variant="h4" gutterBottom align="center" component="div">
@@ -201,68 +219,107 @@ return (
                 sx={{
                   fontWeight: "bold",
                   fontSize: "1em",
+                  padding: "0 1em",
                 }}
               >
                 Inetern Name
               </TableCell>
+              
               <TableCell
                 sx={{
                   fontWeight: "bold",
                   fontSize: "1em",
+                  padding:  "0 0 0 1em",
+                  
                 }}
               >
-                CV
               </TableCell>
+              
               <TableCell 
                 sx={{
                   fontWeight: "bold",
                   fontSize: "1em",
+                  padding: "0 0 0 1em",
                 }}>
                   Status
-                
               </TableCell>
-              <TableCell align="left"></TableCell>
+             
+              <TableCell  
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "1em",
+                  padding: "0 1em 0 6em",
+                }}>
+                  Updates
+                </TableCell>
             </TableRow>
           </TableHead>
+          
           <TableBody>
             {filteredData.map((user) => (
               <TableRow key={user._id}>
+                
                 <TableCell sx={{ fontSize: "1em" }}>
                   {" "}
                   {user.fname} {user.lname}{" "}
                 </TableCell>
-            
-                <TableCell align="left">
-                          {user.cv}
-                          <Button 
-                              variant="contained" 
-                              color="primary" 
-                              onClick={() => handleViewOpen(user._id)}
-                          > 
-                          <AccountCircleIcon />
-                          </Button>
-                </TableCell>
-                <TableCell align="left">
-                    <Stack spacing={2} direction="row">
-                            <EditIcon
-                              style={{
-                                fontSize: "20px",
-                                color: "blue",
-                                cursor: "pointer",
-                              }}
-                              classname="cursor-pointer"
-                              onClick={() => handleEditOpen(user._id)}
-                            />
-                            <DeleteIcon
-                              style={{
-                                fontSize: "20px",
-                                color: "darkred",
-                                cursor: "pointer",
-                              }}
-                              onClick={() => { deleteFile(user._id); }}
-                            />
+                <TableCell></TableCell>
+                
+                <TableCell alignItems="right">
+                    {user.status === 'Available' ? (
+                      <div style={{ 
+                        height: '27px', 
+                        width: '65px', 
+                        backgroundColor: 'mediumvioletred',
+                        borderRadius: '5px', 
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        color: 'white',
+                        fontSize: '12px'
+                      }}>
+                        {user.status}
+                      </div>
+                    ) : (
+                      <div style={{ 
+                        height: '25px', 
+                        width: '60px', 
+                        backgroundColor: 'thistle',
+                        borderRadius: '5px',  
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        color: 'black',
+                        fontSize: '12px'
+                      }}>
+                        {user.status}
+                      </div>
+                    )}
+                  </TableCell>
+                 
+                  <TableCell align="left">
+                    <Stack spacing={2} direction="row">        
+                        <Button 
+                          color="primary" 
+                          onClick={() => handleViewOpen(user.cvUrl)}
+                        > 
+                          <AccountCircleIcon style={{ color: "royalblue" }} />
+                        </Button>
+                        <Button
+                            color="primary"
+                            onClick={() => handleEditOpen(user._id)}
+                            >
+                              <EditIcon style={{ fontSize: "20px", color: "royalblue" }} />
+                        </Button>
+                        <Button
+                            color="primary"
+                            onClick={() => { deleteFile(user._id); }}
+                              >
+                            <DeleteIcon style={{ fontSize: "20px", color: "royalblue" }} />
+                        </Button>
                     </Stack>
                   </TableCell>
+                  
               </TableRow>
             ))}
           </TableBody>
@@ -281,5 +338,3 @@ return (
   </>
   );
 }
-
-
