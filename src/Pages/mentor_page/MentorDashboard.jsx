@@ -185,7 +185,7 @@ export default function MentorDashboard()  {
 
         const deleteSchedule = async (eventId) => {
           try {
-            const response = await axios.delete(`${BASE_URL}${data._id}/schedule/${eventId}`, {
+            const response = await axios.delete(`${BASE_URL}schedule/${eventId}`, {
               headers: {
                 'Authorization': `Bearer ${token}` 
               }
@@ -213,20 +213,34 @@ export default function MentorDashboard()  {
         };
       
         const handleLeaveClose = () => {
-          setLeaveOpen(null);
+          setLeaveOpen(false);
         };
        const handleLeaveChange = (event) => {
           const { name, value } = event.target;
           setFormData({ ...formData, [name]: value });
         };
         const handleSubmit = () => {
+          const leave = new Date(formData.leaveDate);
+          const today = new Date();
+         if (leave <= today) {
+          Swal.fire({ position: "top",
+          text:"Date can not be past.",
+          customClass: {
+            container: 'my-swal',
+            confirmButton: 'my-swal-button' 
+          }
+        });
+        }
+
+
+
           axios.post(`${BASE_URL}applyLeave`, formData, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           })
           .then(() => {
-            handleClose();
+            handleLeaveClose();
             axios.get(`${BASE_URL}getLeaveApplications`, {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -764,22 +778,16 @@ export default function MentorDashboard()  {
                             >
                               
                               <MenuItem>
-                                <Select
-                                  value={formData.userId}
+                              <TextField
+                                  label="Name"
+                                  value={data.fname}
                                   onChange={handleLeaveChange}
                                   displayEmpty
-                                  inputProps={{ 'aria-label': 'Without label' }}
+                                  inputProps={{ 'aria-label': 'Without label' ,readOnly: true,}}
                                   fullWidth
-                                  name="userId"
-                                  margin="dense"
-                                  autoFocus
-                                  sx={{ width: '524px', marginRight: '20px' }}
-                                >
-                                  <MenuItem value="" disabled>Select User</MenuItem>
-                                  {users.map((user) => (
-                                    <MenuItem key={user._id} value={user._id}>{user.fname} {user.lname}</MenuItem>
-                                  ))}
-                                </Select>
+                                  sx={{ width: '527px', marginRight: '20px' }}
+                                  
+                                />
                              
                                 <TextField
                                   margin="dense"

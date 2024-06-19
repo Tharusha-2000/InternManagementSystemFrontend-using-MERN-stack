@@ -212,7 +212,9 @@ const Filter = (event) => {
                       control={
                         <Android12Switch
                           checked={intern.interviewScore}
-                          onChange={(e) => setIsComplete(e.target.checked)}
+                          onChange={(e) => 
+                            setIsComplete(e.target.checked)
+                          }
                         />
                       }
                       label="complete"

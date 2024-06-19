@@ -85,7 +85,7 @@ export default function InternDashboard() {
   const deleteSchedule = async (eventId) => {
     try {
       const response = await axios.delete(
-        `${BASE_URL}${data._id}/schedule/${eventId}`,
+        `${BASE_URL}schedule/${eventId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -60,7 +60,9 @@ export default function InternProfile() {
   const [imageUrl, setImageUrl] = useState(null);
   const [progress, setProgress] = useState(0);
   const [oldImagePath, setOldImagePath] = useState(null);
-
+  const [mentors, setMentors] = useState([]);
+  const [selectedMentorName, setSelectedMentorName] = useState("");
+  const [selectedMentorEmail, setSelectedMentorEmail] = useState("");
 
   if (userRole !== 'intern') {
     Swal.fire({
@@ -93,7 +95,11 @@ export default function InternProfile() {
         setOriginalData(result.data.user);
         setImageUrl(result.data.user.imageUrl);
         console.log(result.data.user.imageUrl);
-       
+         // Pre-fill mentor email and name if available in the data
+         if (result.data.user.mentorEmail && result.data.user.mentor) {
+          setSelectedMentorEmail(result.data.intern.mentorEmail);
+          setSelectedMentorName(result.data.intern.mentor);
+        }
       })
       .catch((err) => console.log(err));
   }, []);
@@ -160,10 +166,66 @@ export default function InternProfile() {
 }
 
 
+  // Fetch mentors from the backend
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}getAllMentors`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setMentors(response.data); // Assuming response.data is an array of mentor objects
+        console.log("Mentors fetched successfully!", response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching mentors!", error);
+      });
+  }, []);
+
+  // Mentor selection handler
+  const handleMentorChange = (event) => {
+    const selectedMentorEmail = event.target.value;
+    console.log("Selected email:", selectedMentorEmail); // Debugging: Check selected email
+
+    const selectedMentor = mentors.find((mentor) => mentor.email === selectedMentorEmail);
+    console.log("Selected mentor:", selectedMentor); // Debugging: Check selected mentor object
+
+    if (selectedMentor) {
+
+      setSelectedMentorEmail(selectedMentor.email);
+      setSelectedMentorName(selectedMentor.fullName);
+        // Access the mentor's first and last name
+       console.log  (selectedMentor.fullName)
+       console.log( selectedMentorName)
+       console.log( selectedMentorEmail)
+        setData((prevData) => ({
+          ...prevData,
+          mentorEmail: selectedMentorEmail,
+          mentor: selectedMentor.fullName,
+        }));
+     }
+  };
+
 
 const handleSubmit = (e) => {
-   e.preventDefault();
 
+  
+   e.preventDefault();
+   const dob = new Date(data.dob);
+   const today = new Date();
+   
+   if (dob >= today) {
+    Swal.fire({ position: "top",
+    text:"Date of birth must be in the past.",
+    customClass: {
+      container: 'my-swal',
+      confirmButton: 'my-swal-button' 
+    }
+    })
+   // window.alert('Date of birth must be in the past.');
+    return;
+  }
      //update photo after the click save button it not uersfrienly so commented it
     // uploadFile();
 
@@ -379,7 +441,7 @@ return (
                             placeholder="Interview Score"
                             value={data.interviewScore}
                                 type="text"
-                               
+                               readOnly
                           />
                         </FormControl>
                         <FormControl sx={{ flexGrow: 1 }}>
@@ -388,39 +450,68 @@ return (
                             size="sm"
                             value={data.interviewFeedback}
                                 type="text"
-                               
+                                readOnly
                             placeholder="Interview FeedBack"
                           />
                         </FormControl>
                       </Stack>
-
-                      <Stack direction="row" spacing={2}>
-                        <FormControl>
+ <Stack direction="row" spacing={2}>
+                        <FormControl
+                          sx={{
+                            flexGrow: 1,
+                            position: "relative",
+                            minWidth: 100,
+                            maxWidth: "178px",
+                          }}
+                        >
+                          <FormLabel
+                            htmlFor="mentor-select"
+                            sx={{ mb: 1, color: "#20262D" }}
+                          >
+                            mentor Email
+                          </FormLabel>
+                          <select
+                            value={selectedMentorEmail} // Set the default value to the mentor email if available
+                            onChange={handleMentorChange}
+                            aria-label="Select mentor"
+                            style={{
+                              appearance: "none",
+                              width: "100%",
+                              padding: "3px 0px 8px 12px",
+                              border: "1px solid #C0C4CC",
+                              borderRadius: "8px",
+                              background:
+                                "white url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'><polyline points='6 9 12 15 18 9'></polyline></svg>\") no-repeat right 10px center",
+                              cursor: "pointer",
+                              fontSize: "14px",
+                              color: "#20262D",
+                            }}
+                          >
+                            <option value="" disabled>
+                              Select email
+                            </option>
+                            {mentors.map((mentor, index) => (
+                              <option key={index} value={mentor.email}>
+                                {mentor.email}
+                              </option>
+                            ))}
+                          </select>
+                        </FormControl>
+                        <FormControl sx={{ flexGrow: 1 }}>
                           <FormLabel>mentor Name</FormLabel>
                           <Input
                             size="sm"
                             placeholder="mentor name"
-                            value={data.mentor}  
+                             value={selectedMentorName}
+                            readOnly
                             onChange={(e) =>
-                              setData({ ...data, mentor: e.target.value })
+                              setSelectedMentorName(e.target.value)
                             }
                             type="text"
-                               
+                            disabled={true}
+                            style={{ color: "#36454F" }} // Adjust the color here to make it darker
                           />
-                       </FormControl>
-                      <FormControl sx={{ flexGrow: 1 }}>
-                      <FormLabel>Mentor Email</FormLabel>
-                      <Input
-                        size="sm"
-                        type="email"
-                        startDecorator={<EmailRoundedIcon />}
-                        value={data.mentorEmail}
-                        onChange={(e) =>
-                          setData({ ...data, mentorEmail: e.target.value })
-                        }
-                        sx={{ flexGrow: 1 }}
-                      />
-                    </FormControl>
+                        </FormControl>
                       </Stack>
 
                     </Stack>

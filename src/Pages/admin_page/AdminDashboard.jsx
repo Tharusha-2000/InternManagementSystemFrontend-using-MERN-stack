@@ -30,12 +30,12 @@ import Calendar from '../../components/common/Calendar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import LeaveManagement from '../../components/common/Leave';
 import { jwtDecode } from "jwt-decode";
-
+import Swal from "sweetalert2";
 
 export default function AdminDashboard() {
   const [leaveApplications, setLeaveApplications] = useState([]);
   const [data, setData] = useState({
-    _id: "",
+
     fname: "",
     lname: "",
     dob: "",
@@ -61,6 +61,10 @@ export default function AdminDashboard() {
   const [adminData, setAdminData] = useState([]);
 
   const token = localStorage.getItem('token');
+
+
+    
+
    const decodedToken = jwtDecode(token);
    const userRole = decodedToken.role;
    if (userRole !== 'admin') {
@@ -184,7 +188,7 @@ export default function AdminDashboard() {
         
         const deleteSchedule = async (eventId) => {
           try {
-            const response = await axios.delete(`${BASE_URL}${data._id}/schedule/${eventId}`, {
+            const response = await axios.delete(`${BASE_URL}schedule/${eventId}`, {
               headers: {
                 'Authorization': `Bearer ${token}` 
               }
@@ -212,20 +216,33 @@ export default function AdminDashboard() {
         };
       
         const handleLeaveClose = () => {
-          setLeaveOpen(null);
+          setLeaveOpen(false);
         };
        const handleLeaveChange = (event) => {
           const { name, value } = event.target;
           setFormData({ ...formData, [name]: value });
         };
         const handleSubmit = () => {
+
+          const leave = new Date(formData.leaveDate);
+          const today = new Date();
+         if (leave <= today) {
+          Swal.fire({ position: "top",
+          text:"Date can not be past.",
+          customClass: {
+            container: 'my-swal',
+            confirmButton: 'my-swal-button' 
+          }
+        });
+        }
+
           axios.post(`${BASE_URL}applyLeave`, formData, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           })
           .then(() => {
-            handleClose();
+            handleLeaveClose();
             axios.get(`${BASE_URL}getLeaveApplications`, {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -767,23 +784,18 @@ export default function AdminDashboard() {
                             >
                               
                               <MenuItem>
-                                <Select
-                                  value={formData.userId}
+                                <TextField
+                                  label="Name"
+                                  value={data.fname}
                                   onChange={handleLeaveChange}
                                   displayEmpty
-                                  inputProps={{ 'aria-label': 'Without label' }}
+                                  inputProps={{ 'aria-label': 'Without label' ,readOnly: true,}}
                                   fullWidth
-                                  name="userId"
-                                  margin="dense"
-                                  autoFocus
                                   sx={{ width: '527px', marginRight: '20px' }}
                                   
-                                >
-                                  <MenuItem value="" disabled>Select User</MenuItem>
-                                  {users.map((user) => (
-                                    <MenuItem key={user._id} value={user._id}>{user.fname} {user.lname}</MenuItem>
-                                  ))}
-                                </Select>
+                                />
+                                
+
                              
                                 <TextField
                                   margin="dense"

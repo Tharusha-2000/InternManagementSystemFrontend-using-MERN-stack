@@ -41,7 +41,6 @@ export default function ManagerDashboard() {
     }
 
   const [data, setData] = useState({
-    _id: "",
     fname: "",
     lname: "",
     dob: "",
@@ -183,7 +182,7 @@ export default function ManagerDashboard() {
 
         const deleteSchedule = async (eventId) => {
           try {
-            const response = await axios.delete(`${BASE_URL}${data._id}/schedule/${eventId}`, {
+            const response = await axios.delete(`${BASE_URL}schedule/${eventId}`, {
               headers: {
                 'Authorization': `Bearer ${token}` 
               }
@@ -202,11 +201,9 @@ export default function ManagerDashboard() {
         };
 
         const [leaveApplications, setLeaveApplications] = useState([]); 
-        const updateLeaveStatus = (userId, leaveApplicationId, newStatus) => {
-          if (!userId || !leaveApplicationId || !newStatus) {
-            console.error('Missing required fields');
-            return;
-          }
+        const updateLeaveStatus = (userId,leaveApplicationId, newStatus) => {
+
+          console.log( userId,leaveApplicationId, newStatus);
 
           axios.put(`${BASE_URL}updateLeaveStatus`, {
             userId,
@@ -233,13 +230,16 @@ export default function ManagerDashboard() {
             const leaveApplications = result.data.leaveApplications.flatMap(application => ({
               ...application,
               user: {
+                id: application.user.userid,
                 fname: application.user.fname,
                 lname: application.user.lname,
                 jobTitle: application.user.jobtitle,
                 imageUrl: application.user.imageUrl, 
               }
             }));
+
             setLeaveApplications(leaveApplications);
+            console.log(leaveApplications);
           })
           .catch((err) => console.log(err));
         };
@@ -788,7 +788,7 @@ export default function ManagerDashboard() {
                               <Button 
                                 variant="contained" 
                                 color="primary" 
-                                onClick={() => updateLeaveStatus(leaveApplication.user._id, leaveApplication._id, 'Approved')}
+                                onClick={() => updateLeaveStatus( leaveApplication.user.id,leaveApplication._id, 'Approved')}
                                 disabled={leaveApplication.status !== 'Pending'}
                                 style={{ margin: '10px', fontWeight: 'bold' }}
                               >
@@ -797,7 +797,7 @@ export default function ManagerDashboard() {
                               <Button 
                                 variant="contained" 
                                 color="secondary" 
-                                onClick={() => updateLeaveStatus(leaveApplication.user._id, leaveApplication._id, 'Rejected')}
+                                onClick={() => updateLeaveStatus(leaveApplication.user.id,leaveApplication._id, 'Rejected')}
                                 disabled={leaveApplication.status !== 'Pending'}
                                 style={{ fontWeight: 'bold' }}
                               >
