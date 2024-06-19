@@ -38,6 +38,7 @@ function EvaluationInternListManager() {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         });
+        console.log(response.data);
         setRows(response.data);
         setFilteredRows(response.data); // Initialize filteredRows with all data
       } catch (err) {

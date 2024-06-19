@@ -43,18 +43,27 @@ function EvaluationInternList() {
   const [toBeDeletedId, setToBeDeletedId] = useState(null);
 
   const handleClick = (intern) => {
-    if (intern.eformStatus === "created") {
-      // Correct usage of SweetAlert2
+    // Check if the intern has a mentor assigned
+    if (!intern.mentor) {
+      // Use SweetAlert2 to inform that a mentor must be assigned
+      Swal.fire({
+        title: 'No Mentor Assigned',
+        text: 'A mentor must be assigned before creating the evaluation form.',
+        icon: 'warning',
+      });
+    } else if (intern.eformStatus === "created") {
+      // Existing logic for when the form is already created
       Swal.fire({
         title: 'Already Created',
         text: 'This evaluation form has already been created.',
         icon: 'info',
       });
     } else {
+      // Proceed with setting selected intern and opening dialog
       setSelectedInternName(intern.name);
       setSelectedMentorName(intern.mentor);
       setSelectedEvaluationFormDetailsId(intern.evaluationFormDetailsId);
-      setOpenDialog(true); // Open the normal dialog for other statuses
+      setOpenDialog(true);
     }
   };
   const handleClose = () => {
@@ -116,7 +125,7 @@ function EvaluationInternList() {
   return (
     <TableContainer component={Paper}>
       <Typography variant="h4" gutterBottom align="center">
-        All Evaluations test
+        All Evaluations
       </Typography>
       <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
       <Grid sx={{ justifyContent: "space-between", mb: 4, display: "flex", alignItems: "center" }}>
@@ -227,21 +236,29 @@ function EvaluationInternList() {
     ))}
   </TableBody>
 </Table>
-
-      <Dialog open={openDialog} onClose={handleClose} maxWidth="md" fullWidth>
-        <EvaluationFormAdminFu
-          internName={selectedInternName}
-          mentorName={selectedMentorName} // Pass selected mentor name as prop
-          evaluationFormDetailsId={selectedEvaluationFormDetailsId} // Pass selected evaluationFormDetailsId as prop
-          onClose={handleClose}
-          onSave={() => {
-            handleClose(); // Close the first dialog
-            setSaveDialogOpen(true); // Open the second dialog
-            setRefreshKey((oldKey) => oldKey + 1); // Refresh the component
-          }}
-        />
-      </Dialog>
-
+<Dialog
+  open={openDialog}
+  onClose={handleClose}
+  maxWidth="md"
+  fullWidth
+  PaperProps={{
+    style: {
+      height: '90%', // Adjust the height as needed
+    },
+  }}
+>
+  <EvaluationFormAdminFu
+    internName={selectedInternName}
+    mentorName={selectedMentorName} // Pass selected mentor name as prop
+    evaluationFormDetailsId={selectedEvaluationFormDetailsId} // Pass selected evaluationFormDetailsId as prop
+    onClose={handleClose}
+    onSave={() => {
+      handleClose(); // Close the first dialog
+      setSaveDialogOpen(true); // Open the second dialog
+      setRefreshKey((oldKey) => oldKey + 1); // Refresh the component
+    }}
+  />
+</Dialog>
     
 
    

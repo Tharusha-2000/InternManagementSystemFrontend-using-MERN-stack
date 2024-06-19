@@ -51,6 +51,7 @@ function EvaluationinternListMentor() {
           }
         });
         setRows(response.data);
+        console.log(response.data);
         setFilteredData(response.data); // Make sure this line is present to initialize filteredData
       } catch (err) {
         console.error(err);
@@ -64,21 +65,13 @@ function EvaluationinternListMentor() {
   const [selectedIntern, setSelectedIntern] = useState(null);
 
   const handleClickOpen = (intern) => {
-    if (intern.isMentorFormFilled) {
-     Swal.fire({
-  title: 'Notice',
-  text: 'You have already completed the form',
-  icon: 'info',
-  confirmButtonText: 'OK'
-});
-    } else {
-      setSelectedIntern(intern);
-      setOpen(true);
-    }
+    setSelectedIntern(intern);
+    setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setRefreshKey(prevKey => prevKey + 1); // Increment refreshKey to trigger useEffect
   };
   const [filteredData, setFilteredData] = useState([]);
 
@@ -192,24 +185,23 @@ const handleSearch = (event) => {
             </TableCell>
           </TableRow>
         ))}
-            <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-              <DialogTitle>Evaluation Form</DialogTitle>
-              <DialogContent>
-                <EvaluationFormMentor
-                  internId={selectedIntern?.internId}
-                  internName={selectedIntern?.internName}
-                  jobPerformanceCriteriasMentor={
-                    selectedIntern?.jobPerformanceCriteriasMentor
-                  }
-                  coreValuesCriteriasMentor={
-                    selectedIntern?.coreValuesCriteriasMentor
-                  }
-                  handleClose={handleClose}
-                  setRefreshKey={setRefreshKey}
-                  refreshKey={refreshKey}
-                />
-              </DialogContent>
-            </Dialog>
+         <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+  <DialogTitle>Evaluation Form</DialogTitle>
+  <DialogContent>
+    {selectedIntern && (
+      <EvaluationFormMentor
+        isMentorFormFilled={selectedIntern.isMentorFormFilled}
+        internId={selectedIntern?.internId}
+        internName={selectedIntern?.internName}
+        jobPerformanceCriteriasMentor={selectedIntern?.jobPerformanceCriteriasMentor}
+        coreValuesCriteriasMentor={selectedIntern?.coreValuesCriteriasMentor}
+        handleClose={handleClose}
+        setRefreshKey={setRefreshKey}
+        refreshKey={refreshKey}
+      />
+    )}
+  </DialogContent>
+</Dialog>
     </TableBody>
   </Table>
 </TableContainer>

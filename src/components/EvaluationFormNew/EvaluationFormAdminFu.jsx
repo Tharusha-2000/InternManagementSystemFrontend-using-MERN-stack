@@ -9,6 +9,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Grid,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EvaluationFormAdminEv from "./EvaluationFormAdminEv";
@@ -34,6 +35,7 @@ function EvaluationFormAdminFu({
   const [additionalCriteria2, setAdditionalCriteria2] = useState([]);
   const [evaluatorError, setEvaluatorError] = useState(false);
   const [initialCriteria] = useState([
+    //evaluator criterias for job performance
     "System Proficiency",
     "Quality of work - Free from errors and mistakes. Accuracy, quality of work in general",
     "Effective Communication",
@@ -41,10 +43,11 @@ function EvaluationFormAdminFu({
     "Training & Development - seeks to enhance performance and stays updated with new developments in the field.",
   ]);
   const [initialCriteria2] = useState([
+    //evaluator criterias for core values
     "Relationships with Diverse workplace community",
     "Planning and organizing- The ability to analyze work, set goals, develop plans of action, utilize time.",
     "Initiative and creativity -  The ability to  proceed with a task without being told every detail and the ability to make constructive suggestions.",
-    "Attendance -Consistency in coming to work daily and conforming to scheduled work hours.",
+   
     "Decision-making - The ability to make decisions and the quality and timeliness of those decisions",
     "Compliance and Professionalism",
   ]);
@@ -55,25 +58,44 @@ function EvaluationFormAdminFu({
   const handleSave = () => {
     if (!evaluationDate) {
       setDateError(true);
-      Swal.fire({ position: "top",
-        text:"Please fill the required fields",
+      Swal.fire({
+        position: "top",
+        text: "Please fill the required fields",
         customClass: {
           container: 'my-swal',
-          confirmButton: 'my-swal-button' 
+          confirmButton: 'my-swal-button'
         }
-     })// Validation for date field using SweetAlert
+      }) // Validation for date field 
+      return;
+    }
+  
+    // Convert evaluationDate to Date object and compare with current date
+    const selectedDate = new Date(evaluationDate);
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); // Reset time part to compare only date part
+  
+    if (selectedDate < currentDate) {
+      Swal.fire({
+        position: "top",
+        text: "The selected date must be in the future",
+        customClass: {
+          container: 'my-swal',
+          confirmButton: 'my-swal-button'
+        }
+      }) // Future date validation 
       return;
     }
   
     if (!selectedEvaluator) {
       setEvaluatorError(true);
-      Swal.fire({ position: "top",
-        text:"Please Select a Evaluator",
+      Swal.fire({
+        position: "top",
+        text: "Please Select an Evaluator",
         customClass: {
           container: 'my-swal',
-          confirmButton: 'my-swal-button' 
+          confirmButton: 'my-swal-button'
         }
-     }) // Select evaluator validation using SweetAlert
+      }) // Select evaluator validation using SweetAlert
       return;
     }
     saveEvaluator(
@@ -129,38 +151,44 @@ function EvaluationFormAdminFu({
   return (
     <div>
       <Container maxWidth="md">
-        <Typography variant="h3" align="left" style={{ margin: "20px 0" }}>
-          Intern Evaluation
+        <Typography variant="h3" align="center" style={{ margin: "20px 0" }}>
+           Evaluation Form Creation
         </Typography>
-        <Box display="flex" alignItems="center" marginBottom="20px">
-          <InputLabel sx={{ paddingRight: 2, fontSize: "1.25rem" }}>
-            Intern Name
-          </InputLabel>
-          <TextField
-            placeholder={internNameState}
-            style={{ width: "650px" }}
-            value={internNameState}
-            disabled={true}
-          />
-        </Box>
-        <Box display="flex" alignItems="center" marginBottom="20px">
-          <InputLabel sx={{ paddingRight: 2, fontSize: "1.25rem" }}>
-            Evaluate before
-          </InputLabel>
-          <TextField
-            type="date"
-            value={evaluationDate}
-            onChange={(e) => {
-              setEvaluationDate(e.target.value);
-              setDateError(false);
-            }}
-            InputLabelProps={{ shrink: true }}
-            style={{ width: "650px" }}
-            error={dateError}
-            helperText={dateError ? "Please select a date." : ""}
-          />
-        </Box>
-      </Container>
+        <br></br> <br></br> <br></br> <br></br> <br></br>
+       
+        <Grid container spacing={2} alignItems="center">
+  <Grid item xs={12} sm={6}>
+    <InputLabel sx={{ mb: 1, fontSize: "1.25rem" }}>
+      Intern Name
+    </InputLabel>
+    <TextField
+      fullWidth
+      placeholder={internNameState}
+      value={internNameState}
+      disabled
+      variant="outlined"
+    />
+  </Grid>
+  <Grid item xs={12} sm={6}>
+    <InputLabel sx={{ mb: 1, fontSize: "1.25rem" }}>
+      Evaluate before
+    </InputLabel>
+    <TextField
+      fullWidth
+      type="date"
+      value={evaluationDate}
+      onChange={(e) => {
+        setEvaluationDate(e.target.value);
+        setDateError(false);
+      }}
+      InputLabelProps={{ shrink: true }}
+      variant="outlined"
+      error={dateError}
+      helperText={dateError ? "Please select a date." : ""}
+    />
+  </Grid>
+</Grid>
+      </Container><br></br> <br></br>
 
       <Container maxWidth="md">
         <Accordion sx={{ backgroundColor: '#D3D3D3' }}>

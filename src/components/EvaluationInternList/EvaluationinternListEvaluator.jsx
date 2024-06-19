@@ -61,16 +61,8 @@ function EvaluationinternListEvaluator() {
   }, [refreshKey]);
 
   const handleClickOpen = (row) => {
-    if (row.isEvaluated) {
-      Swal.fire({
-        title: 'Already Evaluated',
-        text: 'This evaluation form has already been evaluated.',
-        icon: 'info',
-      });
-    } else {
-      setSelectedIntern(row);
-      setOpen(true);
-    }
+    setSelectedIntern(row);
+    setOpen(true);
   };
 
   const handleClose = () => {
@@ -152,6 +144,7 @@ function EvaluationinternListEvaluator() {
   <DialogContent>
     {selectedIntern && (
       <EvaluationFormEvaluator
+      isEvaluated={selectedIntern.isEvaluated}
         internId={selectedIntern.evaluationFormDetailsId}
         internName={selectedIntern.name}
         jobPerformanceCriteriasEvaluator={selectedIntern.job_performance_criterias_evaluator}
