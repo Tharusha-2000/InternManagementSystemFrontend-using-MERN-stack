@@ -96,7 +96,7 @@ export default function InternProfile() {
        
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, []);  //If there is an error during the GET request, this block of code is executed. It logs the error to the console.
 
  const handleCancel = () => {
     // Reset the form data to the original data
@@ -173,10 +173,12 @@ const handleSubmit = (e) => {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((response) => {
+
       Swal.fire({ position: "top", text: response.data.msg 
                   ,customClass: {container: 'my-swal',
                    confirmButton: 'my-swal-button'} });
    //   window.alert(response.data.msg);
+
       console.log(response.data);
     })
     .catch((error) => {
@@ -263,10 +265,12 @@ return (
                   <Input size="sm" 
                       value={data.fname}
                       onChange={e => setData({ ...data, fname: e.target.value })}
+                      placeholder="First name"
                       />
                   <Input size="sm" sx={{ flexGrow: 1 }} 
                     value={data.lname}
                     onChange={e => setData({ ...data, lname: e.target.value })}
+                    placeholder="Last name"
                    />
                 </FormControl>
             </Stack>
@@ -299,11 +303,14 @@ return (
                   <Input size="sm" 
                    value={data.phonenumber}
                    onChange={e => setData({ ...data, phonenumber: e.target.value })} 
+                   placeholder="Phone Number"
                    />
                 </FormControl>
                 <FormControl>
                             <FormLabel>Role</FormLabel>
-                        <Input size="sm" value={data.role} />
+                        <Input size="sm" value={data.role}
+                        placeholder="Role"
+                        />
                     </FormControl>
                 </Stack>
                 </Stack>

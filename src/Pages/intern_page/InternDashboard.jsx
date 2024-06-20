@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Internsidebar from '../../components/common/Internsidebar';
 import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
+
 import { jwtDecode } from "jwt-decode";
 
 export default function InternDashboard() {
@@ -29,3 +30,4 @@ export default function InternDashboard() {
     </Box>
       </>
   )}
+
