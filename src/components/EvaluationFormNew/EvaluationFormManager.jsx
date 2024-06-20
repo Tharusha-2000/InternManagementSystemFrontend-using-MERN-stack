@@ -7,6 +7,7 @@ import "./EvaluationFormManager.css";
 import BarchartManagement from "./BarchartManagement";
 
 function EvaluationFormManager({ evaluationFormDetails, mentor }) {
+  
   const {
     job_performance_scores_evaluator,
     job_performance_scores_mentor,
