@@ -96,9 +96,6 @@ export default function AdminDashboard()  {
         }, []);
 
  
- 
-
-
 
   return (
     <div className="bgcolor">
@@ -334,9 +331,7 @@ export default function AdminDashboard()  {
                 sx={{ color: colors.greenAccent[400], fontSize: "26px" }}
               />
             }
-          />
-           
-             
+          />  
         </Box>
         <Box
           gridColumn="span 2"

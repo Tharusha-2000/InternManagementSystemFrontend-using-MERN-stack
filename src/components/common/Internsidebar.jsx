@@ -120,9 +120,9 @@ export default function Internsidebar() {
                   borderRadius: '18px',
                   padding: 1.5,
                   border: '5px solid white',
-                  backgroundColor: selected === "Dashboard" ? 'lightblue' : 'inherit',
+                  backgroundColor: selected === "Dashboard" ? '#26b89a' : 'inherit',
                   '&:hover': {
-                    backgroundColor: 'lightblue',
+                    backgroundColor: '#26b89a',
                     borderRadius: '18px',
                   },
                 }}
@@ -149,9 +149,9 @@ export default function Internsidebar() {
                   px: 2.5,borderRadius: '18px',
                   padding: 1.5,
                   border: '5px solid white',
-                  backgroundColor: selected === "Profile" ? 'lightblue' : 'inherit',
+                  backgroundColor: selected === "Profile" ? '#26b89a' : 'inherit',
                   '&:hover': {
-                    backgroundColor: 'lightblue',
+                    backgroundColor: '#26b89a',
                     borderRadius: '18px',
                   },
                 }}
@@ -178,9 +178,9 @@ export default function Internsidebar() {
                   px: 2.5,borderRadius: '18px',
                   padding: 1.5,
                   border: '5px solid white',
-                  backgroundColor: selected === "Evaluation" ? 'lightblue' : 'inherit',
+                  backgroundColor: selected === "Evaluation" ? '#26b89a' : 'inherit',
                   '&:hover': {
-                    backgroundColor: 'lightblue',
+                    backgroundColor: '#26b89a',
                     borderRadius: '18px',
                   },
                 }}
@@ -208,9 +208,9 @@ export default function Internsidebar() {
                   borderRadius: '18px',
                   padding: 1.5,
                   border: '5px solid white',
-                  backgroundColor: selected === "Project Task" ? 'lightblue' : 'inherit',
+                  backgroundColor: selected === "Project Task" ? '#26b89a' : 'inherit',
                   '&:hover': {
-                    backgroundColor: 'lightblue',
+                    backgroundColor: '#26b89a',
                     borderRadius: '18px',
                   },
                 }}
@@ -238,9 +238,9 @@ export default function Internsidebar() {
                   borderRadius: '18px',
                   padding: 1.5,
                   border: '5px solid white',
-                  backgroundColor: selected === "Security" ? 'lightblue' : 'inherit',
+                  backgroundColor: selected === "Security" ? '#26b89a' : 'inherit',
                   '&:hover': {
-                    backgroundColor: 'lightblue',
+                    backgroundColor: '#26b89a',
                     borderRadius: '18px',
                   },
                 }}

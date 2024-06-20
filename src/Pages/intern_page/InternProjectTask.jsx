@@ -229,7 +229,7 @@ function TaskTable() {
           py: { xs: 2, md: 3 },
         }}
       >
-        <Card>
+       <Card sx={{ backgroundColor: '#E9FBF7' }}>
           <Box sx={{ mb: 1 }}>
             <Typography
               level="title-md"
@@ -243,17 +243,33 @@ function TaskTable() {
               alignItems="center"
               style={{ marginTop: "30px" }}
             >
-              <TextField
-                value={data.title}
-                onChange={(e) => setData({ ...data, title: e.target.value })}
-                placeholder="Add a task"
-                fullWidth
-                size="small"
-              />
+             <TextField
+  value={data.title}
+  onChange={(e) => setData({ ...data, title: e.target.value })}
+  placeholder="Add a task"
+  fullWidth
+  size="small"
+  InputProps={{
+    style: {
+      height: '40px', // Adjust the height as needed
+      fontSize: '0.875rem', // Adjust the font size as needed
+    },
+  }}
+  sx={{
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '10px', // Adjust the border radius as needed
+    },
+  }}
+/>
 
-              <Button variant="solid" type="submit" onClick={addTask}>
-                +ADD
-              </Button>
+<Button
+  variant="solid"
+  type="submit"
+  onClick={addTask}
+  style={{ backgroundColor: '#e7004c', color: 'white' }}
+>
+  +ADD
+</Button>
             </Box>
           </Box>
           <Divider />
@@ -317,36 +333,36 @@ function TaskTable() {
           </Stack>
         </Card>
 
-        <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography
-              level="title-md"
-              style={{ fontSize: "18px", fontWeight: "bold", color: "green" }}
-            >
-              DONE LIST{"  "}
-              <DoneAllIcon style={{ color: "green" }} fontSize="medium" />
-            </Typography>
-            <Typography level="body-sm">
-              completed task and verified by mentor
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack spacing={2} sx={{ my: 1 }}>
-            <TableContainer>
-              <Table>
-                <TableBody>
-                  {tasks
-                    .filter((task) => task.isVerified)
-                    .map((task) => (
-                      <TableRow key={task._id} sx={{ height: '10px' }}>
-                        <TableCell>{task.title}</TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Stack>
-        </Card>
+        <Card sx={{ backgroundColor: '#E9FBF7' }}>
+  <Box sx={{ mb: 1 }}>
+    <Typography
+      level="title-md"
+      style={{ fontSize: "18px", fontWeight: "bold", color: "#26b89a" }}
+    >
+      DONE LIST{"  "}
+      <DoneAllIcon style={{ color: "#26b89a" }} fontSize="medium" />
+    </Typography>
+    <Typography level="body-sm">
+      completed task and verified by mentor
+    </Typography>
+  </Box>
+  <Divider />
+  <Stack spacing={2} sx={{ my: 1 }}>
+    <TableContainer>
+      <Table>
+        <TableBody>
+          {tasks
+            .filter((task) => task.isVerified)
+            .map((task) => (
+              <TableRow key={task._id} sx={{ height: '10px' }}>
+                <TableCell>{task.title}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  </Stack>
+</Card>
       </Stack>
 
       <Dialog
