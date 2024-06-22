@@ -45,28 +45,21 @@ function EvaluationFormMentor({
 
     handleClose();
     try {
-      const response = await fetch(
-        `${BASE_URL}storeMentorScores/${internId}`,
+      const response = await axios.post(
+        `${BASE_URL}storeMentorScores/${internId}`, 
         {
-          method: "POST",
+          coreValuesScoresMentor: coreValuesRatings.map((rating) => rating * 20),
+          jobPerformanceScoresMentor: ratings.map((rating) => rating * 20),
+          overall_performance_mentor: overallPerformanceRating * 20,
+          action_taken_mentor: actionTakenMentor,
+          comment_mentor: commentMentor,
+        },
+        {
           headers: {
             "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            coreValuesScoresMentor: coreValuesRatings.map(
-              (rating) => rating * 20
-            ),
-            jobPerformanceScoresMentor: ratings.map((rating) => rating * 20),
-            overall_performance_mentor: overallPerformanceRating * 20,
-            action_taken_mentor: actionTakenMentor,
-            comment_mentor: commentMentor,
-          }),
+          }
         }
       );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
 
       const data = await response.json();
       console.log(data);
