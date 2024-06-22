@@ -17,7 +17,7 @@ import Profile from './components/common/Profile.jsx'
 
 import AdminDashboard from './Pages/admin_page/AdminDashboard';
 import Registration from './Pages/admin_page/Registration';
-//import CVupload from './Pages/admin_page/CVupload.jsx';
+import CVupload from './Pages/admin_page/CVupload.jsx';
 import Evaluation from './Pages/admin_page/Evaluation';
 import ProfileCreate from './Pages/admin_page/ProfileCreate';
 import ShowTask from './Pages/admin_page/ShowTask.jsx';
