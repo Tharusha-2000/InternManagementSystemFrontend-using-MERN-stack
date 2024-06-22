@@ -663,6 +663,7 @@ function interndetails({ internId }) {
                           />
                         </FormControl>
                       </Stack>
+
                     </Stack>
                   </Stack>
                 </Card>
