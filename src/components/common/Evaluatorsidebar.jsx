@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { BASE_URL } from '../../config';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -18,12 +20,13 @@ import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 import SwitchAccountOutlinedIcon from '@mui/icons-material/SwitchAccountOutlined';
 import PermContactCalendarOutlinedIcon from '@mui/icons-material/PermContactCalendarOutlined';
 import SettingsApplicationsOutlinedIcon from '@mui/icons-material/SettingsApplicationsOutlined';
-import { indigo } from '@mui/material/colors';
 import {useNavigate} from "react-router-dom";
 import { useAppStore } from './appStore';
 import { useLocation } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
 
 
 const drawerWidth = 240;
@@ -86,7 +89,7 @@ export default function Evaluatorsidebar() {
   const token = localStorage.getItem('token');
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role;
-
+  const [data, setData] = useState("");
   useEffect(() => {
     const currentPath = location.pathname;
     
@@ -94,8 +97,8 @@ export default function Evaluatorsidebar() {
       setSelected("Profile");
     } else if (currentPath.includes("/evaluatorevaluation")) {
       setSelected("Evaluation");
-    } else if (currentPath.includes("/evaluatorviewprofile")) {
-      setSelected("View Profile & Task");
+    } else if (currentPath.includes("/evaluatorviewInternDetails")) {
+      setSelected("View profile & task");
     } else if (currentPath.includes("/security")) {
       setSelected("Security");
     } else {
@@ -117,19 +120,69 @@ export default function Evaluatorsidebar() {
     return null; // Do not render the component
   }
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    axios.get(`${BASE_URL}user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((result) => {
+      setData(result.data.user);
+    })
+    .catch((err) => console.log(err));
+  }, []);
 
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <Box height={30} />
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open} 
+          sx={{
+        '& .MuiDrawer-paper': {
+          backgroundColor: '#3949ab', 
+        },
+      }}>
         <DrawerHeader>
           <IconButton>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </DrawerHeader>   
         <Divider />
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 3, marginBottom: 7 }}>
+            <Box
+              sx={{
+                position: 'relative',
+                display: 'inline-block',
+                borderRadius: '50%',
+                padding: '5px',
+                background: 'linear-gradient(to right, #00C8FF, #8A2BE2)'
+
+              }}
+            >
+              <Avatar 
+                src={data.imageUrl} 
+                sx={{ 
+                  width: open ? 100 : 45, 
+                  height: open ? 100 : 45, 
+                }} 
+              />
+            </Box>
+            {open && (
+              <>
+                <Typography variant="h6" sx={{ marginTop: 1, fontWeight: 'bold', color: "lightcyan" }}>
+                  {data.fname} {data.lname}
+                </Typography>
+                <Typography variant="body2" sx={{ color: "lightblue" }}>
+                  {data.jobtitle}
+                </Typography>
+              </>
+            )}
+          </Box>
+        
+
+
         <List>
             <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Dashboard"); navigate("/evaluatordashboard")}}>
               <ListItemButton
@@ -137,13 +190,14 @@ export default function Evaluatorsidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  borderRadius: '18px',
+                  borderRadius: '1px',
                   padding: 1.5,
-                  border: '5px solid white',
-                  backgroundColor: selected === "Dashboard" ? 'lightblue' : 'inherit',
+                  color: 'silver',
+                  border: '5px solid #3949ab',
+                  backgroundColor: selected === "Dashboard" ? 'rgba(100, 149, 237, 0.5)' : 'inherit',
                   '&:hover': {
-                    backgroundColor: 'lightblue',
-                    borderRadius: '18px',
+                    backgroundColor: 'royalblue',
+                    borderRadius: '1px',
                   },
                 }}
               >
@@ -154,7 +208,7 @@ export default function Evaluatorsidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <DashboardOutlinedIcon sx={{ color: indigo[900] }} /> 
+                  <DashboardOutlinedIcon sx={{ color: 'white' }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -167,13 +221,14 @@ export default function Evaluatorsidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  borderRadius: '18px',
+                  borderRadius: '1px',
                   padding: 1.5,
-                  border: '5px solid white',
-                  backgroundColor: selected === "Profile" ? 'lightblue' : 'inherit',
+                  color: 'silver',
+                  border: '5px solid #3949ab',
+                  backgroundColor: selected === "Profile" ? 'rgba(100, 149, 237, 0.5)' : 'inherit',
                   '&:hover': {
-                    backgroundColor: 'lightblue',
-                    borderRadius: '18px',
+                    backgroundColor: 'royalblue',
+                    borderRadius: '1px',
                   },
                 }}
               >
@@ -184,7 +239,7 @@ export default function Evaluatorsidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <SwitchAccountOutlinedIcon sx={{ color: indigo[900] }} /> 
+                  <SwitchAccountOutlinedIcon sx={{ color: 'white' }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -197,13 +252,14 @@ export default function Evaluatorsidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  borderRadius: '18px',
+                  borderRadius: '1px',
                   padding: 1.5,
-                  border: '5px solid white',
-                  backgroundColor: selected === "Evaluation" ? 'lightblue' : 'inherit',
+                  color: 'silver',
+                  border: '5px solid #3949ab',
+                  backgroundColor: selected === "Evaluation" ? 'rgba(100, 149, 237, 0.5)' : 'inherit',
                   '&:hover': {
-                    backgroundColor: 'lightblue',
-                    borderRadius: '18px',
+                    backgroundColor: 'royalblue',
+                    borderRadius: '1px',
                   },
                 }}
               >
@@ -214,7 +270,7 @@ export default function Evaluatorsidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <FactCheckOutlinedIcon sx={{ color: indigo[900] }} /> 
+                  <FactCheckOutlinedIcon sx={{ color: 'white' }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Evaluation" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -223,35 +279,36 @@ export default function Evaluatorsidebar() {
                   
                   
 
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("View profile & task"); navigate("/evaluatorviewprofile")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("View profile & task"); navigate("/evaluatorviewInternDetails")}}> 
+      <ListItemButton
+        sx={{
+          minHeight: 48,
+          justifyContent: open ? 'initial' : 'center',
+          px: 2.5,
+          borderRadius: '1px',
+          padding: 1.5,
+          color: 'silver',
+          border: '5px solid #3949ab',
+          backgroundColor: selected === "View profile & task" ? 'rgba(100, 149, 237, 0.5)' : 'inherit', 
+          '&:hover': {
+            backgroundColor: 'royalblue',
+            borderRadius: '1px',
+          },
+        }}
+      >
+        <ListItemIcon
+          sx={{
+            minWidth: 0,
+            mr: open ? 3 : 'auto',
+            justifyContent: 'center',
+          }}
+        >
+          <PermContactCalendarOutlinedIcon sx={{ color: 'white' }} /> 
+        </ListItemIcon>
+        <ListItemText primary="View profile & task" sx={{ opacity: open ? 1 : 0 }} />
+      </ListItemButton>
+    </ListItem>
 
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                  borderRadius: '18px',
-                  padding: 1.5,
-                  border: '5px solid white',
-                  backgroundColor: selected === "View profile & task" ? 'lightblue' : 'inherit',
-                  '&:hover': {
-                    backgroundColor: 'lightblue',
-                    borderRadius: '18px',
-                  },
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <PermContactCalendarOutlinedIcon sx={{ color: indigo[900] }} /> 
-                </ListItemIcon>
-                <ListItemText primary="View profile & task" sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
         
 
             <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Security"); navigate("/security")}}>
@@ -260,13 +317,14 @@ export default function Evaluatorsidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  borderRadius: '18px',
+                  borderRadius: '1px',
                   padding: 1.5,
-                  border: '5px solid white',
-                  backgroundColor: selected === "Security" ? 'lightblue' : 'inherit',
+                  color: 'silver',
+                  border: '5px solid #3949ab',
+                  backgroundColor: selected === "Security" ? 'rgba(100, 149, 237, 0.5)' : 'inherit',
                   '&:hover': {
-                    backgroundColor: 'lightblue',
-                    borderRadius: '18px',
+                    backgroundColor: 'royalblue',
+                    borderRadius: '1px',
                   },
                 }}
               >
@@ -277,7 +335,7 @@ export default function Evaluatorsidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <SettingsApplicationsOutlinedIcon sx={{ color: indigo[900] }} /> 
+                  <SettingsApplicationsOutlinedIcon sx={{ color: 'white' }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Security" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>

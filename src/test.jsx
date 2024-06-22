@@ -49,11 +49,13 @@ const EmailForm = () => {
       })
       .catch((error) => {
         if (error.response) {
+         
           Swal.fire({
             position: 'top',
             text: error.response.data.msg,
             customClass: {
-              confirmButton: 'my-button',
+              container: 'my-swal',
+            confirmButton: 'my-swal-button',
             },
           });
         }

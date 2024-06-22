@@ -22,7 +22,7 @@ import {
   DialogTitle,
   IconButton,
   Stack,
-
+  Avatar,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -132,7 +132,14 @@ const Filter = (event) => {
    <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
    <div>
     <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
-      <Typography variant="h4" gutterBottom align="center">
+      <Typography variant="h4" gutterBottom align="center" 
+      sx={{
+        color: 'rgba(0, 0, 102, 0.8)', 
+        fontWeight: 'bold', 
+        marginBottom: '2px', 
+        paddingTop: '10px', 
+        backgroundColor: 'rgba(255, 255, 255, 0.5)', 
+      }}>
         Intern List
       </Typography>
       <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
@@ -145,14 +152,14 @@ const Filter = (event) => {
             p: "2px 4px",
             display: "flex",
             alignItems: "center",
-            width: "100vh",
+            width: "120vh",
             borderRadius: "20px",
             boxShadow: 3,
             marginLeft: "1%",
           }}
         >
          
-          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 2, flex: 1 }} placeholder="Search Users" />
+          <InputBase type="text"  onChange={Filter} sx={{ ml: 2, flex: 1 }} placeholder="Search Users" />
           <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
             <SearchIcon />
@@ -166,19 +173,27 @@ const Filter = (event) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell
+            <TableCell
+                
                 sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
+                  
                 }}
               >
                 Name
               </TableCell>
              
               <TableCell
+                
                 sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
+                  
                 }}
               >
                 Email
@@ -187,11 +202,25 @@ const Filter = (event) => {
                 
                 sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
                   
                 }}
               >
                 Actions
+              </TableCell>
+              <TableCell
+                
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
+                  
+                }}
+              >
+                Status
               </TableCell>
             </TableRow>
           </TableHead>
@@ -199,16 +228,28 @@ const Filter = (event) => {
             {filteredData.map((intern) => (
                
               <TableRow key={intern._id}>
-                <TableCell sx={{ fontSize: "1em" }}>
-                  {" "}
-                  {intern.fname} {intern.lname}{" "}
-                </TableCell>
+                 <TableCell align="left">
+                      <Box display="flex" alignItems="center">
+                        <Avatar src={intern.imageUrl} alt={`${intern.fname} ${intern.lname}`} style={{ marginRight: '20px' }} />
+                        <Box>
+                          <Typography >
+                            {intern.fname} {intern.lname}
+                          </Typography>
+                      
+                        </Box>
+                      </Box>
+                    </TableCell>
                 
                 <TableCell sx={{ fontSize: "1em" }}>{intern.email}</TableCell>
                 <TableCell>
                  <Box display="flex" alignItems="center">
                     <Interndetails internId={intern._id} />
-                    <FormControlLabel
+                   
+                  </Box>
+                </TableCell>
+
+                <TableCell>
+                <FormControlLabel
                       control={
                         <Android12Switch
                           checked={intern.interviewScore}
@@ -219,8 +260,8 @@ const Filter = (event) => {
                       }
                       label="complete"
                     />
-                  </Box>
-                </TableCell>
+
+                  </TableCell>
               </TableRow>
             ))}
           </TableBody>

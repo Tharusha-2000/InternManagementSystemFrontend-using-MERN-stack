@@ -219,9 +219,18 @@ function interndetails({ internId }) {
         onClick={() => handleClickOpen(internId)}
         variant="contained"
         size="small"
-        color="primary"
-        sx={{ padding: "10px", marginLeft: "2%", fontSize: "0.8rem" }}
-      >
+        style={{ marginRight: "10px",color:"royalblue" }}
+        sx={{
+          border: '1px solid rgb(46, 51, 181)',
+          color: 'rgb(46, 51, 181)', 
+          backgroundColor: 'rgba(42, 45, 141, 0.438)', 
+          '&:hover': {
+            backgroundColor: '#0056b3',
+            color: '#fff', 
+          },
+        }}
+      > 
+      
         <AccountCircleIcon />
       </Button>
       <Dialog

@@ -218,8 +218,26 @@ function ProjectdoneListToApprove() {
                  </Box>
                   ) : (
                     <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-                        <Button variant="solid" type="submit" size="small" onClick={() => handleVerify(task._id)}>Verify</Button>
-                        <Button variant="solid" color="neutral" size="small" onClick={() => handleCancel(task._id)}>reject</Button>
+                        <Button variant="solid" type="submit" size="small"     sx={{
+                    border: '1px solid rgb(46, 51, 181)',
+                    color: 'rgb(46, 51, 181)', 
+                    backgroundColor: 'rgba(42, 45, 141, 0.438)', 
+                    '&:hover': {
+                      backgroundColor: '#0056b3',
+                      color: '#fff', 
+                    },
+                  }} onClick={() => handleVerify(task._id)}>Verify</Button>
+                        <Button variant="solid" color="neutral" size="small"   sx={{
+                        border: "1px solid rgb(174, 73, 73)",
+                        marginLeft: "10px",
+                        color: "rgb(174, 73, 73)", 
+                        backgroundColor: "rgba(174, 73, 73, 0.314)", 
+                        '&:hover': {
+                          backgroundColor: "#CC0000",
+                          color: "#fff", 
+                        },
+                      }} 
+                      onClick={() => handleCancel(task._id)}>reject</Button>
                     </CardActions>
                      )}
                    </TableCell>

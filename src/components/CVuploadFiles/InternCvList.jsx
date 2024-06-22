@@ -16,6 +16,7 @@ import {
   Box, 
   Stack,
   Grid,
+  Avatar,
   IconButton  } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
@@ -175,24 +176,24 @@ const handleEditOpen = (id) => {
 const handleEditClose = () => {
   setOpenEdit(false);
 };
-const handleViewOpen = (cvUrl) => {
-  setCvUrl(cvUrl);
-  setOpenView(true);
-};
-const handleViewClose = () => {
-  setOpenView(false);
-};
 
 
 
 
 return (
 <>
-  <ViewCVfiles open={openView} handleClose={handleViewClose} cvUrl={cvUrl} />
+  
   <EditCVfiles open={openEdit} handleClose={handleEditClose} internId={internId} />
    <Paper sx={{ Width: "100%", overflow: "auto", padding: "12px"}}>
-      <Typography variant="h4" gutterBottom align="center" component="div">
-       Intern CV List
+   <Typography variant="h4" gutterBottom align="center" 
+      sx={{
+        color: 'rgba(0, 0, 102, 0.8)', 
+        fontWeight: 'bold', 
+        marginBottom: '2px', 
+        paddingTop: '10px', 
+        backgroundColor: 'rgba(255, 255, 255, 0.5)', 
+      }}>
+        Intern CV List
       </Typography>
       <Divider />
       <Box heigth={10} />
@@ -205,13 +206,13 @@ return (
             p: "2px 4px",
             display: "flex",
             alignItems: "center",
-            width: "100vh",
+            width: "120vh",
             borderRadius: "20px",
             boxShadow: 3,
             marginLeft: "1%"
           }}
         >
-          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 3, flex: 1 }} placeholder="Search Users" />
+          <InputBase type="text" onChange={Filter} sx={{ ml: 3, flex: 1 }} placeholder="Search Users" />
           <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
             <SearchIcon />
@@ -223,40 +224,38 @@ return (
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell
-                sx={{
+            <TableCell   sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
-                  padding: "0 1em",
-                }}
-              >
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
+                }}>
                 Inetern Name
               </TableCell>
               
-              <TableCell
-                sx={{
+              <TableCell   sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
-                  padding:  "0 0 0 1em",
-                  
-                }}
-              >
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
+                }}>
+              
               </TableCell>
               
-              <TableCell 
-                sx={{
+              <TableCell   sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
-                  padding: "0 0 0 1em",
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
                 }}>
                   Status
               </TableCell>
              
-              <TableCell  
-                sx={{
+              <TableCell   sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
-                  padding: "0 1em 0 6em",
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
                 }}>
                   Updates
                 </TableCell>
@@ -267,10 +266,17 @@ return (
             {filteredData.map((user) => (
               <TableRow key={user._id}>
                 
-                <TableCell sx={{ fontSize: "1em" }}>
-                  {" "}
-                  {user.fname} {user.lname}{" "}
-                </TableCell>
+                <TableCell align="left">
+                      <Box display="flex" alignItems="center">
+                        <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
+                        <Box>
+                          <Typography >
+                            {user.fname} {user.lname}
+                          </Typography>
+                      
+                        </Box>
+                      </Box>
+                    </TableCell>
                 <TableCell></TableCell>
                 
                 <TableCell alignItems="right">
@@ -307,12 +313,7 @@ return (
                  
                   <TableCell align="left">
                     <Stack spacing={2} direction="row">        
-                        <Button 
-                          color="primary" 
-                          onClick={() => handleViewOpen(user.cvUrl)}
-                        > 
-                          <AccountCircleIcon style={{ color: "royalblue" }} />
-                        </Button>
+                        <ViewCVfiles internId={user._id}/>
                         <Button
                             color="primary"
                             onClick={() => handleEditOpen(user._id)}

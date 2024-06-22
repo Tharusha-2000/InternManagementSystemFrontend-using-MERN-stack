@@ -4,6 +4,8 @@ import { Button, Dialog, DialogTitle,InputLabel, DialogContent,IconButton, TextF
 import CloseIcon from '@mui/icons-material/Close';
 import { BASE_URL } from '../../config';
 import Swal from "sweetalert2";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+
 function Adduser() {
   
   const [open, setOpen] = useState(false);
@@ -35,7 +37,10 @@ function Adduser() {
     e.preventDefault();
     const dob = new Date(data.dob);
     const today = new Date();
+    console.log(dob);
+    console.log(today);
   
+
     if(!data.fname||!data.lname||!data.dob||!data.role ||!data.gender ||!data.email || !data.password) {
       Swal.fire({ position: "top",
           text:"Please fill the required fields",
@@ -71,7 +76,7 @@ function Adduser() {
       //  window.alert('name must only contain letters.')
         return;
     }
-    if (dob >= today) {
+    if (dob > today) {
       Swal.fire({ position: "top",
       text:"Date of birth must be in the past.",
       customClass: {
@@ -113,14 +118,23 @@ function Adduser() {
 
   return (
     <div>
-      <Button  onClick={handleClickOpen}
-         variant="contained"
-         size="small"
-         color="primary"
-         sx={{ padding: "10px", marginLeft: "2%" ,fontSize: "0.8rem" }}
-       >
-         +AddUser
-      </Button>
+    
+      <IconButton
+               onClick={handleClickOpen}
+              sx={{
+                borderRadius: '60%', 
+                backgroundColor: '#3949ab',
+               
+                padding: '20px', 
+                '&:hover': {
+                  backgroundColor: '#0056b3',
+                  color: '#fff',  
+                },
+              }}
+            >
+            
+            <PersonAddIcon color="inherit" style={{ fontSize: 40 }} />
+            </IconButton>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">New Registration<IconButton onClick={handleClose} style={{float:'right'}}><CloseIcon color="primary"></CloseIcon></IconButton></DialogTitle>
         <DialogContent>

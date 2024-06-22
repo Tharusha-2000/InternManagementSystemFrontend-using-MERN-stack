@@ -191,11 +191,14 @@ function TaskTable() {
   
     const handleupdate = async (id) => {
       
+     
+      
       const data = {
         title: currentTask.title,
       };
-      console.log(data.isComplete);
-      console.log(data);
+    console.log(data.isComplete);
+    console.log(data);
+       
       await axios
         .put(`${BASE_URL}task/${id}`, data, {
           headers: {
@@ -204,7 +207,7 @@ function TaskTable() {
         })
         .then((response) => {
           Swal.fire({ position: "top",
-          text:response.data.message,
+          text:response.data.msg,
           customClass: {
             container: 'my-swal',
             confirmButton: 'my-swal-button' 
@@ -212,7 +215,11 @@ function TaskTable() {
        })
          // window.alert(response.data.msg);
          .then(() => {
-           window.location.reload();
+          setTasks(
+            tasks.map((task) =>
+              task._id === id ? { ...task, title: currentTask.title } : task
+            )
+            );
           console.log(response.data);
          })
         })
@@ -309,7 +316,15 @@ function TaskTable() {
                           <IconButton
                             aria-label="delete"
                             onClick={() => handleDelete(task._id)}
-                            style={{ marginRight: "10px" }}
+                            sx={{
+                              marginRight: "10px",
+                              '&:hover': {
+                           
+                                backgroundColor: '#0056b3',
+                                color: '#fff', 
+                              
+                              },
+                            }}
                           >
                             <DeleteIcon />
                           </IconButton>
@@ -318,7 +333,15 @@ function TaskTable() {
                             size="small"
                             color="primary"
                             aria-label="edit"
-                            style={{ marginRight: "10px" }}
+                            sx={{
+                              marginRight: "10px",
+                              '&:hover': {
+                           
+                                backgroundColor: '#0056b3',
+                                color: '#fff', 
+                              
+                              },
+                            }}
                             onClick={() => handleClickOpen(task)}
                           >
                             <EditIcon />

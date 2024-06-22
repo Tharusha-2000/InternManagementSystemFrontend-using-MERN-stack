@@ -111,10 +111,20 @@ function internTaskTable({ internId }) {
   <div>
     
      <IconButton
-        size="small"
+       
+        size="large"
         color="primary"
-        style={{ marginRight: "10px" }}
+        style={{ marginRight: "10px",color:"royalblue" }}
         onClick={() => handleClickOpen()}
+        sx={{
+          border: '1px solid rgb(46, 51, 181)',
+          color: 'rgb(46, 51, 181)', 
+          backgroundColor: 'rgba(42, 45, 141, 0.438)', 
+          '&:hover': {
+            backgroundColor: '#0056b3',
+            color: '#fff', 
+          },
+        }}
       >
         <TaskIcon />
       </IconButton>
