@@ -185,6 +185,7 @@ export default function Internsidebar() {
         <List>
             <ListItem disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Dashboard"); navigate("/interndashboard")}}>
               <ListItemButton
+
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? 'initial' : 'center',
@@ -199,6 +200,7 @@ export default function Internsidebar() {
                       borderRadius: '1px',
                     },
                   }}
+
               >
                 <ListItemIcon
                   sx={{
@@ -216,6 +218,7 @@ export default function Internsidebar() {
       
             <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Profile"); navigate("/internprofile")}}>
               <ListItemButton
+
                sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
@@ -231,6 +234,7 @@ export default function Internsidebar() {
                 },
               }}
                
+
               >
                 <ListItemIcon
                   sx={{
@@ -251,6 +255,7 @@ export default function Internsidebar() {
                  sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
+
                   px: 2.5,
                   borderRadius: '1px',
                   padding: 1.2,
@@ -260,6 +265,7 @@ export default function Internsidebar() {
                   '&:hover': {
                     backgroundColor: 'royalblue',
                     borderRadius: '1px',
+
                   },
                 }}
              
@@ -284,6 +290,7 @@ export default function Internsidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+
                   borderRadius: '1px',
                   padding: 1.2,
                   color: 'silver',
@@ -292,6 +299,7 @@ export default function Internsidebar() {
                   '&:hover': {
                     backgroundColor: 'royalblue',
                     borderRadius: '1px',
+
                   },
                 }}
              
@@ -316,6 +324,7 @@ export default function Internsidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+
                   borderRadius: '1px',
                   padding: 1.2,
                   color: 'silver',
@@ -324,6 +333,7 @@ export default function Internsidebar() {
                   '&:hover': {
                     backgroundColor: 'royalblue',
                     borderRadius: '1px',
+
                   },
                 }}
             

@@ -12,11 +12,14 @@ import MuiAppBar from '@mui/material/AppBar';
 import { useAppStore } from './appStore';
 import { useNavigate } from 'react-router-dom';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+
 import Swal from "sweetalert2";
 import Logo from "../../assets/Logo2.png"
 const AppBar = styled(MuiAppBar, {
  })(({  theme }) => ({
+
   zIndex: theme.zIndex.drawer + 1,
+  backgroundColor: '#26b89a', // Add this line to change the background color
 }));
 
 export default function Header() {

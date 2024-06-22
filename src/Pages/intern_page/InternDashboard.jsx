@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect } from "react";
 import Internsidebar from "../../components/common/Internsidebar";
 import Header from "../../components/common/Header";
+
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { BASE_URL } from "../../config";
@@ -500,3 +502,4 @@ export default function InternDashboard() {
     </>
   );
 }
+
