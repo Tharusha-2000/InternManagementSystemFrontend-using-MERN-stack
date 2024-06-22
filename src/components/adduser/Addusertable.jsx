@@ -22,6 +22,7 @@ import {
   DialogTitle,
   IconButton,
   Stack,
+  Avatar,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
@@ -31,6 +32,8 @@ import Adduser from "./Adduser";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import CircularProgress from '@mui/material/CircularProgress';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function Addusertable({ rows }) {
   //const [DialogIsOpen, setDialogIsOpen] = useState(false);
@@ -41,6 +44,8 @@ function Addusertable({ rows }) {
   const [isLoading, setIsLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   {/* get details in database */}
   const token = localStorage.getItem('token');
@@ -186,7 +191,7 @@ function Addusertable({ rows }) {
                 // window.alert(err.response.data.msg);
                .then(() => {
                 localStorage.removeItem('token');
-                navigate("/Login");
+                navigate("/");
                })
             }
           });
@@ -200,7 +205,8 @@ function Addusertable({ rows }) {
 // creating filter function
 const Filter = (event) => {
   const searchTerm = event.target.value.toLowerCase();
-  
+  setSearchTerm(event.target.value);
+
   setFilteredData(
     data.filter(
       (f) =>
@@ -214,6 +220,33 @@ const Filter = (event) => {
   );
 };
 
+const handleClearSearch = () => {
+  setSearchTerm("");
+  setFilteredData(data);
+};
+
+const roleStyles = {
+  admin: {
+    backgroundColor: 'rgba(139, 0, 139, 0.2)', 
+    color: '#8B008B'
+  },
+  mentor: {
+    backgroundColor: 'rgba(138, 43, 226, 0.2)', 
+    color: '#8A2BE2'
+  },
+  evaluator: {
+    backgroundColor: 'rgba(0, 100, 0, 0.2)', 
+    color: '#008000'
+  },
+  manager: {
+    backgroundColor: 'rgba(255, 160, 122, 0.2)',
+    color: '#FFA07A'
+  },
+  intern: {
+    backgroundColor: 'rgba(240, 230, 140, 0.2)',
+    color: '#FFD700'
+  }
+};
 
 
 
@@ -223,8 +256,15 @@ return (
    <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
    <div>
     <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
-      <Typography variant="h4" gutterBottom align="center">
-        User List
+      <Typography variant="h4" gutterBottom align="center" 
+      sx={{
+        color: 'rgba(0, 0, 102, 0.8)', 
+        fontWeight: 'bold', 
+        marginBottom: '2px', 
+        paddingTop: '10px', 
+        backgroundColor: 'rgba(255, 255, 255, 0.5)', 
+      }}>
+        All User 
       </Typography>
       <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
 
@@ -243,13 +283,28 @@ return (
           }}
         >
          
-          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 2, flex: 1 }} placeholder="Search Users" />
+             <InputBase
+                  type="text"
+                  value={searchTerm}
+                  onChange={Filter}
+                  sx={{ ml: 2, flex: 1 }}
+                  placeholder="Search Users"
+                />
+                <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
+              
           <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
+          {searchTerm ? (
+                  <IconButton onClick={handleClearSearch} sx={{ p: "10px" }} aria-label="clear">
+                    <CloseIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton sx={{ p: "10px" }} aria-label="search">
+                    <SearchIcon />
+                  </IconButton>
+                )}
         </Paper>
         <Box sx={{ marginRight: "12%" }}>
+       
         <Adduser />
         </Box>
       </Grid>
@@ -259,12 +314,16 @@ return (
       <TableContainer>
         
         <Table>
+          
           <TableHead>
             <TableRow>
+  
               <TableCell
                 sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
                 }}
               >
                 Name
@@ -272,7 +331,9 @@ return (
               <TableCell
                 sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
                 }}
               >
                 Role
@@ -280,7 +341,9 @@ return (
               <TableCell
                 sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
                 }}
               >
                 Email
@@ -289,7 +352,9 @@ return (
                 
                 sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
                   
                 }}
               >
@@ -301,30 +366,68 @@ return (
             {filteredData.map((user) => (
 
               <TableRow key={user._id}>
-                <TableCell sx={{ fontSize: "1em" }}>
-                  {" "}
-                  {user.fname} {user.lname}{" "}
+                 <TableCell align="left">
+                      <Box display="flex" alignItems="center">
+                        <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
+                        <Box>
+                          <Typography >
+                            {user.fname} {user.lname}
+                          </Typography>
+                          <Typography color="textSecondary" style={{ fontSize: '0.7rem' }}>
+                            {user.jobtitle}
+                         </Typography>
+                        </Box>
+                      </Box>
+                    </TableCell>
+                <TableCell sx={{ fontSize: "1em", alignItems: "right" }}>
+                  <div style={{ 
+                    height: '25px', 
+                    width: '85px', 
+                    borderRadius: '15px', 
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    fontSize: '14px',
+                    ...roleStyles[user.role] 
+                  }}>
+                    {user.role}
+                  </div>
                 </TableCell>
-                <TableCell sx={{ fontSize: "1em" }}>{user.role}</TableCell>
-                <TableCell sx={{ fontSize: "1em" }}>{user.email}</TableCell>
+                <TableCell sx={{ fontSize: "1em", color: "" }}>{user.email}</TableCell>
                 <TableCell>
                   
-                    <Button
-                      onClick={() => functionopenpopup(user._id)}
-                      color="primary"
-                      variant="contained"
-                    >
-                      Change Role
-                    </Button>
+                <Button
+                  onClick={() => functionopenpopup(user._id)}
+                  variant="contained"
+                  sx={{
+                    border: '1px solid rgb(46, 51, 181)',
+                    color: 'rgb(46, 51, 181)', 
+                    backgroundColor: 'rgba(42, 45, 141, 0.438)', 
+                    '&:hover': {
+                      backgroundColor: '#0056b3',
+                      color: '#fff', 
+                    },
+                  }}
+                >
+                  <ManageAccountsIcon/>
+                </Button>
                  
-                  <Button
-                    style={{ marginLeft: "10px" }}
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => handleDelete(user._id)}
-                  >
-                    Delete
-                  </Button>
+                    <Button
+                      sx={{
+                        border: "1px solid rgb(174, 73, 73)",
+                        marginLeft: "10px",
+                        color: "rgb(174, 73, 73)", 
+                        backgroundColor: "rgba(174, 73, 73, 0.314)", 
+                        '&:hover': {
+                          backgroundColor: "#CC0000",
+                          color: "#fff", 
+                        },
+                      }}
+                      variant="outlined"
+                      onClick={() => handleDelete(user._id)}
+                    >
+                       <DeleteIcon/>
+                    </Button>
                 </TableCell>
               </TableRow>
             ))}

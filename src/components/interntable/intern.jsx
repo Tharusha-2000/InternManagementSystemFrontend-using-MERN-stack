@@ -32,9 +32,8 @@ function interndetails({ internId }) {
   const [open, setOpen] = useState(false);
   // Assuming you have a state variable for mentors similar to evaluators
   const [mentors, setMentors] = useState([]);
-  const [selectedMentorEmail, setSelectedMentorEmail] = useState("");
   const [selectedMentorName, setSelectedMentorName] = useState("");
-
+  const [selectedMentorEmail, setSelectedMentorEmail] = useState("");
   const [data, setData] = useState({
     fname: "",
     lname: "",
@@ -42,15 +41,17 @@ function interndetails({ internId }) {
     role: "",
     gender: "",
     email: "",
-    mentorEmail: "", // New field
-    mentorName: "", // New field
+    mentorEmail: "", 
+    mentor: "", 
   });
   const [imageUrl, setImageUrl] = useState(null);
   console.log(data);
+  const token = localStorage.getItem("token");
+
 
   useEffect(() => {
     if (open) {
-      const token = localStorage.getItem("token");
+     
       axios
         .get(`${BASE_URL}interns/${internId}`, {
           headers: {
@@ -61,11 +62,11 @@ function interndetails({ internId }) {
           setData(result.data.intern);
           console.log(result.data.intern);
           setImageUrl(result.data.intern.imageUrl);
-             // Pre-fill mentor email and name if available in the data
-        if (result.data.intern.mentorEmail && result.data.intern.mentor) {
-          setSelectedMentorEmail(result.data.intern.mentorEmail);
-          setSelectedMentorName(result.data.intern.mentor);
-        }
+          // Pre-fill mentor email and name if available in the data
+          if (result.data.intern.mentorEmail && result.data.intern.mentor) {
+            setSelectedMentorEmail(result.data.intern.mentorEmail);
+            setSelectedMentorName(result.data.intern.mentor);
+          }
         })
         .catch((err) => console.log(err));
     }
@@ -81,6 +82,9 @@ function interndetails({ internId }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const dob = new Date(data.dob);
+    const today = new Date();
+    
     if (
       !data.fname ||
       !data.lname ||
@@ -90,7 +94,7 @@ function interndetails({ internId }) {
       !data.email ||
       !data.interviewScore ||
       !data.interviewFeedback ||
-      (!data.mentorEmail || !data.mentor)
+      !data.mentorEmail 
     ) {
       Swal.fire({
         position: "top",
@@ -116,6 +120,19 @@ function interndetails({ internId }) {
       // window.alert("name must only contain letters.");
       return;
     }
+
+    if (dob >= today) {
+      Swal.fire({ position: "top",
+      text:"Date of birth must be in the past.",
+      customClass: {
+        container: 'my-swal',
+        confirmButton: 'my-swal-button' 
+      }
+      })
+     // window.alert('Date of birth must be in the past.');
+      return;
+    }
+
     const token = localStorage.getItem("token");
     axios
       .put(`${BASE_URL}interns/${internId}`, data, {
@@ -134,7 +151,8 @@ function interndetails({ internId }) {
         })
           //  window.alert(response.data.msg);
           .then(() => {
-            window.location.reload();
+           // window.location.reload();
+            handleClose();
             console.log(response.data.msg);
           });
       })
@@ -152,57 +170,72 @@ function interndetails({ internId }) {
         handleClose();
       });
   };
+
   // Fetch mentors from the backend
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    axios.get(`${BASE_URL}getAllMentors`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      setMentors(response.data); // Assuming response.data is an array of mentor objects
-      console.log("Mentors fetched successfully!", response.data);
-    })
-    .catch((error) => {
-      console.error("There was an error fetching mentors!", error);
-    });
+    axios
+      .get(`${BASE_URL}getAllMentors`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setMentors(response.data); // Assuming response.data is an array of mentor objects
+        console.log("Mentors fetched successfully!", response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching mentors!", error);
+      });
   }, []);
 
   // Mentor selection handler
- // Modify the data object update within handleMentorChange to use "mentor" instead of "mentorName"
-const handleMentorChange = (event) => {
-  const email = event.target.value;
-  console.log("Selected email:", email); // Debugging: Check selected email
+  const handleMentorChange = (event) => {
+    const selectedMentorEmail = event.target.value;
+    console.log("Selected email:", selectedMentorEmail); // Debugging: Check selected email
 
-  const selectedMentor = mentors.find(mentor => mentor.email === email);
-  console.log("Selected mentor:", selectedMentor); // Debugging: Check selected mentor object
+    const selectedMentor = mentors.find((mentor) => mentor.email === selectedMentorEmail);
+    console.log("Selected mentor:", selectedMentor); // Debugging: Check selected mentor object
 
-  if (selectedMentor) {
-    setSelectedMentorEmail(selectedMentor.email);
-    setSelectedMentorName(selectedMentor.fullName); // Assuming the mentor object has a fullName property
+    if (selectedMentor) {
 
-    // Debugging: Log the state updates to confirm they're being set
-    console.log("Updating mentorEmail to:", selectedMentor.email);
-    console.log("Updating mentor to:", selectedMentor.fullName);
+      setSelectedMentorEmail(selectedMentor.email);
+      setSelectedMentorName(selectedMentor.fullName);
+        // Access the mentor's first and last name
+       console.log  (selectedMentor.fullName)
+       console.log( selectedMentorName)
+       console.log( selectedMentorEmail)
+        setData((prevData) => ({
+          ...prevData,
+          mentorEmail: selectedMentorEmail,
+          mentor: selectedMentor.fullName,
+        }));
+        console.log(data);
+     }
+  };
 
-    setData(prevData => ({
-      ...prevData,
-      mentorEmail: selectedMentor.email,
-      mentor: selectedMentor.fullName, // Changed from mentorName to mentor
-    }));
-  }
-};
   return (
     <div>
-      <Button
-        onClick={() => handleClickOpen(internId)}
+     <Button
+          onClick={() => handleClickOpen(internId)}
         variant="contained"
-        size="small"
-        color="primary"
-        sx={{ padding: "10px", marginLeft: "2%", fontSize: "0.8rem" }}
+        sx={{
+          border: "1px solid rgb(46, 51, 181)",
+          color: "rgb(46, 51, 181)",
+          backgroundColor: "rgba(42, 45, 141, 0.438)",
+          padding: "0px 13px",
+          fontSize: "0.875rem",
+          minWidth: "auto",
+          "&:hover": {
+            backgroundColor: "#0056b3",
+            color: "#fff",
+          },
+          '& .MuiSvgIcon-root': {
+            fontSize: '1.5rem', // Adjust icon size if necessary
+          }
+        }}
       >
+
+      
         <AccountCircleIcon />
       </Button>
       <Dialog
@@ -573,45 +606,63 @@ const handleMentorChange = (event) => {
                         </FormControl>
                       </Stack>
                       <Stack direction="row" spacing={2}>
-  <FormControl sx={{ flexGrow: 1, position: "relative", minWidth: 100, maxWidth: '178px'  }}>
-    <FormLabel htmlFor="mentor-select" sx={{ mb: 1, color: "#20262D", }}>
-      Select email
-    </FormLabel>
-    <select
-      defaultValue={data.mentorEmail} // Set the default value to the mentor email if available
-      onChange={handleMentorChange}
-      aria-label="Select mentor"
-      style={{
-        appearance: "none",
-        width: "100%",
-        padding: "3px 0px 8px 12px",
-        border: "1px solid #C0C4CC",
-        borderRadius: "8px",
-        background: "white url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'><polyline points='6 9 12 15 18 9'></polyline></svg>\") no-repeat right 10px center",
-        cursor: "pointer",
-        fontSize: "14px",
-        color: "#20262D",
-      }}
-    >
-      <option value="" disabled>Select email</option>
-      {mentors.map((mentor, index) => (
-        <option key={index} value={mentor.email}>{mentor.email}</option>
-      ))}
-    </select>
-  </FormControl>
-  <FormControl sx={{ flexGrow: 1 }}>
-    <FormLabel>mentor Name</FormLabel>
-    <Input
-  size="sm"
-  placeholder="mentor name"
-  value={selectedMentorName}
-  onChange={(e) => setSelectedMentorName(e.target.value)}
-  type="text"
-  disabled={true}
-  style={{ color: "#36454F" }} // Adjust the color here to make it darker
-/>
-  </FormControl>
-</Stack>
+                        <FormControl
+                          sx={{
+                            flexGrow: 1,
+                            position: "relative",
+                            minWidth: 100,
+                            maxWidth: "178px",
+                          }}
+                        >
+                          <FormLabel
+                            htmlFor="mentor-select"
+                            sx={{ mb: 1, color: "#20262D" }}
+                          >
+                            mentor Email
+                          </FormLabel>
+                          <select
+                            value={selectedMentorEmail} // Set the default value to the mentor email if available
+                            onChange={handleMentorChange}
+                            aria-label="Select mentor"
+                            style={{
+                              appearance: "none",
+                              width: "100%",
+                              padding: "3px 0px 8px 12px",
+                              border: "1px solid #C0C4CC",
+                              borderRadius: "8px",
+                              background:
+                                "white url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'><polyline points='6 9 12 15 18 9'></polyline></svg>\") no-repeat right 10px center",
+                              cursor: "pointer",
+                              fontSize: "14px",
+                              color: "#20262D",
+                            }}
+                          >
+                            <option value="" disabled>
+                              Select email
+                            </option>
+                            {mentors.map((mentor, index) => (
+                              <option key={index} value={mentor.email}>
+                                {mentor.email}
+                              </option>
+                            ))}
+                          </select>
+                        </FormControl>
+                        <FormControl sx={{ flexGrow: 1 }}>
+                          <FormLabel>mentor Name</FormLabel>
+                          <Input
+                            size="sm"
+                            placeholder="mentor name"
+                             value={selectedMentorName}
+                            readOnly
+                            onChange={(e) =>
+                              setSelectedMentorName(e.target.value)
+                            }
+                            type="text"
+                            disabled={true}
+                            style={{ color: "#36454F" }} // Adjust the color here to make it darker
+                          />
+                        </FormControl>
+                      </Stack>
                     </Stack>
                   </Stack>
                 </Card>

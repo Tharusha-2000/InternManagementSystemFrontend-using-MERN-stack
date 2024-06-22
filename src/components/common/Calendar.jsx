@@ -106,7 +106,7 @@ export default function Calendar() {
 
   const deleteWorkSchedule = async (eventId) => {
     try {
-      const response = await axios.delete(`${BASE_URL}${userId}/schedule/${eventId}`, {
+      const response = await axios.delete(`${BASE_URL}schedule/${eventId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -170,6 +170,10 @@ export default function Calendar() {
         dayHeaderContent={(header) => {
           const dayShortNames = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
           return dayShortNames[header.date.getUTCDay()];
+        }}
+        
+        selectAllow={(selectInfo) => {
+          return selectInfo.start >= new Date();
         }}
       />
       <EventModal

@@ -186,7 +186,7 @@ export default function EvaluatorDashboard() {
 
         const deleteSchedule = async (eventId) => {
           try {
-            const response = await axios.delete(`${BASE_URL}${data._id}/schedule/${eventId}`, {
+            const response = await axios.delete(`${BASE_URL}schedule/${eventId}`, {
               headers: {
                 'Authorization': `Bearer ${token}` 
               }
@@ -216,13 +216,26 @@ export default function EvaluatorDashboard() {
           setFormData({ ...formData, [name]: value });
         };
         const handleSubmit = () => {
+
+          const leave = new Date(formData.leaveDate);
+          const today = new Date();
+         if (leave <= today) {
+          Swal.fire({ position: "top",
+          text:"Date can not be past.",
+          customClass: {
+            container: 'my-swal',
+            confirmButton: 'my-swal-button' 
+          }
+        });
+        }
+        
           axios.post(`${BASE_URL}applyLeave`, formData, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           })
           .then(() => {
-            handleClose();
+            handleLeaveClose();
             axios.get(`${BASE_URL}getLeaveApplications`, {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -761,23 +774,17 @@ export default function EvaluatorDashboard() {
                         <Dialog open={leaveopen} onClose={handleLeaveClose} fullWidth maxWidth="sm">
                             <DialogTitle>Apply Leave</DialogTitle>
                             <DialogContent>
-                            <Select
-                              value={formData.userId}
-                              onChange={handleLeaveChange}
-                              displayEmpty
-                              inputProps={{ 'aria-label': 'Without label' }}
-                              fullWidth
-                              name="userId"
-                              margin="dense"
-                              autoFocus
-                            >
-                              <MenuItem value="" disabled>
-                                Select User
-                              </MenuItem>
-                              {users.map((user) => (
-                                <MenuItem key={user._id} value={user._id}>{user.fname} {user.lname}</MenuItem>
-                              ))}
-                            </Select>
+                            <MenuItem>
+                                <TextField
+                                  label="Name"
+                                  value={data.fname}
+                                  onChange={handleLeaveChange}
+                                  displayEmpty
+                                  inputProps={{ 'aria-label': 'Without label' ,readOnly: true,}}
+                                  fullWidth
+                                  sx={{ width: '527px', marginRight: '20px' }}
+                                  
+                                />
 
                             <TextField
                               margin="dense"
@@ -791,6 +798,7 @@ export default function EvaluatorDashboard() {
                               value={formData.leaveDate}
                               onChange={handleLeaveChange}
                             />
+                            </MenuItem>
                             <TextField
                               margin="dense"
                               name="reason"

@@ -4,7 +4,7 @@ import Header from '../../components/common/Header';
 import Box from '@mui/material/Box';
 import Projectinternlistable from '../../components/project/projectinternlist';
 
-export default function EvaluatorViewProfile() {
+ export default function EvaluatorviewInternDetails() {
   return (
     <>
     <Header />

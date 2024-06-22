@@ -175,8 +175,20 @@ export default function Profile() {
 
 const handleSubmit = (e) => {
    e.preventDefault();
+   const dob = new Date(data.dob);
+    const today = new Date();
  
-   
+   if (dob >= today) {
+    Swal.fire({ position: "top",
+    text:"Date of birth must be in the past.",
+    customClass: {
+      container: 'my-swal',
+      confirmButton: 'my-swal-button' 
+    }
+    })
+   // window.alert('Date of birth must be in the past.');
+    return;
+  }
     //update photo after the click save button it not uersfrienly so commented it
     // uploadFile();
 
@@ -210,7 +222,7 @@ const handleSubmit = (e) => {
             spacing={4}
             sx={{
               display: "flex",
-              maxWidth: "800px",
+              maxWidth: "1000px",
               mx: "auto",
               px: { xs: 2, md: 6 },
               py: { xs: 2, md: 3 },
@@ -306,6 +318,7 @@ const handleSubmit = (e) => {
                       <FormLabel>Role</FormLabel>
                       <Input size="sm"
                         value={data.role} 
+                        readOnly
                        />
                     </FormControl>
                     <FormControl sx={{ flexGrow: 1 }}>
@@ -429,7 +442,7 @@ const handleSubmit = (e) => {
                 </Stack>
                 <FormControl>
                   <FormLabel>Role</FormLabel>
-                  <Input size="sm" value={data.role}
+                  <Input size="sm" value={data.role} readOnly
                   />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>

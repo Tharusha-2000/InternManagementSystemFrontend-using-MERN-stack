@@ -14,7 +14,7 @@ import {
   Typography,
   Grid,
   IconButton,
-
+  Avatar,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled } from '@mui/material/styles';
@@ -24,6 +24,8 @@ import { useNavigate } from "react-router-dom";
 import Interndetails from "../interntable/intern";
 import ProjectTask from "../project/project";
 import CircularProgress from '@mui/material/CircularProgress';
+import ViewCVfiles from "../CVuploadFiles/ViewCVfiles";
+import CloseIcon from "@mui/icons-material/Close";
 
 function internlist({ rows }) {
 
@@ -33,7 +35,7 @@ function internlist({ rows }) {
   const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
   const [isComplete, setIsComplete] = useState(false);
-
+  const [searchTerm, setSearchTerm] = useState("");
   {/* get details in database */}
   const token = localStorage.getItem('token');
   useEffect(() => {
@@ -79,7 +81,8 @@ function internlist({ rows }) {
 // creating filter function
 const Filter = (event) => {
   const searchTerm = event.target.value.toLowerCase();
-  
+  setSearchTerm(event.target.value);
+
   setFilteredData(
     data.filter(
       (f) =>
@@ -93,7 +96,10 @@ const Filter = (event) => {
   );
 };
 
-
+const handleClearSearch = () => {
+  setSearchTerm("");
+  setFilteredData(data);
+};
 
 
 
@@ -102,9 +108,16 @@ const Filter = (event) => {
    <Grid> 
    <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
    <div>
-    <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
-      <Typography variant="h4" gutterBottom align="center">
-        Intern Details
+   <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
+      <Typography variant="h4" gutterBottom align="center" 
+      sx={{
+        color: 'rgba(0, 0, 102, 0.8)', 
+        fontWeight: 'bold', 
+        marginBottom: '2px', 
+        paddingTop: '10px', 
+        backgroundColor: 'rgba(255, 255, 255, 0.5)', 
+      }}>
+        All Intern Details 
       </Typography>
       <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
 
@@ -116,18 +129,31 @@ const Filter = (event) => {
             p: "2px 4px",
             display: "flex",
             alignItems: "center",
-            width: "100vh",
+            width: "120vh",
             borderRadius: "20px",
             boxShadow: 3,
             marginLeft: "1%",
           }}
         >
          
-          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 2, flex: 1 }} placeholder="Search Users" />
-          <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
+         <InputBase
+                  type="text"
+                  value={searchTerm}
+                  onChange={Filter}
+                  sx={{ ml: 2, flex: 1 }}
+                  placeholder="Search Interns"
+                />
+               
+                <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
+          {searchTerm ? (
+                  <IconButton onClick={handleClearSearch} sx={{ p: "10px" }} aria-label="clear">
+                    <CloseIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton sx={{ p: "10px" }} aria-label="search">
+                    <SearchIcon />
+                  </IconButton>
+                )}
         </Paper>
       
       </Grid>
@@ -135,51 +161,85 @@ const Filter = (event) => {
       
       <TableContainer>
         <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell
-                sx={{
+     <TableHead>
+       <TableRow>
+          <TableCell   sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
                 }}
-              >
-                Name
-              </TableCell>
-             
-              <TableCell
-                sx={{
+          >Intern Name</TableCell>
+          <TableCell  sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
-                }}
-              >
-                Email
-              </TableCell>
-              <TableCell
-                
-                sx={{
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
+                 
+                }}>Email</TableCell>
+          <TableCell  sx={{
                   fontWeight: "bold",
-                  fontSize: "1em",
-                  
-                }}
-              >
-                Details
-              </TableCell>
-            </TableRow>
+                  fontSize: "1.2em",
+                  backgroundColor: "rgba(0, 0, 102, 0.8)", 
+                  color: "#fff",
+                  paddingLeft: "70px", 
+                }} >Details</TableCell>
+          
+      </TableRow>
+   
           </TableHead>
           <TableBody>
             {filteredData.map((intern) => (
                
               <TableRow key={intern._id}>
-                <TableCell sx={{ fontSize: "1em" }}>
-                  {" "}
-                  {intern.fname} {intern.lname}{" "}
-                </TableCell>
+              
+                  <TableCell align="left">
+                      <Box display="flex" alignItems="center">
+                        <Avatar src={intern.imageUrl} alt={`${intern.fname} ${intern.lname}`} style={{ marginRight: '20px' }} />
+                        <Box>
+                          <Typography >
+                            {intern.fname} {intern.lname}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </TableCell>
+                  
                 
                 <TableCell sx={{ fontSize: "1em" }}>{intern.email}</TableCell>
-                <TableCell>
+                <TableCell >
                  <Box display="flex" alignItems="center">
-                   { role !== 'admin' && <Interndetails internId={intern._id} />}
+                 <Box style={{ marginRight: '10px' }}>
+                   <Typography>
+                      { role !== 'admin' && <Interndetails internId={intern._id} />}
+                    </Typography>
+                    {role !== 'admin' && (
+                    <Typography color="textSecondary" style={{ fontSize: '0.7rem',marginLeft: '10px' }}>
+                        Profile
+                    </Typography>
+                     )}
+                    </Box>
+                  
+                   <Box style={{ marginRight: '10px' }}>
+                   <Typography>
                     <ProjectTask  internId={intern._id}/>
+                    </Typography>
+                    <Typography color="textSecondary" style={{ fontSize: '0.7rem' ,marginLeft: '10px'}}>
+                        Tasks
+                    </Typography>
+                    </Box>
+
+                    <Box style={{ marginRight: '10px' }}>
+                      
+                   <Typography>
+                   { role !== 'admin' && < ViewCVfiles internId={intern._id} />}
+                    </Typography>
+                    {role !== 'admin' && (
+                        <Typography color="textSecondary" style={{ fontSize: '0.7rem',marginLeft: '15px' }}>
+                          CV
+                       </Typography>
+                      )}
+                    </Box>
+
                   </Box>
                 </TableCell>
               </TableRow>

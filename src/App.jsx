@@ -55,8 +55,6 @@ import InternProjectTask from './Pages/intern_page/InternProjectTask';
 import ManagerDashboard from './Pages/manager_page/ManagerDashboard';
 import ManagerEvaluation from './Pages/manager_page/ManagerEvaluation';
 import ManagerViewInternDetails  from './Pages/manager_page/ManagerViewInternDetails.jsx';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 
 function App() {
   const [user,setUsers] = useState();  
