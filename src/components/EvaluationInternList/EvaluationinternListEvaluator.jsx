@@ -16,12 +16,13 @@ import DialogContent from "@mui/material/DialogContent";
 import Dialog from "@mui/material/Dialog";
 import { Typography } from "@mui/material";
 import { Divider } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
-import EvaluationFormEvaluator from "../EvaluationFormNew/EvaluationFormEvaluator";
+import Grid from '@mui/material/Grid';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
+import EvaluationFormEvaluator from '../EvaluationFormNew/EvaluationFormEvaluator';
 import { BASE_URL } from '../../config';
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
+import { Avatar, Box, Button } from '@mui/material';
 
 function EvaluationinternListEvaluator() {
   const [rows, setRows] = useState([]); // Store the interns data here
@@ -40,14 +41,14 @@ function EvaluationinternListEvaluator() {
   useEffect(() => {
     const fetchInternDetails = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
         const decoded = KJUR.jws.JWS.parse(token);
         const userId = decoded.payloadObj.id;
-  
+
         const response = await axios.get(`${BASE_URL}getInternsByEvaluator/${userId}`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         console.log(response.data);
         setRows(response.data);
@@ -56,7 +57,7 @@ function EvaluationinternListEvaluator() {
         console.error(err);
       }
     };
-  
+
     fetchInternDetails();
   }, [refreshKey]);
 
@@ -68,95 +69,178 @@ function EvaluationinternListEvaluator() {
   const handleClose = () => {
     setOpen(false);
   };
+
   // Add this function to handle the search functionality
   const handleSearch = (event) => {
     const searchTerm = event.target.value.toLowerCase();
-    const filtered = rows.filter(intern => intern.name.toLowerCase().includes(searchTerm));
+    const filtered = rows.filter((intern) =>
+      intern.name.toLowerCase().includes(searchTerm)
+    );
     setFilteredData(filtered); // Update filteredData based on search
   };
 
-
-
-
   return (
     <div>
-
-<Typography variant="h4" gutterBottom align="center">
-        All Evaluations
-      </Typography>
-      <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
-      <Grid sx={{ justifyContent: "space-between", mb: 4, display: "flex", alignItems: "center" }}>
-      <Paper
-        component="form"
-        sx={{
-          p: "2px 4px",
-          display: "flex",
-          alignItems: "center",
-          width: "100vh",
-          borderRadius: "20px",
-          boxShadow: 3,
-          marginLeft: "1%",
-        }}
-      >
-        <InputBase type="text"  onChange={handleSearch} sx={{ ml: 2, flex: 1 }} placeholder="Search Interns" />
+      <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
+        <Typography variant="h4" gutterBottom align="center">
+          All Evaluations
+        </Typography>
         <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
-        <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-          <SearchIcon />
-        </IconButton>
-      </Paper>
-    </Grid>
-
-
-
-<TableContainer component={Paper}>
-  <Table sx={{ minWidth: 650 }} aria-label="simple table">
-    <TableHead>
-      <TableRow>
-        <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>Intern Name</TableCell>
-        <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }} align="center">Evaluate Before</TableCell>
-        <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }} align="center">Evaluation Form</TableCell>
-        <TableCell sx={{ fontWeight: "bold", fontSize: "1.2rem" }} align="center">Status</TableCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-    {filteredData.map((row, index) => (
-        <TableRow key={index} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-          <TableCell component="th" scope="row" sx={{ fontSize: "1rem" }}>{row.name}</TableCell>
-          <TableCell align="center" sx={{ fontSize: "1rem" }}>{new Date(row.evaluate_before).toISOString().substring(0, 10)}</TableCell>
-          <TableCell align="center" sx={{ fontSize: "1rem" }}>
-            <IconButton onClick={() => handleClickOpen(row)}>
-              <AssignmentIndIcon />
+        <Grid
+          sx={{
+            justifyContent: 'space-between',
+            mb: 4,
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <Paper
+            component="form"
+            sx={{
+              p: '2px 4px',
+              display: 'flex',
+              alignItems: 'center',
+              width: '100vh',
+              borderRadius: '20px',
+              boxShadow: 3,
+              marginLeft: '1%',
+            }}
+          >
+            <InputBase
+              type="text"
+              onChange={handleSearch}
+              sx={{ ml: 2, flex: 1 }}
+              placeholder="Search Interns"
+            />
+            <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
+            <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+              <SearchIcon />
             </IconButton>
-          </TableCell>
-          <TableCell align="center" sx={{ fontSize: "1rem" }}>{row.isEvaluated ? "Evaluated" : "Not Evaluated"}</TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
+          </Paper>
+        </Grid>
 
-          <Dialog
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="form-dialog-title"
-  fullWidth={true}
-  maxWidth="md" // 'md' is for medium. You can also use 'sm', 'lg', 'xl', 'xs' or 'false'
->
-  <DialogTitle id="form-dialog-title">Evaluation Form</DialogTitle>
-  <DialogContent>
-    {selectedIntern && (
-      <EvaluationFormEvaluator
-      isEvaluated={selectedIntern.isEvaluated}
-        internId={selectedIntern.evaluationFormDetailsId}
-        internName={selectedIntern.name}
-        jobPerformanceCriteriasEvaluator={selectedIntern.job_performance_criterias_evaluator}
-        coreValuesCriteriasEvaluator={selectedIntern.core_values_criterias_evaluator}
-        handleClose={handleClose}
-        setRefreshKey={setRefreshKey}
-      />
-    )}
-  </DialogContent>
-</Dialog>
-        </Table>
-      </TableContainer>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "1em",
+                    backgroundColor: "rgba(0, 0, 102, 0.8)",
+                    color: "#fff"
+                  }}
+                >
+                  Intern Name
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "1em",
+                    backgroundColor: "rgba(0, 0, 102, 0.8)",
+                    color: "#fff"
+                  }}
+                >
+                  Evaluate Before
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "1em",
+                    backgroundColor: "rgba(0, 0, 102, 0.8)",
+                    color: "#fff"
+                  }}
+                >
+                  Evaluation Form
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "1em",
+                    backgroundColor: "rgba(0, 0, 102, 0.8)",
+                    color: "#fff"
+                  }}
+                >
+                  Status
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredData.map((row, index) => (
+                <TableRow
+                  key={index}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row" sx={{ fontSize: '1rem' }}>
+                    <Box display="flex" alignItems="center">
+                      <Avatar
+                        src={row.imageUrl}
+                        alt={`${row.name}`}
+                        style={{ marginRight: '20px' }}
+                      />
+                      <Box>
+                        <Typography>{row.name}</Typography>
+                        <Typography color="textSecondary" style={{ fontSize: '0.7rem' }}>
+                          {row.jobtitle}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontSize: '1rem' }}>
+                    {new Date(row.evaluate_before).toISOString().substring(0, 10)}
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontSize: '1rem' }}>
+                    <Button
+                      onClick={() => handleClickOpen(row)}
+                      variant="contained"
+                      sx={{
+                        border: '1px solid rgb(46, 51, 181)',
+                        color: 'rgb(46, 51, 181)',
+                        backgroundColor: 'rgba(42, 45, 141, 0.438)',
+                        '&:hover': {
+                          backgroundColor: '#0056b3',
+                          color: '#fff',
+                        },
+                      }}
+                    >
+                      <AssignmentIndIcon />
+                    </Button>
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontSize: '1rem' }}>
+                    {row.isEvaluated ? 'Evaluated' : 'Not Evaluated'}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+              fullWidth={true}
+              maxWidth="md" // 'md' is for medium. You can also use 'sm', 'lg', 'xl', 'xs' or 'false'
+            >
+              <DialogTitle id="form-dialog-title">Evaluation Form</DialogTitle>
+              <DialogContent>
+                {selectedIntern && (
+                  <EvaluationFormEvaluator
+                    isEvaluated={selectedIntern.isEvaluated}
+                    internId={selectedIntern.evaluationFormDetailsId}
+                    internName={selectedIntern.name}
+                    jobPerformanceCriteriasEvaluator={selectedIntern.job_performance_criterias_evaluator}
+                    coreValuesCriteriasEvaluator={selectedIntern.core_values_criterias_evaluator}
+                    handleClose={handleClose}
+                    setRefreshKey={setRefreshKey}
+                  />
+                )}
+              </DialogContent>
+            </Dialog>
+          </Table>
+        </TableContainer>
+      </Paper>
     </div>
   );
 }

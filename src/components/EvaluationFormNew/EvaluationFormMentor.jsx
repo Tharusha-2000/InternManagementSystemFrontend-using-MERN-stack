@@ -12,6 +12,7 @@ import EvaluationFormTableTemp from "./EvaluationFormTableTemp";
 import { BASE_URL } from "../../config";
 import Swal from "sweetalert2";
 import InfoIcon from "@mui/icons-material/Info";
+import axios from "axios";
 
 function EvaluationFormMentor({
   internId,
@@ -43,31 +44,24 @@ function EvaluationFormMentor({
       return;
     }
 
-   handleClose();
-try {
-  const response = await fetch(`${BASE_URL}storeMentorScores/${internId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json", // Ensure the server knows to expect JSON
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      coreValuesScoresMentor: coreValuesRatings.map((rating) => rating * 20),
-      jobPerformanceScoresMentor: ratings.map((rating) => rating * 20),
-      overall_performance_mentor: overallPerformanceRating,
-      action_taken_mentor: actionTakenMentor,
-      comment_mentor: commentMentor,
-    }),
-  });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-      console.log(data);
+    handleClose();
+    try {
+      const response = await axios.post(`${BASE_URL}storeMentorScores/${internId}`, {
+        coreValuesScoresMentor: coreValuesRatings.map((rating) => rating * 20),
+        jobPerformanceScoresMentor: ratings.map((rating) => rating * 20),
+        overall_performance_mentor: overallPerformanceRating,
+        action_taken_mentor: actionTakenMentor,
+        comment_mentor: commentMentor,
+      }, {
+        headers: {
+          
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    
+      console.log(response.data);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error.response ? error.response.data : error.message);
     }
   };
 

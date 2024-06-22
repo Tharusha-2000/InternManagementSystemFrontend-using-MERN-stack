@@ -191,7 +191,7 @@ function EvaluationFormAdminFu({
       </Container><br></br> <br></br>
 
       <Container maxWidth="md">
-        <Accordion sx={{ backgroundColor: '#D3D3D3' }}>
+      <Accordion sx={{ background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
@@ -219,7 +219,7 @@ function EvaluationFormAdminFu({
         </Accordion>
         <br></br>
         <br></br>
-        <Accordion sx={{ backgroundColor: '#D3D3D3' }}>
+<Accordion sx={{ background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel2a-content"

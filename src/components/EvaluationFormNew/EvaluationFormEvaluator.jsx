@@ -75,21 +75,12 @@ if (coreValuesRatings.some(rating => rating === 0)) {
     };
   
     try {
-      const response = await fetch(
-        `${BASE_URL}postEvaluatorResultById/${internId}`, // Ensure internId is part of the URL
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json", // Specify the content type do not remove
-            "Authorization": `Bearer ${token}`, // Authorization header
-          },
-          body: JSON.stringify(data), // Send the data as a JSON string
-        }
-      );
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      const response = await axios.post(`${BASE_URL}postEvaluatorResultById/${internId}`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      });
   
       handleClose();
     } catch (error) {

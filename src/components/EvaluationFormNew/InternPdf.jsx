@@ -12,6 +12,7 @@ import {
   Button,
   Box,
   Typography,
+  Paper,
 } from "@mui/material";
 
 
@@ -128,8 +129,11 @@ useEffect(() => {
     ).toFixed(2);
 
     return (
+      
       <div id="pdfContent" style={{ background: "white", padding: "20px" }}>
+        <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
         <h2>Evaluation Summary</h2>
+       
         <div
           className="a4Container"
           style={{
@@ -249,6 +253,7 @@ useEffect(() => {
             </h5>
           </div>
         </div>
+        </Paper>
       </div>
     );
   };
