@@ -45,7 +45,7 @@ function EvaluationinternListEvaluator() {
         const decoded = KJUR.jws.JWS.parse(token);
         const userId = decoded.payloadObj.id;
 
-        const response = await axios.get(`${BASE_URL}getInternsByEvaluator/${userId}`, {
+        const response = await axios.get(`${BASE_URL}getInternsByEvaluator`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

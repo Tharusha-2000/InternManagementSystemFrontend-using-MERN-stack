@@ -85,14 +85,17 @@ if (!passwordRegex.test(values.Newpassword)) {
 
       .then((result) => {
         if (result.data) {
-          window.alert(result.data.msg);
-          console.log(result.data.msg);
-      setValues({ Newpassword: "", Oldpassword: "", Confirmpassword: "" }); // Reset the state here
+          Swal.fire({ position: "top", text: result.data.msg
+          ,customClass: {container: 'my-swal',
+          confirmButton: 'my-swal-button'} });
+          setValues({ Newpassword: "", Oldpassword: "", Confirmpassword: "" }); // Reset the state here
         }
       })
       .catch((err) => {
         if (err.response) {
-          window.alert(err.response.data.msg);
+          Swal.fire({ position: "top", text: err.response.data.msg
+          ,customClass: {container: 'my-swal',
+          confirmButton: 'my-swal-button'} })
         }
       });
   };

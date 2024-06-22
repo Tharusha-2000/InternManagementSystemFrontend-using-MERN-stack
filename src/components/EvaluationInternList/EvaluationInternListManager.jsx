@@ -205,22 +205,12 @@ function EvaluationInternListManager() {
                     <Typography>
                       {user.evaluationFormDetails.evaluator}
                     </Typography>
-                    {/* <Typography
-                      variant="secondary"
-                      sx={{ color: "rgba(0, 0, 0, 0.5)" }} // Adjust the opacity as needed
-                    >
-                      {user.evaluatorDetails.jobtitle}
-                    </Typography> */}
+               
                   </Box>
                 </TableCell>
                 <TableCell>
                   <Typography>{user.mentor}</Typography>
-                  {/* <Typography
-                    variant="secondary"
-                    sx={{ color: "rgba(0, 0, 0, 0.5)" }} // Adjust the opacity as needed
-                  >
-                    {user.mentorDetails.jobtitle}
-                  </Typography> */}
+           
                 </TableCell>
 
                 <TableCell>
@@ -245,7 +235,7 @@ function EvaluationInternListManager() {
                         },
                       }}
                     >
-                      <ManageAccountsIcon />
+                      <AssignmentIndIcon />
                     </Button>
                   </div>
                 </TableCell>

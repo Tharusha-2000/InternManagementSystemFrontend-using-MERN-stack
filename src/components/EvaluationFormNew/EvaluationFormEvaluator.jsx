@@ -12,7 +12,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import EvaluationFormTableTemp from "./EvaluationFormTableTemp";
 import { BASE_URL } from '../../config';
 import Swal from "sweetalert2";
-import axios from 'axios';
+
 
 function EvaluationFormEvaluator({ internId, internName, jobPerformanceCriteriasEvaluator, coreValuesCriteriasEvaluator, handleClose, setRefreshKey, isEvaluated,...props}) {
   const [ratings, setRatings] = useState([]);
@@ -75,20 +75,12 @@ if (coreValuesRatings.some(rating => rating === 0)) {
     };
   
     try {
-      const response = await axios.post(
-        `${BASE_URL}postEvaluatorResultById/${internId}`, // Ensure internId is part of the URL
-        data, // Send the data as a JSON object
-        {
-          headers: {
-            "Content-Type": "application/json", // Specify the content type do not remove
-            "Authorization": `Bearer ${token}`, // Authorization header
-          }
-        }
-      );
-      
-      if (response.status !== 200) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      const response = await axios.post(`${BASE_URL}postEvaluatorResultById/${internId}`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      });
   
       handleClose();
     } catch (error) {

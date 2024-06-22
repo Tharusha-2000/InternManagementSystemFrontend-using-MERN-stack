@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Container,
@@ -6,12 +6,13 @@ import {
   InputLabel,
   TextField,
   Button,
-  TableContainer,
-  Paper,
+  Tooltip,
 } from "@mui/material";
 import EvaluationFormTableTemp from "./EvaluationFormTableTemp";
-import { BASE_URL } from '../../config';
-import Swal from 'sweetalert2'; 
+import { BASE_URL } from "../../config";
+import Swal from "sweetalert2";
+import InfoIcon from "@mui/icons-material/Info";
+import axios from "axios";
 
 function EvaluationFormMentor({
   internId,
@@ -21,6 +22,7 @@ function EvaluationFormMentor({
   handleClose,
   setRefreshKey,
   refreshKey,
+  isMentorFormFilled,
 }) {
   const [actionTakenMentor, setActionTakenMentor] = useState("");
   const [commentMentor, setCommentMentor] = useState("");
@@ -30,11 +32,10 @@ function EvaluationFormMentor({
   const [coreValuesRatings, setCoreValuesRatings] = useState(
     Array(coreValuesCriteriasMentor.length).fill(0)
   );
+
   const [overallPerformanceRating, setOverallPerformanceRating] = useState(0);
 
-  const handleOverallPerformanceRadioChange = (rating) => {
-    setOverallPerformanceRating(Number(rating));
-  };
+
   const token = localStorage.getItem("token");
   // ...
 
@@ -45,26 +46,22 @@ function EvaluationFormMentor({
 
     handleClose();
     try {
-      const response = await axios.post(
-        `${BASE_URL}storeMentorScores/${internId}`, 
-        {
-          coreValuesScoresMentor: coreValuesRatings.map((rating) => rating * 20),
-          jobPerformanceScoresMentor: ratings.map((rating) => rating * 20),
-          overall_performance_mentor: overallPerformanceRating * 20,
-          action_taken_mentor: actionTakenMentor,
-          comment_mentor: commentMentor,
+      const response = await axios.post(`${BASE_URL}storeMentorScores/${internId}`, {
+        coreValuesScoresMentor: coreValuesRatings.map((rating) => rating * 20),
+        jobPerformanceScoresMentor: ratings.map((rating) => rating * 20),
+        overall_performance_mentor: overallPerformanceRating,
+        action_taken_mentor: actionTakenMentor,
+        comment_mentor: commentMentor,
+      }, {
+        headers: {
+          
+          Authorization: `Bearer ${token}`,
         },
-        {
-          headers: {
-            "Authorization": `Bearer ${token}`
-          }
-        }
-      );
-
-      const data = await response.json();
-      console.log(data);
+      });
+    
+      console.log(response.data);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error.response ? error.response.data : error.message);
     }
   };
 
@@ -92,19 +89,81 @@ function EvaluationFormMentor({
     }
 
     if (errors.length > 0) {
-      Swal.fire({ position: "top",
-        title: 'Validation Error',
+      Swal.fire({
+        position: "top",
+        title: "Validation Error",
         html: errors.join("<br>"),
         customClass: {
-          container: 'my-swal',
-          confirmButton: 'my-swal-button' 
-        }
-     })
+          container: "my-swal",
+          confirmButton: "my-swal-button",
+        },
+      });
       return false;
     }
 
     return true;
   };
+  useEffect(() => {
+    // Calculate the mean score for both Job Performance and Core Values criteria
+    const calculateMeanScores = () => {
+      const jobPerformanceMean =
+        ratings.reduce((acc, curr) => acc + curr, 0) / ratings.length;
+      const coreValuesMean =
+        coreValuesRatings.reduce((acc, curr) => acc + curr, 0) /
+        coreValuesRatings.length;
+      
+      return ((jobPerformanceMean + coreValuesMean) / 2) * 20; // Calculate the mean of both means, then convert to a percentage 
+    };
+
+  
+    const overallPerformanceMeanPercentage = calculateMeanScores();
+    setOverallPerformanceRating(overallPerformanceMeanPercentage);
+  }, [ratings, coreValuesRatings]); // Dependencies array, useEffect runs when these values change
+
+  //view form data codes
+  const [isEvaluated, setIsEvaluated] = useState(false); // Initialize isEvaluated state
+
+
+  const [jobPerformanceScoresMentor, setJobPerformanceScoresMentor] = useState(
+    []
+  );
+  const [coreValuesScoresMentor, setCoreValuesScoresMentor] = useState([]);
+
+  
+
+  useEffect(() => {
+    const fetchEvaluationData = async () => {
+      if (isMentorFormFilled) {
+        try {
+          const response = await axios.get(
+            `${BASE_URL}getReviewDetailsById/${internId}`, 
+            {
+              headers: {
+                "Authorization": `Bearer ${token}`
+              }
+            }
+          );
+      
+          const data = response.data;
+          
+          setJobPerformanceScoresMentor(
+            data.job_performance_scores_mentor.map((score) => score / 20)
+          );
+          setCoreValuesScoresMentor(
+            data.core_values_scores_mentor.map((score) => score / 20)
+          );
+          setOverallPerformanceRating(data.overall_performance_mentor);
+          setCommentMentor(data.comment_mentor);
+          setActionTakenMentor(data.action_taken_mentor);
+        } catch (error) {
+          console.error("Fetching evaluation data failed:", error);
+         
+        }
+      }
+    };
+
+    fetchEvaluationData();
+  }, [isEvaluated, isMentorFormFilled, internId, token]); 
 
   return (
     <div>
@@ -139,12 +198,12 @@ function EvaluationFormMentor({
           Rating Scale
         </Typography>
         <Box display="flex" justifyContent="space-between" width="100%">
-          <Typography variant="body1">5 – outstanding</Typography>
-          <Typography variant="body1">4 – exceeds expectations</Typography>
-          <Typography variant="body1">3 – meets expectations</Typography>
-          <Typography variant="body1">2 – needs improvement</Typography>
-          <Typography variant="body1">1 – unacceptable</Typography>
-        </Box>
+  <Typography variant="body1" sx={{ mr: 2 }}>5 – outstanding</Typography>
+  <Typography variant="body1" sx={{ mr: 2 }}>4 – exceeds expectations</Typography>
+  <Typography variant="body1" sx={{ mr: 2 }}>3 – meets expectations</Typography>
+  <Typography variant="body1" sx={{ mr: 2 }}>2 – needs improvement</Typography>
+  <Typography variant="body1">1 – unacceptable</Typography>
+</Box>
 
         <br></br>
       </Container>
@@ -163,10 +222,11 @@ function EvaluationFormMentor({
         <EvaluationFormTableTemp
           criterias={jobPerformanceCriteriasMentor}
           onRatingsChange={setRatings}
+          ratings={jobPerformanceScoresMentor} 
+          isEvaluated={isMentorFormFilled}
         />
 
         <br></br>
-        {/*---------------------------table 4 start*/}
       </Container>
 
       <Container maxWidth="md">
@@ -181,6 +241,8 @@ function EvaluationFormMentor({
         <EvaluationFormTableTemp
           criterias={coreValuesCriteriasMentor}
           onRatingsChange={setCoreValuesRatings}
+          isEvaluated={isMentorFormFilled}
+          ratings={coreValuesScoresMentor}
         />
       </Container>
 
@@ -195,13 +257,31 @@ function EvaluationFormMentor({
           Overall Performance mentor
         </Typography>
         <br></br>
-        <TableContainer component={Paper}>
-          <EvaluationFormTableTemp
-            criterias={["Overall performance"]}
-            onRatingsChange={handleOverallPerformanceRadioChange}
-          />
-        </TableContainer>
+        {/* Display the calculated mean score for overall performance */}
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ margin: "20px 0" }}
+        >
+          <Typography variant="h5" component="h2">
+            Mean Score:
+          </Typography>
+          <Box display="flex" alignItems="center">
+            <Typography
+              variant="h4"
+              color="primary"
+              sx={{ marginRight: "8px" }}
+            >
+              {overallPerformanceRating.toFixed(2)}%
+            </Typography>
+            <Tooltip title="This is the average score based on job performance and core values ratings.">
+              <InfoIcon color="action" />
+            </Tooltip>
+          </Box>
+        </Box>
       </Container>
+      <br></br>
 
       <Container maxWidth="md">
         <Typography
@@ -239,6 +319,7 @@ function EvaluationFormMentor({
             sx={{ width: "700px" }}
             value={actionTakenMentor}
             onChange={(e) => setActionTakenMentor(e.target.value)}
+            disabled={isMentorFormFilled} // Disable this field if isMentorFormFilled is true
           />
         </Box>
       </Container>
@@ -267,6 +348,7 @@ function EvaluationFormMentor({
             sx={{ width: "700px" }}
             value={commentMentor}
             onChange={(e) => setCommentMentor(e.target.value)}
+            disabled={isMentorFormFilled} 
           />
         </Box>
       </Container>
@@ -279,21 +361,63 @@ function EvaluationFormMentor({
           justifyContent="flex-end"
           style={{ marginTop: "20px" }}
         >
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ marginLeft: "20px" }}
+          <div
             onClick={() => {
-              onSave();
-              setRefreshKey(refreshKey + 1); // Corrected here
+              if (isEvaluated) {
+                Swal.fire({
+                  position: "top",
+                  text: "Cannot save, Evaluation has already been completed.", // Corrected the text property
+                  icon: "error", 
+                  customClass: {
+                    container: "my-swal",
+                    confirmButton: "my-swal-button",
+                  },
+                });
+              }
+            }}
+            style={{
+              display: "inline-block",
+              cursor: isEvaluated ? "not-allowed" : "pointer",
             }}
           >
-            Save
-          </Button>
+            <div
+              onClick={() => {
+                if (isMentorFormFilled) {
+                  Swal.fire({
+                    position: "top",
+                    text: "Cannot save, Evaluation has already been completed.",
+                    icon: "error",
+                    customClass: {
+                      container: "my-swal",
+                      confirmButton: "my-swal-button",
+                    },
+                  });
+                }
+              }}
+              style={{
+                display: "inline-block",
+                cursor: isMentorFormFilled ? "not-allowed" : "pointer",
+              }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ marginLeft: "20px" }}
+                onClick={onSave}
+                disabled={isMentorFormFilled} // This button is now inside the div which has the onClick event
+              >
+                Save
+              </Button>
+            </div>
+          </div>
           <Button
-            variant="contained"
-            color="secondary"
-            style={{ marginLeft: "20px" }}
+           variant="outlined"
+           style={{
+             margin: "8px",
+             borderColor: "blue",
+             width: "100px",
+             height: "40px",
+           }}
             onClick={handleClose} // Call the handleClose function when the cancel button is clicked
           >
             Cancel

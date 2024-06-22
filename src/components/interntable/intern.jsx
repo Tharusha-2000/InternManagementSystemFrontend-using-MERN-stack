@@ -215,21 +215,26 @@ function interndetails({ internId }) {
 
   return (
     <div>
-      <Button
-        onClick={() => handleClickOpen(internId)}
+     <Button
+          onClick={() => handleClickOpen(internId)}
         variant="contained"
-        size="small"
-        style={{ marginRight: "10px",color:"royalblue" }}
         sx={{
-          border: '1px solid rgb(46, 51, 181)',
-          color: 'rgb(46, 51, 181)', 
-          backgroundColor: 'rgba(42, 45, 141, 0.438)', 
-          '&:hover': {
-            backgroundColor: '#0056b3',
-            color: '#fff', 
+          border: "1px solid rgb(46, 51, 181)",
+          color: "rgb(46, 51, 181)",
+          backgroundColor: "rgba(42, 45, 141, 0.438)",
+          padding: "0px 13px",
+          fontSize: "0.875rem",
+          minWidth: "auto",
+          "&:hover": {
+            backgroundColor: "#0056b3",
+            color: "#fff",
           },
+          '& .MuiSvgIcon-root': {
+            fontSize: '1.5rem', // Adjust icon size if necessary
+          }
         }}
-      > 
+      >
+
       
         <AccountCircleIcon />
       </Button>

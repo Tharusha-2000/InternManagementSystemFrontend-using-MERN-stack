@@ -109,21 +109,24 @@ function internTaskTable({ internId }) {
   // Render component
   return (
   <div>
-    
-     <IconButton
-       
-        size="large"
-        color="primary"
-        style={{ marginRight: "10px",color:"royalblue" }}
+   
+      <IconButton
         onClick={() => handleClickOpen()}
+        variant="contained"
         sx={{
-          border: '1px solid rgb(46, 51, 181)',
-          color: 'rgb(46, 51, 181)', 
-          backgroundColor: 'rgba(42, 45, 141, 0.438)', 
-          '&:hover': {
-            backgroundColor: '#0056b3',
-            color: '#fff', 
+          border: "1px solid rgb(46, 51, 181)",
+          color: "rgb(46, 51, 181)",
+          backgroundColor: "rgba(42, 45, 141, 0.438)",
+          padding: "0px 13px",
+          fontSize: "0.875rem",
+          minWidth: "auto",
+          "&:hover": {
+            backgroundColor: "#0056b3",
+            color: "#fff",
           },
+          '& .MuiSvgIcon-root': {
+            fontSize: '1.5rem', // Adjust icon size if necessary
+          }
         }}
       >
         <TaskIcon />

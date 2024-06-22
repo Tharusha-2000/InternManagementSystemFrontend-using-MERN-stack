@@ -175,14 +175,16 @@ const handleClearSearch = () => {
                   fontSize: "1.2em",
                   backgroundColor: "rgba(0, 0, 102, 0.8)", 
                   color: "#fff",
+                 
                 }}>Email</TableCell>
           <TableCell  sx={{
                   fontWeight: "bold",
                   fontSize: "1.2em",
                   backgroundColor: "rgba(0, 0, 102, 0.8)", 
                   color: "#fff",
+                  paddingLeft: "70px", 
                 }} >Details</TableCell>
-        
+          
       </TableRow>
    
           </TableHead>
@@ -206,33 +208,33 @@ const handleClearSearch = () => {
                 <TableCell sx={{ fontSize: "1em" }}>{intern.email}</TableCell>
                 <TableCell >
                  <Box display="flex" alignItems="center">
-                 <Box>
+                 <Box style={{ marginRight: '10px' }}>
                    <Typography>
                       { role !== 'admin' && <Interndetails internId={intern._id} />}
                     </Typography>
                     {role !== 'admin' && (
-                    <Typography color="textSecondary" style={{ fontSize: '0.7rem' }}>
+                    <Typography color="textSecondary" style={{ fontSize: '0.7rem',marginLeft: '10px' }}>
                         Profile
                     </Typography>
                      )}
                     </Box>
                   
-                   <Box>
+                   <Box style={{ marginRight: '10px' }}>
                    <Typography>
                     <ProjectTask  internId={intern._id}/>
                     </Typography>
-                    <Typography color="textSecondary" style={{ fontSize: '0.7rem' }}>
+                    <Typography color="textSecondary" style={{ fontSize: '0.7rem' ,marginLeft: '10px'}}>
                         Tasks
                     </Typography>
                     </Box>
 
-                    <Box>
+                    <Box style={{ marginRight: '10px' }}>
                       
                    <Typography>
                    { role !== 'admin' && < ViewCVfiles internId={intern._id} />}
                     </Typography>
                     {role !== 'admin' && (
-                        <Typography color="textSecondary" style={{ fontSize: '0.7rem' }}>
+                        <Typography color="textSecondary" style={{ fontSize: '0.7rem',marginLeft: '15px' }}>
                           CV
                        </Typography>
                       )}
