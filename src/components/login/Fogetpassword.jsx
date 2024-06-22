@@ -58,7 +58,7 @@ function Fogetpassword() {
                    // window.alert(err.response.data.msg);
 
                       .then(() => {
-                         navigate('/');
+                         navigate('/Login');
                     
                   });
   

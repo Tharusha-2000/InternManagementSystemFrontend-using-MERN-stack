@@ -17,7 +17,7 @@ import Profile from './components/common/Profile.jsx'
 
 import AdminDashboard from './Pages/admin_page/AdminDashboard';
 import Registration from './Pages/admin_page/Registration';
-import CVupload from './Pages/admin_page/CVupload.jsx';
+//import CVupload from './Pages/admin_page/CVupload.jsx';
 import Evaluation from './Pages/admin_page/Evaluation';
 import ProfileCreate from './Pages/admin_page/ProfileCreate';
 import ShowTask from './Pages/admin_page/ShowTask.jsx';
@@ -55,8 +55,6 @@ import InternProjectTask from './Pages/intern_page/InternProjectTask';
 import ManagerDashboard from './Pages/manager_page/ManagerDashboard';
 import ManagerEvaluation from './Pages/manager_page/ManagerEvaluation';
 import ManagerViewInternDetails  from './Pages/manager_page/ManagerViewInternDetails.jsx';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 
 function App() {
   const [user,setUsers] = useState();  
@@ -97,7 +95,9 @@ function App() {
 
             <Route path="/AdminDashboard" element={<AdminDashboard/>}></Route>
             <Route path="/registration" element={<Registration />}></Route>
+
              <Route path="/cvupload" element={<CVupload/>}></Route> 
+
             <Route path="/evaluation" element={<Evaluation />}></Route>
             
             <Route path="/profilecreate" element={<ProfileCreate />}></Route>

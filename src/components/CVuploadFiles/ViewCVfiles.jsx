@@ -1,101 +1,86 @@
-import * as React from 'react';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
-//import app from './firebase-config';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
-export default function ViewCvfile({ open, handleClose, userId }) {
-  const [cvFiles, setCvFiles] = useState([]);
-  
+import { Dialog, DialogTitle, DialogContent, DialogActions,Typography } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { BASE_URL } from '../../config';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import Button from "@mui/joy/Button";
+const ViewCvfiles = ({ internId}) => {
+  const [cvUrl, setCvUrl] = useState(null);
+  const [open, setOpen] = useState(false);
+  const token = localStorage.getItem("token");
   useEffect(() => {
-    const fetchCvFiles = async () => {
-      if (userId) {
-        try {
-          const response = await axios.get(`http://localhost:8000/api/users/${userId}/cvfiles`);
-          // Ensure response.data is an object and convert it to an array
-          const data = response.data ? [response.data] : [];
-          setCvFiles(data);
-        } catch (error) {
-          console.error('Failed to fetch CV files:', error);
-        }
-      }
-    };
-  
-    fetchCvFiles();
-  }, [userId]);
-
-/*
-  const viewFile = async (filePath) => {
-    try {
-      const storage = getStorage(app);
-      const fileRef = ref(storage, filePath);
-      const downloadUrl = await getDownloadURL(fileRef);
-      // Open the download URL in a new tab
-      window.open(downloadUrl, '_blank');
-    } catch (error) {
-      console.error('Failed to fetch download URL:', error);
+    if (open) {
+     
+      axios
+        .get(`${BASE_URL}interns/${internId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((result) => {
+           setCvUrl(result.data.intern.cvUrl);
+        
+        })
+        .catch((err) => console.log(err));
     }
+  }, [open]);
+
+  const handleClickOpen = () => {
+    setOpen(true);
   };
-*/
 
-const viewFile = async (filePath) => {
-  try {
-    if (!filePath) {
-      console.error('File path is empty');
-      return;
-    }
-    const storage = getStorage(app);
-    const fileRef = ref(storage, filePath);
-    const downloadUrl = await getDownloadURL(fileRef);
-    // Open the download URL in a new tab
-    window.open(downloadUrl, '_blank');
-  } catch (error) {
-    console.error('Failed to fetch download URL:', error);
-  }
-};
+  const handleClose = () => {
+    setOpen(false);
+  };
+  // console.log(cvUrl);
 
   return (
-    <React.Fragment>
-       <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{"Here are the CV file available for viewing:"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-          The File will open in a new tab, 
-          allowing you to view the curriculum vitea of intern without leaving the your current page.
-          
-        {cvFiles.map((cvFile) => (
-          <div key={cvFile.fileName}>
-            <h2>{cvFile.fileName}</h2>
-            <Button variant="contained" onClick={() => viewFile(cvFile.filePath)}>
-          View File
+    <>
+                              <Button 
+                              onClick={() => handleClickOpen(internId)}
+                            variant="contained"
+                            sx={{
+                              border: "1px solid rgb(46, 51, 181)",
+                              color: "rgb(46, 51, 181)",
+                              backgroundColor: "rgba(42, 45, 141, 0.438)",
+                              padding: "0px 13px",
+                              fontSize: "0.875rem",
+                              minWidth: "auto",
+                              "&:hover": {
+                                backgroundColor: "#0056b3",
+                                color: "#fff",
+                              },
+                              '& .MuiSvgIcon-root': {
+                                fontSize: '1.5rem', // Adjust icon size if necessary
+                              }
+                            }}
+                          >
+                          
+                            <FileCopyIcon/>
+                          </Button>
+
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+
+      <DialogTitle>View CV</DialogTitle>
+      <DialogContent>
+          {cvUrl ? (
+            <iframe src={cvUrl} width="100%" height="700px"></iframe>
+          ) : (
+            <Typography variant="h6" color="text.secondary">
+              CV is pending...             
+            </Typography>
+          )}
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={handleClose} color="primary">
+          Close
         </Button>
-          </div>
-        ))}
-        </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Back to the Page</Button>
-        </DialogActions>
-       
-      </Dialog>
-    </React.Fragment>
+    </DialogActions>
+    </Dialog>
+    </>
   );
-}
+};
+
+export default ViewCvfiles;

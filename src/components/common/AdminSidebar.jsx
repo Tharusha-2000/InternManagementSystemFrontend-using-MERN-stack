@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { BASE_URL } from '../../config';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -27,6 +29,8 @@ import { useAppStore } from './appStore';
 import { useLocation } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
 
 const drawerWidth = 240;
 
@@ -80,7 +84,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Sidebar() {
-
+  const [data, setData] = useState("");
   const theme = useTheme();
   const navigate = useNavigate();
   const open = useAppStore((state) => state.dopen);
@@ -91,7 +95,20 @@ export default function Sidebar() {
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role;
 
-
+  if (userRole !== 'admin') {
+    Swal.fire({
+      text: 'You do not have permission to access this function.',
+      icon: 'error',
+      width: '400px',
+      customClass: {
+        container: 'my-swal',
+        confirmButton: 'my-swal-button' 
+      }
+    });
+   
+    return null; // Do not render the component
+  }
+ console.log(data.role);
   useEffect(() => {
     const currentPath = location.pathname;
     
@@ -114,27 +131,35 @@ export default function Sidebar() {
     }
   }, [location]);
 
-  if (userRole !== 'admin') {
-    Swal.fire({
-      text: 'You do not have permission to access this function.',
-      icon: 'error',
-      width: '400px',
-      customClass: {
-        container: 'my-swal',
-        confirmButton: 'my-swal-button' 
-      }
-    });
-   
-    return null; // Do not render the component
-  }
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    axios.get(`${BASE_URL}user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((result) => {
+      setData(result.data.user);
+    })
+    .catch((err) => console.log(err));
+  }, []);
+
+
+
   
+ 
 
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <Box height={30} />
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open} 
+          sx={{
+        '& .MuiDrawer-paper': {
+          backgroundColor: '#3949ab', 
+        },
+      }}>
         <DrawerHeader>
           <IconButton>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
@@ -142,19 +167,50 @@ export default function Sidebar() {
         </DrawerHeader>   
         <Divider />
         <List>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 2, marginBottom: 3 }}>
+            <Box
+              sx={{
+                position: 'relative',
+                display: 'inline-block',
+                borderRadius: '50%',
+                padding: '5px',
+                background: 'linear-gradient(to right, #00C8FF, #8A2BE2)'
+
+              }}
+            >
+              <Avatar 
+                src={data.imageUrl} 
+                sx={{ 
+                  width: open ? 100 : 45, 
+                  height: open ? 100 : 45, 
+                }} 
+              />
+            </Box>
+            {open && (
+              <>
+                <Typography variant="h6" sx={{ marginTop: 1, fontWeight: 'bold', color: "lightcyan" }}>
+                  {data.fname} {data.lname}
+                </Typography>
+                <Typography variant="body2" sx={{ color: "lightblue" }}>
+                  {data.jobtitle}
+                </Typography>
+              </>
+            )}
+          </Box>
             <ListItem disablePadding sx={{ display: 'block' }} onClick={() => { setSelected("Dashboard"); navigate("/AdminDashboard"); }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  borderRadius: '18px',
-                  padding: 1.5,
-                  border: '5px solid white',
-                  backgroundColor: selected === "Dashboard" ? 'lightblue' : 'inherit',
+                  borderRadius: '1px',
+                  padding: 1.2,
+                  color: 'silver',
+                  border: '5px solid #3949ab',
+                  backgroundColor: selected === "Dashboard" ? 'rgba(100, 149, 237, 0.5)' : 'inherit',
                   '&:hover': {
-                    backgroundColor: 'lightblue',
-                    borderRadius: '18px',
+                    backgroundColor: 'royalblue',
+                    borderRadius: '1px',
                   },
                 }}
               >
@@ -165,7 +221,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <DashboardOutlinedIcon sx={{ color: indigo[900] }} /> 
+                  <DashboardOutlinedIcon sx={{ color: 'white' }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -178,13 +234,14 @@ export default function Sidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  borderRadius: '18px',
-                  padding: 1.5,
-                  border: '5px solid white',
-                  backgroundColor: selected === "Registration" ? 'lightblue' : 'inherit',
+                  borderRadius: '1px',
+                  padding: 1.2,
+                  color: 'silver',
+                  border: '5px solid #3949ab',
+                  backgroundColor: selected === "Registration" ? 'royalblue' : 'inherit',
                   '&:hover': {
-                    backgroundColor: 'lightblue',
-                    borderRadius: '18px',
+                    backgroundColor: 'rgba(100, 149, 237, 0.5)',
+                    borderRadius: '1px',
                   },
                 }}
               >
@@ -195,7 +252,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <HowToRegOutlinedIcon sx={{ color: indigo[900] }} /> 
+                  <HowToRegOutlinedIcon sx={{ color: 'white' }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Registration" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -207,13 +264,14 @@ export default function Sidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  borderRadius: '18px',
-                  padding: 1.5,
-                  border: '5px solid white',
-                  backgroundColor: selected === "Evaluation" ? 'lightblue' : 'inherit',
+                  borderRadius: '1px',
+                  padding: 1.2,
+                  color: 'silver',
+                  border: '5px solid #3949ab',
+                  backgroundColor: selected === "Evaluation" ? 'royalblue' : 'inherit',
                   '&:hover': {
-                    backgroundColor: 'lightblue',
-                    borderRadius: '18px',
+                    backgroundColor: 'rgba(100, 149, 237, 0.5)',
+                    borderRadius: '1px',
                   },
                 }}
               >
@@ -224,7 +282,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <FactCheckOutlinedIcon sx={{ color: indigo[900] }} /> 
+                  <FactCheckOutlinedIcon sx={{ color: "white" }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Evaluation" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -236,13 +294,14 @@ export default function Sidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  borderRadius: '18px',
-                  padding: 1.5,
-                  border: '5px solid white',
-                  backgroundColor: selected === "Profile Create" ? 'lightblue' : 'inherit', 
+                  borderRadius: '1px',
+                  padding: 1.2,
+                  color: 'silver',
+                  border: '5px solid #3949ab',
+                  backgroundColor: selected === "Profile Create" ? 'royalblue' : 'inherit', 
                   '&:hover': {
-                    backgroundColor: 'lightblue', 
-                    borderRadius: '18px',
+                    backgroundColor: 'rgba(100, 149, 237, 0.5)', 
+                    borderRadius: '1px',
                   },
                 }}
               >
@@ -253,7 +312,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <RecentActorsOutlinedIcon  sx={{ color: indigo[900] }} /> 
+                  <RecentActorsOutlinedIcon  sx={{ color: 'white' }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Profile Create" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -265,13 +324,14 @@ export default function Sidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  borderRadius: '18px',
-                  padding: 1.5,
-                  border: '5px solid white',
-                  backgroundColor: selected === "CV upload" ? 'lightblue' : 'inherit', 
+                  borderRadius: '1px',
+                  padding: 1.2,
+                  color: 'silver',
+                  border: '5px solid #3949ab',
+                  backgroundColor: selected === "CV upload" ? 'royalblue' : 'inherit', 
                   '&:hover': {
-                    backgroundColor: 'lightblue', 
-                    borderRadius: '18px',
+                    backgroundColor: 'rgba(100, 149, 237, 0.5)', 
+                    borderRadius: '1px',
                   },
                 }}
               >
@@ -282,7 +342,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <PostAddOutlinedIcon sx={{ color: indigo[900] }} /> 
+                  <PostAddOutlinedIcon sx={{ color: 'white' }} /> 
                 </ListItemIcon>
                 <ListItemText primary="CV upload" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -294,13 +354,14 @@ export default function Sidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  borderRadius: '18px',
-                  padding: 1.5,
-                  border: '5px solid white',
-                  backgroundColor: selected === "Profile" ? 'lightblue' : 'inherit', 
+                  borderRadius: '1px',
+                  padding: 1.2,
+                  color: 'silver',
+                  border: '5px solid #3949ab',
+                  backgroundColor: selected === "Profile" ? 'royalblue' : 'inherit', 
                   '&:hover': {
-                    backgroundColor: 'lightblue', 
-                    borderRadius: '18px',
+                    backgroundColor: 'rgba(100, 149, 237, 0.5)', 
+                    borderRadius: '1px',
                   },
                 }}
               >
@@ -311,7 +372,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <PermContactCalendarOutlinedIcon sx={{ color: indigo[900] }} /> 
+                  <PermContactCalendarOutlinedIcon sx={{ color: 'white' }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -324,13 +385,14 @@ export default function Sidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  borderRadius: '18px',
-                  padding: 1.5,
-                  border: '5px solid white',
-                  backgroundColor: selected === "View Task" ? 'lightblue' : 'inherit',
+                  borderRadius: '1px',
+                  padding: 1.2,
+                  color: 'silver',
+                  border: '5px solid #3949ab',
+                  backgroundColor: selected === "View Task" ? 'royalblue' : 'inherit',
                   '&:hover': {
-                    backgroundColor: 'lightblue',
-                    borderRadius: '18px',
+                    backgroundColor: 'rgba(100, 149, 237, 0.5)',
+                    borderRadius: '1px',
                   },
                 }}
               >
@@ -341,7 +403,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <TuneIcon sx={{ color: indigo[900] }} /> 
+                  <TuneIcon sx={{ color: 'white' }} /> 
                 </ListItemIcon>
                 <ListItemText primary="View Task" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -353,13 +415,14 @@ export default function Sidebar() {
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
-                  borderRadius: '18px',
-                  padding: 1.5,
-                  border: '5px solid white',
-                  backgroundColor: selected === "Security" ? 'lightblue' : 'inherit', 
+                  borderRadius: '1px',
+                  padding: 1.2,
+                  color: 'silver',
+                  border: '5px solid #3949ab',
+                  backgroundColor: selected === "Security" ? 'royalblue' : 'inherit', 
                   '&:hover': {
-                    backgroundColor: 'lightblue', 
-                    borderRadius: '18px',
+                    backgroundColor: 'rgba(100, 149, 237, 0.5)', 
+                    borderRadius: '1px',
                   },
                 }}
               >
@@ -370,7 +433,7 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  <SettingsApplicationsOutlinedIcon sx={{ color: indigo[900] }} /> 
+                  <SettingsApplicationsOutlinedIcon sx={{ color: 'white' }} /> 
                 </ListItemIcon>
                 <ListItemText primary="Security" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
