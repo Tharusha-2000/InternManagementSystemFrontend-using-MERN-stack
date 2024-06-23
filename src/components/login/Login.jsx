@@ -43,7 +43,7 @@ function Login() {
       setLoading(true); 
    
     
-      axios.post(`${BASE_URL}/login`, values)
+      axios.post(`${BASE_URL}login`, values)
         .then(result => {
         
           if(result.data) {
