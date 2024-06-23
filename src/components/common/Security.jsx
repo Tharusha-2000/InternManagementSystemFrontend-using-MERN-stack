@@ -17,7 +17,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { BASE_URL } from '../../config';
-
+import Swal from "sweetalert2";
 const defaultTheme = createTheme();
 
 export default function Security() {
