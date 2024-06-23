@@ -12,7 +12,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import EvaluationFormTableTemp from "./EvaluationFormTableTemp";
 import { BASE_URL } from '../../config';
 import Swal from "sweetalert2";
-
+import axios from 'axios'; 
 
 function EvaluationFormEvaluator({ internId, internName, jobPerformanceCriteriasEvaluator, coreValuesCriteriasEvaluator, handleClose, setRefreshKey, isEvaluated,...props}) {
   const [ratings, setRatings] = useState([]);
