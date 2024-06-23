@@ -1,20 +1,43 @@
-import React, { useState } from 'react';
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Radio, Typography } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import {
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
+  Radio,
+  Typography,
+} from "@mui/material";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
-const EvaluationFormTableTemp = ({ criterias, onRatingsChange }) => {
-  const [ratings, setRatings] = useState(Array(criterias.length).fill(0));
+const EvaluationFormTableTemp = ({
+  criterias,
+  onRatingsChange,
+  isEvaluated,
+  ratings,
+}) => {
+  const [internalRatings, setInternalRatings] = useState(
+    isEvaluated ? ratings : Array(criterias.length).fill(0)
+  );
+
+  // Update internalRatings whenever ratings or isEvaluated changes
+  useEffect(() => {
+    setInternalRatings(isEvaluated ? ratings : Array(criterias.length).fill(0));
+  }, [ratings, isEvaluated, criterias.length]);
 
   const handleRadioChange = (event, index) => {
-    const newRatings = [...ratings];
-    newRatings[index] = Number(event.target.value);
-    setRatings(newRatings);
+    if (!isEvaluated) {
+      const newRatings = [...internalRatings];
+      newRatings[index] = Number(event.target.value);
+      setInternalRatings(newRatings);
 
-    // If there's only one criterion, call onRatingsChange with the single rating value
-    if (criterias.length === 1) {
-      onRatingsChange(newRatings[0]);
-    } else {
-      // Otherwise, call onRatingsChange with the array of ratings
-      onRatingsChange(newRatings);
+      if (criterias.length === 1) {
+        onRatingsChange(newRatings[0]);
+      } else {
+        onRatingsChange(newRatings);
+      }
     }
   };
 
@@ -24,7 +47,7 @@ const EvaluationFormTableTemp = ({ criterias, onRatingsChange }) => {
         <TableHead>
           <TableRow>
             <TableCell align="left" colSpan={1}>
-              <Typography variant="h6">criteria</Typography>
+              <Typography variant="h6">Criteria</Typography>
             </TableCell>
             {["a", "b", "c", "d", "e"].map((value, num) => (
               <TableCell key={value} align="center">
@@ -44,15 +67,28 @@ const EvaluationFormTableTemp = ({ criterias, onRatingsChange }) => {
               </TableCell>
               {["a", "b", "c", "d", "e"].map((value, num) => (
                 <TableCell key={num} align="center">
-                  <Radio
-                    value={num + 1}
-                    checked={ratings[index] === num + 1}
-                    onChange={(event) => handleRadioChange(event, index)}
-                  />
+                  {isEvaluated ? (
+                    internalRatings[index] === num + 1 ? (
+                      <React.Fragment>
+                        {`${num + 1}`}
+                        <CheckCircleOutlineIcon color="success" />
+                      </React.Fragment>
+                    ) : (
+                      ""
+                    )
+                  ) : (
+                    <Radio
+                      value={num + 1}
+                      checked={internalRatings[index] === num + 1}
+                      onChange={(event) => handleRadioChange(event, index)}
+                    />
+                  )}
                 </TableCell>
               ))}
               <TableCell align="center">
-                {ratings[index] ? ratings[index] * 20 + "%" : ""}
+                {internalRatings[index]
+                  ? internalRatings[index] * 20 + "%"
+                  : ""}
               </TableCell>
             </TableRow>
           ))}
