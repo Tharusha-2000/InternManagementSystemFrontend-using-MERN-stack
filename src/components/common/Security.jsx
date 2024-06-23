@@ -57,7 +57,9 @@ export default function Security() {
     //console.log(values)
     e.preventDefault();
     if (!values.Newpassword || !values.Oldpassword || !values.Confirmpassword) {
-      window.alert("Please fill the required fields");
+          Swal.fire({ position: "top", text: "Please fill the required fields"
+          ,customClass: {container: 'my-swal',
+          confirmButton: 'my-swal-button'} })
       return;
     }
     if (values.Newpassword !== values.Confirmpassword) {
