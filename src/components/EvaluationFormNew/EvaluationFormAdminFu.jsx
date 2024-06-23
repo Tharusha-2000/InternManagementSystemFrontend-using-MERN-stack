@@ -266,4 +266,3 @@ function EvaluationFormAdminFu({
 
 export default EvaluationFormAdminFu;
 
-export default EvaluationFormAdminFu;
