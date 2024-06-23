@@ -27,6 +27,7 @@ import Swal from "sweetalert2";
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 import { MenuItem } from "@mui/material";
+import { jwtDecode } from "jwt-decode";
 
 function interndetails({ internId }) {
   const [open, setOpen] = useState(false);
@@ -47,7 +48,13 @@ function interndetails({ internId }) {
   const [imageUrl, setImageUrl] = useState(null);
   console.log(data);
   const token = localStorage.getItem("token");
+   const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
 
+  if (userRole === 'intern') {
+     return null; // Do not render the component
+   }
+  
 
   useEffect(() => {
     if (open) {
@@ -701,6 +708,7 @@ function interndetails({ internId }) {
                         variant="solid"
                         type="submit"
                         onClick={handleSubmit}
+                        disabled={userRole !== 'admin'}
                       >
                         Save
                       </Button>
