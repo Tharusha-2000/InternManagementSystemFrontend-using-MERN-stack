@@ -42,7 +42,7 @@ function Addusertable({ rows }) {
   const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [deletingId, setDeletingId] = useState(null);
 
   {/* get details in database */}
   const token = localStorage.getItem('token');
@@ -91,6 +91,7 @@ function Addusertable({ rows }) {
 
 
   const handleDelete = (id) => {
+    setDeletingId(id);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -107,7 +108,8 @@ function Addusertable({ rows }) {
           .delete(`${BASE_URL}users/${id}`,{
             headers: {
             Authorization: `Bearer ${token}`,
-        },
+        }
+        
       })
           .then((result) => {
             Swal.fire({ title: "Deleted!",
@@ -116,6 +118,7 @@ function Addusertable({ rows }) {
                         width: '400px',
                      } );
             setFilteredData((prevFilteredData) => prevFilteredData.filter((user) => user._id !== id));
+          
           })
           .catch((err) => {
             console.log(err);
@@ -123,13 +126,22 @@ function Addusertable({ rows }) {
                Swal.fire({ position: "top", text: err.response.data.msg
                           ,customClass: {container: 'my-swal',
                                 confirmButton: 'my-swal-button'} })
+                         
                 // window.alert(err.response.data.msg);
                .then(() => {
                 localStorage.removeItem('token');
                 navigate("/");
                })
             }
-          });
+          }) .finally(() => {
+            // Reset deletingId state here
+            setDeletingId(null);
+          })
+
+        
+      }else {
+        // Reset deletingId state here if the operation was cancelled
+        setDeletingId(null);
       }
 
     });
@@ -352,8 +364,8 @@ return (
                       sx={{
                         border: "1px solid rgb(174, 73, 73)",
                         marginLeft: "10px",
-                        color: "rgb(174, 73, 73)", 
-                        backgroundColor: "rgba(174, 73, 73, 0.314)", 
+                        color: deletingId === user._id ?"#fff" : "rgb(174, 73, 73)", 
+                        backgroundColor: deletingId === user._id ? "#CC0000": "rgba(174, 73, 73, 0.314)", 
                         '&:hover': {
                           backgroundColor: "#CC0000",
                           color: "#fff", 
