@@ -24,6 +24,7 @@ function ChangeRole({ userid,onRoleChange }) {
   const [selectedRole, setSelectedRole] = useState("");
   const [data, setData] = useState([]);
   const [open, openchange] = useState(false);
+  const [changeRoleId, setChangeRoleId] = useState(null);
   const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
@@ -64,14 +65,17 @@ function ChangeRole({ userid,onRoleChange }) {
   {/* handel change role*/}
 
   const functionopenpopup = () => {
+    setChangeRoleId(userid);
     openchange(true);
   };
   const closepopup = () => {
+    setChangeRoleId(null);
     openchange(false);
   };
 
   function handleRoleChange() {
     console.log(selectedRole);
+  
     axios
       .put(`${BASE_URL}users/${userid}`, 
       {role: selectedRole},
@@ -90,7 +94,7 @@ function ChangeRole({ userid,onRoleChange }) {
            onRoleChange(userid, selectedRole);   
            console.log(selectedRole);
            closepopup();
-     
+       
      
       })
       .catch((err) => {
@@ -103,6 +107,7 @@ function ChangeRole({ userid,onRoleChange }) {
        //  window.alert(err.response.data.msg)
         
          .then(() => {
+         
             if ( err.response.status === 403) {
                 localStorage.removeItem('token');
                 navigate("/");
@@ -119,8 +124,8 @@ return (
                   variant="contained"
                   sx={{
                     border: '1px solid rgb(46, 51, 181)',
-                    color: 'rgb(46, 51, 181)', 
-                    backgroundColor: 'rgba(42, 45, 141, 0.438)', 
+                    color: changeRoleId === userid ? '#fff':'rgb(46, 51, 181)', 
+                    backgroundColor: changeRoleId === userid ? '#0056b3':'rgba(42, 45, 141, 0.438)', 
                     '&:hover': {
                       backgroundColor: '#0056b3',
                       color: '#fff', 
