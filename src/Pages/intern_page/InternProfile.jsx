@@ -478,7 +478,7 @@ return (
                             mentor Email
                           </FormLabel>
                           <select
-                            value={selectedMentorEmail} // Set the default value to the mentor email if available
+                            value={data.mentorEmail} 
                             onChange={handleMentorChange}
                             aria-label="Select mentor"
                             style={{
@@ -509,7 +509,7 @@ return (
                           <Input
                             size="sm"
                             placeholder="mentor name"
-                             value={selectedMentorName}
+                             value={data.mentor}
                             readOnly
                             onChange={(e) =>
                               setSelectedMentorName(e.target.value)
