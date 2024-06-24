@@ -142,10 +142,24 @@ function TaskTable() {
       } catch (error) {
         
         if (error.response) {
-          window.alert(error.response.data.msg);
-        } else {
+              Swal.fire({
+                  position: "top",
+                  text: error.response.data.msg,
+                  customClass: {
+                    container: 'my-swal',
+                    confirmButton: 'my-swal-button'
+                  }
+                })
         
-          window.alert('Error', error.message);
+        } else {
+               Swal.fire({
+                  position: "top",
+                  text: error.message,
+                  customClass: {
+                    container: 'my-swal',
+                    confirmButton: 'my-swal-button'
+                  }
+                })
         }
       }
     };
