@@ -32,20 +32,17 @@ import Adduser from "./Adduser";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import CircularProgress from '@mui/material/CircularProgress';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ChangeRole from "./ChangeRole";
+
 
 function Addusertable({ rows }) {
-  //const [DialogIsOpen, setDialogIsOpen] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("");
-  const [selectedUserId, setSelectedUserId] = useState(null);
   const [data, setData] = useState([]);
-  const [open, openchange] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
-
   const [searchTerm, setSearchTerm] = useState("");
+
 
   {/* get details in database */}
   const token = localStorage.getItem('token');
@@ -63,14 +60,18 @@ function Addusertable({ rows }) {
         Authorization: `Bearer ${token}`,
     },
   })
-
+ 
       .then((result) => {
+        const filteredUsers = result.data.users.filter(user => user.role === 'admin');
        // console.log(result.data.users); 
         setFilteredData(result.data.users);
         setData(result.data.users);
         setIsLoading(false);
       })
-      .catch((err) => { console.log(err);
+      .catch((err) => { console.log(err.response.data.msg);
+                        Swal.fire({ position: "top", text:err.response.data.msg
+                        ,customClass: {container: 'my-swal',
+                        confirmButton: 'my-swal-button'} })
                         setIsLoading(false);
                       });
 
@@ -85,72 +86,6 @@ function Addusertable({ rows }) {
    
   }
  
-  {/* handel change role*/}
-
-  const functionopenpopup = (userId) => {
-    setSelectedUserId(userId);
-    openchange(true);
-  };
-  const closepopup = () => {
-    openchange(false);
-  };
-
-  function handleRoleChange() {
-    console.log(selectedRole);
-    if (!selectedRole) {
-      Swal.fire({
-        position: "top",
-        text: "Please select a user",
-        customClass: {
-          container: 'my-swal',
-          confirmButton: 'my-swal-button'
-        }
-      });
-      return; // Exit the function
-    }
-  
-    axios
-      .put(`${BASE_URL}users/${selectedUserId}`, 
-      {role: selectedRole},
-      {headers: {
-         Authorization: `Bearer ${token}` 
-       },
-      },
-       )
-      .then((result) => {
-          const updateData=data.map((user) =>
-            user._id === selectedUserId ? { ...user, role: selectedRole } : user
-          );
-        setData(updateData);
-        setFilteredData(updateData);
-        console.log(result.data.msg);
-        Swal.fire({ position: "top", text:result.data.msg
-          ,customClass: {container: 'my-swal',
-           confirmButton: 'my-swal-button'} })
-        closepopup();
-        setSelectedRole(null);
-     
-      })
-      .catch((err) => {
-        console.log(err);
-        if ( err.response.status ===403 ) {
-          Swal.fire({ position: "top", text:err.response.data.msg
-          ,customClass: {container: 'my-swal',
-          confirmButton: 'my-swal-button'} })
-
-         // window.alert(err.response.data.msg);
-         .then(() => {
-
-
-            localStorage.removeItem('token');
-            navigate("/");
-         });
-
-        }
-               
-      });
-    
-  }
   
   {/* delect user*/}
 
@@ -180,7 +115,7 @@ function Addusertable({ rows }) {
                         icon: "success",
                         width: '400px',
                      } );
-            setFilteredData(data.filter((user) => user._id !== id));
+            setFilteredData((prevFilteredData) => prevFilteredData.filter((user) => user._id !== id));
           })
           .catch((err) => {
             console.log(err);
@@ -243,9 +178,25 @@ const roleStyles = {
     color: '#FFA07A'
   },
   intern: {
-    backgroundColor: 'rgba(240, 230, 140, 0.2)',
-    color: '#FFD700'
+    backgroundColor: 'rgba(113, 176, 224, 0.2)', 
+    color: '#007BFF' 
   }
+};
+
+const handleUserAdded = (newUser) => {
+  setData(prevData => [...prevData, newUser]);
+  setFilteredData(prevData => [...prevData, newUser]);
+ 
+};
+
+const SetRoleChange = (userid, newRole) => {
+  console.log(userid, newRole);
+
+  const updatedData = data.map(user =>
+    user._id === userid ? { ...user, role: newRole } : user
+  );
+  setData(updatedData);
+  setFilteredData(updatedData);
 };
 
 
@@ -305,7 +256,7 @@ return (
         </Paper>
         <Box sx={{ marginRight: "12%" }}>
        
-        <Adduser />
+           <Adduser onUserAdded={handleUserAdded} />
         </Box>
       </Grid>
       <Divider/>
@@ -355,7 +306,7 @@ return (
                   fontSize: "1.2em",
                   backgroundColor: "rgba(0, 0, 102, 0.8)", 
                   color: "#fff",
-                  
+                  paddingLeft: "50px",
                 }}
               >
                 Actions
@@ -395,23 +346,8 @@ return (
                 </TableCell>
                 <TableCell sx={{ fontSize: "1em", color: "" }}>{user.email}</TableCell>
                 <TableCell>
-                  
-                <Button
-                  onClick={() => functionopenpopup(user._id)}
-                  variant="contained"
-                  sx={{
-                    border: '1px solid rgb(46, 51, 181)',
-                    color: 'rgb(46, 51, 181)', 
-                    backgroundColor: 'rgba(42, 45, 141, 0.438)', 
-                    '&:hover': {
-                      backgroundColor: '#0056b3',
-                      color: '#fff', 
-                    },
-                  }}
-                >
-                  <ManageAccountsIcon/>
-                </Button>
-                 
+                <div style={{ display: 'flex'  }}>
+                <ChangeRole userid={user._id}  onRoleChange={SetRoleChange} />       
                     <Button
                       sx={{
                         border: "1px solid rgb(174, 73, 73)",
@@ -428,6 +364,7 @@ return (
                     >
                        <DeleteIcon/>
                     </Button>
+                    </div>  
                 </TableCell>
               </TableRow>
             ))}
@@ -436,77 +373,7 @@ return (
       </TableContainer>
    </div>
    </Paper>
-   </Grid>
-
-     {/* pop up the change roll*/ }
-        <Grid>
-           <React.Fragment>
-                    <Dialog
-                      // fullScreen
-                      open={open}
-                      onClose={closepopup}
-                      fullWidth
-                      maxWidth="xs"
-                    >
-                      <DialogTitle>
-                        Change Role
-                        <IconButton
-                          onClick={closepopup}
-                          style={{ float: "right" }}
-
-                        >
-                          <CloseIcon color="primary"></CloseIcon>
-                        </IconButton>{" "}
-                      </DialogTitle>
-                      <DialogContent>
-                        <Stack spacing={1} margin={1}>
-                          <RadioGroup
-                            aria-label="role"
-                            name="role"
-                            onChange={(e) => setSelectedRole(e.target.value)}
-                          >
-
-                            <FormControlLabel
-                              value="admin"
-                              control={<Radio />}
-                              label="Admin"
-                            />
-                            <FormControlLabel
-                              value="manager"
-                              control={<Radio />}
-                              label="Manager"
-                            />
-                            <FormControlLabel
-                              value="mentor"
-                              control={<Radio />}
-                              label="Mentor"
-                            />
-                            <FormControlLabel
-                              value="evaluator"
-                              control={<Radio />}
-                              label="Evaluator"
-                            />
-                            <FormControlLabel
-                              value="intern"
-                              control={<Radio />}
-                              label="Intern"
-                            />
-                          </RadioGroup>
-
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleRoleChange}
-                          >
-                            Save
-                          </Button>
-                        </Stack>
-                      </DialogContent>
-                    </Dialog>
-                   </React.Fragment>
-           </Grid>
-
-      
+   </Grid>      
   </Grid>
   
   );
