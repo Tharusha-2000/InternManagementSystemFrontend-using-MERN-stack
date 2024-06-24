@@ -6,7 +6,7 @@ import { BASE_URL } from '../../config';
 import Swal from "sweetalert2";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
-function Adduser() {
+function Adduser({onUserAdded}) {
   
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
@@ -96,7 +96,6 @@ function Adduser() {
         },
    }).then(result => {   
               if (result.data) {
-                // window.alert(result.data.msg);
                  Swal.fire({ position: "top",
                              text:result.data.msg,
                              customClass: {
@@ -106,8 +105,11 @@ function Adduser() {
                             })
               .then(() => {           
                  if(result.status === 201 ) {
+                    onUserAdded(result.data.user);
+                    console.log(result.data.user);
                     handleClose();
-                    window.location.reload(); 
+                   
+                   // window.location.reload(); 
                 }
               });
             } 
