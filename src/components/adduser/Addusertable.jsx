@@ -62,7 +62,7 @@ function Addusertable({ rows }) {
   })
  
       .then((result) => {
-        const filteredUsers = result.data.users.filter(user => user.role === 'admin');
+        
        // console.log(result.data.users); 
         setFilteredData(result.data.users);
         setData(result.data.users);
