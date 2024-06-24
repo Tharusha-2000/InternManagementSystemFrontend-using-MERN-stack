@@ -29,12 +29,12 @@ import Option from "@mui/joy/Option";
 import { MenuItem } from "@mui/material";
 import { jwtDecode } from "jwt-decode";
 
-function interndetails({ internId }) {
+function interndetails({ internId,onDataChange }) {
   const [open, setOpen] = useState(false);
-  // Assuming you have a state variable for mentors similar to evaluators
   const [mentors, setMentors] = useState([]);
   const [selectedMentorName, setSelectedMentorName] = useState("");
   const [selectedMentorEmail, setSelectedMentorEmail] = useState("");
+  const [changeRoleId, setChangeRoleId] = useState(null);
   const [data, setData] = useState({
     fname: "",
     lname: "",
@@ -46,15 +46,13 @@ function interndetails({ internId }) {
     mentor: "", 
   });
   const [imageUrl, setImageUrl] = useState(null);
-  console.log(data);
   const token = localStorage.getItem("token");
-   const decodedToken = jwtDecode(token);
+  const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role;
 
   if (userRole === 'intern') {
      return null; // Do not render the component
    }
-  
 
   useEffect(() => {
     if (open) {
@@ -67,7 +65,6 @@ function interndetails({ internId }) {
         })
         .then((result) => {
           setData(result.data.intern);
-          console.log(result.data.intern);
           setImageUrl(result.data.intern.imageUrl);
           // Pre-fill mentor email and name if available in the data
           if (result.data.intern.mentorEmail && result.data.intern.mentor) {
@@ -75,24 +72,17 @@ function interndetails({ internId }) {
             setSelectedMentorName(result.data.intern.mentor);
           }
         })
-        .catch((err) =>
-          Swal.fire({ position: "top",
-          text:err,
-          customClass: {
-          container: 'my-swal',
-          confirmButton: 'my-swal-button' 
-          }
-       })
-        
-        );
+        .catch((err) => console.log(err));
     }
   }, [open]);
 
   const handleClickOpen = () => {
+    setChangeRoleId(internId);
     setOpen(true);
   };
 
   const handleClose = () => {
+    setChangeRoleId(null);
     setOpen(false);
   };
 
@@ -168,6 +158,7 @@ function interndetails({ internId }) {
           //  window.alert(response.data.msg);
           .then(() => {
            // window.location.reload();
+            onDataChange(internId, data); 
             handleClose();
             console.log(response.data.msg);
           });
@@ -197,7 +188,7 @@ function interndetails({ internId }) {
       })
       .then((response) => {
         setMentors(response.data); // Assuming response.data is an array of mentor objects
-        console.log("Mentors fetched successfully!", response.data);
+       
       })
       .catch((error) => {
         console.error("There was an error fetching mentors!", error);
@@ -232,12 +223,12 @@ function interndetails({ internId }) {
   return (
     <div>
      <Button
-          onClick={() => handleClickOpen(internId)}
+          onClick={() => handleClickOpen()}
         variant="contained"
         sx={{
           border: "1px solid rgb(46, 51, 181)",
-          color: "rgb(46, 51, 181)",
-          backgroundColor: "rgba(42, 45, 141, 0.438)",
+          color: changeRoleId === internId ? "#fff":"rgb(46, 51, 181)",
+          backgroundColor: changeRoleId === internId ? "#0056b3":"rgba(42, 45, 141, 0.438)",
           padding: "0px 13px",
           fontSize: "0.875rem",
           minWidth: "auto",
@@ -637,7 +628,7 @@ function interndetails({ internId }) {
                             mentor Email
                           </FormLabel>
                           <select
-                            value={data.mentorEmail} // Set the default value to the mentor email if available
+                            value={selectedMentorEmail} // Set the default value to the mentor email if available
                             onChange={handleMentorChange}
                             aria-label="Select mentor"
                             style={{
@@ -668,7 +659,7 @@ function interndetails({ internId }) {
                           <Input
                             size="sm"
                             placeholder="mentor name"
-                             value={data.mentor}
+                             value={selectedMentorName}
                             readOnly
                             onChange={(e) =>
                               setSelectedMentorName(e.target.value)
