@@ -628,7 +628,7 @@ function interndetails({ internId }) {
                             mentor Email
                           </FormLabel>
                           <select
-                            value={selectedMentorEmail} // Set the default value to the mentor email if available
+                            value={data.mentorEmail} // Set the default value to the mentor email if available
                             onChange={handleMentorChange}
                             aria-label="Select mentor"
                             style={{
@@ -659,7 +659,7 @@ function interndetails({ internId }) {
                           <Input
                             size="sm"
                             placeholder="mentor name"
-                             value={selectedMentorName}
+                             value={data.mentor}
                             readOnly
                             onChange={(e) =>
                               setSelectedMentorName(e.target.value)
