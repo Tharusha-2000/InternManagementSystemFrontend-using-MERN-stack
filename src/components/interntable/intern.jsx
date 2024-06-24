@@ -77,13 +77,12 @@ function interndetails({ internId }) {
         })
         .catch((err) =>
           Swal.fire({ position: "top",
-        text:err,
-        customClass: {
+          text:err,
+          customClass: {
           container: 'my-swal',
           confirmButton: 'my-swal-button' 
           }
        })
-          console.log(err)
         
         );
     }
