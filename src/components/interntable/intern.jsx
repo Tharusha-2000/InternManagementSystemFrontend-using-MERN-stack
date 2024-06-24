@@ -75,7 +75,17 @@ function interndetails({ internId }) {
             setSelectedMentorName(result.data.intern.mentor);
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) =>
+          Swal.fire({ position: "top",
+        text:err,
+        customClass: {
+          container: 'my-swal',
+          confirmButton: 'my-swal-button' 
+          }
+       })
+          console.log(err)
+        
+        );
     }
   }, [open]);
 
