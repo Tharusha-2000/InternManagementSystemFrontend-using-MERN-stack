@@ -34,14 +34,16 @@ function internTaskTable({ internId }) {
   const [tasks, setTasks] = useState([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [changeRoleId, setChangeRoleId] = useState(null);
   const token = localStorage.getItem("token");
 
   const handleClickOpen = (task) => {
+    setChangeRoleId(internId);
     setOpen(true);
   };
 
   const handleClose = () => {
+    setChangeRoleId(null);
     setOpen(false);
   };
 
@@ -115,8 +117,8 @@ function internTaskTable({ internId }) {
         variant="contained"
         sx={{
           border: "1px solid rgb(46, 51, 181)",
-          color: "rgb(46, 51, 181)",
-          backgroundColor: "rgba(42, 45, 141, 0.438)",
+          color:  changeRoleId === internId ?"#fff":"rgb(46, 51, 181)",
+          backgroundColor: changeRoleId === internId ?  "#0056b3": "rgba(42, 45, 141, 0.438)",
           padding: "0px 13px",
           fontSize: "0.875rem",
           minWidth: "auto",
@@ -190,7 +192,7 @@ function internTaskTable({ internId }) {
           py: { xs: 2, md: 3 },
         }}
       >
-       <Card sx={{ backgroundColor: '#FFF2F2' }}>
+        <Card>
           <Box sx={{ mb: 1 }}>
             <Typography
               level="title-md"
@@ -231,7 +233,7 @@ function internTaskTable({ internId }) {
           </Stack>
         </Card>
 
-         <Card sx={{ backgroundColor: '#E9FBF7' }}>
+        <Card>
           <Box sx={{ mb: 1 }}>
             <Typography
               level="title-md"
