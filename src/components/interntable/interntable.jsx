@@ -158,7 +158,7 @@ const SetDataChange = (internId, newData) => {
             p: "2px 4px",
             display: "flex",
             alignItems: "center",
-            width: "120vh",
+             width: { xs: "90%", sm: "80%", md: "90%" },
             borderRadius: "20px",
             boxShadow: 3,
             marginLeft: "1%",
