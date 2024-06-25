@@ -78,6 +78,12 @@ function internTaskTable({ internId }) {
       height: 16,
       margin: 2,
     },
+     "& .Mui-disabled + .MuiSwitch-track": {
+      opacity: 0.7,
+    },
+    "& .Mui-disabled .MuiSwitch-thumb": {
+      color: theme.palette.grey[200],
+    }
   }));
 
 
@@ -223,7 +229,11 @@ function internTaskTable({ internId }) {
                                  disabled
                                />
                             }
-                            label="complete"
+                              label={
+                              <Typography style={{ color: 'black' }}>
+                                complete
+                              </Typography>
+                            }
                           />
                         </TableCell>
                       </TableRow>
