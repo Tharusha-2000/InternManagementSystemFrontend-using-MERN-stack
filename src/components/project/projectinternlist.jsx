@@ -226,7 +226,7 @@ const handleClearSearch = () => {
                    { role !== 'admin' ? <ViewCVfiles internId={intern._id} /> : <div style={{ width: '20px' }} /> }
                     </Typography>
                     {role !== 'admin' && (
-                        <Typography color="textSecondary" style={{ fontSize: '0.7rem',marginLeft: '10px' }}>
+                        <Typography color="textSecondary" style={{ fontSize: '0.7rem',marginLeft: '20px' }}>
                           CV
                        </Typography>
                       )}
@@ -236,7 +236,7 @@ const handleClearSearch = () => {
                    <Typography>
                     <ProjectTask  internId={intern._id}/>
                     </Typography>
-                    <Typography color="textSecondary" style={{ fontSize: '0.7rem' ,marginLeft: '25px'}}>
+                    <Typography color="textSecondary" style={{ fontSize: '0.7rem' ,marginLeft: '10px'}}>
                         Tasks
                     </Typography>
                     </Box>
