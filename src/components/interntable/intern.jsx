@@ -612,23 +612,12 @@ function interndetails({ internId,onDataChange }) {
                           />
                         </FormControl>
                       </Stack>
-                      <Stack direction="row" spacing={2}>
-                        <FormControl
-                          sx={{
-                            flexGrow: 1,
-                            position: "relative",
-                            minWidth: 100,
-                            maxWidth: "178px",
-                          }}
-                        >
-                          <FormLabel
-                            htmlFor="mentor-select"
-                            sx={{ mb: 1, color: "#20262D" }}
-                          >
-                            mentor Email
-                          </FormLabel>
+                       <Stack direction="row" spacing={1}>
+                  
+                        <FormControl sx={{ flexGrow: 1 }}>
+                          <FormLabel>mentor Email </FormLabel>
                           <select
-                            value={selectedMentorEmail} // Set the default value to the mentor email if available
+                            value={selectedMentorEmail} 
                             onChange={handleMentorChange}
                             aria-label="Select mentor"
                             style={{
@@ -654,8 +643,21 @@ function interndetails({ internId,onDataChange }) {
                             ))}
                           </select>
                         </FormControl>
-                        <FormControl sx={{ flexGrow: 1 }}>
-                          <FormLabel>mentor Name</FormLabel>
+                        <FormControl
+                          sx={{
+                            flexGrow: 1,
+                            position: "relative",
+                            minWidth: 100,
+                            maxWidth: "178px",
+                          }}
+                        >
+                          
+                          <FormLabel
+                            htmlFor="mentor-select"
+                            sx={{ mb: 1, color: "#20262D" }}
+                          >
+                            mentor Name
+                          </FormLabel>
                           <Input
                             size="sm"
                             placeholder="mentor name"
@@ -699,6 +701,7 @@ function interndetails({ internId,onDataChange }) {
                       275 characters left
                     </FormHelperText>
                   </Stack>
+                   {userRole === 'admin' && (
                   <CardOverflow
                     sx={{ borderTop: "1px solid", borderColor: "divider" }}
                   >
@@ -714,6 +717,7 @@ function interndetails({ internId,onDataChange }) {
                       </Button>
                     </CardActions>
                   </CardOverflow>
+                  )}
                 </Card>
               </Stack>
             </Box>
