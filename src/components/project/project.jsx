@@ -192,7 +192,7 @@ function internTaskTable({ internId }) {
           py: { xs: 2, md: 3 },
         }}
       >
-        <Card>
+        <Card  sx={{ backgroundColor: '#FFF2F2' }}>
           <Box sx={{ mb: 1 }}>
             <Typography
               level="title-md"
@@ -234,7 +234,7 @@ function internTaskTable({ internId }) {
           </Stack>
         </Card>
 
-        <Card>
+        <Card sx={{ backgroundColor: '#E9FBF7' }}>
           <Box sx={{ mb: 1 }}>
             <Typography
               level="title-md"
