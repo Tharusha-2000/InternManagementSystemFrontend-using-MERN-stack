@@ -220,6 +220,7 @@ function internTaskTable({ internId }) {
                             control={
                               <Android12Switch
                                 checked={task.isComplete}
+                                 disabled
                                />
                             }
                             label="complete"
