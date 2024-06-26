@@ -105,9 +105,9 @@ const handleClearSearch = () => {
 
   return (
  <Grid>  
-   <Grid> 
+    <Grid >
    <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
-   <div>
+  
    <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
       <Typography variant="h4" gutterBottom align="center" 
       sx={{
@@ -129,7 +129,7 @@ const handleClearSearch = () => {
             p: "2px 4px",
             display: "flex",
             alignItems: "center",
-            width: "120vh",
+            width: { xs: "70%", sm: "80%", md: "90%" },
             borderRadius: "20px",
             boxShadow: 3,
             marginLeft: "1%",
@@ -248,10 +248,9 @@ const handleClearSearch = () => {
           </TableBody>
         </Table>
       </TableContainer>
-   </div>
+  
    </Paper>
    </Grid>
-
 </Grid>
  );
 }

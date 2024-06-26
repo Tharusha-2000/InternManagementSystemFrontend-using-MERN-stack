@@ -182,7 +182,8 @@ const handleEditClose = () => {
 
 return (
 <>
-  
+<Grid container spacing={1}>
+        <Grid item xs={12} >
   <EditCVfiles open={openEdit} handleClose={handleEditClose} internId={internId} />
    <Paper sx={{ Width: "100%", overflow: "auto", padding: "12px"}}>
    <Typography variant="h4" gutterBottom align="center" 
@@ -344,6 +345,8 @@ return (
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
    </Paper>
+   </Grid>
+    </Grid>
   </>
   );
 }

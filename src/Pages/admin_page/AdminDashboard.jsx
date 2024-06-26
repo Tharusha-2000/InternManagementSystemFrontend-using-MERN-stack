@@ -19,6 +19,7 @@ import { Box,
         TableContainer,
         TableHead,
         Paper,
+        Grid,
         Select,
         TextField } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -271,6 +272,8 @@ export default function AdminDashboard() {
 
             return (
               <>
+              <Grid > 
+   <Grid item xs={12} sm={6} md={4}>
               <Header />
               <Box height={60} />
               <Box sx={{ display: 'flex' }}>
@@ -844,5 +847,7 @@ export default function AdminDashboard() {
       </Box>
       </Box>
       </Box>
+      </Grid>
+      </Grid>
       </>
   )}
