@@ -27,20 +27,23 @@ import TaskIcon from '@mui/icons-material/Task';
 import TaskPieChart from './projectpiechart';
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-
+import TaskBarChart from './projectbarchart';
+import { CircularProgress, Container } from "@mui/material";
 function internTaskTable({ internId }) {
   // State for tasks and data
   const [tasks, setTasks] = useState([]);
   const [open, setOpen] = useState(false);
-  
-
+  const [loading, setLoading] = useState(false);
+  const [changeRoleId, setChangeRoleId] = useState(null);
   const token = localStorage.getItem("token");
 
   const handleClickOpen = (task) => {
+    setChangeRoleId(internId);
     setOpen(true);
   };
 
   const handleClose = () => {
+    setChangeRoleId(null);
     setOpen(false);
   };
 
@@ -75,6 +78,12 @@ function internTaskTable({ internId }) {
       height: 16,
       margin: 2,
     },
+     "& .Mui-disabled + .MuiSwitch-track": {
+      opacity: 0.7,
+    },
+    "& .Mui-disabled .MuiSwitch-thumb": {
+      color: theme.palette.grey[200],
+    }
   }));
 
 
@@ -108,23 +117,38 @@ function internTaskTable({ internId }) {
   // Render component
   return (
   <div>
-    
-    <IconButton
-        size="small"
-        color="primary"
-        style={{ marginRight: "10px" }}
+   
+      <IconButton
         onClick={() => handleClickOpen()}
-     >
+        variant="contained"
+        sx={{
+          border: "1px solid rgb(46, 51, 181)",
+          color:  changeRoleId === internId ?"#fff":"rgb(46, 51, 181)",
+          backgroundColor: changeRoleId === internId ?  "#0056b3": "rgba(42, 45, 141, 0.438)",
+          padding: "0px 13px",
+          fontSize: "0.875rem",
+          minWidth: "auto",
+          "&:hover": {
+            backgroundColor: "#0056b3",
+            color: "#fff",
+          },
+          '& .MuiSvgIcon-root': {
+            fontSize: '1.5rem', // Adjust icon size if necessary
+          }
+        }}
+      >
         <TaskIcon />
-     </IconButton>
-    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"  maxWidth="md" >
-    <DialogTitle id="form-dialog-title"> PROJECT TASK LIST <IconButton onClick={handleClose} style={{float:'right'}}><CloseIcon color="primary"></CloseIcon></IconButton></DialogTitle>
-    <DialogContent>
+      </IconButton>
 
-    <Grid container spacing={2}>
+   <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"  maxWidth="md" >
+    <DialogTitle id="form-dialog-title"> PROJECT TASK LIST <IconButton onClick={handleClose} style={{float:'right'}}><CloseIcon color="primary"></CloseIcon></IconButton></DialogTitle>
+     <DialogContent>
+
+     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Paper elevation={1} style={{ padding: '10px', marginBottom: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '90%', margin: 'auto' }}>
         <Typography variant="h6" style={{ marginBottom: '20px', textAlign: 'center',fontWeight: 'bold', color: 'black', fontSize: '2em'  }}>Task Summary</Typography>
+         <div>
           <div style={{ marginBottom: '20px', textAlign: 'center' }}>
           
             <Typography style={{ fontWeight: 'bold', color: 'black' }}> Total Tasks: {tasks.length}</Typography>
@@ -140,10 +164,29 @@ function internTaskTable({ internId }) {
               <Typography> </Typography>
             )}
           </div>
+         </div>
+           
+     <Container maxWidth="sm">
+      <Typography variant="h4" align="center" gutterBottom style={{ fontWeight: 'bold'}}>
+        Task Overview
+      </Typography>
+      {loading ? (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress />
+        </Box>
+      ) : tasks.length > 0 ? (
+        <Box my={4}>
+          <TaskBarChart tasks={tasks} />
+        </Box>
+      ) : (
+        <Typography align="center">No tasks found</Typography>
+      )}
+    </Container>
         </Paper>
       </Grid>
-    </Grid>
-
+     </Grid>
+   
+  
     <div>
       <Stack
         spacing={4}
@@ -155,7 +198,7 @@ function internTaskTable({ internId }) {
           py: { xs: 2, md: 3 },
         }}
       >
-        <Card>
+        <Card  sx={{ backgroundColor: '#FFF2F2' }}>
           <Box sx={{ mb: 1 }}>
             <Typography
               level="title-md"
@@ -183,9 +226,14 @@ function internTaskTable({ internId }) {
                             control={
                               <Android12Switch
                                 checked={task.isComplete}
+                                 disabled
                                />
                             }
-                            label="complete"
+                              label={
+                              <Typography style={{ color: 'black' }}>
+                                complete
+                              </Typography>
+                            }
                           />
                         </TableCell>
                       </TableRow>
@@ -196,7 +244,7 @@ function internTaskTable({ internId }) {
           </Stack>
         </Card>
 
-        <Card>
+        <Card sx={{ backgroundColor: '#E9FBF7' }}>
           <Box sx={{ mb: 1 }}>
             <Typography
               level="title-md"

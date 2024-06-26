@@ -128,13 +128,18 @@ function EvaluationFormMentor({
     const fetchEvaluationData = async () => {
       if (isMentorFormFilled) {
         try {
-          const response = await axios.get(`${BASE_URL}getReviewDetailsById/${internId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
 
+          const response = await axios.get(
+            `${BASE_URL}getReviewDetailsById/${internId}`, 
+            {
+              headers: {
+                "Authorization": `Bearer ${token}`
+              }
+            }
+          );
+      
           const data = response.data;
+
           
           setJobPerformanceScoresMentor(
             data.job_performance_scores_mentor.map((score) => score / 20)

@@ -129,16 +129,41 @@ function TaskTable() {
        })
       //  window.alert('Please fill the required fields')
         return;
-     } 
-      await axios.post(`${BASE_URL}task`, data, {
-             headers: {
-               Authorization: `Bearer ${token}`,
-             },
+      } 
+    
+      try {
+        await axios.post(`${BASE_URL}task`, data, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
         setData({ title: "" });
         fetchTasks();
-      };
-  
+      } catch (error) {
+        
+        if (error.response) {
+              Swal.fire({
+                  position: "top",
+                  text: error.response.data.msg,
+                  customClass: {
+                    container: 'my-swal',
+                    confirmButton: 'my-swal-button'
+                  }
+                })
+        
+        } else {
+               Swal.fire({
+                  position: "top",
+                  text: error.message,
+                  customClass: {
+                    container: 'my-swal',
+                    confirmButton: 'my-swal-button'
+                  }
+                })
+        }
+      }
+    };
+          
     
       /* delect task*/
     function handleDelete(id) {
@@ -191,11 +216,14 @@ function TaskTable() {
   
     const handleupdate = async (id) => {
       
+     
+      
       const data = {
         title: currentTask.title,
       };
-      console.log(data.isComplete);
-      console.log(data);
+    console.log(data.isComplete);
+    console.log(data);
+       
       await axios
         .put(`${BASE_URL}task/${id}`, data, {
           headers: {
@@ -212,7 +240,11 @@ function TaskTable() {
        })
          // window.alert(response.data.msg);
          .then(() => {
-          window.location.reload();
+          setTasks(
+            tasks.map((task) =>
+              task._id === id ? { ...task, title: currentTask.title } : task
+            )
+            );
           console.log(response.data);
          })
         })
@@ -265,7 +297,7 @@ function TaskTable() {
           py: { xs: 2, md: 3 },
         }}
       >
-        <Card>
+     <Card sx={{ backgroundColor: '#FFF2F2' }}>
           <Box sx={{ mb: 1 }}>
             <Typography
               level="title-md"
@@ -279,17 +311,33 @@ function TaskTable() {
               alignItems="center"
               style={{ marginTop: "30px" }}
             >
-              <TextField
-                value={data.title}
-                onChange={(e) => setData({ ...data, title: e.target.value })}
-                placeholder="Add a task"
-                fullWidth
-                size="small"
-              />
+             <TextField
+  value={data.title}
+  onChange={(e) => setData({ ...data, title: e.target.value })}
+  placeholder="Add a task"
+  fullWidth
+  size="small"
+  InputProps={{
+    style: {
+      height: '40px', // Adjust the height as needed
+      fontSize: '0.875rem', // Adjust the font size as needed
+    },
+  }}
+  sx={{
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '10px', // Adjust the border radius as needed
+    },
+  }}
+/>
 
-              <Button variant="solid" type="submit" onClick={addTask}>
-                +ADD
-              </Button>
+<Button
+  variant="solid"
+  type="submit"
+  onClick={addTask}
+  style={{ backgroundColor: '#e7004c', color: 'white' }}
+>
+  +ADD
+</Button>
             </Box>
           </Box>
           <Divider />
@@ -309,7 +357,15 @@ function TaskTable() {
                           <IconButton
                             aria-label="delete"
                             onClick={() => handleDelete(task._id)}
-                            style={{ marginRight: "10px" }}
+                            sx={{
+                              marginRight: "10px",
+                              '&:hover': {
+                           
+                                backgroundColor: '#0056b3',
+                                color: '#fff', 
+                              
+                              },
+                            }}
                           >
                             <DeleteIcon />
                           </IconButton>
@@ -318,7 +374,15 @@ function TaskTable() {
                             size="small"
                             color="primary"
                             aria-label="edit"
-                            style={{ marginRight: "10px" }}
+                            sx={{
+                              marginRight: "10px",
+                              '&:hover': {
+                           
+                                backgroundColor: '#0056b3',
+                                color: '#fff', 
+                              
+                              },
+                            }}
                             onClick={() => handleClickOpen(task)}
                           >
                             <EditIcon />
@@ -353,36 +417,36 @@ function TaskTable() {
           </Stack>
         </Card>
 
-        <Card>
-          <Box sx={{ mb: 1 }}>
-            <Typography
-              level="title-md"
-              style={{ fontSize: "18px", fontWeight: "bold", color: "green" }}
-            >
-              DONE LIST{"  "}
-              <DoneAllIcon style={{ color: "green" }} fontSize="medium" />
-            </Typography>
-            <Typography level="body-sm">
-              completed task and verified by mentor
-            </Typography>
-          </Box>
-          <Divider />
-          <Stack spacing={2} sx={{ my: 1 }}>
-            <TableContainer>
-              <Table>
-                <TableBody>
-                  {tasks
-                    .filter((task) => task.isVerified)
-                    .map((task) => (
-                      <TableRow key={task._id} sx={{ height: '10px' }}>
-                        <TableCell>{task.title}</TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Stack>
-        </Card>
+        <Card sx={{ backgroundColor: '#E9FBF7' }}>
+  <Box sx={{ mb: 1 }}>
+    <Typography
+      level="title-md"
+      style={{ fontSize: "18px", fontWeight: "bold", color: "#26b89a" }}
+    >
+      DONE LIST{"  "}
+      <DoneAllIcon style={{ color: "#26b89a" }} fontSize="medium" />
+    </Typography>
+    <Typography level="body-sm">
+      completed task and verified by mentor
+    </Typography>
+  </Box>
+  <Divider />
+  <Stack spacing={2} sx={{ my: 1 }}>
+    <TableContainer>
+      <Table>
+        <TableBody>
+          {tasks
+            .filter((task) => task.isVerified)
+            .map((task) => (
+              <TableRow key={task._id} sx={{ height: '10px' }}>
+                <TableCell>{task.title}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  </Stack>
+</Card>
       </Stack>
 
       <Dialog

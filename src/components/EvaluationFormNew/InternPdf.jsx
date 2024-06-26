@@ -39,7 +39,9 @@ useEffect(() => {
       
 
       axios
-        .get(`${BASE_URL}getCommentsById/${userId}`, {
+
+        .get(`${BASE_URL}getCommentsById`, {
+
           headers: {
             Authorization: `Bearer ${token}` // Add authorization header
           }

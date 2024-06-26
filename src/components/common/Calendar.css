@@ -1,0 +1,154 @@
+
+  /* Calender */
+
+  .calendar-container {
+    width: 100%;
+    margin: 2px  -1px;
+    border: none;
+  }
+  
+  .fc {
+    width: 100% !important;
+  }
+
+
+/* Remove borders and adjust height */
+.fc-daygrid-day {
+  border: none;
+  height: auto;
+}
+
+/* Adjust the day cell appearance */
+.fc .fc-daygrid-day-top {
+  justify-content: center;
+  padding: 5px 0;
+}
+
+/* Change the background color of the date cells */
+.fc-daygrid-day-frame {
+  border: none ;
+  background-color: #ffffff;
+}
+
+
+
+/* Highlight the date number when an event is present */
+.fc-daygrid-day-frame.has-event .fc-daygrid-day-number {
+  color: #e76f51 !important;
+}
+
+/* Style for events */
+.fc-event {
+  background-color: #f4a261 !important; /* Always highlighted */
+  color: rgb(155, 139, 139);
+  border: none;
+  padding: 2px;
+  font-size: 12px;
+}
+
+/* Style for event names */
+.fc-event-title {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Highlight the current day */
+.fc .fc-day-today {
+  color:#e76f51 !important;
+  background-color: #a0dde6 !important;
+}
+
+/* Change the color and font of the date numbers */
+.fc .fc-daygrid-day-number {
+  color: inherit;
+  font-weight: bold;
+  font-size: 14px;
+  color: #162c86;
+  text-decoration: none; /* Remove underline */
+}
+
+/* Change the color of the day names in the header */
+.fc .fc-col-header-cell-cushion {
+  color: #162c86;
+  font-weight: bold;
+}
+
+/* Customize the appearance of the day grid view */
+.fc .fc-daygrid-event {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Change the hover effect on events */
+.fc .fc-event:hover {
+  background-color: #e76f51;
+}
+
+/* Additional customizations to remove automatic grid lines */
+.fc-theme-standard td, .fc-theme-standard th {
+  border-color: transparent;
+}
+
+/* Hide the default grid lines */
+.fc-daygrid-day-frame {
+  border-width: 0 !important;
+}
+
+/* Ensure the day grid cells have no padding */
+.fc .fc-daygrid-day-frame {
+  padding: 0 !important;
+}
+
+/* FullCalendar header toolbar styling */
+.fc-toolbar .fc-toolbar-chunk {
+  display: flex;
+  align-items: center;
+}
+
+.fc-toolbar .fc-toolbar-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.fc-toolbar .fc-button {
+  font-size: 12px;
+  padding: 2px 6px;
+}
+
+.fc-toolbar .fc-button-group {
+  margin-right: 1px;
+}
+
+.fc-toolbar .fc-button-primary {
+  background-color: #070763;
+  border-color: #022b40;
+  color: white;
+}
+
+.fc-toolbar .fc-button-primary:hover {
+  background-color: #0277bd;
+  border-color: #0277bd;
+}
+
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 2px;
+}
+
+.button {
+  margin: 0 1px;
+  padding: 5px 10px;
+}
+
+.statusApproved {
+  color: rgb(47, 52, 211);
+}
+
+.statusPending {
+  color: rgb(207, 112, 68);
+}
+

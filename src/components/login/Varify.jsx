@@ -189,7 +189,7 @@ function Varify() {
 
 
   const resendOTP = () => {
-    //console.log("hi")
+    
     if(!email){
       Swal.fire({ position: "top",
       text: "cannot resend OTP without email address",
@@ -200,7 +200,6 @@ function Varify() {
     }
   axios.post(`${BASE_URL}generateOTP&sendmail`,{email:email})
     .then(result => {
-        console.log("hi");
         if(result.data){
              if(result.status === 201 ) {
               Swal.fire({ position: "top",
@@ -266,7 +265,11 @@ function Varify() {
           gap: 2,
           borderRadius: "sm",
           boxShadow: "md",
-          backgroundColor: "rgba(190, 216, 230, 0.9)",
+            backgroundColor: 'rgba(190, 216, 230, 0.93)',
+          '&:hover': { 
+            transform: 'scale(1.02)', 
+            boxShadow: 'lg',
+          },
         }}
         variant="outlined"
       >
