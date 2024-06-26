@@ -4,6 +4,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../config';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -151,6 +152,8 @@ export default function Sidebar() {
 
 
   return (
+    <Grid > 
+    <Grid item xs={12} sm={6} md={4} lg={3}>
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <Box height={30} />
@@ -444,5 +447,7 @@ export default function Sidebar() {
       </Drawer>
      
     </Box>
+    </Grid > 
+   </Grid >
   );
 }

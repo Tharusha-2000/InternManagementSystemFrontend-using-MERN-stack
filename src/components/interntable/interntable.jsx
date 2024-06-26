@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from '../../config';
-
 import {
   Button,
   Dialog,
@@ -32,32 +31,33 @@ import { useNavigate } from "react-router-dom";
 import Switch from '@mui/material/Switch';
 import Interndetails from "../interntable/intern";
 import { jwtDecode } from "jwt-decode";
-
+import { useMediaQuery, useTheme } from '@mui/material';
 
 function internTable({ rows }) {
-  //const [DialogIsOpen, setDialogIsOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
   const [data, setData] = useState([]);
-  
   const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
   const [isComplete, setIsComplete] = useState(false);
+  const theme = useTheme();
+const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
   {/* get details in database */}
+
   const token = localStorage.getItem('token');
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role;
   if (userRole !== 'admin') {
-    return null; // Do not render the component
+    return null;
   }
  
   useEffect(() => {
     axios
-      .get(`${BASE_URL}interns`,{
+      .get(`${BASE_URL}interns`, {
         headers: {
-        Authorization: `Bearer ${token}`,
-    },
-  })
-
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((result) => {
         setFilteredData(result.data.interns);
         setData(result.data.interns);
@@ -67,9 +67,6 @@ function internTable({ rows }) {
       })
       .catch((err) => console.log(err));
   }, [data]);
-
-
-   {/* handel complete notcomplete profile button*/}
 
   const Android12Switch = styled(Switch)(({ theme }) => ({
     padding: 8,
@@ -105,7 +102,6 @@ function internTable({ rows }) {
   }));
 
 
-
 // creating filter function
 const Filter = (event) => {
   const searchTerm = event.target.value.toLowerCase();
@@ -133,11 +129,11 @@ const SetDataChange = (internId, newData) => {
 };
 
   return (
- <Grid>  
-   <Grid> 
+    <Grid container spacing={1}>
+        <Grid item xs={12} >
    <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
-   <div>
     <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
+    
       <Typography variant="h4" gutterBottom align="center" 
       sx={{
         color: 'rgba(0, 0, 102, 0.8)', 
@@ -158,7 +154,7 @@ const SetDataChange = (internId, newData) => {
             p: "2px 4px",
             display: "flex",
             alignItems: "center",
-             width: { xs: "90%", sm: "80%", md: "90%" },
+             width: { xs: "70%", sm: "80%", md: "90%" },
             borderRadius: "20px",
             boxShadow: 3,
             marginLeft: "1%",
@@ -170,13 +166,14 @@ const SetDataChange = (internId, newData) => {
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
             <SearchIcon />
           </IconButton>
+
         </Paper>
-      
       </Grid>
+
       <Divider/>
       
-      <TableContainer>
-        <Table>
+      <TableContainer  >
+       <Table>
           <TableHead>
             <TableRow>
             <TableCell
@@ -211,7 +208,7 @@ const SetDataChange = (internId, newData) => {
                   fontSize: "1.2em",
                   backgroundColor: "rgba(0, 0, 102, 0.8)", 
                   color: "#fff",
-                  
+                 padding: isSmallScreen ? '6px' : '16px'
                 }}
               >
                 Actions
@@ -254,7 +251,7 @@ const SetDataChange = (internId, newData) => {
                   </Box>
                 </TableCell>
 
-                <TableCell>
+                <TableCell   sx={{ padding: isSmallScreen ? '6px' : '16px'}}>
                 <FormControlLabel
                       control={
                         <Android12Switch
@@ -273,14 +270,12 @@ const SetDataChange = (internId, newData) => {
           </TableBody>
         </Table>
       </TableContainer>
-   </div>
+         
    </Paper>
-   </Grid>
-
-    
-      
+   </Grid>  
  </Grid>
   
+
   );
 }
 

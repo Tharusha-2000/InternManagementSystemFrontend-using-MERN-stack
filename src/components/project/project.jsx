@@ -116,7 +116,8 @@ function internTaskTable({ internId }) {
 
   // Render component
   return (
-  <div>
+    <Grid>  
+    
    
       <IconButton
         onClick={() => handleClickOpen()}
@@ -139,7 +140,8 @@ function internTaskTable({ internId }) {
       >
         <TaskIcon />
       </IconButton>
-
+      <Grid > 
+   <Grid item xs={12} sm={6} md={4}>
    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"  maxWidth="md" >
     <DialogTitle id="form-dialog-title"> PROJECT TASK LIST <IconButton onClick={handleClose} style={{float:'right'}}><CloseIcon color="primary"></CloseIcon></IconButton></DialogTitle>
      <DialogContent>
@@ -280,7 +282,9 @@ function internTaskTable({ internId }) {
 
     </DialogContent>
    </Dialog>
-   </div>
+   </Grid>
+   </Grid>
+  </Grid>
   );
 }
 

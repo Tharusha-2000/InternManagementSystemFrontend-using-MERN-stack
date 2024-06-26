@@ -153,7 +153,7 @@ export default function InternDashboard() {
                     color={colors.blueAccent[300]}
                     style={{ padding: "2px", marginBottom: "20px" }}
                   >
-                    Welcome to the Intern Management System.....
+                    Welcome to the Intern Management System
                   </Typography>
                 </Box>
               </Box>
@@ -266,8 +266,12 @@ export default function InternDashboard() {
                   borderRadius: "0 0 12px 12px",
                   scrollbarWidth: "thin",
                   scrollbarColor: "white white",
+                  marginTop: "-5px",
                 }}
               >
+               <Typography variant="h5" sx={{ marginBottom: '20px', color: '#000066', fontWeight: 'bold', textAlign: 'center' }}>
+                Scheduled events
+               </Typography>
                 <ul style={{ listStyleType: "none", padding: 0 }}>
                   {data.schedules &&
                     data.schedules.map((schedule, index) => (
@@ -346,7 +350,7 @@ export default function InternDashboard() {
                     color: "#000066",
                   }}
                 >
-                  to Do tasks
+                  To do tasks
                 </Typography>
                 <Typography
                   variant="h6"
@@ -354,7 +358,7 @@ export default function InternDashboard() {
                   sx={{
                     position: "absolute",
                     top: 2,
-                    left: 50,
+                    left: 15,
                     color: colors.greenAccent[500],
                   }}
                 >
@@ -391,7 +395,7 @@ export default function InternDashboard() {
                     color: "#000066",
                   }}
                 >
-                  done tasks
+                  Done tasks
                 </Typography>
                 <Typography
                   variant="h6"
@@ -399,7 +403,7 @@ export default function InternDashboard() {
                   sx={{
                     position: "absolute",
                     top: 2,
-                    left: 50,
+                    left: 15,
                     color: colors.greenAccent[500],
                   }}
                 >
@@ -444,7 +448,7 @@ export default function InternDashboard() {
                   sx={{
                     position: "absolute",
                     top: 2,
-                    left: 50,
+                    left: 15,
                     color: colors.greenAccent[500],
                   }}
                 >
@@ -460,12 +464,17 @@ export default function InternDashboard() {
               overflow="auto"
               borderRadius={1}
               p="1px"
+              sx={{ marginTop: '10px' }}
             >
-              <Card sx={{ backgroundColor: colors.greenAccent[800] }}>
+              <Typography variant="h5" sx={{ marginBottom: '20px', color: '#000066', fontWeight: 'bold' }}>
+                Send your Email here
+              </Typography>
+              {/* <Card sx={{ backgroundColor: colors.greenAccent[800] }}> */}
+              <Card sx={{ backgroundColor: '#D9E5F9' }}>
                 <CardContent>
-                  <Typography variant="h6" color={colors.greenAccent[100]}>
+                  {/* <Typography variant="h6" color={colors.greenAccent[100]}>
                     Send Email
-                  </Typography>
+                  </Typography> */}
                   <Email />
                 </CardContent>
               </Card>
@@ -477,9 +486,9 @@ export default function InternDashboard() {
               borderRadius={2}
               p="1px"
             >
-              <Card sx={{ backgroundColor: colors.blueAccent[900] }}>
+              <Card sx={{ backgroundColor: colors.blueAccent[900], marginTop: '12px'  }}>
                 <CardContent>
-                  <Typography variant="h6"> Task Overview</Typography>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#000066' }}>Task Overview</Typography>
                   <Container maxWidth="sm">
                     {loading ? (
                       <Box display="flex" justifyContent="center">

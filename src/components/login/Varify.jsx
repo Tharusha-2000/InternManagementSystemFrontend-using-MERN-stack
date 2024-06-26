@@ -209,6 +209,7 @@ function Varify() {
               //  window.alert(result.data.msg);   
                }
             }
+            
           });
           
       
