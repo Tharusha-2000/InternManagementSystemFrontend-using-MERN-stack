@@ -12,10 +12,14 @@ import MuiAppBar from '@mui/material/AppBar';
 import { useAppStore } from './appStore';
 import { useNavigate } from 'react-router-dom';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+
 import Swal from "sweetalert2";
+import Logo from "../../assets/Logo2.png"
 const AppBar = styled(MuiAppBar, {
  })(({  theme }) => ({
+
   zIndex: theme.zIndex.drawer + 1,
+  backgroundColor: '#26b89a', // Add this line to change the background color
 }));
 
 export default function Header() {
@@ -86,7 +90,7 @@ export default function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+      <AppBar position="fixed" sx={{ backgroundColor: "#191970"}}>
         <Toolbar>
           <IconButton
             size="large"
@@ -99,24 +103,30 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
 
-               
-               <Typography
-                      variant="h6"
-                      noWrap
-                      component="a"
-                      href="#app-bar-with-responsive-menu"
-                      sx={{
-                        mr: 2,
-                        display: { xs: 'none', md: 'flex' },
-                        fontFamily: 'monospace',
-                        fontWeight: 700,
-                        letterSpacing: '.3rem',
-                        color: 'inherit',
-                        textDecoration: 'none',
-            }}
-          >
-            Zionlogy
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+            <img
+              src={Logo}
+              alt="Logo"
+              style={{ marginRight: 1, height: '2.5rem' }}
+            />
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="#app-bar-with-responsive-menu"
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontFamily: 'monospace',
+                fontWeight: 900,
+                letterSpacing: '.3rem',
+                color: 'white',
+                textDecoration: 'none',
+              }}
+            >
+              ionlogy
+            </Typography>
+          </Box>
       
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -139,7 +149,7 @@ export default function Header() {
               aria-controls={mobileMenuId}
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
-              color="inherit"
+              color="#000066"
             >
               <MoreIcon />
             </IconButton>

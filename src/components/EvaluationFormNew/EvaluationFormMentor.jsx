@@ -135,19 +135,18 @@ function EvaluationFormMentor({
     const fetchEvaluationData = async () => {
       if (isMentorFormFilled) {
         try {
-          const response = await fetch(
-            `${BASE_URL}getReviewDetailsById/${internId}`,
+
+          const response = await axios.get(
+            `${BASE_URL}getReviewDetailsById/${internId}`, 
             {
-              method: "GET",
               headers: {
-                Authorization: `Bearer ${token}`,
-              },
+                "Authorization": `Bearer ${token}`
+              }
             }
           );
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
+      
+          const data = response.data;
+
           
           setJobPerformanceScoresMentor(
             data.job_performance_scores_mentor.map((score) => score / 20)
