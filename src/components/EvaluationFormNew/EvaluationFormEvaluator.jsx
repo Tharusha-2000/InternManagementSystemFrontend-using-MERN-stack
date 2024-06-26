@@ -12,7 +12,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import EvaluationFormTableTemp from "./EvaluationFormTableTemp";
 import { BASE_URL } from '../../config';
 import Swal from "sweetalert2";
-
+import axios from 'axios'; 
 
 function EvaluationFormEvaluator({ internId, internName, jobPerformanceCriteriasEvaluator, coreValuesCriteriasEvaluator, handleClose, setRefreshKey, isEvaluated,...props}) {
   const [ratings, setRatings] = useState([]);
@@ -56,8 +56,7 @@ if (coreValuesRatings.some(rating => rating === 0)) {
     if (errors.length > 0) {
       
       Swal.fire({ position: "top",
-        title: 'Please fill all the following fields: ',
-        html: errors.join("<br>"),
+        text: 'Please fill all the following fields: ',
         customClass: {
           container: 'my-swal',
           confirmButton: 'my-swal-button' 
@@ -77,7 +76,6 @@ if (coreValuesRatings.some(rating => rating === 0)) {
     try {
       const response = await axios.post(`${BASE_URL}postEvaluatorResultById/${internId}`, data, {
         headers: {
-          "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
       });

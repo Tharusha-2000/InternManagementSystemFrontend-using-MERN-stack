@@ -17,7 +17,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { BASE_URL } from '../../config';
-
+import Swal from "sweetalert2";
 const defaultTheme = createTheme();
 
 export default function Security() {
@@ -57,19 +57,23 @@ export default function Security() {
     //console.log(values)
     e.preventDefault();
     if (!values.Newpassword || !values.Oldpassword || !values.Confirmpassword) {
-      window.alert("Please fill the required fields");
+          Swal.fire({ position: "top", text: "Please fill the required fields"
+          ,customClass: {container: 'my-swal',
+          confirmButton: 'my-swal-button'} })
       return;
     }
     if (values.Newpassword !== values.Confirmpassword) {
-      window.alert("Password and Confirm Password should be same");
+        Swal.fire({ position: "top", text: "Password and Confirm Password should be same"
+          ,customClass: {container: 'my-swal',
+          confirmButton: 'my-swal-button'} })
       return;
     }
 
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/;
 if (!passwordRegex.test(values.Newpassword)) {
-  window.alert(
-    "Password must be at least 6 characters long and contain at least one letter and one number."
-  );
+    Swal.fire({ position: "top", text:   "Password must be at least 6 characters long and contain at least one letter and one number."
+          ,customClass: {container: 'my-swal',
+          confirmButton: 'my-swal-button'} })
   return;
 }
 
