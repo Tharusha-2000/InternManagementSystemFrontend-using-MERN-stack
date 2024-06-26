@@ -2,13 +2,12 @@ import React from "react";
 
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import { styled } from "@mui/system";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import "./EvaluationFormManager.css";
 import BarchartManagement from "./BarchartManagement";
 
 function EvaluationFormManager({ evaluationFormDetails, mentor }) {
+  
   const {
     job_performance_scores_evaluator,
     job_performance_scores_mentor,
@@ -47,129 +46,150 @@ function EvaluationFormManager({ evaluationFormDetails, mentor }) {
   }));
 
   return (
-    
-      <div className="dashboard">
-        <div className="header">
-          <h1>Intern Evaluation Summary</h1>
-          <br></br>
-        </div>
-        <div className="evaluation-details">
+    <div className="dashboard">
+      <div className="header">
+        <h1>Intern Evaluation Summary</h1>
+        <br></br>
+      </div>
+      <div className="evaluation-details">
         <h5>Evaluator : {evaluator}</h5>
-       
+
         <h5>
           Evaluated on :{" "}
           {new Date(evaluated_date_Evaluator).toLocaleDateString()}
         </h5>
-        </div>
+      </div>
 
-        <div className="evaluation-details">
+      <div className="evaluation-details">
         <h5>Mentor : {mentor}</h5>
         <h5>
           Evaluated on : {new Date(evaluated_date_Mentor).toLocaleDateString()}
         </h5>
-        </div>
+      </div>
 
-<h2>Overall Performance</h2>
+      <h2>Overall Performance</h2>
 
+      <div className="summary"></div>
 
-        <div className="summary"></div>
+      <div className="summary">
+        <Card className="cardHoverEffect">
+          <CardContent className="cardStyle">
+            <CircularProgress
+              className="circularProgressEvaluator"
+              variant="determinate"
+              value={overall_performance_evaluator}
+              size={100}
+              thickness={8}
+              style={{ color: "#b5179e" }}
+            />
+            <p>Overall performance marked by</p>
+            <h4>Evaluator</h4>
+            <h4>{overall_performance_evaluator.toFixed(2)}%</h4>
+          </CardContent>
+        </Card>
+        <Card className="cardHoverEffect">
+          <CardContent className="cardStyle">
+            <CircularProgress
+              className="circularProgressMentor"
+              variant="determinate"
+              value={overall_performance_mentor}
+              size={100}
+              thickness={8}
+              style={{ color: "#008080" }}
+            />
+            <p>Overall performance marked by</p>
+            <h4>Mentor</h4>
+            <h4>{overall_performance_mentor.toFixed(2)}%</h4>
+          </CardContent>
+        </Card>
+        <Card className="cardHoverEffect">
+          <CardContent className="cardStyle">
+            <CircularProgress
+              className="circularProgressAverage"
+              variant="determinate"
+              value={
+                (overall_performance_evaluator + overall_performance_mentor) / 2
+              }
+              size={100}
+              thickness={8}
+              style={{ color: "#FF0000" }}
+            />
+            <p>Overall performance</p>
+            <h4> Average</h4>
+            <h4>
+              {(
+                (overall_performance_evaluator + overall_performance_mentor) /
+                2
+              ).toFixed(2)}
+              %
+            </h4>
+          </CardContent>
+        </Card>
+      </div>
+      <br></br>
 
-        <div className="summary">
-          <Card className="cardHoverEffect">
-            <CardContent className="cardStyle">
-              <CircularProgress
-                className="circularProgressEvaluator"
-                variant="determinate"
-                value={overall_performance_evaluator}
-                size={100}
-                thickness={8}
-                style={{ color: "#b5179e" }}
-              />
-              <p>Overall performance marked by</p>
-              <h4>Evaluator</h4>
-              <h4>{overall_performance_evaluator}%</h4>
-            </CardContent>
-          </Card>
-          <Card className="cardHoverEffect">
-            <CardContent className="cardStyle">
-              <CircularProgress
-                className="circularProgressMentor"
-                variant="determinate"
-                value={overall_performance_mentor}
-                size={100}
-                thickness={8}
-                style={{ color: "#008080" }}
-              />
-              <p>Overall performance marked by</p>
-              <h4>Mentor</h4>
-              <h4>{overall_performance_mentor}%</h4>
-            </CardContent>
-          </Card>
-          <Card className="cardHoverEffect">
-            <CardContent className="cardStyle">
-              <CircularProgress
-                className="circularProgressAverage"
-                variant="determinate"
-                value={
-                  (overall_performance_evaluator + overall_performance_mentor) /
-                  2
-                }
-                size={100}
-                thickness={8}
-                style={{ color: "#FF0000" }}
-              />
-              <p>Overall performance</p>
-              <h4> Average</h4>
-              <h4>
-                {" "}
-                {(overall_performance_evaluator + overall_performance_mentor) /
-                  2}
-                %
-              </h4>
-            </CardContent>
-          </Card>
+      <h2>Job Performance assesment</h2>
+      <br></br>
+      <div className="charts">
+        <BarchartManagement data={data} dataKey="Evaluator" fill="#b5179e" />
+
+        <BarchartManagement data={data2} dataKey="mentor" fill="#008080" />
+      </div>
+
+      <h2>Core Values and objectives assesment</h2>
+      <br></br>
+      <div className="charts">
+        <BarchartManagement data={data3} dataKey="Evaluator" fill="#b5179e" />
+
+        <BarchartManagement data={data4} dataKey="mentor" fill="#008080" />
+      </div>
+
+      <div className="comments">
+        <h2>Comments</h2>
+        <br></br>
+        <h5>Evaluator's Comment: </h5>
+        <div className="comment-box">
+          <p>
+            {comment_evaluator.split("\n").map((item, key) => {
+              return (
+                <span key={key}>
+                  {item}
+                  <br />
+                </span>
+              );
+            })}
+          </p>
         </div>
         <br></br>
-
-        <h2>Job Performance assesment</h2><br></br>
-        <div className="charts">
-          <BarchartManagement data={data} dataKey="Evaluator" fill="#b5179e" />
-
-          <BarchartManagement data={data2} dataKey="mentor" fill="#008080" />
-        </div>
-
-        <h2>Core Values and objectives assesment</h2><br></br>
-        <div className="charts">
-          <BarchartManagement data={data3} dataKey="Evaluator" fill="#b5179e" />
-
-          <BarchartManagement data={data4} dataKey="mentor" fill="#008080" />
-        </div>
-
-        <div className="comments">
-  <h2>Comments</h2>
-  <br></br>
-  <h5>Evaluator's Comment: </h5>
-  <div className="comment-box">
-    <p>{comment_evaluator.split('\n').map((item, key) => {
-      return <span key={key}>{item}<br/></span>
-    })}</p>
-  </div>
-  <br></br>
-  <h5>Mentor's Comment: </h5>
-  <div className="comment-box">
-    <p>{comment_mentor.split('\n').map((item, key) => {
-      return <span key={key}>{item}<br/></span>
-    })}</p>
-  </div>
-</div>
-<h2>Actions Taken by Mentor</h2><br></br>
+        <h5>Mentor's Comment: </h5>
         <div className="comment-box">
-  <p>{action_taken_mentor.split('\n').map((item, key) => {
-    return <span key={key}>{item}<br/></span>
-  })}</p>
-</div>
+          <p>
+            {comment_mentor.split("\n").map((item, key) => {
+              return (
+                <span key={key}>
+                  {item}
+                  <br />
+                </span>
+              );
+            })}
+          </p>
+        </div>
       </div>
-    
+      <h2>Actions Taken by Mentor</h2>
+      <br></br>
+      <div className="comment-box">
+        <p>
+          {action_taken_mentor.split("\n").map((item, key) => {
+            return (
+              <span key={key}>
+                {item}
+                <br />
+              </span>
+            );
+          })}
+        </p>
+      </div>
+    </div>
   );
 }
 

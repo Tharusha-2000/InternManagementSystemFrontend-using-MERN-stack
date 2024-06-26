@@ -22,7 +22,9 @@ useEffect(() => {
         const userId = decoded.payloadObj.id;
         console.log(userId);
 
+
         const response = await axios.get(`${BASE_URL}getCommentsById`, {
+
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -64,4 +66,6 @@ useEffect(() => {
       </Box>
     </>
   );
+
 }
+
