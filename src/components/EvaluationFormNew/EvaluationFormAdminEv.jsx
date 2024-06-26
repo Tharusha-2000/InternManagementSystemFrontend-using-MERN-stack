@@ -259,10 +259,7 @@ function EvaluationFormAdminEv({ evaluationFormDetailsId,handleSave, additionalC
   
   
   <br></br>
-  <Box display="flex" alignItems="center" justifyContent="space-between">
-  <Typography variant="h6" sx={{ paddingLeft: '20px' }}>Total points</Typography>
-  <TextField />
-</Box>
+
 
 
   
@@ -273,49 +270,10 @@ function EvaluationFormAdminEv({ evaluationFormDetailsId,handleSave, additionalC
     OVERALL PERFORMANCE
   </Typography>
   <br></br>
-  <TableContainer component={Paper}>
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell align="left" colSpan={1}>
-            <Typography variant="h6">criteria</Typography>
-          </TableCell>
-          {['a', 'b', 'c', 'd', 'e'].map((value, num) => (
-            <TableCell key={num} align="center">
-              <Typography variant="h6">{num + 1}</Typography>
-            </TableCell>
-          ))}
-          <TableCell align="center">
-            <Typography variant="h6">Weight</Typography>
-          </TableCell>
-        </TableRow>
-      </TableHead>
-
-      <TableBody>
-        <TableRow>
-          <TableCell component="th" scope="row">
-            Overall Performance
-          </TableCell>
-          {['a', 'b', 'c', 'd', 'e'].map((value, num) => (
-            <TableCell key={num} align="center">
-              <Radio
-                value={num + 1}
-                disabled
-                
-                // Add your radio button properties here
-              />
-            </TableCell>
-          ))}
-          <TableCell align="center">
-            <TextField
-            disabled
-              // Add your TextField properties here
-            />
-          </TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
-  </TableContainer>
+  <Box display="flex" alignItems="center" justifyContent="space-between">
+  <Typography variant="h6" sx={{ paddingLeft: '20px' }}>Mean Score</Typography>
+  <TextField disabled={true}/>
+</Box>
 </Container>
 
 <br></br><br></br>

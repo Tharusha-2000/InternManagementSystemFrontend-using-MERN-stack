@@ -23,8 +23,8 @@ function EvaluationFormAdminMen({ mentorName: selectedMentorName, evaluationForm
     "Cooperation - Willingness to work harmoniously with others in getting a job done.",
     "Decision-making - The ability to make decisions and the quality and timeliness of those decisions",
     "Compliance and Professionalism",
-    "This is new initial crititia",
-    // Add more initial criteria as needed
+    "Attendance -Consistency in coming to work daily and conforming to scheduled work hours.",
+    // can Add more initial crteria as needed
   ];
 
 
@@ -274,49 +274,10 @@ function EvaluationFormAdminMen({ mentorName: selectedMentorName, evaluationForm
     OVERALL PERFOMANCE
   </Typography>
   <br></br>
-  <TableContainer component={Paper}>
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell align="left" colSpan={1}>
-            <Typography variant="h6"></Typography>
-          </TableCell>
-          {['a', 'b', 'c', 'd', 'e'].map((value, num) => (
-            <TableCell key={num} align="center">
-              <Typography variant="h6">{num + 1}</Typography>
-            </TableCell>
-          ))}
-          <TableCell align="center">
-            <Typography variant="h6">Weight</Typography>
-          </TableCell>
-        </TableRow>
-      </TableHead>
-
-      <TableBody>
-        <TableRow>
-          <TableCell component="th" scope="row">
-            Overall Performance 
-          </TableCell>
-          {['a', 'b', 'c', 'd', 'e'].map((value, num) => (
-            <TableCell key={num} align="center">
-              <Radio
-                value={num + 1}
-                disabled={true}
-                // Add your radio button properties here
-              />
-            </TableCell>
-          ))}
-          <TableCell align="center">
-            <TextField
-             disabled={true}
-
-              // Add your TextField properties here
-            />
-          </TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
-  </TableContainer>
+  <Box display="flex" alignItems="center" justifyContent="space-between">
+  <Typography variant="h6" sx={{ paddingLeft: '20px' }}>Mean Score</Typography>
+  <TextField disabled={true}/>
+</Box>
 </Container>
 
 

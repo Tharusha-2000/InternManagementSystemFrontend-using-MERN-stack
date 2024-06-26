@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from '../../config';
-
 import {
   Button,
   Dialog,
@@ -35,10 +34,8 @@ import { jwtDecode } from "jwt-decode";
 import { useMediaQuery, useTheme } from '@mui/material';
 
 function internTable({ rows }) {
-  //const [DialogIsOpen, setDialogIsOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
   const [data, setData] = useState([]);
-  
   const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
   const [isComplete, setIsComplete] = useState(false);
@@ -46,21 +43,21 @@ function internTable({ rows }) {
 const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   {/* get details in database */}
+
   const token = localStorage.getItem('token');
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role;
   if (userRole !== 'admin') {
-    return null; // Do not render the component
+    return null;
   }
  
   useEffect(() => {
     axios
-      .get(`${BASE_URL}interns`,{
+      .get(`${BASE_URL}interns`, {
         headers: {
-        Authorization: `Bearer ${token}`,
-    },
-  })
-
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((result) => {
         setFilteredData(result.data.interns);
         setData(result.data.interns);
@@ -70,9 +67,6 @@ const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
       })
       .catch((err) => console.log(err));
   }, [data]);
-
-
-   {/* handel complete notcomplete profile button*/}
 
   const Android12Switch = styled(Switch)(({ theme }) => ({
     padding: 8,
@@ -106,7 +100,6 @@ const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
       margin: 2,
     },
   }));
-
 
 
 // creating filter function
@@ -173,10 +166,10 @@ const SetDataChange = (internId, newData) => {
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
             <SearchIcon />
           </IconButton>
+
         </Paper>
-      
       </Grid>
-     
+
       <Divider/>
       
       <TableContainer  >
@@ -282,6 +275,7 @@ const SetDataChange = (internId, newData) => {
    </Grid>  
  </Grid>
   
+
   );
 }
 
