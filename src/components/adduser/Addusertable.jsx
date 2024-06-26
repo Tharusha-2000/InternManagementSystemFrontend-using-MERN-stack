@@ -214,10 +214,10 @@ const SetRoleChange = (userid, newRole) => {
 
 
 return (
-<Grid>   
-   <Grid> 
+  <Grid > 
+  <Grid item xs={12} sm={6} md={4} lg={3}>
    <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
-   <div>
+
     <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
       <Typography variant="h4" gutterBottom align="center" 
       sx={{
@@ -239,7 +239,7 @@ return (
             p: "2px 4px",
             display: "flex",
             alignItems: "center",
-            width: "100vh",
+            width: { xs: "70%", sm: "80%", md: "90%" },
             borderRadius: "20px",
             boxShadow: 3,
             marginLeft: "1%",
@@ -383,7 +383,7 @@ return (
           </TableBody>
         </Table>
       </TableContainer>
-   </div>
+  
    </Paper>
    </Grid>      
   </Grid>

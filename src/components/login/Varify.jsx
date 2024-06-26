@@ -189,7 +189,7 @@ function Varify() {
 
 
   const resendOTP = () => {
-    
+    setOtp("");
     if(!email){
       Swal.fire({ position: "top",
       text: "cannot resend OTP without email address",
@@ -209,7 +209,7 @@ function Varify() {
               //  window.alert(result.data.msg);   
                }
             }
-            setOtp("");
+            
           });
       
       };
