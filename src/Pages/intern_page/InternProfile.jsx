@@ -422,15 +422,8 @@ return (
                         <FormControl sx={{ flexGrow: 1 }}>
                           <FormLabel>mentor Email </FormLabel>
                         
-                        </FormControl>
-                        <FormControl
-                          sx={{
-                            flexGrow: 1,
-                            position: "relative",
-                            minWidth: 100,
-                            maxWidth: "178px",
-                          }}
-                        >   
+                     
+                        
                         <Input
                         size="sm"
                         type="email"
@@ -439,7 +432,8 @@ return (
                         readOnly
                         sx={{ flexGrow: 1 }}
                       />
-                          
+                         </FormControl>
+                         <FormControl> 
                           <FormLabel
                             htmlFor="mentor-select"
                             sx={{ mb: 1, color: "#20262D" }}

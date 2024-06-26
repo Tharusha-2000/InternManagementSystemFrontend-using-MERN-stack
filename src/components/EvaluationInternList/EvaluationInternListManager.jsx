@@ -84,7 +84,9 @@ function EvaluationInternListManager() {
   };
 
   return (
-    <div>
+    <Grid container spacing={1}>
+    <Grid item xs={12} >
+
       <Typography variant="h4" gutterBottom align="center">
         All Evaluations
       </Typography>
@@ -270,7 +272,8 @@ function EvaluationInternListManager() {
           />
         </DialogContent>
       </Dialog>
-    </div>
+    </Grid>
+  </Grid>
   );
 }
 
