@@ -207,7 +207,7 @@ const handleClearSearch = () => {
                 
                 <TableCell sx={{ fontSize: "1em" }}>{intern.email}</TableCell>
                 <TableCell >
-                 <Box display="flex" alignItems="center">
+                 <Box display="flex" alignItems="center"style={{ marginRight: '80px' }}>
                  <Box style={{ marginRight: '10px' }}>
                    <Typography>
                    { role !== 'admin' ? <Interndetails internId={intern._id} /> : <div style={{ width: '20px' }} /> }
