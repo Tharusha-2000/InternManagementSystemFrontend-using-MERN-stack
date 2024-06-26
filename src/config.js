@@ -2,7 +2,7 @@
 
 
 
-export const BASE_URL = 'http://localhost:8900/api/users/';
+export const BASE_URL = 'https://imsfrontend.vercel.app/api/users/';
 
 
 
