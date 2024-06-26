@@ -210,6 +210,7 @@ function Varify() {
                }
             }
           });
+          setOtp("");
       
       };
 
