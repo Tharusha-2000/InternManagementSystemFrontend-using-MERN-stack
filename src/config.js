@@ -1,7 +1,7 @@
 // config.js
 
 
-export const BASE_URL = 'https://imsbackend.vercel.app/api/users/';
+export const BASE_URL = 'http://localhost:8900/api/users/';
 
 
 

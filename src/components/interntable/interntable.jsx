@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from '../../config';
-
 import {
   Button,
   Dialog,
@@ -35,29 +34,25 @@ import { jwtDecode } from "jwt-decode";
 
 
 function internTable({ rows }) {
-  //const [DialogIsOpen, setDialogIsOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
   const [data, setData] = useState([]);
-  
   const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
   const [isComplete, setIsComplete] = useState(false);
-  {/* get details in database */}
   const token = localStorage.getItem('token');
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role;
   if (userRole !== 'admin') {
-    return null; // Do not render the component
+    return null;
   }
  
   useEffect(() => {
     axios
-      .get(`${BASE_URL}interns`,{
+      .get(`${BASE_URL}interns`, {
         headers: {
-        Authorization: `Bearer ${token}`,
-    },
-  })
-
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((result) => {
         setFilteredData(result.data.interns);
         setData(result.data.interns);
@@ -67,9 +62,6 @@ function internTable({ rows }) {
       })
       .catch((err) => console.log(err));
   }, [data]);
-
-
-   {/* handel complete notcomplete profile button*/}
 
   const Android12Switch = styled(Switch)(({ theme }) => ({
     padding: 8,
@@ -103,7 +95,6 @@ function internTable({ rows }) {
       margin: 2,
     },
   }));
-
 
 
 // creating filter function
@@ -170,9 +161,10 @@ const SetDataChange = (internId, newData) => {
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
             <SearchIcon />
           </IconButton>
+
         </Paper>
-      
       </Grid>
+
       <Divider/>
       
       <TableContainer>
@@ -281,6 +273,7 @@ const SetDataChange = (internId, newData) => {
       
  </Grid>
   
+
   );
 }
 
