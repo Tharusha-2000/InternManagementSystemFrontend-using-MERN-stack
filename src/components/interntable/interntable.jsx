@@ -25,7 +25,6 @@ import {
   Avatar,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { styled } from '@mui/material/styles';
 import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
@@ -60,7 +59,6 @@ function internTable({ rows }) {
   })
 
       .then((result) => {
-        console.log(result.data.interns); 
         setFilteredData(result.data.interns);
         setData(result.data.interns);
         if (result.data.interns.interviewScore) {
@@ -68,7 +66,7 @@ function internTable({ rows }) {
         }
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [data]);
 
 
    {/* handel complete notcomplete profile button*/}
@@ -124,7 +122,15 @@ const Filter = (event) => {
     )
   );
 };
-
+const SetDataChange = (internId, newData) => {
+  console.log(internId, newData);
+  const updatedData = data.map(intern =>
+    intern._id === internId ? { ...intern, data: newData } : intern
+  );
+  console.log(updatedData);
+  setData(updatedData);
+  setFilteredData(updatedData);
+};
 
   return (
  <Grid>  
@@ -152,7 +158,7 @@ const Filter = (event) => {
             p: "2px 4px",
             display: "flex",
             alignItems: "center",
-            width: "120vh",
+             width: { xs: "90%", sm: "80%", md: "90%" },
             borderRadius: "20px",
             boxShadow: 3,
             marginLeft: "1%",
@@ -227,7 +233,7 @@ const Filter = (event) => {
           <TableBody>
             {filteredData.map((intern) => (
                
-              <TableRow key={intern._id}>
+              <TableRow key={intern._id} >
                  <TableCell align="left">
                       <Box display="flex" alignItems="center">
                         <Avatar src={intern.imageUrl} alt={`${intern.fname} ${intern.lname}`} style={{ marginRight: '20px' }} />
@@ -243,7 +249,7 @@ const Filter = (event) => {
                 <TableCell sx={{ fontSize: "1em" }}>{intern.email}</TableCell>
                 <TableCell>
                  <Box display="flex" alignItems="center">
-                    <Interndetails internId={intern._id} />
+                    <Interndetails internId={intern._id}  onDataChange={SetDataChange} />
                    
                   </Box>
                 </TableCell>

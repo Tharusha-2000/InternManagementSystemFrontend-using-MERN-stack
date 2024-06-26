@@ -222,7 +222,7 @@ const handleSubmit = (e) => {
             spacing={4}
             sx={{
               display: "flex",
-              maxWidth: "1000px",
+              maxWidth: "800px",
               mx: "auto",
               px: { xs: 2, md: 6 },
               py: { xs: 2, md: 3 },

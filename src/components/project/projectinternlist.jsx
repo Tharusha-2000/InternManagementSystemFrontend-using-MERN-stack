@@ -210,7 +210,7 @@ const handleClearSearch = () => {
                  <Box display="flex" alignItems="center">
                  <Box style={{ marginRight: '10px' }}>
                    <Typography>
-                      { role !== 'admin' && <Interndetails internId={intern._id} />}
+                   { role !== 'admin' ? <Interndetails internId={intern._id} /> : <div style={{ width: '20px' }} /> }
                     </Typography>
                     {role !== 'admin' && (
                     <Typography color="textSecondary" style={{ fontSize: '0.7rem',marginLeft: '10px' }}>
@@ -218,7 +218,20 @@ const handleClearSearch = () => {
                     </Typography>
                      )}
                     </Box>
-                  
+                
+
+                    <Box style={{ marginRight: '10px' }}>
+                      
+                   <Typography>
+                   { role !== 'admin' ? <ViewCVfiles internId={intern._id} /> : <div style={{ width: '20px' }} /> }
+                    </Typography>
+                    {role !== 'admin' && (
+                        <Typography color="textSecondary" style={{ fontSize: '0.7rem',marginLeft: '20px' }}>
+                          CV
+                       </Typography>
+                      )}
+                    </Box>
+                      
                    <Box style={{ marginRight: '10px' }}>
                    <Typography>
                     <ProjectTask  internId={intern._id}/>
@@ -226,18 +239,6 @@ const handleClearSearch = () => {
                     <Typography color="textSecondary" style={{ fontSize: '0.7rem' ,marginLeft: '10px'}}>
                         Tasks
                     </Typography>
-                    </Box>
-
-                    <Box style={{ marginRight: '10px' }}>
-                      
-                   <Typography>
-                   { role !== 'admin' && < ViewCVfiles internId={intern._id} />}
-                    </Typography>
-                    {role !== 'admin' && (
-                        <Typography color="textSecondary" style={{ fontSize: '0.7rem',marginLeft: '15px' }}>
-                          CV
-                       </Typography>
-                      )}
                     </Box>
 
                   </Box>

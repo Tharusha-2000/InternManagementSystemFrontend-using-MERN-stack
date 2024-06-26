@@ -265,7 +265,11 @@ function Varify() {
           gap: 2,
           borderRadius: "sm",
           boxShadow: "md",
-          backgroundColor: "rgba(190, 216, 230, 0.9)",
+            backgroundColor: 'rgba(190, 216, 230, 0.93)',
+          '&:hover': { 
+            transform: 'scale(1.02)', 
+            boxShadow: 'lg',
+          },
         }}
         variant="outlined"
       >
