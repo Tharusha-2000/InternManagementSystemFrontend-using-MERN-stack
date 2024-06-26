@@ -43,27 +43,22 @@ function EvaluationFormMentor({
     if (!validateInputs()) {
       return;
     }
-
-    handleClose();
+  
+    handleClose(); // Close the form
+  
     try {
-      const response = await axios.post(`${BASE_URL}storeMentorScores/${internId}`, {
-        coreValuesScoresMentor: coreValuesRatings.map((rating) => rating * 20),
-        jobPerformanceScoresMentor: ratings.map((rating) => rating * 20),
-        overall_performance_mentor: overallPerformanceRating,
-        action_taken_mentor: actionTakenMentor,
-        comment_mentor: commentMentor,
-      }, {
-        headers: {
-          
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    
-      console.log(response.data);
+  
+  
+      console.log("Response from server:", response.data);
+      setRefreshKey(refreshKey + 1); // Refresh the data if needed
     } catch (error) {
-      console.error("Error:", error.response ? error.response.data : error.message);
+      console.error(
+        "Error saving data:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
+  
 
   const validateInputs = () => {
     let errors = [];
@@ -84,9 +79,7 @@ function EvaluationFormMentor({
       errors.push("All Core Values Criteria must be rated");
     }
 
-    if (overallPerformanceRating === 0) {
-      errors.push("Overall Performance must be rated");
-    }
+    
 
     if (errors.length > 0) {
       Swal.fire({
@@ -135,19 +128,13 @@ function EvaluationFormMentor({
     const fetchEvaluationData = async () => {
       if (isMentorFormFilled) {
         try {
-          const response = await fetch(
-            `${BASE_URL}getReviewDetailsById/${internId}`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
+          const response = await axios.get(`${BASE_URL}getReviewDetailsById/${internId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          const data = response.data;
           
           setJobPerformanceScoresMentor(
             data.job_performance_scores_mentor.map((score) => score / 20)
@@ -160,14 +147,12 @@ function EvaluationFormMentor({
           setActionTakenMentor(data.action_taken_mentor);
         } catch (error) {
           console.error("Fetching evaluation data failed:", error);
-         
         }
       }
     };
 
     fetchEvaluationData();
-  }, [isEvaluated, isMentorFormFilled, internId, token]); 
-
+  }, [isEvaluated, isMentorFormFilled, internId, token]);
   return (
     <div>
       <Typography variant="h4" align="center" style={{ margin: "20px 0" }}>
