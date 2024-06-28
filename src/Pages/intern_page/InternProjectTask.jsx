@@ -335,7 +335,14 @@ function TaskTable() {
     variant="contained"
     type="submit"
     onClick={addTask}
-    style={{ backgroundColor: '#e7004c', color: 'white' }}
+    sx={{
+      backgroundColor: '#e7004c',
+      color: 'white',
+      '&:hover': {
+        transform: 'scale(1.04)', 
+        boxShadow: 'lg',
+      },
+    }}
   >
     +ADD
   </Button>
