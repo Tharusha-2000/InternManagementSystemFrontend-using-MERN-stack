@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, TextField, Grid, Paper, Typography, Container } from '@mui/material';
 import axios from 'axios'; 
 import Swal from 'sweetalert2';
-import { BASE_URL } from './config';
+import { BASE_URL } from '../../config';
 
 const EmailForm = () => {
   const token = localStorage.getItem('token');

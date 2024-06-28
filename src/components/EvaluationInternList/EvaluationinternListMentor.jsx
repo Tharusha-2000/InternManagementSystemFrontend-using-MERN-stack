@@ -83,7 +83,9 @@ function EvaluationinternListMentor() {
   };
 
   return (
-    <div>
+    <Grid container spacing={1}>
+    <Grid item xs={12} >
+
        <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
       <Typography variant="h4" gutterBottom align="center">
         All Evaluations
@@ -231,7 +233,8 @@ function EvaluationinternListMentor() {
         </Table>
       </TableContainer>
       </Paper>
-    </div>
+    </Grid>
+    </Grid>
   );
 }
 

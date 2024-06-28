@@ -19,7 +19,6 @@ import { Box,
         TableContainer,
         TableHead,
         Paper,
-        Grid,
         Select,
         TextField } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -34,7 +33,7 @@ import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
 
 export default function AdminDashboard() {
-  const [leaveApplications, setLeaveApplications] = useState([]);
+
   const [data, setData] = useState({
 
     fname: "",
@@ -210,644 +209,640 @@ export default function AdminDashboard() {
         };
         
 
-        const [leaveOpen, setLeaveOpen] = useState(null);
+        const [leaveOpen, setLeaveOpen] = useState(false);
         const [formData, setFormData] = useState({ userId: '', leaveDate: '', reason: '' });
-        
-      
-        const handleLeaveClickOpen = (event) => {
-          setLeaveOpen(event.currentTarget);
+        const [errors, setErrors] = useState({ leaveDate: '', reason: '' });
+        const [leaveApplications, setLeaveApplications] = useState([]);
+        const handleLeaveClickOpen = () => {
+          setLeaveOpen(true);
         };
       
         const handleLeaveClose = () => {
           setLeaveOpen(false);
+          setErrors({ leaveDate: '', reason: '' }); // Clear errors when closing the form
         };
-       const handleLeaveChange = (event) => {
+      
+        const handleLeaveChange = (event) => {
           const { name, value } = event.target;
           setFormData({ ...formData, [name]: value });
         };
-        const handleSubmit = () => {
-
-          const leave = new Date(formData.leaveDate);
+      
+        const validateForm = () => {
+          const newErrors = { leaveDate: '', reason: '' };
+          const leaveDate = new Date(formData.leaveDate);
           const today = new Date();
-         if (leave <= today) {
-          Swal.fire({ position: "top",
-          text:"Date can not be past.",
-          customClass: {
-            container: 'my-swal',
-            confirmButton: 'my-swal-button' 
+          
+          // Set the time to 00:00:00 for both dates to compare only the date part
+          leaveDate.setHours(0, 0, 0, 0);
+          today.setHours(0, 0, 0, 0);
+      
+          if (leaveDate < today) {
+            newErrors.leaveDate = "Date cannot be in the past.";
           }
-        });
-        }
-
-          axios.post(`${BASE_URL}applyLeave`, formData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then(() => {
-            handleLeaveClose();
-            axios.get(`${BASE_URL}getLeaveApplications`, {
+      
+          if (!formData.reason) {
+            newErrors.reason = "Reason for leave is required.";
+          }
+      
+          setErrors(newErrors);
+          return !newErrors.leaveDate && !newErrors.reason;
+        };
+      
+        const handleSubmit = () => {
+          if (validateForm()) {
+            axios.post(`${BASE_URL}applyLeave`, formData, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             })
-            .then((result) => {
-              const leaveApplications = result.data.leaveApplications.flatMap(application => ({
-                ...application,
-                user: {
-                  fname: application.user.fname,
-                  lname: application.user.lname,
-                  jobTitle: application.user.jobtitle,
-                  imageUrl: application.user.imageUrl, 
-                }
-              }));
-              setLeaveApplications(leaveApplications);
+            .then(() => {
+              handleLeaveClose();
+              axios.get(`${BASE_URL}getLeaveApplications`, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then((result) => {
+                const leaveApplications = result.data.leaveApplications.flatMap(application => ({
+                  ...application,
+                  user: {
+                    fname: application.user.fname,
+                    lname: application.user.lname,
+                    jobTitle: application.user.jobtitle,
+                    imageUrl: application.user.imageUrl, 
+                  }
+                }));
+                setLeaveApplications(leaveApplications);
+              })
+              .catch((err) => console.log(err));
             })
-            .catch((err) => console.log(err));
-          })
-          .catch((error) => console.log(error));
-      };
-      
+            .catch((error) => console.log(error));
+          } else {
+            Swal.fire({
+              position: "top",
+              text: "Please fix the errors before submitting.",
+              customClass: {
+                container: 'my-swal',
+                confirmButton: 'my-swal-button',
+              }
+            });
+          }
+        };
      
 
-            return (
-              <>
-              <Grid > 
-   <Grid item xs={12} sm={6} md={4}>
-              <Header />
-              <Box height={60} />
-              <Box sx={{ display: 'flex' }}>
-              <AdminSidebar />
-              <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
-                
-                
-                {/* GRID & CHARTS */}
-                <Box
-                  display="grid"
-                  gridTemplateColumns="repeat(12, 1fr)"
-                  gridAutoRows="100px"
-                  gap="13px"
-                  sx={{ scrollbarWidth: 'thin',
-                    scrollbarColor: 'white white'}}
-                >
-                  {/* ROW 1 */}
+      return (
+      <>
+      <Header />
+      <Box height={60} />
+      <Box sx={{ display: 'flex' }}>
+      <AdminSidebar />
+      <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
 
-                  <Box
-          gridColumn="span 8"
-          gridRow="span 2"
-          borderRadius={4}  
-          boxShadow="1px 2px 5px rgba(0, 0, 0, 0.2)"
-          style={{ backgroundColor: 'lightsteelblue', }}
-          sx={{ maxWidth: 5000,
-              backgroundImage: `url('src/assets/office.png')`,
-              backgroundSize: '50%',
-              backgroundPosition: 'right',
-              backgroundRepeat: 'no-repeat',
-            }}
-        >
+      {/* GRID & CHARTS */}
         <Box
-            mt="1px" 
-            p="1px"
-            display="inline"
-            alignItems="right"
+            display="grid"
+            gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(12, 1fr)' }}
+            gridAutoRows="minmax(100px, auto)"
+            gap="13px"
           >
-          <Box sx={{  paddingLeft: '20px'}}>
-          <Typography
-              variant="h4"
-              fontWeight="bold"
-              color= '#000066'
+            {/* ROW 1 */}
+            <Box
+              gridColumn={{ xs: 'span 12', md: 'span 8' }}
+              gridRow="span 2"
+              borderRadius={4}
+              boxShadow="1px 2px 5px rgba(0, 0, 0, 0.2)"
+              sx={{
+                backgroundColor: 'lightsteelblue',
+                backgroundImage: `url('src/assets/office.png')`,
+                backgroundSize: { xs: '122%',sm: '100%', md: '50%' },
+                backgroundPosition: { xs: 'right', md: 'right' },
+                backgroundRepeat: 'no-repeat',
+                maxWidth: '5000px',
+              }}
             >
-              Hello <span style={{ color: colors.blueAccent[500] }}>{data.fname}</span>..!
-            </Typography>
-            <Typography
-                fontSize={14}
-                fontWeight="100"
-                color={colors.blueAccent[300]}
-                style={{ padding: '2px', marginBottom: '20px' }}
-              >
-                Welcome to the Intern Management System.....
-              </Typography>
+              <Box mt="1px" p="1px" display="inline" alignItems="right">
+                <Box sx={{ paddingLeft: '20px' }}>
+                  <Typography  fontWeight="bold" color="#000066" sx={{
+                    fontSize: {
+                      xs: '1.4rem',  
+                      sm: '1.9rem',   
+                      md: '2rem',  
+                      lg: '2rem',   
+                    },
+                  }}>
+                    Hello <span style={{ color: colors.blueAccent[500] }}>{data.fname}</span>..!
+                  </Typography>
+                  <Typography fontSize={14} fontWeight="100" color={colors.blueAccent[300]} style={{ padding: '2px', marginBottom: '20px' }}>
+                    Welcome to the Intern Management System
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
 
-          </Box>
-          </Box>
-        </Box>
-
-
-
-      {/* ROW 2 */}
-              <Box
-                gridColumn="span 4"
-                gridRow="span 7"
-                boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
-                display="flex"
-                alignItems="center"
-                borderRadius='18px'
-                flexDirection="column"
-                width="100%"  
-              >
+            {/* ROW 2 */}
+            <Box
+              gridColumn={{ xs: 'span 12', md: 'span 4' }}
+              gridRow={{ xs: 'span 5', md: 'span 5' }}
+              boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
+              display="flex"
+              alignItems="center"
+              borderRadius="18px"
+              flexDirection="column"
+              sx={{ backgroundColor: 'white', width: '100%' }}
+            >
               <Box
                 sx={{
-                  backgroundColor: colors.blueAccent[300], // dark blue color
+                  backgroundColor: colors.blueAccent[300],
                   color: 'white',
                   borderRadius: '12px 12px 0 0',
                   width: '100%',
                   textAlign: 'left',
                   padding: '9px 15px',
-                  position: 'relative', // Add this line
+                  position: 'relative',
+                }}
+              >
+                <Typography variant="h6" component="h3" sx={{ fontSize: '1.2rem' }}>
+                  Work Schedule
+                </Typography>
+                <Typography variant="subtitle1" component="div" sx={{ fontStyle: 'bold',fontSize: '0.8rem', color: '#E97451' }}>
+                  {currentDate.toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                  })}
+                </Typography>
+                <IconButton
+                  variant="outlined"
+                  color="warning"
+                  onClick={handleOpen}
+                  sx={{
+                    position: 'absolute',
+                    bottom: '5%',
+                    right: '8px',
+                    padding: '12px 24px',
                   }}
                 >
-                      <Typography variant="h6" component="h3" sx={{ fontSize: '1.2rem' }}>
-                             Work Schedule
-                      </Typography>
-                      <Typography variant="subtitle1" component="div" sx={{ fontSize: '1rem', color: '#E97451' }} >
-                        {currentDate.toLocaleDateString('en-US', {
-                          weekday: 'short',
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric',
-                        })}
-                      </Typography>
-                      <IconButton
-                          variant="outlined"
-                          color="warning"
-                          onClick={handleOpen}
-                          sx={{
-                            position: 'absolute',
-                            bottom: '5%',
-                            right: '8px',
-                            padding: '12px 24px',
-                          }}
-                        >
-                          <CalendarMonthRoundedIcon sx={{ color: '#E97451', fontSize: '3rem' }} />
+                  <CalendarMonthRoundedIcon sx={{ color: '#E97451', fontSize: '3rem' }} />
+                </IconButton>
+                <Modal open={open} onClose={handleClose} aria-labelledby="calendar-modal-title" aria-describedby="calendar-modal-description">
+                  <Box sx={{ 
+                    marginTop: '5%', 
+                    marginLeft: '25%', 
+                    height: '600px', 
+                    width: '700px', 
+                    backgroundColor: 'background.default', 
+                    position: 'relative' 
+                    }}>
+                    {/* Close Icon Button */}
+                    <IconButton
+                      onClick={handleClose}
+                      sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: 'grey',
+                      }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                    <Calendar />
+                  </Box>
+                </Modal>
+              </Box>
+              <Calender />
+              <hr style={{ width: '85%', borderColor: 'darkblue', border: '2px solid darkblue' }} />
+              <Box sx={{ width: '100%', maxHeight: '300px', overflowY: 'auto', padding: '1px 8px', backgroundColor: 'white', borderRadius: '0 0 12px 12px' }}>
+                <ul style={{ listStyleType: 'none', padding: 0 }}>
+                  {data.schedules && data.schedules.map((schedule, index) => (
+                    <li key={index} style={{ display: 'flex', flexDirection: 'column', border: '1px solid lightblue', boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.2)', justifyContent: 'space-between', marginBottom: '8px', backgroundColor: 'white', borderRadius: '8px', padding: '8px', color: 'gray' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="body1" style={{ color: 'darkblue' }}>
+                          {schedule.title}
+                        </Typography>
+                        <IconButton onClick={() => deleteSchedule(schedule._id)} sx={{ fontSize: '15px' }}>
+                          <DeleteOutlineIcon sx={{ fontSize: 'inherit' }} />
                         </IconButton>
-                        <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="calendar-modal-title"
-                aria-describedby="calendar-modal-description"
-              >
-                <Box sx={{
-                  marginTop: '5%', 
-                  marginLeft: '25%',
-                  height: '600px', 
-                  width: '700px', 
-                  backgroundColor: 'background.default', 
-                  position: 'relative', 
-                }}>
-                  {/* Close Icon Button */}
-                  <IconButton
-                    onClick={handleClose}
-                    sx={{
-                      position: 'absolute',
-                      right: 8,
-                      top: 8,
-                      color: 'grey', 
-                    }}
-                  >
-                    <CloseIcon />
-                  </IconButton>
+                      </div>
+                      <div style={{ alignSelf: 'flex-start' }}>
+                        <Typography variant="body2">
+                          {new Date(schedule.start).toLocaleString()} - {new Date(schedule.end).toLocaleString()}
+                        </Typography>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </Box>
+            </Box>
+        {/* ROW 3 */}
 
-                  <Calendar />
-                </Box>
-              </Modal>
-                    </Box>
-                    <Calender />
-                    <hr style={{ width: '85%', borderColor: 'darkblue', border: '2px solid darkblue' }} />
+          <Box
+            gridColumn={{ xs: 'span 12', md: 'span 2' }}
+            backgroundColor="white"
+            border="2px solid #91C1DE"
+            boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            borderRadius="8px"
+          >
+            <Box
+              width="100%"
+              m="0 1px"
+              position="relative"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+            >
+              <IconButton
+                aria-label="settings"
+                sx={{
+                  position: 'absolute',
+                  top: -40,
+                  right: 0,
+                }}
+                onClick={handleInternListClick}
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+              <Menu
+                id="intern-menu"
+                anchorEl={internAnchorEl}
+                keepMounted
+                open={Boolean(internAnchorEl)}
+                onClose={handleInternListClose}
+              >
+                {showInternList && users.map((user) => (
+                  user.role.toLowerCase() === 'intern' && (
+                    <MenuItem key={user._id} onClick={handleInternListClose}>
+                      <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
+                      <div>
+                        {`${user.fname} ${user.lname}`}
+                        <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
+                          {user.jobtitle}
+                        </Typography>
+                      </div>
+                    </MenuItem>
+                  )
+                ))}
+              </Menu>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{
+                  position: 'absolute',
+                  top: -40,
+                  left: 10,
+                  color: '#000066'
+                }}
+              >
+                Interns
+              </Typography>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{
+                  position: 'absolute',
+                  top: 2,
+                  left: 50,
+                  color: colors.greenAccent[500]
+                }}
+              >
+                {`${internCount}`}
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box
+            gridColumn={{ xs: 'span 12', md: 'span 2' }}
+            backgroundColor="white"
+            border="2px solid #91C1DE"
+            boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            borderRadius="8px"
+          >
+            <Box
+              width="100%"
+              m="0 1px"
+              position="relative"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+            >
+              <IconButton
+                aria-label="settings"
+                sx={{
+                  position: 'absolute',
+                  top: -40,
+                  right: 0,
+                }}
+                onClick={handleMentorListClick}
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+              <Menu
+                id="mentor-menu"
+                anchorEl={mentorAnchorEl}
+                keepMounted
+                open={Boolean(mentorAnchorEl)}
+                onClose={handleMentorListClose}
+              >
+                {showMentorList && users.map((user) => (
+                  user.role.toLowerCase() === 'mentor' && (
+                    <MenuItem key={user._id} onClick={handleMentorListClose}>
+                      <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
+                      <div>
+                        {`${user.fname} ${user.lname}`}
+                        <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
+                          {user.jobtitle}
+                        </Typography>
+                      </div>
+                    </MenuItem>
+                  )
+                ))}
+              </Menu>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{
+                  position: 'absolute',
+                  top: -40,
+                  left: 10,
+                  color: '#000066'
+                }}
+              >
+                Mentors
+              </Typography>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{
+                  position: 'absolute',
+                  top: 2,
+                  left: 50,
+                  color: colors.greenAccent[500]
+                }}
+              >
+                {`${mentorCount}`}
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box
+            gridColumn={{ xs: 'span 12', md: 'span 2' }}
+            backgroundColor="white"
+            border="2px solid #91C1DE"
+            boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            borderRadius="8px"
+          >
+            <Box
+              width="100%"
+              m="0 1px"
+              position="relative"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+            >
+              <IconButton
+                aria-label="settings"
+                sx={{
+                  position: 'absolute',
+                  top: -40,
+                  right: 0,
+                }}
+                onClick={handleEvaluatorListClick}
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+              <Menu
+                id="evaluator-menu"
+                anchorEl={evaluatorAnchorEl}
+                keepMounted
+                open={Boolean(evaluatorAnchorEl)}
+                onClose={handleEvaluatorListClose}
+              >
+                {showEvaluatorList && users.map((user) => (
+                  user.role.toLowerCase() === 'evaluator' && (
+                    <MenuItem key={user._id} onClick={handleEvaluatorListClose}>
+                      <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
+                      <div>
+                        {`${user.fname} ${user.lname}`}
+                        <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
+                          {user.jobtitle}
+                        </Typography>
+                      </div>
+                    </MenuItem>
+                  )
+                ))}
+              </Menu>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{
+                  position: 'absolute',
+                  top: -40,
+                  left: 10,
+                  color: '#000066'
+                }}
+              >
+                Evaluators
+              </Typography>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{
+                  position: 'absolute',
+                  top: 2,
+                  left: 50,
+                  color: colors.greenAccent[500]
+                }}
+              >
+                {`${evaluatorCount}`}
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box
+            gridColumn={{ xs: 'span 12', md: 'span 2' }}
+            backgroundColor="white"
+            border="2px solid #91C1DE"
+            boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            borderRadius="8px"
+          >
+            <Box
+              width="100%"
+              m="0 1px"
+              position="relative"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+            >
+              <IconButton
+                aria-label="settings"
+                sx={{
+                  position: 'absolute',
+                  top: -40,
+                  right: 0,
+                }}
+                onClick={handleManagerListClick}
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+              <Menu
+                id="manager-menu"
+                anchorEl={managerAnchorEl}
+                keepMounted
+                open={Boolean(managerAnchorEl)}
+                onClose={handleManagerListClose}
+              >
+                {showManagerList && users.map((user) => (
+                  user.role.toLowerCase() === 'manager' && (
+                    <MenuItem key={user._id} onClick={handleManagerListClose}>
+                      <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
+                      <div>
+                        {`${user.fname} ${user.lname}`}
+                        <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
+                          {user.jobtitle}
+                        </Typography>
+                      </div>
+                    </MenuItem>
+                  )
+                ))}
+              </Menu>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{
+                  position: 'absolute',
+                  top: -40,
+                  left: 10,
+                  color: '#000066'
+                }}
+              >Managers
+              </Typography>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ 
+                  position: 'absolute',
+                  top: 2, 
+                  left: 50,
+                  color: colors.greenAccent[500] 
+                }}
+              >
+              {`${managerCount}`}
+              </Typography>
+            </Box>
+            </Box>
+          {/* ROW 4 */}
+            <Box
+              gridColumn={{ xs: 'span 12', md: 'span 8' }}
+              gridRow="span 2"
+              borderRadius={4}
+              boxShadow="1px 2px 5px rgba(0, 0, 0, 0.2)"
+              sx={{
+                maxWidth: '5000px',
+              }}
+            >
+              <TableContainer component={Paper} sx={{ borderRadius: '8px', width: '100%' }}>
+                <Table sx={{ width: '100%' }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow sx={{ backgroundColor: '#3f51b5' }}>
+                      <TableCell align="center" sx={{ height: '10px' }}>
+                        <Typography variant="h6" component="h3" sx={{ fontSize: '1.2rem', color: 'white' }}>
+                          Employee Leave
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                    <Box className="buttonContainer" sx={{ textAlign: 'center' }}>
+                      {!leaveOpen && (
+                        <Button
+                          variant="contained"
+                          className="button"
+                          onClick={handleLeaveClickOpen}
+                          sx={{ margin: '10px 0' }}
+                        >
+                          + Apply Leave
+                        </Button>
+                      )}
+                      {leaveOpen && (
                         <Box
                           sx={{
-                            width: '100%',
-                            maxHeight: '300px',
-                            overflowY: 'auto', 
-                            padding: '1px 8px',
-                            backgroundColor: 'white', 
-                            borderRadius: '0 0 12px 12px',
-                            scrollbarWidth: 'thin',
-                            scrollbarColor: 'white white',
+                            marginTop: '22px',
+                            maxWidth: '600px',
+                            margin: '0 auto',
+                            padding: '20px',
+                            border: '1px solid #ccc',
+                            borderRadius: '4px',
+                            backgroundColor: '#fff',
+                            textAlign: 'left'
                           }}
                         >
-                           <ul style={{ listStyleType: 'none', padding: 0 }}>
-                              {data.schedules && data.schedules.map((schedule, index) => (
-                                <li key={index} style={{ display: 'flex', flexDirection: 'column',border: '1px solid lightblue', boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.2)' ,justifyContent: 'space-between', marginBottom: '8px', backgroundColor: 'white', borderRadius: '8px', padding: '8px', color: 'gray' }}>
-                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <Typography variant="body1" style={{ color: 'darkblue' }}>
-                                      {schedule.title}
-                                    </Typography>
-                                    <IconButton onClick={() => deleteSchedule(schedule._id)} sx={{ fontSize: '15px' }}>
-                                      <DeleteOutlineIcon sx={{ fontSize: 'inherit' }}/>
-                                    </IconButton>
-                                  </div>
-                                  <div style={{ alignSelf: 'flex-start' }}>
-                                    <Typography variant="body2">
-                                      {new Date(schedule.start).toLocaleString()} - {new Date(schedule.end).toLocaleString()}
-                                    </Typography>
-                                    </div>
-                                </li>
-                              ))}
-                            </ul>
+                          <Box>
+                            <TextField
+                              label="Name"
+                              value={data.fname}
+                              onChange={handleLeaveChange}
+                              inputProps={{ 'aria-label': 'Without label', readOnly: true }}
+                              fullWidth
+                              sx={{ marginBottom: '20px' }}
+                            />
+                            <TextField
+                              margin="dense"
+                              name="leaveDate"
+                              label="Leave Date"
+                              type="date"
+                              fullWidth
+                              InputLabelProps={{ shrink: true }}
+                              value={formData.leaveDate}
+                              onChange={handleLeaveChange}
+                              error={!!errors.leaveDate}
+                              helperText={errors.leaveDate}
+                              sx={{ marginBottom: '20px' }}
+                            />
+                          </Box>
+                          <Box>
+                            <TextField
+                              margin="dense"
+                              name="reason"
+                              label="Reason For Leave"
+                              type="text"
+                              fullWidth
+                              multiline
+                              rows={4}
+                              value={formData.reason}
+                              onChange={handleLeaveChange}
+                              error={!!errors.reason}
+                              helperText={errors.reason}
+                              sx={{ marginBottom: '20px' }}
+                            />
+                          </Box>
+                          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <Button onClick={handleSubmit} sx={{ marginRight: '10px' }}>Apply</Button>
+                            <Button onClick={handleLeaveClose}>Cancel</Button>
+                          </Box>
                         </Box>
-                 </Box>
-
-   
-
-
-                {/* ROW 3 */}
-
-
-                <Box
-                      gridColumn="span 2"
-                      backgroundColor="white"
-                      border= "2px solid #91C1DE"	
-                      boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      borderRadius= '8px'
-                    >
-                      <Box 
-                          width="100%" 
-                          m="0 1px" 
-                          position="relative" 
-                          display="flex" 
-                          flexDirection="column" 
-                          justifyContent="center"
-                      > 
-                        <IconButton 
-                          aria-label="settings"
-                          sx={{ 
-                            position: 'absolute',
-                            top: -40, 
-                            right: 0,
-                          }} 
-                          onClick={handleInternListClick}
-                        >
-                          <ExpandMoreIcon />
-                        </IconButton>
-                        <Menu
-                            id="intern-menu"
-                            anchorEl={internAnchorEl}
-                            keepMounted
-                            open={Boolean(internAnchorEl)}
-                            onClose={handleInternListClose}
-                          >
-                            {showInternList && users.map((user) => (
-                              user.role.toLowerCase() === 'intern' && (
-                                <MenuItem onClick={handleInternListClose}>
-                                  <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
-                                <div>
-                                  {`${user.fname} ${user.lname}`}
-                                  <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
-                                    {user.jobtitle}
-                                  </Typography>
-                                </div>
-                                </MenuItem>
-                              )
-                            ))}
-                          </Menu>
-                        <Typography
-                          variant="h6"
-                          fontWeight="bold"
-                          sx={{ 
-                            position: 'absolute',
-                            top: -40, 
-                            left: 10,
-                            color: '#000066' 
-                          }}
-                        >
-                          Interns
-                        </Typography>
-                        <Typography
-                          variant="h6"
-                          fontWeight="bold"
-                          sx={{ 
-                            position: 'absolute',
-                            top: 2, 
-                            left: 50,
-                            color: colors.greenAccent[500] 
-                          }}
-                        >
-                         {`${internCount}`}
-                        </Typography>
-                      </Box>
+                      )}
                     </Box>
-
-                    <Box
-                      gridColumn="span 2"
-                      backgroundColor="white"
-                      border= "2px solid #91C1DE"	
-                      boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      borderRadius= '8px'
-                    >
-                      <Box 
-                      width="100%" 
-                      m="0 1px" 
-                      position="relative" 
-                      display="flex" 
-                      flexDirection="column" 
-                      justifyContent="center"
-                    >
-                      <IconButton 
-                        aria-label="settings"
-                        sx={{ 
-                          position: 'absolute',
-                          top: -40, 
-                          right: 0,
-                        }} 
-                        onClick={handleMentorListClick}
-                      >
-                        <ExpandMoreIcon />
-                      </IconButton>
-                      <Menu
-                        id="mentor-menu"
-                        anchorEl={mentorAnchorEl}
-                        keepMounted
-                        open={Boolean(mentorAnchorEl)}
-                        onClose={handleMentorListClose}
-                      >
-                        {showMentorList && users.map((user) => (
-                          user.role.toLowerCase() === 'mentor' && (
-                            <MenuItem onClick={handleMentorListClose}>
-                              <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
-                                <div>
-                                  {`${user.fname} ${user.lname}`}
-                                  <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
-                                    {user.jobtitle}
-                                  </Typography>
-                                </div>
-                            </MenuItem>
-                          )
-                        ))}
-                      </Menu>
-                        <Typography
-                          variant="h6"
-                          fontWeight="bold"
-                          sx={{ 
-                            position: 'absolute',
-                            top: -40, 
-                            left: 10,
-                            color: '#000066' 
-                          }}
-                        >
-                          Mentors
-                        </Typography>
-                        <Typography
-                          variant="h6"
-                          fontWeight="bold"
-                          sx={{ 
-                            position: 'absolute',
-                            top: 2, 
-                            left: 50,
-                            color: colors.greenAccent[500] 
-                          }}
-                        >
-                         {`${mentorCount}`}
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <Box
-                      gridColumn="span 2"
-                      backgroundColor="white"
-                      border= "2px solid #91C1DE"	
-                      boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      borderRadius= '8px'
-                    >
-                      <Box 
-                          width="100%" 
-                          m="0 1px" 
-                          position="relative" 
-                          display="flex" 
-                          flexDirection="column" 
-                          justifyContent="center"
-                      > 
-                        <IconButton 
-                          aria-label="settings"
-                          sx={{ 
-                            position: 'absolute',
-                            top: -40, 
-                            right: 0,
-                          }} 
-                          onClick={handleEvaluatorListClick}
-                        >
-                          <ExpandMoreIcon />
-                        </IconButton>
-                        <Menu
-                            id="evaluator-menu"
-                            anchorEl={evaluatorAnchorEl}
-                            keepMounted
-                            open={Boolean(evaluatorAnchorEl)}
-                            onClose={handleEvaluatorListClose}
-                          >
-                            {showEvaluatorList && users.map((user) => (
-                              user.role.toLowerCase() === 'evaluator' && (
-                                <MenuItem onClick={handleEvaluatorListClose}>
-                                <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
-                                <div>
-                                  {`${user.fname} ${user.lname}`}
-                                  <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
-                                    {user.jobtitle}
-                                  </Typography>
-                                </div>
-                              </MenuItem>
-                              )
-                            ))}
-                          </Menu>
-                        <Typography
-                          variant="h6"
-                          fontWeight="bold"
-                          sx={{ 
-                            position: 'absolute',
-                            top: -40, 
-                            left: 10,
-                            color: '#000066' 
-                          }}
-                        >
-                          Evaluators
-                        </Typography>
-                        <Typography
-                          variant="h6"
-                          fontWeight="bold"
-                          sx={{ 
-                            position: 'absolute',
-                            top: 2, 
-                            left: 50,
-                            color: colors.greenAccent[500] 
-                          }}
-                        >
-                         {`${evaluatorCount}`}
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <Box
-                      gridColumn="span 2"
-                      backgroundColor="white"
-                      border= "2px solid #91C1DE"	
-                      boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      borderRadius= '8px'
-                    >
-                      <Box 
-                          width="100%" 
-                          m="0 1px" 
-                          position="relative" 
-                          display="flex" 
-                          flexDirection="column" 
-                          justifyContent="center"
-                      > 
-                        <IconButton 
-                          aria-label="settings"
-                          sx={{ 
-                            position: 'absolute',
-                            top: -40, 
-                            right: 0,
-                          }} 
-                          onClick={handleManagerListClick}
-                        >
-                          <ExpandMoreIcon />
-                        </IconButton>
-                        <Menu
-                            id="manager-menu"
-                            anchorEl={managerAnchorEl}
-                            keepMounted
-                            open={Boolean(managerAnchorEl)}
-                            onClose={handleManagerListClose}
-                          >
-                            {showManagerList && users.map((user) => (
-                              user.role.toLowerCase() === 'manager' && (
-                                <MenuItem onClick={handleManagerListClose}>
-                                  <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
-                                <div>
-                                  {`${user.fname} ${user.lname}`}
-                                  <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
-                                    {user.jobtitle}
-                                  </Typography>
-                                </div>
-                                </MenuItem>
-                              )
-                            ))}
-                          </Menu>
-                        <Typography
-                          variant="h6"
-                          fontWeight="bold"
-                          sx={{ 
-                            position: 'absolute',
-                            top: -40, 
-                            left: 10,
-                            color: '#000066' 
-                          }}
-                        >
-                          Managers
-                        </Typography>
-                        <Typography
-                          variant="h6"
-                          fontWeight="bold"
-                          sx={{ 
-                            position: 'absolute',
-                            top: 2, 
-                            left: 50,
-                            color: colors.greenAccent[500] 
-                          }}
-                        >
-                         {`${managerCount}`}
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    {/* ROW 4 */}
-                     <Box
-                        gridColumn="span 8"
-                        gridRow="span 4"
-                        overflow="auto"
-                        borderRadius={2}
-                        p="1px"
-                      >
-                        <TableContainer component={Paper} sx={{ borderRadius: '10px' }}>
-                          <Table sx={{ minWidth: 680 }} aria-label="simple table">
-                            <TableHead>
-                              <TableRow sx={{ backgroundColor: colors.blueAccent[300] }}>
-                              <TableCell align="center" sx={{ height: '10px' }}>
-                              <Typography variant="h6" component="h3" sx={{ fontSize: '1.2rem', color: 'white' }}>
-                                  Employee Leave
-                               </Typography>
-                                </TableCell>
-                         </TableRow>
-                         <Box className="buttonContainer" >
-                            <Button variant="contained"  className="button" onClick={handleLeaveClickOpen}>+ Apply Leave</Button>
-                            <Menu
-                              id="leave-menu"
-                              sx={{ marginTop: '2px',marginLeft: '-305px', width: '3000px'}}
-                              anchorEl={leaveOpen}
-                              keepMounted
-                              open={Boolean(leaveOpen)}
-                              onClose={handleLeaveClose}
-                            >
-                              
-                              <MenuItem>
-                                <TextField
-                                  label="Name"
-                                  value={data.fname}
-                                  onChange={handleLeaveChange}
-                                  displayEmpty
-                                  inputProps={{ 'aria-label': 'Without label' ,readOnly: true,}}
-                                  fullWidth
-                                  sx={{ width: '527px', marginRight: '20px' }}
-                                  
-                                />
-                                
-
-                             
-                                <TextField
-                                  margin="dense"
-                                  name="leaveDate"
-                                  label="Leave Date"
-                                  type="date"
-                                  fullWidth
-                                  InputLabelProps={{ shrink: true }}
-                                  value={formData.leaveDate}
-                                  onChange={handleLeaveChange}
-                                />
-                              </MenuItem>
-                              <MenuItem>
-                                <TextField
-                                  margin="dense"
-                                  name="reason"
-                                  label="Reason For Leave"
-                                  type="text"
-                                  fullWidth
-                                  multiline
-                                  rows={4}
-                                  value={formData.reason}
-                                  onChange={handleLeaveChange}
-                                />
-                              </MenuItem>
-                              <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', color: 'blue' }}>
-                                <MenuItem onClick={handleSubmit}>Apply</MenuItem>
-                                <MenuItem onClick={handleLeaveClose}>Cancel</MenuItem>
-                              </Box>
-                            </Menu>
-                            </Box>
-                            </TableHead>
-                            <TableBody>
-
-                            <LeaveManagement />
-                            
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
-                      </Box>
-
+                  </TableHead>
+                  {!leaveOpen && (
+                    <TableBody>
+                      <LeaveManagement />
+                    </TableBody>
+                  )}
+                </Table>
+              </TableContainer>
+            </Box>
+         </Box>
+        </Box>
       </Box>
-      </Box>
-      </Box>
-      </Grid>
-      </Grid>
-      </>
+    </>
   )}

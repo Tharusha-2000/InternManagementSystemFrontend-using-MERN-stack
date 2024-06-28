@@ -6,7 +6,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import listPlugin from "@fullcalendar/list";
+//import listPlugin from "@fullcalendar/list";
 import { Box, useTheme, Typography, Modal, TextField, Button } from "@mui/material";
 import { tokens } from "../../Pages/admin_page/theme/theme";
 import { jwtDecode } from "jwt-decode";
@@ -150,7 +150,7 @@ export default function Calendar() {
           dayGridPlugin,
           timeGridPlugin,
           interactionPlugin,
-          listPlugin,
+          //listPlugin,
         ]}
         headerToolbar={{
           left: "prev,today,next",
