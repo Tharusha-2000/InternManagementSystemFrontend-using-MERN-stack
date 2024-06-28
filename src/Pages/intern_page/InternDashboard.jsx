@@ -1,8 +1,6 @@
-
 import React, { useState, useEffect } from "react";
 import Internsidebar from "../../components/common/Internsidebar";
 import Header from "../../components/common/Header";
-
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { BASE_URL } from "../../config";
@@ -25,7 +23,7 @@ import Calendar from "../../components/common/Calendar";
 import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import Email from "../../test";
+import Email from "../../components/common/SendEmail";
 import Barchart from "../../components/project/projectbarchart";
 
 export default function InternDashboard() {
@@ -118,14 +116,13 @@ export default function InternDashboard() {
           {/* GRID & CHARTS */}
           <Box
             display="grid"
-            gridTemplateColumns="repeat(12, 1fr)"
-            gridAutoRows="100px"
+            gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(12, 1fr)' }}
+            gridAutoRows="minmax(100px, auto)"
             gap="13px"
-            sx={{ scrollbarWidth: "thin", scrollbarColor: "white white" }}
           >
             {/* ROW 1 */}
             <Box
-              gridColumn="span 9"
+              gridColumn={{ xs: 'span 12', md: 'span 9' }}
               gridRow="span 2"
               borderRadius={4}
               boxShadow="1px 2px 5px rgba(0, 0, 0, 0.2)"
@@ -133,8 +130,8 @@ export default function InternDashboard() {
               sx={{
                 maxWidth: 5000,
                 backgroundImage: `url('src/assets/office.png')`,
-                backgroundSize: "50%",
-                backgroundPosition: "right",
+                backgroundSize: { xs: '122%',sm: '100%', md: '50%' },
+                backgroundPosition: { xs: 'right', md: 'right' },
                 backgroundRepeat: "no-repeat",
               }}
             >
@@ -161,8 +158,8 @@ export default function InternDashboard() {
 
             {/* ROW 2 */}
             <Box
-              gridColumn="span 3"
-              gridRow="span 7"
+              gridColumn={{ xs: 'span 12', md: 'span 3' }}
+              gridRow="span 4"
               boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
               display="flex"
               alignItems="center"
@@ -172,7 +169,7 @@ export default function InternDashboard() {
             >
               <Box
                 sx={{
-                  backgroundColor: colors.blueAccent[300], // dark blue color
+                  backgroundColor: colors.blueAccent[300], 
                   color: "white",
                   borderRadius: "12px 12px 0 0",
                   width: "100%",
@@ -266,12 +263,8 @@ export default function InternDashboard() {
                   borderRadius: "0 0 12px 12px",
                   scrollbarWidth: "thin",
                   scrollbarColor: "white white",
-                  marginTop: "-5px",
                 }}
               >
-               <Typography variant="h5" sx={{ marginBottom: '20px', color: '#000066', fontWeight: 'bold', textAlign: 'center' }}>
-                Scheduled events
-               </Typography>
                 <ul style={{ listStyleType: "none", padding: 0 }}>
                   {data.schedules &&
                     data.schedules.map((schedule, index) => (
@@ -323,7 +316,8 @@ export default function InternDashboard() {
             </Box>
 
             <Box
-              gridColumn="span 2"
+              gridColumn={{ xs: 'span 12', md: 'span 2' }}
+              gridRow="span 1"
               backgroundColor="white"
               border="2px solid #91C1DE"
               boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
@@ -350,7 +344,7 @@ export default function InternDashboard() {
                     color: "#000066",
                   }}
                 >
-                  To do tasks
+                  To Do tasks
                 </Typography>
                 <Typography
                   variant="h6"
@@ -358,7 +352,7 @@ export default function InternDashboard() {
                   sx={{
                     position: "absolute",
                     top: 2,
-                    left: 15,
+                    left: 50,
                     color: colors.greenAccent[500],
                   }}
                 >
@@ -368,7 +362,8 @@ export default function InternDashboard() {
             </Box>
 
             <Box
-              gridColumn="span 2"
+              gridColumn={{ xs: 'span 12', md: 'span 2' }}
+              gridRow="span 1"
               backgroundColor="white"
               border="2px solid #91C1DE"
               boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
@@ -403,7 +398,7 @@ export default function InternDashboard() {
                   sx={{
                     position: "absolute",
                     top: 2,
-                    left: 15,
+                    left: 50,
                     color: colors.greenAccent[500],
                   }}
                 >
@@ -413,7 +408,8 @@ export default function InternDashboard() {
             </Box>
 
             <Box
-              gridColumn="span 2"
+              gridColumn={{ xs: 'span 12', md: 'span 2' }}
+              gridRow="span 1"
               backgroundColor="white"
               border="2px solid #91C1DE"
               boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
@@ -448,7 +444,7 @@ export default function InternDashboard() {
                   sx={{
                     position: "absolute",
                     top: 2,
-                    left: 15,
+                    left: 50,
                     color: colors.greenAccent[500],
                   }}
                 >
@@ -459,36 +455,31 @@ export default function InternDashboard() {
 
             {/* ROW 4 */}
             <Box
-              gridColumn="span 3"
-              gridRow="span 8"
+              gridColumn={{ xs: 'span 12', md: 'span 3' }}
+              gridRow="span 2"
               overflow="auto"
               borderRadius={1}
               p="1px"
-              sx={{ marginTop: '10px' }}
             >
-              <Typography variant="h5" sx={{ marginBottom: '20px', color: '#000066', fontWeight: 'bold' }}>
-                Send your Email here
-              </Typography>
-              {/* <Card sx={{ backgroundColor: colors.greenAccent[800] }}> */}
-              <Card sx={{ backgroundColor: '#D9E5F9' }}>
+              <Card sx={{ backgroundColor: colors.greenAccent[800] }}>
                 <CardContent>
-                  {/* <Typography variant="h6" color={colors.greenAccent[100]}>
+                  <Typography variant="h6" color={colors.greenAccent[100]}>
                     Send Email
-                  </Typography> */}
+                  </Typography>
                   <Email />
                 </CardContent>
               </Card>
             </Box>
             <Box
-              gridColumn="span 6"
-              gridRow="span 8"
+              gridColumn={{ xs: 'span 12', md: 'span 6' }}
+              gridRow="span 2"
               overflow="auto"
               borderRadius={2}
               p="1px"
             >
-              <Card sx={{ backgroundColor: colors.blueAccent[900], marginTop: '12px'  }}>
+              <Card sx={{ backgroundColor: colors.blueAccent[900] }}>
                 <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#000066' }}>Task Overview</Typography>
+                  <Typography variant="h6"> Task Overview</Typography>
                   <Container maxWidth="sm">
                     {loading ? (
                       <Box display="flex" justifyContent="center">
@@ -511,4 +502,3 @@ export default function InternDashboard() {
     </>
   );
 }
-
