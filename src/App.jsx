@@ -81,8 +81,6 @@ function App() {
         
      
         
-        <Route path="/Test" element={<Test/>}> </Route>
-        <Route path="/Test2" element={<Test2/>}> </Route>
         <Route path="/Test3" element={<Test3/>}> </Route>
       
 
