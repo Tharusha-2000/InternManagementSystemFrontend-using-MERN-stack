@@ -30,8 +30,6 @@ import Project from './components/project/project.jsx';
 import Projectinternlist from './components/project/projectinternlist.jsx'
 
 
-import Test from './test.jsx';
-import Test2 from './test2.jsx';
 import Test3 from './Test3.jsx';
 
 
