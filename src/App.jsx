@@ -32,7 +32,6 @@ import Projectinternlist from './components/project/projectinternlist.jsx'
 
 
 
-
 import EvaluatorDashboard from './Pages/evaluator_page/EvaluatorDashboard';
 import EvaluatorEvaluation from './Pages/evaluator_page/EvaluatorEvaluation';
 import EvaluatorviewInternDetails from './Pages/evaluator_page/EvaluatorviewInternDetails.jsx';
