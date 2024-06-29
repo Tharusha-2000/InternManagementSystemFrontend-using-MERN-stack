@@ -31,14 +31,22 @@ import { useNavigate } from "react-router-dom";
 import Switch from '@mui/material/Switch';
 import Interndetails from "../interntable/intern";
 import { jwtDecode } from "jwt-decode";
+import { useMediaQuery, useTheme } from '@mui/material';
+import CloseIcon from "@mui/icons-material/Close";
 
 
 function internTable({ rows }) {
   const [selectedRole, setSelectedRole] = useState("");
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const [isComplete, setIsComplete] = useState(false);
+  const theme = useTheme();
+const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+  {/* get details in database */}
+
   const token = localStorage.getItem('token');
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role;
@@ -100,6 +108,7 @@ function internTable({ rows }) {
 // creating filter function
 const Filter = (event) => {
   const searchTerm = event.target.value.toLowerCase();
+  setSearchTerm(event.target.value);
   
   setFilteredData(
     data.filter(
@@ -113,6 +122,11 @@ const Filter = (event) => {
     )
   );
 };
+const handleClearSearch = () => {
+  setSearchTerm("");
+  setFilteredData(data);
+};
+
 const SetDataChange = (internId, newData) => {
   console.log(internId, newData);
   const updatedData = data.map(intern =>
@@ -124,11 +138,11 @@ const SetDataChange = (internId, newData) => {
 };
 
   return (
- <Grid>  
-   <Grid> 
+    <Grid container spacing={1}>
+        <Grid item xs={12} >
    <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
-   <div>
     <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
+    
       <Typography variant="h4" gutterBottom align="center" 
       sx={{
         color: 'rgba(0, 0, 102, 0.8)', 
@@ -141,34 +155,57 @@ const SetDataChange = (internId, newData) => {
       </Typography>
       <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
 
-     <Grid sx={{ justifyContent: "space-between",mb:4 ,display: "flex", alignItems: "center" }}>
     
-        <Paper
-          component="form"
-          sx={{
-            p: "2px 4px",
-            display: "flex",
-            alignItems: "center",
-             width: { xs: "90%", sm: "80%", md: "90%" },
-            borderRadius: "20px",
-            boxShadow: 3,
-            marginLeft: "1%",
-          }}
-        >
-         
-          <InputBase type="text"  onChange={Filter} sx={{ ml: 2, flex: 1 }} placeholder="Search Users" />
-          <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-
-        </Paper>
-      </Grid>
-
+ <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '90%', justifyContent: "space-between", mb: 4 }}>
+  <Paper
+    component="form"
+    sx={{
+      p: "2px 4px",
+      display: "flex",
+      alignItems: "center",
+      width: { xs: "60%", sm: "60%", md: "60%" },
+      borderRadius: "20px",
+      boxShadow: 3,
+      marginLeft: "1%",
+      flexGrow: 1, // Allow the TextField to grow and take available space
+    }}
+  >
+   <InputBase type="text" 
+      value={searchTerm}
+      onChange={Filter}
+      placeholder="Search Users"
+      fullWidth
+      size="small"
+      InputProps={{
+        style: {
+          height: '40px',
+          fontSize: '0.875rem',
+        },
+      }}
+      sx={{
+        '& .MuiOutlinedInput-root': {
+          borderRadius: '10px',
+        },
+        ml: 2,
+        flex: 1,
+      }}
+    />
+    <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
+    {searchTerm ? (
+      <IconButton onClick={handleClearSearch} sx={{ p: "10px" }} aria-label="clear">
+        <CloseIcon />
+      </IconButton>
+    ) : (
+      <IconButton sx={{ p: "10px" }} aria-label="search">
+        <SearchIcon />
+      </IconButton>
+    )}
+  </Paper>
+</Stack>
       <Divider/>
       
-      <TableContainer>
-        <Table>
+      <TableContainer  >
+       <Table>
           <TableHead>
             <TableRow>
             <TableCell
@@ -203,7 +240,7 @@ const SetDataChange = (internId, newData) => {
                   fontSize: "1.2em",
                   backgroundColor: "rgba(0, 0, 102, 0.8)", 
                   color: "#fff",
-                  
+                 padding: isSmallScreen ? '6px' : '16px'
                 }}
               >
                 Actions
@@ -246,7 +283,7 @@ const SetDataChange = (internId, newData) => {
                   </Box>
                 </TableCell>
 
-                <TableCell>
+                <TableCell   sx={{ padding: isSmallScreen ? '6px' : '16px'}}>
                 <FormControlLabel
                       control={
                         <Android12Switch
@@ -265,12 +302,9 @@ const SetDataChange = (internId, newData) => {
           </TableBody>
         </Table>
       </TableContainer>
-   </div>
+         
    </Paper>
-   </Grid>
-
-    
-      
+   </Grid>  
  </Grid>
   
 

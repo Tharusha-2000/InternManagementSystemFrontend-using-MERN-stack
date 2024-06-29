@@ -127,6 +127,9 @@ function EvaluationInternList() {
   };
 
   return (
+    <Grid container spacing={1}>
+    <Grid item xs={12} >
+
     <TableContainer component={Paper}>
       <Typography variant="h4" gutterBottom align="center">
         All Evaluations
@@ -271,6 +274,9 @@ function EvaluationInternList() {
         />
       </Dialog>
     </TableContainer>
+    </Grid>
+    </Grid>
+    
   );
 }
 

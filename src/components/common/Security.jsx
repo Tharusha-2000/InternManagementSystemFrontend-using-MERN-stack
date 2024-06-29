@@ -128,6 +128,9 @@ if (!passwordRegex.test(values.Newpassword)) {
                 <Typography component="h1" variant="h5">
                   Security
                 </Typography>
+                <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
+                  To change your password, please fill in the following fields.
+                </Typography>
                 <Box
                   component="form"
                   onSubmit={handleSubmit}
@@ -174,32 +177,32 @@ if (!passwordRegex.test(values.Newpassword)) {
                     }
                   />
 
-                  <Box display="flex" justifyContent="space-between">
-                    <Box width="45%">
-                      <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                      >
-                        Change
-                      </Button>
-                    </Box>
-                    <Box width="45%">
-                        <Button
-                              type="button"
-                              fullWidth
-                              variant="outlined"
-                              sx={{ mt: 3, mb: 2 }}
-                              onClick={(event) => {
-                                event.preventDefault();
-                                setValues({ Newpassword: "", Oldpassword: "", Confirmpassword: "" });
-                              }}
-                            >
-                              Cancel
-                       </Button>
-                    </Box>
-                  </Box>
+<Box display="flex" justifyContent="space-between">
+  <Box width="45%">
+    <Button
+      type="button"
+      fullWidth
+      variant="outlined"
+      sx={{ mt: 3, mb: 2 }}
+      onClick={(event) => {
+        event.preventDefault();
+        setValues({ Newpassword: "", Oldpassword: "", Confirmpassword: "" });
+      }}
+    >
+      Cancel
+    </Button>
+  </Box>
+  <Box width="45%">
+    <Button
+      type="submit"
+      fullWidth
+      variant="contained"
+      sx={{ mt: 3, mb: 2 }}
+    >
+      Change
+    </Button>
+  </Box>
+</Box>
                 </Box>
               </Box>
             </Container>

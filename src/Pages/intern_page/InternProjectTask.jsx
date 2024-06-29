@@ -311,7 +311,9 @@ function TaskTable() {
               alignItems="center"
               style={{ marginTop: "30px" }}
             >
-<Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
+
+  <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
+
   <TextField
     value={data.title}
     onChange={(e) => setData({ ...data, title: e.target.value })}
@@ -335,11 +337,23 @@ function TaskTable() {
     variant="contained"
     type="submit"
     onClick={addTask}
-    style={{ backgroundColor: '#e7004c', color: 'white' }}
+
+    sx={{
+      backgroundColor: '#e7004c',
+      color: 'white',
+      '&:hover': {
+        transform: 'scale(1.04)', 
+        boxShadow: 'lg',
+      },
+    }}
+
   >
     +ADD
   </Button>
 </Stack>
+
+
+
             </Box>
           </Box>
           <Divider />

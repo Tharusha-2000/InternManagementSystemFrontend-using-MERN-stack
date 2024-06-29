@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, TextField, Grid, Paper, Typography, Container } from '@mui/material';
 import axios from 'axios'; 
 import Swal from 'sweetalert2';
-import { BASE_URL } from './config';
+import { BASE_URL } from '../../config';
 
 const EmailForm = () => {
   const token = localStorage.getItem('token');
@@ -64,41 +64,43 @@ const EmailForm = () => {
 
   return (
    
-        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+        <form noValidate autoComplete="off" 
+        onSubmit={handleSubmit}
+      
+        >
           <TextField
-            label="To"
+            label="To:"
             variant="outlined"
             fullWidth
-            style={{ marginTop: '10px' }}
+            style={{ marginTop: '10px'}}
             value={data.email}
             onChange={(e) => setData({ ...data, email: e.target.value })}
           />
           <TextField
-            label="Subject"
+            label="Subject:"
             variant="outlined"
             fullWidth
-            style={{ marginTop: '10px' }}
+            style={{ marginTop: '10px'}}
             value={data.subject}
             onChange={(e) => setData({ ...data, subject: e.target.value })}
           />
           <TextField
-            label="Message"
+            label="Message:"
             variant="outlined"
             multiline
             rows={4}
             fullWidth
-            style={{ marginTop: '10px' }}
+            style={{ marginTop: '10px'}}
             value={data.message}
             onChange={(e) => setData({ ...data, message: e.target.value })}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ marginTop: '10px' }}
-            type="submit"
-          >
-            Send
-          </Button>
+         <Button
+         variant="contained"
+         style={{ marginTop: '10px', backgroundColor: '#1766E4', marginLeft: '220px' }} 
+         type="submit"
+        >
+         Send
+         </Button>
         </form>
      
   );

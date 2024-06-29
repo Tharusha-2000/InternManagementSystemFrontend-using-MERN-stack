@@ -76,6 +76,7 @@ function EvaluationinternListMentor() {
   };
 
   return (
+
     <div>
       <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
       <Typography variant="h4" gutterBottom align="center" 
@@ -86,6 +87,7 @@ function EvaluationinternListMentor() {
         paddingTop: '10px', 
         backgroundColor: 'rgba(255, 255, 255, 0.5)', 
       }}>
+
         All Evaluations
       </Typography>
         <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
@@ -252,7 +254,8 @@ function EvaluationinternListMentor() {
         </Box>
         )}
       </Paper>
-    </div>
+    </Grid>
+    </Grid>
   );
 }
 
