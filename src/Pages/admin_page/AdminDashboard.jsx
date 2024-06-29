@@ -77,18 +77,23 @@ export default function AdminDashboard() {
   const [evaluatorCount, setEvaluatorCount] = useState(0);  
   const [managerCount, setManagerCount] = useState(0);
   const [adminCount, setAdminCount] = useState(0);
+  const fetchUserData = () => {
+    axios.get(`${BASE_URL}user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((result) => {
+        setData(result.data.user);
+        console.log(result.data.user);
+    })
+    .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
-      axios.get(`${BASE_URL}user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((result) => {
-          setData(result.data.user);
-      })
-      .catch((err) => console.log(err));
-  }, [token]);
+    fetchUserData();
+  }, [token]); // Dependency array to re-fetch when token changes
+  
 
 
     // set the date 
@@ -219,7 +224,9 @@ export default function AdminDashboard() {
       
         const handleLeaveClose = () => {
           setLeaveOpen(false);
+
           setErrors({ leaveDate: '', reason: '' }); // Clear errors when closing the form
+
         };
       
         const handleLeaveChange = (event) => {
