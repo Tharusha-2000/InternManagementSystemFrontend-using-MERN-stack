@@ -1,3 +1,4 @@
+//stable EditCV files
 import * as React from 'react';
 import { useState, useCallback } from 'react';
 import { BASE_URL } from '../../config';
@@ -18,10 +19,11 @@ import { Button,
          DialogTitle } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import { Box } from '@mui/system';
+import Swal from 'sweetalert2';
 
 
 
-export default function EditCvfile({open, handleClose, internId}) {
+export default function EditCvfile({open, handleClose, internId,refreshData}) {
 
   const [cv, setCV] = useState(null);
   const [cvUrl, setcvUrl] = useState(null);
@@ -38,64 +40,78 @@ export default function EditCvfile({open, handleClose, internId}) {
 
 
           const uploadFile = useCallback(() => {
-            return new Promise((resolve, reject) => {
-              if (cv === null) {
-                reject('No file selected');
-                return;
-              }
+  return new Promise((resolve, reject) => {
+    if (cv === null) {
+      reject('No file selected');
+      return;
+    }
 
-              const cvPath = `cv/${cv.name + uuidv4()}`;
-              const cvRef = ref(storage,cvPath);
-              const uploadTask = uploadBytesResumable(cvRef, cv);
-            
+    const cvPath = `cv/${cv.name + uuidv4()}`;
+    const cvRef = ref(storage, cvPath);
+    const uploadTask = uploadBytesResumable(cvRef, cv);
 
-              uploadTask.on('state_changed', (snapshot) => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
-                setProgress(progress);
-              }, 
-              (error) => {
-                console.log(error);
-                reject(error);
-              },
-              () => {
-                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                  console.log('File available at (DownloadURL) - ', downloadURL);
-              
-                // Delete the previous cv 
-                if (oldCvPath) {
-                  const oldCvRef = ref(storage, oldCvPath);
-                  deleteObject(oldCvRef).then(() => {
-                    console.log('Old CV deleted');
-                  }).catch((error) => {
-                    console.log('Failed to delete old CV', error);
-                  });
-                }
-                console.log(cvPath);
-                // Save the path of the uploaded cv
-                setOldImagePath(cvPath);
-                console.log(oldCvPath);
+    uploadTask.on('state_changed', (snapshot) => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log('Upload is ' + progress + '% done');
+      setProgress(progress);
+    }, 
+    (error) => {
+      console.log(error);
+      reject(error);
+    },
+    () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        console.log('File available at (DownloadURL) - ', downloadURL);
 
+        // Delete the previous cv 
+        if (oldCvPath) {
+          const oldCvRef = ref(storage, oldCvPath);
+          deleteObject(oldCvRef).then(() => {
+            console.log('Old CV deleted');
+          }).catch((error) => {
+            console.log('Failed to delete old CV', error);
+          });
+        }
+        console.log(cvPath);
+        // Save the path of the uploaded cv
+        setOldImagePath(cvPath);
+        console.log(oldCvPath);
 
-                const fileData = { cvUrl: downloadURL, userId: internId };
-                const token = localStorage.getItem("token");
+        const fileData = { cvUrl: downloadURL, userId: internId };
+        const token = localStorage.getItem("token");
 
-                axios.put(`${BASE_URL}${internId}/uploadcv`, fileData, {
-                  headers: { Authorization: `Bearer ${token}` },
-                })
-                .then((response) => {
-                  window.alert(response.data.msg);
-                  console.log(response.data);
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
-                setCV(null);
-                resolve(downloadURL);
-                });
-              });
+        axios.put(`${BASE_URL}${internId}/uploadcv`, fileData, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          handleClose(); // Close the component immediately after request completion
+          Swal.fire({
+            title: 'Success!',
+            text: response.data.msg,
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            // Assuming refreshData is a function passed from the parent component to refresh the data
+            refreshData(); // Call this function to refresh the data in the parent component
+          });
+          console.log(response.data);
+        })
+        .catch((error) => {
+          handleClose(); // Close the component immediately after encountering an error
+          Swal.fire({
+            title: 'Error!',
+            text: error.response.data.msg || 'An error occurred!',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+          console.log(error);
         });
+        setCV(null);
+        resolve(downloadURL);
+      });
     });
+  });
+});
 
 
 
@@ -111,9 +127,22 @@ export default function EditCvfile({open, handleClose, internId}) {
           onSubmit: (e) => {
             e.preventDefault();
             uploadFile().then((downloadURL) => {
-              window.alert(response.data.msg);
+              // Show a success message with SweetAlert
+              Swal.fire({
+                title: 'Success!',
+                text: 'File uploaded successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+              });
             }).catch((error) => {
               console.log('File upload failed', error);
+              // Optionally, handle the error with SweetAlert as well
+              Swal.fire({
+                title: 'Error!',
+                text: 'File upload failed!',
+                icon: 'error',
+                confirmButtonText: 'OK'
+              });
             });
           },
     

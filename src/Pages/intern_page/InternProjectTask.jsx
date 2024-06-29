@@ -311,33 +311,35 @@ function TaskTable() {
               alignItems="center"
               style={{ marginTop: "30px" }}
             >
-             <TextField
-  value={data.title}
-  onChange={(e) => setData({ ...data, title: e.target.value })}
-  placeholder="Add a task"
-  fullWidth
-  size="small"
-  InputProps={{
-    style: {
-      height: '40px', // Adjust the height as needed
-      fontSize: '0.875rem', // Adjust the font size as needed
-    },
-  }}
-  sx={{
-    '& .MuiOutlinedInput-root': {
-      borderRadius: '10px', // Adjust the border radius as needed
-    },
-  }}
-/>
-
-<Button
-  variant="solid"
-  type="submit"
-  onClick={addTask}
-  style={{ backgroundColor: '#e7004c', color: 'white' }}
->
-  +ADD
-</Button>
+<Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
+  <TextField
+    value={data.title}
+    onChange={(e) => setData({ ...data, title: e.target.value })}
+    placeholder="Add a task"
+    fullWidth
+    size="small"
+    InputProps={{
+      style: {
+        height: '40px',
+        fontSize: '0.875rem',
+      },
+    }}
+    sx={{
+      '& .MuiOutlinedInput-root': {
+        borderRadius: '10px',
+      },
+      flexGrow: 1, // Allow the TextField to grow and take available space
+    }}
+  />
+  <Button
+    variant="contained"
+    type="submit"
+    onClick={addTask}
+    style={{ backgroundColor: '#e7004c', color: 'white' }}
+  >
+    +ADD
+  </Button>
+</Stack>
             </Box>
           </Box>
           <Divider />
