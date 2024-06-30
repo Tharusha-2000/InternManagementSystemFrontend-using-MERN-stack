@@ -117,33 +117,31 @@ if (coreValuesRatings.some(rating => rating === 0)) {
   }, [ratings, coreValuesRatings]); // Dependencies for the useEffect hook
 
 
+  
   useEffect(() => {
     const fetchEvaluationData = async () => {
       if (isEvaluated) {
         try {
-          const response = await fetch(`${BASE_URL}getReviewDetailsById/${internId}`, {
-            method: "GET",
+          const response = await axios.get(`${BASE_URL}getReviewDetailsById/${internId}`, {
             headers: {
               "Authorization": `Bearer ${token}`,
             },
           });
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
+
+          const data = response.data;
           // Assuming the API returns an object with job_performance_scores_evaluator, core_values_scores_evaluator, overall_performance_evaluator, and comment_evaluator
           setJobPerformanceScoresEvaluator(data.job_performance_scores_evaluator.map(score => score / 20));
           setCoreValuesScoresEvaluator(data.core_values_scores_evaluator.map(score => score / 20)); // Use the correct data field for core values
-        setOverallPerformanceRating(data.overall_performance_evaluator);
+          setOverallPerformanceRating(data.overall_performance_evaluator);
           setComment(data.comment_evaluator);
         } catch (error) {
           console.error('Fetching evaluation data failed:', error);
         }
       }
     };
-  
+
     fetchEvaluationData();
-  }, [isEvaluated, internId, token]); 
+  }, [isEvaluated, internId, token]);
   
   
 

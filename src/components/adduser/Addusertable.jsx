@@ -14,6 +14,7 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
+  TextField,
   Paper,
   Box,
   Typography,
@@ -230,48 +231,58 @@ return (
         All User 
       </Typography>
       <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
-
-     <Grid sx={{ justifyContent: "space-between",mb:4 ,display: "flex", alignItems: "center" }}>
-    
-        <Paper
-          component="form"
-          sx={{
-            p: "2px 4px",
-            display: "flex",
-            alignItems: "center",
-            width: { xs: "70%", sm: "80%", md: "90%" },
-            borderRadius: "20px",
-            boxShadow: 3,
-            marginLeft: "1%",
-          }}
-        >
-         
-             <InputBase
-                  type="text"
-                  value={searchTerm}
-                  onChange={Filter}
-                  sx={{ ml: 2, flex: 1 }}
-                  placeholder="Search Users"
-                />
-                <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
-              
-          <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
-          {searchTerm ? (
-                  <IconButton onClick={handleClearSearch} sx={{ p: "10px" }} aria-label="clear">
-                    <CloseIcon />
-                  </IconButton>
-                ) : (
-                  <IconButton sx={{ p: "10px" }} aria-label="search">
-                    <SearchIcon />
-                  </IconButton>
-                )}
-        </Paper>
-        <Box sx={{ marginRight: "12%" }}>
-       
-           <Adduser onUserAdded={handleUserAdded} />
-        </Box>
-      </Grid>
-      <Divider/>
+   
+  <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '90%',marginLeft: '1%' }}>
+  <Paper
+    component="form"
+    sx={{
+      p: "2px 4px",
+      display: "flex",
+      alignItems: "center",
+      width: { xs: "60%", sm: "60%", md: "60%" },
+      borderRadius: "20px",
+      boxShadow: 3,
+      marginLeft: "1%",
+      flexGrow: 1, // Allow the TextField to grow and take available space
+    }}
+  >
+   <InputBase type="text" 
+      value={searchTerm}
+      onChange={Filter}
+      placeholder="Search Users"
+      fullWidth
+      size="small"
+      InputProps={{
+        style: {
+          height: '40px',
+          fontSize: '0.875rem',
+        },
+      }}
+      sx={{
+        '& .MuiOutlinedInput-root': {
+          borderRadius: '10px',
+        },
+        ml: 2,
+        flex: 1,
+      }}
+    />
+    <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical" />
+    {searchTerm ? (
+      <IconButton onClick={handleClearSearch} sx={{ p: "10px" }} aria-label="clear">
+        <CloseIcon />
+      </IconButton>
+    ) : (
+      <IconButton sx={{ p: "10px" }} aria-label="search">
+        <SearchIcon />
+      </IconButton>
+    )}
+  </Paper>
+  <Grid >
+    <Adduser onUserAdded={handleUserAdded} sx={{ marginLeft: '20px' }} />
+  </Grid>
+</Stack>
+      <Divider sx={{ height: 5, m: 0.5 }} orientation="vertical"/>
+   
       
       
       <TableContainer>

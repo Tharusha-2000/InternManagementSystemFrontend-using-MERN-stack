@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Managersidebar from '../../components/common/Managersidebar';
 import Header from '../../components/common/Header';
-
 import axios from "axios";
 import { BASE_URL } from "../../config";
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +18,8 @@ import { Box,
         TableBody,
         TableContainer,
         TableHead,
-        Paper } from '@mui/material';
+        Paper,
+        TablePagination } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import CloseIcon from '@mui/icons-material/Close';
@@ -31,10 +31,11 @@ import { jwtDecode } from "jwt-decode";
 
 export default function ManagerDashboard() {
 
-
+  const [page, setPage] = useState(0); 
+  const [rowsPerPage, setRowsPerPage] = useState(3);
   const token = localStorage.getItem('token');
-    const decodedToken = jwtDecode(token);
-    const userRole = decodedToken.role;
+  const decodedToken = jwtDecode(token);
+  const userRole = decodedToken.role;
 
    if(userRole !== 'manager'){
       return null; // Do not render the component
@@ -249,6 +250,14 @@ export default function ManagerDashboard() {
         }, [token]);
   
 
+        const handleChangePage = (event, newPage) => {
+          setPage(newPage);
+        };
+        const handleChangeRowsPerPage = (event) => {
+          setRowsPerPage(parseInt(event.target.value, 10));
+          setPage(0); // Reset page to 0 when changing rows per page
+        };
+
   return (
     <>
     <Header />
@@ -261,24 +270,22 @@ export default function ManagerDashboard() {
       {/* GRID & CHARTS */}
       <Box
         display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="100px"
+        gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(12, 1fr)' }}
+        gridAutoRows="minmax(100px, auto)"
         gap="13px"
-        sx={{ scrollbarWidth: 'thin',
-          scrollbarColor: 'white white'}}
       >
         {/* ROW 1 */}
 
     <Box
-          gridColumn="span 8"
+          gridColumn={{ xs: 'span 12', md: 'span 8' }}
           gridRow="span 2"
           borderRadius={4}  
           boxShadow="1px 2px 5px rgba(0, 0, 0, 0.2)"
           style={{ backgroundColor: 'lightsteelblue', }}
           sx={{ maxWidth: 5000,
               backgroundImage: `url('src/assets/office.png')`,
-              backgroundSize: '50%',
-              backgroundPosition: 'right',
+              backgroundSize: { xs: '122%',sm: '100%', md: '50%' },
+              backgroundPosition: { xs: 'right', md: 'right' },
               backgroundRepeat: 'no-repeat',
             }}
         >
@@ -289,11 +296,14 @@ export default function ManagerDashboard() {
             alignItems="right"
           >
           <Box sx={{  paddingLeft: '20px'}}>
-          <Typography
-              variant="h4"
-              fontWeight="bold"
-              color= '#000066'
-            >
+          <Typography  fontWeight="bold" color="#000066" sx={{
+                    fontSize: {
+                      xs: '1.4rem',  
+                      sm: '1.9rem',   
+                      md: '2rem',  
+                      lg: '2rem',   
+                    },
+                  }}>
               Hello <span style={{ color: colors.blueAccent[500] }}>{data.fname}</span>..!
             </Typography>
             <Typography
@@ -302,7 +312,7 @@ export default function ManagerDashboard() {
                 color={colors.blueAccent[300]}
                 style={{ padding: '2px', marginBottom: '20px' }}
               >
-                Welcome to the Intern Management System.....
+                Welcome to the Intern Management System
               </Typography>
 
           </Box>
@@ -311,8 +321,8 @@ export default function ManagerDashboard() {
 
       {/* ROW 2 */}
           <Box
-              gridColumn="span 4"
-              gridRow="span 7"
+              gridColumn={{ xs: 'span 12', md: 'span 4' }}
+              gridRow={{ xs: 'span 5', md: 'span 5' }}
               boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
               display="flex"
               alignItems="center"    
@@ -335,7 +345,7 @@ export default function ManagerDashboard() {
             <Typography variant="h6" component="h3" sx={{ fontSize: '1.2rem' }}>
                    Work Schedule
             </Typography>
-            <Typography variant="subtitle1" component="div" sx={{ fontSize: '1rem', color: '#E97451' }} >
+            <Typography variant="subtitle1" component="div" sx={{ fontSize: '0.8rem', color: '#E97451' }} >
               {currentDate.toLocaleDateString('en-US', {
                 weekday: 'short',
                 day: 'numeric',
@@ -426,7 +436,7 @@ export default function ManagerDashboard() {
       {/* ROW 3 */}
 
       <Box
-            gridColumn="span 2"
+            gridColumn={{ xs: 'span 12', md: 'span 2' }}
             backgroundColor="white"
             border= "2px solid #91C1DE"	
             boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
@@ -503,7 +513,7 @@ export default function ManagerDashboard() {
           </Box>
 
           <Box
-            gridColumn="span 2"
+            gridColumn={{ xs: 'span 12', md: 'span 2' }}
             backgroundColor="white"
             border= "2px solid #91C1DE"	
             boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
@@ -580,7 +590,7 @@ export default function ManagerDashboard() {
           </Box>
 
           <Box
-            gridColumn="span 2"
+            gridColumn={{ xs: 'span 12', md: 'span 2' }}
             backgroundColor="white"
             border= "2px solid #91C1DE"	
             boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
@@ -657,7 +667,7 @@ export default function ManagerDashboard() {
           </Box>
 
           <Box
-            gridColumn="span 2"
+            gridColumn={{ xs: 'span 12', md: 'span 2' }}
             backgroundColor="white"
             border= "2px solid #91C1DE"	
             boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
@@ -733,10 +743,18 @@ export default function ManagerDashboard() {
             </Box>
           </Box>
 
-                {/* ROW 4 */}
-                <Box gridColumn="span 8" gridRow="span 4" overflow="auto" borderRadius={2} p="1px">
-                  <TableContainer component={Paper} sx={{ borderRadius: '10px' }}>
-                    <Table sx={{ minWidth: 680 }} aria-label="simple table">
+        {/* ROW 4 */}
+                <Box
+                    gridColumn={{ xs: 'span 12', md: 'span 8' }}
+                    gridRow="span 2"
+                    borderRadius={4}
+                    boxShadow="1px 2px 5px rgba(0, 0, 0, 0.2)"
+                    sx={{
+                      maxWidth: '5000px',
+                    }}
+                  >
+                  <TableContainer component={Paper} sx={{ borderRadius: '8px', width: '100%' }}>
+                    <Table sx={{ width: '100%' }}  aria-label="simple table">
                       <TableHead>
                         <TableRow sx={{ backgroundColor: colors.blueAccent[300] }}>
                           <TableCell align="center" colSpan={5} sx={{ height: '10px' }}>
@@ -754,7 +772,7 @@ export default function ManagerDashboard() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {leaveApplications.map((leaveApplication) => (
+                        {leaveApplications.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((leaveApplication) => (
                           <TableRow key={leaveApplication._id}>
                             <TableCell align="left">
                               <Box display="flex" alignItems="center">
@@ -808,6 +826,17 @@ export default function ManagerDashboard() {
                         ))}
                       </TableBody>
                     </Table>
+                    <Box display="flex" justifyContent="center" padding="16px">
+                    <TablePagination
+                      rowsPerPageOptions={[3, 5, 25]}
+                      component="div"
+                      count={leaveApplications.length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                  </Box>
                   </TableContainer>
                 </Box>
 

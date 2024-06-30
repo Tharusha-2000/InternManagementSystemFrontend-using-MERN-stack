@@ -20,7 +20,8 @@ function ProjectdoneListToApprove() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
-
+  const [deletingId, setDeletingId] = useState(null);
+  const [verifingId, setVerifingId] = useState(null);
   const token = localStorage.getItem('token');
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role;
@@ -56,7 +57,7 @@ function ProjectdoneListToApprove() {
   }, []);
 
   const handleVerify = (taskId) => {
-
+    setVerifingId(taskId);
     Swal.fire({
       title: "Are you sure?",
       text: "Verify this task!",
@@ -91,12 +92,20 @@ function ProjectdoneListToApprove() {
       })
       .catch(error => {
         console.error(error);
-      });
-     }
+      }).finally(() => {
+        // Reset deletingId state here
+        setVerifingId(null);
+      })
+    }else {
+      // Reset deletingId state here if the operation was cancelled
+      setVerifingId(null);
+    }
+
     });
   };
 
   const handleCancel = (taskId) => {
+    setDeletingId(taskId);
     Swal.fire({
       title: "Are you sure?",
       text: "reject this task!",
@@ -127,8 +136,15 @@ function ProjectdoneListToApprove() {
       })
       .catch(error => {
         console.error(error);
-      });
+      }).finally(() => {
+        // Reset deletingId state here
+        setDeletingId(null);
+      })
+    }else {
+      // Reset deletingId state here if the operation was cancelled
+      setDeletingId(null);
     }
+
     });  
   };
 
@@ -220,8 +236,8 @@ function ProjectdoneListToApprove() {
                     <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
                         <Button variant="solid" type="submit" size="small"     sx={{
                     border: '1px solid rgb(46, 51, 181)',
-                    color: 'rgb(46, 51, 181)', 
-                    backgroundColor: 'rgba(42, 45, 141, 0.438)', 
+                    color:  verifingId === task._id ? '#fff':'rgb(46, 51, 181)', 
+                    backgroundColor: verifingId === task._id ?  '#0056b3':'rgba(42, 45, 141, 0.438)', 
                     '&:hover': {
                       backgroundColor: '#0056b3',
                       color: '#fff', 
@@ -230,8 +246,9 @@ function ProjectdoneListToApprove() {
                         <Button variant="solid" color="neutral" size="small"   sx={{
                         border: "1px solid rgb(174, 73, 73)",
                         marginLeft: "10px",
-                        color: "rgb(174, 73, 73)", 
-                        backgroundColor: "rgba(174, 73, 73, 0.314)", 
+                        color: deletingId === task._id ?"#fff" : "rgb(174, 73, 73)", 
+                        backgroundColor: deletingId === task._id ? "#CC0000": "rgba(174, 73, 73, 0.314)", 
+                       
                         '&:hover': {
                           backgroundColor: "#CC0000",
                           color: "#fff", 

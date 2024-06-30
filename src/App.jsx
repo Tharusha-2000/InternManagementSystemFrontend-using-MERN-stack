@@ -30,9 +30,6 @@ import Project from './components/project/project.jsx';
 import Projectinternlist from './components/project/projectinternlist.jsx'
 
 
-import Test from './test.jsx';
-import Test2 from './test2.jsx';
-import Test3 from './Test3.jsx';
 
 
 import EvaluatorDashboard from './Pages/evaluator_page/EvaluatorDashboard';
@@ -83,9 +80,7 @@ function App() {
         
      
         
-        <Route path="/Test" element={<Test/>}> </Route>
-        <Route path="/Test2" element={<Test2/>}> </Route>
-        <Route path="/Test3" element={<Test3/>}> </Route>
+     
       
 
 

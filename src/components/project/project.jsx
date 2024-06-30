@@ -219,7 +219,7 @@ function internTaskTable({ internId }) {
                     .map((task) => (
                       <TableRow key={task._id} >
                         <TableCell sx={{ width: "75%" }}>
-                          {task.title}
+                        <Typography>{task.title}</Typography>
                         </TableCell>
 
                         <TableCell >
@@ -232,8 +232,8 @@ function internTaskTable({ internId }) {
                                />
                             }
                               label={
-                              <Typography style={{ color: 'black' }}>
-                                complete
+                                <Typography variant="body2" style={{fontSize: '0.8rem', color: 'black' }}>
+                                {task.isComplete ? "Complete" : "Not Complete"}
                               </Typography>
                             }
                           />
@@ -268,7 +268,9 @@ function internTaskTable({ internId }) {
                     .filter((task) => task.isVerified)
                     .map((task) => (
                       <TableRow key={task._id} sx={{ height: '10px' }}>
-                        <TableCell>{task.title}</TableCell>
+                        <TableCell>
+                          <Typography>{task.title}</Typography>
+                          </TableCell>
                       </TableRow>
                     ))}
                 </TableBody>
