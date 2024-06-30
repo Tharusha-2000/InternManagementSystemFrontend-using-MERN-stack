@@ -24,12 +24,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import CloseIcon from '@mui/icons-material/Close';
 import { tokens } from "../admin_page/theme/theme";
-import Calender from '../../components/common/Calendar';
 import Calendar from '../../components/common/Calendar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import LeaveManagement from '../../components/common/Leave';
 import { jwtDecode } from "jwt-decode";
-
+import officeImage from '../../assets/office.png';
 
 export default function MentorDashboard()  {
   const colors = tokens;
@@ -69,19 +68,22 @@ export default function MentorDashboard()  {
       return null; // Do not render the component
     }
 
-
-  useEffect(() => {
-      axios.get(`${BASE_URL}user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((result) => {
-          setData(result.data.user);
-      })
-      .catch((err) => console.log(err));
-  }, [token]);
-
+const fetchUserData = () => {
+  axios.get(`${BASE_URL}user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then((result) => {
+      setData(result.data.user);
+      console.log(result.data.user);
+  })
+  .catch((err) => console.log(err));
+};
+// Inside your component
+useEffect(() => {
+  fetchUserData(token, setData);
+}, [token, setData]);
 
     // set the date 
     useEffect(() => {
@@ -301,7 +303,7 @@ export default function MentorDashboard()  {
           boxShadow="1px 2px 5px rgba(0, 0, 0, 0.2)"
           style={{ backgroundColor: 'lightsteelblue', }}
           sx={{ maxWidth: 5000,
-              backgroundImage: `url('src/assets/office.png')`,
+              backgroundImage: `url(${officeImage})`,
               backgroundSize: { xs: '122%',sm: '100%', md: '50%' },
               backgroundPosition: { xs: 'right', md: 'right' },
               backgroundRepeat: 'no-repeat',
@@ -411,11 +413,11 @@ export default function MentorDashboard()  {
                               <CloseIcon />
                             </IconButton>
 
-                            <Calendar />
+                            <Calendar fetchUserData={fetchUserData} />
                           </Box>
                         </Modal>
                     </Box>
-                    <Calender />
+                    <Calendar fetchUserData={fetchUserData} />
                     <hr style={{ width: '85%', borderColor: 'darkblue', border: '2px solid darkblue' }} />
                         <Box
                           sx={{

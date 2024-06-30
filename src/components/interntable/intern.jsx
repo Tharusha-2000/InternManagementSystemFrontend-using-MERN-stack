@@ -98,6 +98,7 @@ function interndetails({ internId,onDataChange }) {
       !data.role ||
       !data.gender ||
       !data.email ||
+      !data.GPA||
       !data.interviewScore ||
       !data.interviewFeedback ||
       !data.mentorEmail 

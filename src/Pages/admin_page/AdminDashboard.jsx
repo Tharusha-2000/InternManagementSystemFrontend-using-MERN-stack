@@ -320,7 +320,9 @@ export default function AdminDashboard() {
               borderRadius={4}
               boxShadow="1px 2px 5px rgba(0, 0, 0, 0.2)"
               sx={{
-                backgroundColor: 'lightsteelblue',   
+
+                backgroundColor: 'lightsteelblue',
+
                 backgroundImage: `url(${officeImage})`,
                 backgroundSize: { xs: '122%',sm: '100%', md: '50%' },
                 backgroundPosition: { xs: 'right', md: 'right' },
