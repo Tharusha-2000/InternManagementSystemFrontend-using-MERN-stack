@@ -18,13 +18,13 @@ import {
   MenuItem,
 } from "@mui/material";
 import { tokens } from "../admin_page/theme/theme";
-import Calender from "../../components/common/Calendar";
 import Calendar from "../../components/common/Calendar";
 import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Email from "../../components/common/SendEmail";
 import Barchart from "../../components/project/projectbarchart";
+import officeImage from '../../assets/office.png';
 
 export default function InternDashboard() {
   const colors = tokens;
@@ -66,18 +66,22 @@ export default function InternDashboard() {
 
   console.log(`Done Tasks: ${doneTasks}`);
 
-  useEffect(() => {
-    axios
-      .get(`${BASE_URL}user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((result) => {
-        setData(result.data.user);
-      })
-      .catch((err) => console.log(err));
-  }, [token]);
+const fetchUserData = () => {
+  axios.get(`${BASE_URL}user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then((result) => {
+      setData(result.data.user);
+      console.log(result.data.user);
+  })
+  .catch((err) => console.log(err));
+};
+
+useEffect(() => {
+  fetchUserData();
+}, [token]); // Assuming `token` is a dependency for this effect
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -129,7 +133,7 @@ export default function InternDashboard() {
               style={{ backgroundColor: "lightsteelblue" }}
               sx={{
                 maxWidth: 5000,
-                backgroundImage: `url('src/assets/office.png')`,
+                backgroundImage: `url(${officeImage})`,
                 backgroundSize: { xs: '122%',sm: '100%', md: '50%' },
                 backgroundPosition: { xs: 'right', md: 'right' },
                 backgroundRepeat: "no-repeat",
@@ -241,11 +245,11 @@ export default function InternDashboard() {
                     >
                       <CloseIcon />
                     </IconButton>
-                    <Calendar />
+                    <Calendar fetchUserData={fetchUserData} />
                   </Box>
                 </Modal>
               </Box>
-              <Calendar />
+              <Calendar fetchUserData={fetchUserData} />
               <hr
                 style={{
                   width: "85%",

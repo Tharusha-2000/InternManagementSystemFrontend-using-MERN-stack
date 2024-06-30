@@ -25,13 +25,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import CloseIcon from '@mui/icons-material/Close';
 import { tokens } from "../admin_page/theme/theme";
-import Calender from '../../components/common/Calendar';
 import Calendar from '../../components/common/Calendar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import LeaveManagement from '../../components/common/Leave';
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
-
+import officeImage from '../../assets/office.png';
 export default function AdminDashboard() {
 
   const [data, setData] = useState({
@@ -77,18 +76,23 @@ export default function AdminDashboard() {
   const [evaluatorCount, setEvaluatorCount] = useState(0);  
   const [managerCount, setManagerCount] = useState(0);
   const [adminCount, setAdminCount] = useState(0);
+  const fetchUserData = () => {
+    axios.get(`${BASE_URL}user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((result) => {
+        setData(result.data.user);
+        console.log(result.data.user);
+    })
+    .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
-      axios.get(`${BASE_URL}user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((result) => {
-          setData(result.data.user);
-      })
-      .catch((err) => console.log(err));
-  }, [token]);
+    fetchUserData();
+  }, [token]); // Dependency array to re-fetch when token changes
+  
 
 
     // set the date 
@@ -187,6 +191,7 @@ export default function AdminDashboard() {
         const handleOpen = () => setOpen(true);
         const handleClose = () => setOpen(false);
 
+
         
         const deleteSchedule = async (eventId) => {
           try {
@@ -219,7 +224,9 @@ export default function AdminDashboard() {
       
         const handleLeaveClose = () => {
           setLeaveOpen(false);
+
           setErrors({ leaveDate: '', reason: '' }); // Clear errors when closing the form
+
         };
       
         const handleLeaveChange = (event) => {
@@ -313,7 +320,7 @@ export default function AdminDashboard() {
               boxShadow="1px 2px 5px rgba(0, 0, 0, 0.2)"
               sx={{
                 backgroundColor: 'lightsteelblue',
-                backgroundImage: `url('src/assets/office.png')`,
+                backgroundImage: `url(${officeImage})`,
                 backgroundSize: { xs: '122%',sm: '100%', md: '50%' },
                 backgroundPosition: { xs: 'right', md: 'right' },
                 backgroundRepeat: 'no-repeat',
@@ -406,11 +413,11 @@ export default function AdminDashboard() {
                     >
                       <CloseIcon />
                     </IconButton>
-                    <Calendar />
+                    <Calendar fetchUserData={fetchUserData} />
                   </Box>
                 </Modal>
               </Box>
-              <Calender />
+              <Calendar fetchUserData={fetchUserData} />
               <hr style={{ width: '85%', borderColor: 'darkblue', border: '2px solid darkblue' }} />
               <Box sx={{ width: '100%', maxHeight: '300px', overflowY: 'auto', padding: '1px 8px', backgroundColor: 'white', borderRadius: '0 0 12px 12px' }}>
                 <ul style={{ listStyleType: 'none', padding: 0 }}>

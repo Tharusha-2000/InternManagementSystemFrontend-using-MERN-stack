@@ -290,7 +290,7 @@ const SetDataChange = (internId, newData) => {
                 <FormControlLabel
                       control={
                         <Android12Switch
-                          checked={intern.interviewScore}
+                          checked={intern.interviewScore && intern.mentorEmail }
                           onChange={(e) => 
                             setIsComplete(e.target.checked)
                           }
