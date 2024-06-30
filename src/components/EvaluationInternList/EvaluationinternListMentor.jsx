@@ -76,9 +76,9 @@ function EvaluationinternListMentor() {
   };
 
   return (
-    <Grid>
-    <Grid>
- 
+
+
+    <div>
       <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
       <Typography variant="h4" gutterBottom align="center" 
       sx={{
@@ -117,6 +117,7 @@ function EvaluationinternListMentor() {
             <Table>
               <TableHead>
                 <TableRow>
+          
                   <TableCell
                     sx={{
                       fontWeight: "bold",
@@ -125,8 +126,10 @@ function EvaluationinternListMentor() {
                       color: "#fff"
                     }}
                   >
+
                     Intern Name
                   </TableCell>
+
                   <TableCell
                     align="center"
                     sx={{
@@ -136,8 +139,10 @@ function EvaluationinternListMentor() {
                       color: "#fff"
                     }}
                   >
+
                     Evaluate before
                   </TableCell>
+
                   <TableCell
                     align="center"
                     sx={{
@@ -149,6 +154,7 @@ function EvaluationinternListMentor() {
                   >
                     Evaluation form
                   </TableCell>
+
                   <TableCell
                     align="center"
                     sx={{
@@ -160,8 +166,10 @@ function EvaluationinternListMentor() {
                   >
                     Status
                   </TableCell>
+
                 </TableRow>
               </TableHead>
+
               <TableBody>
                 {Array.isArray(filteredData) && filteredData.map((row) => (
                   <TableRow key={row.internName}>
@@ -255,8 +263,7 @@ function EvaluationinternListMentor() {
         </Box>
         )}
       </Paper>
-    </Grid>
-    </Grid>
+    </div>
   );
 }
 
