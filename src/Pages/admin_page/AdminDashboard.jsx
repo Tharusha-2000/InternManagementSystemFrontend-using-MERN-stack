@@ -30,7 +30,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import LeaveManagement from '../../components/common/Leave';
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
-import {officeImage} from 'src/assets/office.png';
+import officeImage from '../../assets/office.png';
 
 export default function AdminDashboard() {
 
