@@ -25,7 +25,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import CloseIcon from '@mui/icons-material/Close';
 import { tokens } from "../admin_page/theme/theme";
-import Calender from '../../components/common/Calendar';
 import Calendar from '../../components/common/Calendar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import LeaveManagement from '../../components/common/Leave';
@@ -191,6 +190,7 @@ export default function AdminDashboard() {
 
         const handleOpen = () => setOpen(true);
         const handleClose = () => setOpen(false);
+
 
         
         const deleteSchedule = async (eventId) => {
@@ -413,11 +413,11 @@ export default function AdminDashboard() {
                     >
                       <CloseIcon />
                     </IconButton>
-                    <Calendar />
+                    <Calendar fetchUserData={fetchUserData} />
                   </Box>
                 </Modal>
               </Box>
-              <Calender />
+              <Calendar fetchUserData={fetchUserData} />
               <hr style={{ width: '85%', borderColor: 'darkblue', border: '2px solid darkblue' }} />
               <Box sx={{ width: '100%', maxHeight: '300px', overflowY: 'auto', padding: '1px 8px', backgroundColor: 'white', borderRadius: '0 0 12px 12px' }}>
                 <ul style={{ listStyleType: 'none', padding: 0 }}>
