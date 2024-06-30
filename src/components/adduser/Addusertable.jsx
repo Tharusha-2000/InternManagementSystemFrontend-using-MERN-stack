@@ -231,8 +231,8 @@ return (
         All User 
       </Typography>
       <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
-
- <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '90%', justifyContent: "space-between", mb: 4 }}>
+   
+  <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '90%',marginLeft: '1%' }}>
   <Paper
     component="form"
     sx={{
@@ -281,7 +281,8 @@ return (
     <Adduser onUserAdded={handleUserAdded} sx={{ marginLeft: '20px' }} />
   </Grid>
 </Stack>
-      <Divider/>
+      <Divider sx={{ height: 5, m: 0.5 }} orientation="vertical"/>
+   
       
       
       <TableContainer>

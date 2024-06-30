@@ -156,18 +156,20 @@ const SetDataChange = (internId, newData) => {
       <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
 
     
- <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '90%', justifyContent: "space-between", mb: 4 }}>
+
+ <Grid sx={{ justifyContent: "space-between",mb:4 ,display: "flex", alignItems: "center" }}>
   <Paper
     component="form"
+   
     sx={{
       p: "2px 4px",
       display: "flex",
       alignItems: "center",
-      width: { xs: "60%", sm: "60%", md: "60%" },
+      width: { xs: "70%", sm: "80%", md: "90%" },
       borderRadius: "20px",
       boxShadow: 3,
       marginLeft: "1%",
-      flexGrow: 1, // Allow the TextField to grow and take available space
+     // flexGrow: 1, // Allow the TextField to grow and take available space
     }}
   >
    <InputBase type="text" 
@@ -201,7 +203,8 @@ const SetDataChange = (internId, newData) => {
       </IconButton>
     )}
   </Paper>
-</Stack>
+  </Grid>
+
       <Divider/>
       
       <TableContainer  >

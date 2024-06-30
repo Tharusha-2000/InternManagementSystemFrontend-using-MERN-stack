@@ -102,7 +102,7 @@ export default function Mentorsidebar() {
     } else if (currentPath.includes("/mentorviewInternDetails")) {
       setSelected("View Profile & Task");
     } else if (currentPath.includes("/mentortaskApprove")) {
-      setSelected("Project Task approment");
+      setSelected("Project Task Approvement");
     } 
     else if (currentPath.includes("/security")) {
       setSelected("Security");
@@ -312,7 +312,7 @@ export default function Mentorsidebar() {
 
 
 
-            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Project Task approment"); navigate("/mentortaskApprove")}}>
+            <ListItem  disablePadding sx={{ display: 'block' }} onClick={()=>{setSelected("Project Task Approvement"); navigate("/mentortaskApprove")}}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -322,7 +322,7 @@ export default function Mentorsidebar() {
                   padding: 1.5,
                   color: 'silver',
                   border: '5px solid #3949ab',
-                  backgroundColor: selected === "Project Task approment" ? 'rgba(100, 149, 237, 0.5)' : 'inherit',
+                  backgroundColor: selected === "Project Task Approvement" ? 'rgba(100, 149, 237, 0.5)' : 'inherit',
                   '&:hover': {
                     backgroundColor: 'royalblue',
                     borderRadius: '1px',
@@ -338,7 +338,7 @@ export default function Mentorsidebar() {
                 >
                   <FilePresentOutlinedIcon sx={{ color: 'white' }} /> 
                 </ListItemIcon>
-                <ListItemText primary="Project Task approment" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="Project Task Approvement" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
 

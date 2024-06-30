@@ -311,7 +311,9 @@ function TaskTable() {
               alignItems="center"
               style={{ marginTop: "30px" }}
             >
+
   <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
+
   <TextField
     value={data.title}
     onChange={(e) => setData({ ...data, title: e.target.value })}
@@ -328,13 +330,14 @@ function TaskTable() {
       '& .MuiOutlinedInput-root': {
         borderRadius: '10px',
       },
-      flexGrow: 1, // Allow the TextField to grow and take available space
+      flexGrow: 1, 
     }}
   />
   <Button
     variant="contained"
     type="submit"
     onClick={addTask}
+
     sx={{
       backgroundColor: '#e7004c',
       color: 'white',
@@ -343,10 +346,13 @@ function TaskTable() {
         boxShadow: 'lg',
       },
     }}
+
   >
     +ADD
   </Button>
 </Stack>
+
+
 
             </Box>
           </Box>
@@ -357,13 +363,15 @@ function TaskTable() {
                 <TableBody>
                   {tasks
                     .filter((task) => !task.isVerified)
+                    .sort((a, b) => a.isComplete - b.isComplete || new Date(b.createdAt) - new Date(a.createdAt))
                     .map((task) => (
                       <TableRow key={task._id} >
-                        <TableCell sx={{ width: "75%" }}>
-                          {task.title}
+                        <TableCell sx={{ width: "73%" }}>
+                        <Typography>{task.title}</Typography>
                         </TableCell>
 
                         <TableCell >
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
                           <IconButton
                             aria-label="delete"
                             onClick={() => handleDelete(task._id)}
@@ -416,8 +424,14 @@ function TaskTable() {
                                 }}
                               />
                             }
-                            label="complete"
+                            label={
+                              <Typography variant="body2" style={{fontSize: '0.8rem', color: 'black' }}>
+                              {task.isComplete ? "Complete" : "Not Complete"}
+                            </Typography>
+                          }
+                            
                           />
+                          </Box>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -449,7 +463,7 @@ function TaskTable() {
             .filter((task) => task.isVerified)
             .map((task) => (
               <TableRow key={task._id} sx={{ height: '10px' }}>
-                <TableCell>{task.title}</TableCell>
+                <TableCell>  <Typography>{task.title}</Typography> </TableCell>
               </TableRow>
             ))}
         </TableBody>
