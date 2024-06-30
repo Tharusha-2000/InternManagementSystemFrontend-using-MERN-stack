@@ -24,10 +24,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import CloseIcon from '@mui/icons-material/Close';
 import { tokens } from "../admin_page/theme/theme";
-import Calender from '../../components/common/Calendar';
 import Calendar from '../../components/common/Calendar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { jwtDecode } from "jwt-decode";
+import officeImage from '../../assets/office.png';
 
 export default function ManagerDashboard() {
 
@@ -73,17 +73,22 @@ export default function ManagerDashboard() {
   const [managerCount, setManagerCount] = useState(0);
   const [adminCount, setAdminCount] = useState(0);
 
-  useEffect(() => {
-      axios.get(`${BASE_URL}user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((result) => {
-          setData(result.data.user);
-      })
-      .catch((err) => console.log(err));
-  }, [token]);
+const fetchUserData = () => {
+  axios.get(`${BASE_URL}user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then((result) => {
+      setData(result.data.user);
+      console.log(result.data.user);
+  })
+  .catch((err) => console.log(err));
+};
+
+useEffect(() => {
+  fetchUserData();
+}, [token]); // Assuming `token` is a dependency for this effect
 
 
     // set the date 
@@ -283,7 +288,7 @@ export default function ManagerDashboard() {
           boxShadow="1px 2px 5px rgba(0, 0, 0, 0.2)"
           style={{ backgroundColor: 'lightsteelblue', }}
           sx={{ maxWidth: 5000,
-              backgroundImage: `url('src/assets/office.png')`,
+              backgroundImage: `url(${officeImage})`,
               backgroundSize: { xs: '122%',sm: '100%', md: '50%' },
               backgroundPosition: { xs: 'right', md: 'right' },
               backgroundRepeat: 'no-repeat',
@@ -393,11 +398,11 @@ export default function ManagerDashboard() {
                     <CloseIcon />
                   </IconButton>
 
-                  <Calendar />
+                  <Calendar fetchUserData={fetchUserData} />
                 </Box>
               </Modal>
           </Box>
-          <Calender />
+          <Calendar fetchUserData={fetchUserData} />
           <hr style={{ width: '85%', borderColor: 'darkblue', border: '2px solid darkblue' }} />
               <Box
                 sx={{
