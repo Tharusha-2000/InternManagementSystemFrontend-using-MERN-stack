@@ -66,18 +66,22 @@ export default function InternDashboard() {
 
   console.log(`Done Tasks: ${doneTasks}`);
 
-  useEffect(() => {
-    axios
-      .get(`${BASE_URL}user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((result) => {
-        setData(result.data.user);
-      })
-      .catch((err) => console.log(err));
-  }, [token]);
+const fetchUserData = () => {
+  axios.get(`${BASE_URL}user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then((result) => {
+      setData(result.data.user);
+      console.log(result.data.user);
+  })
+  .catch((err) => console.log(err));
+};
+
+useEffect(() => {
+  fetchUserData();
+}, [token]); // Assuming `token` is a dependency for this effect
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -241,11 +245,11 @@ export default function InternDashboard() {
                     >
                       <CloseIcon />
                     </IconButton>
-                    <Calendar />
+                    <Calendar fetchUserData={fetchUserData} />
                   </Box>
                 </Modal>
               </Box>
-              <Calendar />
+              <Calendar fetchUserData={fetchUserData} />
               <hr
                 style={{
                   width: "85%",

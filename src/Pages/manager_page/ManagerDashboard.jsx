@@ -73,17 +73,22 @@ export default function ManagerDashboard() {
   const [managerCount, setManagerCount] = useState(0);
   const [adminCount, setAdminCount] = useState(0);
 
-  useEffect(() => {
-      axios.get(`${BASE_URL}user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((result) => {
-          setData(result.data.user);
-      })
-      .catch((err) => console.log(err));
-  }, [token]);
+const fetchUserData = () => {
+  axios.get(`${BASE_URL}user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then((result) => {
+      setData(result.data.user);
+      console.log(result.data.user);
+  })
+  .catch((err) => console.log(err));
+};
+
+useEffect(() => {
+  fetchUserData();
+}, [token]); // Assuming `token` is a dependency for this effect
 
 
     // set the date 
@@ -393,11 +398,11 @@ export default function ManagerDashboard() {
                     <CloseIcon />
                   </IconButton>
 
-                  <Calendar />
+                  <Calendar fetchUserData={fetchUserData} />
                 </Box>
               </Modal>
           </Box>
-          <Calender />
+          <Calendar fetchUserData={fetchUserData} />
           <hr style={{ width: '85%', borderColor: 'darkblue', border: '2px solid darkblue' }} />
               <Box
                 sx={{

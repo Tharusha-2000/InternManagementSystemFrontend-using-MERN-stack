@@ -69,19 +69,22 @@ export default function MentorDashboard()  {
       return null; // Do not render the component
     }
 
-
-  useEffect(() => {
-      axios.get(`${BASE_URL}user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((result) => {
-          setData(result.data.user);
-      })
-      .catch((err) => console.log(err));
-  }, [token]);
-
+const fetchUserData = () => {
+  axios.get(`${BASE_URL}user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then((result) => {
+      setData(result.data.user);
+      console.log(result.data.user);
+  })
+  .catch((err) => console.log(err));
+};
+// Inside your component
+useEffect(() => {
+  fetchUserData(token, setData);
+}, [token, setData]);
 
     // set the date 
     useEffect(() => {
@@ -411,11 +414,11 @@ export default function MentorDashboard()  {
                               <CloseIcon />
                             </IconButton>
 
-                            <Calendar />
+                            <Calendar fetchUserData={fetchUserData} />
                           </Box>
                         </Modal>
                     </Box>
-                    <Calender />
+                    <Calendar fetchUserData={fetchUserData} />
                     <hr style={{ width: '85%', borderColor: 'darkblue', border: '2px solid darkblue' }} />
                         <Box
                           sx={{

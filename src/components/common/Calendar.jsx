@@ -61,7 +61,7 @@ const EventModal = ({ open, onClose, onSave }) => {
   );
 };
 
-export default function Calendar() {
+export default function Calendar({ fetchUserData }) {
   const [role, setRole] = useState("");
   const [currentEvents, setCurrentEvents] = useState([]);
   const theme = useTheme();
@@ -88,21 +88,23 @@ export default function Calendar() {
     localStorage.setItem("events", JSON.stringify(currentEvents));
   }, [currentEvents]);
 
-  const createWorkSchedule = async (newEvent) => {
-    try {
-      const response = await axios.post(`${BASE_URL}workschedule`, {
-        schedules: [newEvent],
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+const createWorkSchedule = async (newEvent) => {
+  try {
+    const response = await axios.post(`${BASE_URL}workschedule`, {
+      schedules: [newEvent],
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
-      if (response.data.updatedUser) {
-        setCurrentEvents([...currentEvents, newEvent]);
-      }
-    } catch (error) {
-      console.error("Error creating work schedule:", error.response.data);
+    if (response.data.updatedUser) {
+      // This line already adds the event in real-time to the currentEvents array
+      setCurrentEvents(prevEvents => [...prevEvents, newEvent]);
+      fetchUserData();
     }
-  };
+  } catch (error) {
+    console.error("Error creating work schedule:", error.response.data);
+  }
+};
 
   const deleteWorkSchedule = async (eventId) => {
     try {

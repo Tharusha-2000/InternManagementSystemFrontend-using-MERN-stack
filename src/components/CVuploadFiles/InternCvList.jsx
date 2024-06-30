@@ -40,6 +40,8 @@ export default function InternCvList({ rows }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const token = localStorage.getItem('token');
+  const [editKey, setEditKey] = useState(0);
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -161,10 +163,10 @@ export default function InternCvList({ rows }) {
 
   const [openEdit, setOpenEdit] = useState(false);
   const [internId, setInternId] = useState(null);
-
   const handleEditOpen = (id) => {
     setInternId(id);
     setOpenEdit(true);
+    setEditKey(prevKey => prevKey + 1);
   };
   const handleEditClose = () => {
     setOpenEdit(false);
@@ -172,7 +174,7 @@ export default function InternCvList({ rows }) {
 
   return (
     <>
-         <EditCVfiles key={internId} open={openEdit} handleClose={handleEditClose} internId={internId} refreshData={fetchData} />
+         <EditCVfiles key={editKey} open={openEdit} handleClose={handleEditClose} internId={internId} refreshData={fetchData} />
       <Paper sx={{ Width: "100%", overflow: "auto", padding: "12px"}}>
         <Typography variant="h4" gutterBottom align="center" 
           sx={{

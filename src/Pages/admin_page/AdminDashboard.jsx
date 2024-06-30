@@ -192,6 +192,7 @@ export default function AdminDashboard() {
         const handleOpen = () => setOpen(true);
         const handleClose = () => setOpen(false);
 
+
         
         const deleteSchedule = async (eventId) => {
           try {
@@ -413,11 +414,11 @@ export default function AdminDashboard() {
                     >
                       <CloseIcon />
                     </IconButton>
-                    <Calendar />
+                    <Calendar fetchUserData={fetchUserData} />
                   </Box>
                 </Modal>
               </Box>
-              <Calender />
+              <Calendar fetchUserData={fetchUserData} />
               <hr style={{ width: '85%', borderColor: 'darkblue', border: '2px solid darkblue' }} />
               <Box sx={{ width: '100%', maxHeight: '300px', overflowY: 'auto', padding: '1px 8px', backgroundColor: 'white', borderRadius: '0 0 12px 12px' }}>
                 <ul style={{ listStyleType: 'none', padding: 0 }}>
