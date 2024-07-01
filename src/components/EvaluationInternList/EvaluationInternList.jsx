@@ -131,8 +131,15 @@ function EvaluationInternList() {
     <Grid item xs={12} >
 
     <TableContainer component={Paper}>
-      <Typography variant="h4" gutterBottom align="center">
-        All Evaluations
+      <Typography variant="h4" gutterBottom align="center" 
+      sx={{
+        color: 'rgba(0, 0, 102, 0.8)', 
+        fontWeight: 'bold', 
+        marginBottom: '2px', 
+        paddingTop: '10px', 
+        backgroundColor: 'rgba(255, 255, 255, 0.5)', 
+      }}>
+       All Evaluations
       </Typography>
       <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>
       <Grid sx={{ justifyContent: "space-between", mb: 4, display: "flex", alignItems: "center" }}>
