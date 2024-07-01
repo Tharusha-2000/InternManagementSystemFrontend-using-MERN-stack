@@ -28,13 +28,18 @@ import TaskPieChart from './projectpiechart';
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import TaskBarChart from './projectbarchart';
+import TablePagination from '@mui/material/TablePagination';
 import { CircularProgress, Container } from "@mui/material";
+
+
 function internTaskTable({ internId }) {
   // State for tasks and data
   const [tasks, setTasks] = useState([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [changeRoleId, setChangeRoleId] = useState(null);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const token = localStorage.getItem("token");
 
   const handleClickOpen = (task) => {
@@ -79,8 +84,9 @@ function internTaskTable({ internId }) {
       margin: 2,
     },
      "& .Mui-disabled + .MuiSwitch-track": {
-      opacity: 0.7,
+      opacity: 0.8,
     },
+    
     "& .Mui-disabled .MuiSwitch-thumb": {
       color: theme.palette.grey[200],
     }
@@ -216,6 +222,7 @@ function internTaskTable({ internId }) {
                 <TableBody>
                   {tasks
                     .filter((task) => !task.isVerified)
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((task) => (
                       <TableRow key={task._id} >
                         <TableCell sx={{ width: "75%" }}>
@@ -243,6 +250,18 @@ function internTaskTable({ internId }) {
                 </TableBody>
               </Table>
             </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={tasks.filter((task) => !task.isVerified).length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={(event, newPage) => setPage(newPage)}
+                onRowsPerPageChange={(event) => {
+                  setRowsPerPage(parseInt(event.target.value, 10));
+                  setPage(0);
+                }}
+              />
           </Stack>
         </Card>
 
@@ -266,6 +285,7 @@ function internTaskTable({ internId }) {
                 <TableBody>
                   {tasks
                     .filter((task) => task.isVerified)
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((task) => (
                       <TableRow key={task._id} sx={{ height: '10px' }}>
                         <TableCell>
@@ -276,6 +296,18 @@ function internTaskTable({ internId }) {
                 </TableBody>
               </Table>
             </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={tasks.filter((task) => task.isVerified).length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={(event, newPage) => setPage(newPage)}
+              onRowsPerPageChange={(event) => {
+                setRowsPerPage(parseInt(event.target.value, 10));
+                setPage(0);
+              }}
+            />
           </Stack>
         </Card>
       </Stack>
