@@ -300,28 +300,8 @@ useEffect(() => {
             display="inline"
             alignItems="right"
           >
-
-            {/* ROW 1 */}
-            <Box
-              gridColumn={{ xs: 'span 12', md: 'span 8' }}
-              gridRow="span 2"
-              borderRadius={4}
-              boxShadow="1px 2px 5px rgba(0, 0, 0, 0.2)"
-              sx={{
-
-                backgroundColor: 'lightsteelblue',
-
-                backgroundImage: `url(${officeImage})`,
-                backgroundSize: { xs: '122%',sm: '100%', md: '50%' },
-                backgroundPosition: { xs: 'right', md: 'right' },
-                backgroundRepeat: 'no-repeat',
-                maxWidth: '5000px',
-              }}
-            >
-              <Box mt="1px" p="1px" display="inline" alignItems="right">
-                <Box sx={{ paddingLeft: '20px' }}>
-                  <Typography  fontWeight="bold" color="#000066" sx={{
-
+          <Box sx={{  paddingLeft: '20px'}}>
+          <Typography  fontWeight="bold" color="#000066" sx={{
                     fontSize: {
                       xs: '1.4rem',  
                       sm: '1.9rem',   
