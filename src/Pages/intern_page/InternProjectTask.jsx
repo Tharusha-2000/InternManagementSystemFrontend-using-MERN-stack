@@ -32,7 +32,7 @@ import Typography from "@mui/joy/Typography";
 import Card from "@mui/joy/Card";
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
-
+import TablePagination from '@mui/material/TablePagination';
 
 function TaskTable() {
     // State for tasks and data
@@ -41,12 +41,15 @@ function TaskTable() {
       title: "",
       isComplete: false,
     });
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
   
     const [open, setOpen] = useState(false);
     const [currentTask, setCurrentTask] = useState(null);
     const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
     const userRole = decodedToken.role;
+
 
    if (userRole !== 'intern') {
       return null; // Do not render the component
@@ -60,7 +63,8 @@ function TaskTable() {
       setOpen(false);
     };
   
-   
+
+
     // handel complete notcomplete profile button
   
     const Android12Switch = styled(Switch)(({ theme }) => ({
@@ -364,6 +368,7 @@ function TaskTable() {
                   {tasks
                     .filter((task) => !task.isVerified)
                     .sort((a, b) => a.isComplete - b.isComplete || new Date(b.createdAt) - new Date(a.createdAt))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((task) => (
                       <TableRow key={task._id} >
                         <TableCell sx={{ width: "73%" }}>
@@ -438,6 +443,18 @@ function TaskTable() {
                 </TableBody>
               </Table>
             </TableContainer>
+            <TablePagination
+  rowsPerPageOptions={[5, 10, 25]}
+  component="div"
+  count={tasks.filter((task) => !task.isVerified).length}
+  rowsPerPage={rowsPerPage}
+  page={page}
+  onPageChange={(event, newPage) => setPage(newPage)}
+  onRowsPerPageChange={(event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  }}
+/>
           </Stack>
         </Card>
 
@@ -461,6 +478,7 @@ function TaskTable() {
         <TableBody>
           {tasks
             .filter((task) => task.isVerified)
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((task) => (
               <TableRow key={task._id} sx={{ height: '10px' }}>
                 <TableCell>  <Typography>{task.title}</Typography> </TableCell>
@@ -469,6 +487,18 @@ function TaskTable() {
         </TableBody>
       </Table>
     </TableContainer>
+    <TablePagination
+     rowsPerPageOptions={[5, 10, 25]}
+     component="div"
+     count={tasks.filter((task) => task.isVerified).length}
+     rowsPerPage={rowsPerPage}
+     page={page}
+     onPageChange={(event, newPage) => setPage(newPage)}
+     onRowsPerPageChange={(event) => {
+       setRowsPerPage(parseInt(event.target.value, 10));
+       setPage(0);
+     }}
+    />
   </Stack>
 </Card>
       </Stack>
