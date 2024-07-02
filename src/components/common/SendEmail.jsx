@@ -96,7 +96,7 @@ const EmailForm = () => {
           />
          <Button
          variant="contained"
-         style={{ marginTop: '10px', backgroundColor: '#1766E4', marginLeft: '171px' }} 
+         style={{ marginTop: '10px', backgroundColor: '#1766E4', marginLeft: '170px' }} 
          type="submit"
         >
          Send
