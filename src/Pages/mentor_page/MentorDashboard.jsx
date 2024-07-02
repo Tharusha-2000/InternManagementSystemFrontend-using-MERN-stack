@@ -60,6 +60,8 @@ export default function MentorDashboard()  {
   const [evaluatorCount, setEvaluatorCount] = useState(0);  
   const [managerCount, setManagerCount] = useState(0);
   const [adminCount, setAdminCount] = useState(0);
+  const [leaveCount, setLeaveCount] = useState(0);
+
   const token = localStorage.getItem('token');
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role; 
@@ -76,6 +78,9 @@ const fetchUserData = () => {
   })
   .then((result) => {
       setData(result.data.user);
+      let leaveCount = result.data.user.leaveApplications.filter(application => application.status === 'Approved').length;
+      leaveCount = 30- leaveCount ;
+      setLeaveCount(leaveCount);
       console.log(result.data.user);
   })
   .catch((err) => console.log(err));
@@ -689,81 +694,49 @@ useEffect(() => {
                     </Box>
 
                     <Box
-                      gridColumn={{ xs: 'span 12', md: 'span 2' }}
-                      backgroundColor="white"
-                      border= "2px solid #91C1DE"	
-                      boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      borderRadius= '8px'
-                    >
-                      <Box 
-                          width="100%" 
-                          m="0 1px" 
-                          position="relative" 
-                          display="flex" 
-                          flexDirection="column" 
-                          justifyContent="center"
-                      > 
-                        <IconButton 
-                          aria-label="settings"
-                          sx={{ 
-                            position: 'absolute',
-                            top: -40, 
-                            right: 0,
-                          }} 
-                          onClick={handleManagerListClick}
-                        >
-                          <ExpandMoreIcon />
-                        </IconButton>
-                        <Menu
-                            id="manager-menu"
-                            anchorEl={managerAnchorEl}
-                            keepMounted
-                            open={Boolean(managerAnchorEl)}
-                            onClose={handleManagerListClose}
-                          >
-                            {showManagerList && users.map((user) => (
-                              user.role.toLowerCase() === 'manager' && (
-                                <MenuItem onClick={handleManagerListClose}>
-                                  <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
-                                <div>
-                                  {`${user.fname} ${user.lname}`}
-                                  <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
-                                    {user.jobtitle}
-                                  </Typography>
-                                </div>
-                                </MenuItem>
-                              )
-                            ))}
-                          </Menu>
-                        <Typography
-                          variant="h6"
-                          fontWeight="bold"
-                          sx={{ 
-                            position: 'absolute',
-                            top: -40, 
-                            left: 10,
-                            color: colors.blueAccent[200] 
-                          }}
-                        >
-                          Managers
-                        </Typography>
-                        <Typography
-                          variant="h5"
-                          fontWeight="bold"
-                          sx={{ 
-                            position: 'absolute',
-                            top: 2, 
-                            left: 50,
-                            color: colors.greenAccent[500] 
-                          }}
-                        >
-                         {`${managerCount}`}
-                        </Typography>
-                      </Box>
-                    </Box>
+            gridColumn={{ xs: 'span 12', md: 'span 2' }}
+            backgroundColor="white"
+            border="2px solid #91C1DE"
+            boxShadow="2px 2px 5px rgba(0, 0, 0, 0.2)"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            borderRadius="8px"
+          >
+            <Box
+              width="100%"
+              m="0 1px"
+              position="relative"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+            >
+          
+              <Typography
+                variant="h12" 
+                fontWeight="bold"
+                sx={{
+                  position: 'absolute',
+                  top: -40,
+                  left: 10,
+                  color: 'red'
+                }}
+              >Leave Remaining
+              </Typography>
+              <Typography
+                variant="h8"
+                fontWeight="bold"
+                sx={{ 
+                  position: 'absolute',
+                  top: 12, 
+                  left: 50,
+                  color: 'red'
+                }}
+              >
+              {`${leaveCount}`}
+              </Typography>
+            </Box>
+            </Box>
            {/* ROW 4 */}
            <Box
               gridColumn={{ xs: 'span 12', md: 'span 8' }}
