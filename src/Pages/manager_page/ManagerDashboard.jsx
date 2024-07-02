@@ -77,6 +77,8 @@ export default function ManagerDashboard() {
   const [evaluatorCount, setEvaluatorCount] = useState(0);  
   const [managerCount, setManagerCount] = useState(0);
   const [adminCount, setAdminCount] = useState(0);
+  const [leaveCount, setLeaveCount] = useState(0);
+
   const fetchUserData = () => {
     axios.get(`${BASE_URL}user`, {
       headers: {
@@ -85,6 +87,10 @@ export default function ManagerDashboard() {
     })
     .then((result) => {
         setData(result.data.user);
+        let leaveCount = result.data.user.leaveApplications.filter(application => application.status === 'Approved').length;
+        leaveCount = 30- leaveCount ;
+        setLeaveCount(leaveCount);
+
         console.log(result.data.user);
     })
     .catch((err) => console.log(err));
@@ -695,60 +701,29 @@ export default function ManagerDashboard() {
               flexDirection="column"
               justifyContent="center"
             >
-              <IconButton
-                aria-label="settings"
-                sx={{
-                  position: 'absolute',
-                  top: -40,
-                  right: 0,
-                }}
-                onClick={handleManagerListClick}
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-              <Menu
-                id="manager-menu"
-                anchorEl={managerAnchorEl}
-                keepMounted
-                open={Boolean(managerAnchorEl)}
-                onClose={handleManagerListClose}
-              >
-                {showManagerList && users.map((user) => (
-                  user.role.toLowerCase() === 'manager' && (
-                    <MenuItem key={user._id} onClick={handleManagerListClose}>
-                      <Avatar src={user.imageUrl} alt={`${user.fname} ${user.lname}`} style={{ marginRight: '20px' }} />
-                      <div>
-                        {`${user.fname} ${user.lname}`}
-                        <Typography variant="body2" color="textSecondary" style={{ fontSize: '0.7rem' }}>
-                          {user.jobtitle}
-                        </Typography>
-                      </div>
-                    </MenuItem>
-                  )
-                ))}
-              </Menu>
+          
               <Typography
-                variant="h6"
+                variant="h12" 
                 fontWeight="bold"
                 sx={{
                   position: 'absolute',
                   top: -40,
                   left: 10,
-                  color: '#000066'
+                  color: 'red'
                 }}
-              >Managers
+              >Leave Remaining
               </Typography>
               <Typography
-                variant="h6"
+                variant="h8"
                 fontWeight="bold"
                 sx={{ 
                   position: 'absolute',
-                  top: 2, 
+                  top: 12, 
                   left: 50,
-                  color: colors.greenAccent[500] 
+                  color: 'red'
                 }}
               >
-              {`${managerCount}`}
+              {`${leaveCount}`}
               </Typography>
             </Box>
             </Box>

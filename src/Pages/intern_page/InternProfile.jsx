@@ -374,6 +374,7 @@ return (
                           <Input size="sm" 
                                 placeholder="GPA" 
                                 value={data.GPA}
+                                readOnly
                                 type="text"
                                 onChange={(e) =>
                                  setData({ ...data, GPA: e.target.value })
@@ -471,6 +472,7 @@ return (
                         sx={{ mt: 1.5 }}
                         placeholder="Description"
                         value={data.Bio}
+                               
                                 type="text"
                                 onChange={(e) =>
                                       setData({ ...data, Bio: e.target.value })
@@ -491,7 +493,7 @@ return (
                       </CardActions>
                     </CardOverflow>
                   </Card>
-      </Stack>
+         </Stack>
     </Box>
     </Box>
     </> 
