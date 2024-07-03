@@ -132,7 +132,7 @@ export default function Internsidebar() {
       setData(result.data.user);
     })
     .catch((err) => console.log(err));
-  }, []);
+  }, [data]);
 
 
   return (
