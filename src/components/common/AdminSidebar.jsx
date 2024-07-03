@@ -143,7 +143,7 @@ export default function Sidebar() {
       setData(result.data.user);
     })
     .catch((err) => console.log(err));
-  }, []);
+  }, [data]);
 
 
 
