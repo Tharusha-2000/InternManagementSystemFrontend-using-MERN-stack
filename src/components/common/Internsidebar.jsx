@@ -28,6 +28,7 @@ import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import { useUserData } from '../Contexts/UserContext';
 
 const drawerWidth = 240;
 
@@ -81,7 +82,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Internsidebar() {
-  const [data, setData] = useState("");
+
   const theme = useTheme();
   const navigate = useNavigate();
   const open = useAppStore((state) => state.dopen);
@@ -90,6 +91,13 @@ export default function Internsidebar() {
   const token = localStorage.getItem('token');
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role;
+  const { data, fetchUserData } = useUserData();
+
+
+  useEffect(() => {
+    fetchUserData();
+  }, [fetchUserData]);
+  console.log(data);
 
   useEffect(() => {
     const currentPath = location.pathname;
@@ -121,18 +129,7 @@ export default function Internsidebar() {
     return null; // Do not render the component
   }
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    axios.get(`${BASE_URL}user`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((result) => {
-      setData(result.data.user);
-    })
-    .catch((err) => console.log(err));
-  }, []);
+  
 
 
   return (
@@ -164,7 +161,7 @@ export default function Internsidebar() {
               }}
             >
               <Avatar 
-                src={data.imageUrl} 
+                src={data?.imageUrl} 
                 sx={{ 
                   width: open ? 100 : 45, 
                   height: open ? 100 : 45, 
@@ -174,10 +171,10 @@ export default function Internsidebar() {
             {open && (
               <>
                 <Typography variant="h6" sx={{ marginTop: 1, fontWeight: 'bold', color: "lightcyan" }}>
-                  {data.fname} {data.lname}
+                  {`${data?.fname} ${data?.lname}`}
                 </Typography>
                 <Typography variant="body2" sx={{ color: "lightblue" }}>
-                  {data.jobtitle}
+                  {data?.jobtitle}
                 </Typography>
               </>
             )}

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, BrowserRouter, Link ,useNavigat
 import React,{ useEffect, useState } from 'react';
 import {jwtDecode} from 'jwt-decode';
 import './App.css';
+import { UserProvider } from './components/Contexts/UserContext.jsx';
 
 import Login from './components/login/Login';
 import Addusertable from './components/adduser/Addusertable';
@@ -12,7 +13,8 @@ import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
 import Security from './components/common/Security.jsx';
-import Profile from './components/common/Profile.jsx'
+import Profile from './components/common/Profile.jsx';
+import Header from './components/common/Header.jsx';
 
 
 import AdminDashboard from './Pages/admin_page/AdminDashboard';
@@ -57,12 +59,14 @@ function App() {
   const [user,setUsers] = useState();  
 
   return (
+    <UserProvider>
    
   <BrowserRouter>
    
       <TokenCheck setUsers={setUsers} />
       <Routes>
         <Route path="/" element={<Login setUsers={setUsers}/>} > </Route>
+        <Route path="/Header" element={<Header/>}></Route>
 
         <Route path="/Addusertable" element={<Addusertable />}> </Route>
         <Route path="/Adduser" element={<Adduser />}> </Route>
@@ -146,6 +150,7 @@ function App() {
         </Routes>
 
    </BrowserRouter>    
+    </UserProvider>
   
   );
 }
@@ -154,10 +159,10 @@ function TokenCheck({ setUsers }) {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-      console.log('Token:', token);
+    console.log('Token:', token);
     if (token) {
       const decodedToken = jwtDecode(token);
-     // console.log('Decoded token:', decodedToken);
+      console.log('Decoded token:', decodedToken);
       if (decodedToken.exp * 1000 < new Date().getTime()) {
         setUsers(null);
         localStorage.removeItem('token');
@@ -165,11 +170,14 @@ function TokenCheck({ setUsers }) {
       } else {
         setUsers(decodedToken);
       }
+    } else {
+      setUsers(null); // Ensure user data is cleared immediately
     }
   }, [navigate, setUsers]);
 
-  return null;
+  return null; // Or return a minimal component structure if needed
 }
+
 
 export default App;
 

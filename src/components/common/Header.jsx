@@ -12,6 +12,7 @@ import MuiAppBar from '@mui/material/AppBar';
 import { useAppStore } from './appStore';
 import { useNavigate } from 'react-router-dom';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import { useUserData } from '../Contexts/UserContext';
 
 import Swal from "sweetalert2";
 import Logo from "../../assets/Logo2.png"
@@ -28,7 +29,7 @@ export default function Header() {
   const updateOpen = useAppStore((state) => state.updateOpen);
   const dopen = useAppStore((state) => state.dopen);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+  const { data: userData, fetchUserData, isFetched, loading,eraseUserData } = useUserData();
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
@@ -51,6 +52,7 @@ export default function Header() {
     }).then((result) => {
       if (result.value) {
         localStorage.removeItem('token');
+        eraseUserData()
         navigate('/');
        
       }

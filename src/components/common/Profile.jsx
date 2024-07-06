@@ -31,6 +31,8 @@ import {
 } from "firebase/storage";
 import { storage } from "../../firebaseconfig"
 import { uuidv4 } from '@firebase/util'
+import { useUserData } from "../Contexts/UserContext";
+import { CircularProgress } from "@mui/material";
 
 export default function Profile() {
   const [role, setRole] = useState("");
@@ -54,6 +56,10 @@ export default function Profile() {
   const [oldImagePath, setOldImagePath] = useState(null);
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role;
+  const { fetchUserData } = useUserData();
+  const [loading, setLoading] = useState(false); 
+
+
  
   if (userRole === 'intern') {
     Swal.fire({
@@ -80,13 +86,13 @@ export default function Profile() {
   const getSidebar = () => {
     switch (role) {
       case "admin":
-        return <Adminsidebar />;
+        return <Adminsidebar/>;
       case "mentor":
-        return <Mentorsidebar />;
+        return <Mentorsidebar/>;
       case "evaluator":
-        return <Evaluatorsidebar />;
+        return <Evaluatorsidebar/>;
       case "manager":
-        return <Managersidebar />;
+        return <Managersidebar/>;
       default:
         return null;
     }
@@ -119,59 +125,61 @@ export default function Profile() {
   };
 
     // Upload file
-    const uploadFile =() => {
-
-      if (image === null) {
-         return;
-      }
+    const uploadFile = () => {
+      if (!image) return;
+  
+      setLoading(true); // Set loading to true
       const imagePath = `img/${image.name + uuidv4()}`;
-      const imageRef = ref(storage,imagePath);
-      const uploadFile = uploadBytesResumable(imageRef, image);
+      const imageRef = ref(storage, imagePath);
+      const uploadTask = uploadBytesResumable(imageRef, image);
   
-      uploadFile.on('state_changed', (snapshot) => {
-        const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes * 100);
-        setProgress(progress)
-      }, (err) => {
-        console.log("error while uploading file", err);
-      }, () => {
-        setProgress(0);
-        getDownloadURL(uploadFile.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
-        
-        // Delete the previous image
-        if (oldImagePath) {
-          const oldImageRef = ref(storage, oldImagePath);
-          deleteObject(oldImageRef).then(() => {
-            console.log('Old image deleted');
-          }).catch((error) => {
-            console.log('Failed to delete old image', error);
-          });
-        }
-        console.log(imagePath);
-        // Save the path of the uploaded image
-        setOldImagePath(imagePath);
-        console.log(oldImagePath);
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+          setProgress(progress);
+        },
+        (err) => {
+          console.log("error while uploading file", err);
+          setLoading(false);
+        },
+        () => {
+          setProgress(0);
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log('File available at', downloadURL);
   
-          setImageUrl(downloadURL)
-         console.log(downloadURL);
-          console.log(imageUrl);
-         
-          axios
-             .put(`${BASE_URL}uploadImage`,{imageUrl:downloadURL}, {
-               headers: { Authorization: `Bearer ${token}` },
-             })
-             .then((response) => {
+            if (oldImagePath) {
+              const oldImageRef = ref(storage, oldImagePath);
+              deleteObject(oldImageRef)
+                .then(() => {
+                  console.log('Old image deleted');
+                })
+                .catch((error) => {
+                  console.log('Failed to delete old image', error);
+                });
+            }
+  
+            setOldImagePath(imagePath);
+            setImageUrl(downloadURL);
+  
+            axios
+              .put(`${BASE_URL}uploadImage`, { imageUrl: downloadURL }, {
+                headers: { Authorization: `Bearer ${token}` },
+              })
+              .then((response) => {
                 console.log(response.data.msg);
-             })
-             .catch((error) => {
-               console.log(error);
-             });
-  
-        });
-        setImage(null);
-      });
-     
-    }
+                fetchUserData();
+                setLoading(false);
+              })
+              .catch((error) => {
+                console.log(error);
+                setLoading(false);
+              });
+          });
+          setImage(null);
+        }
+      );
+    };
 
 const handleSubmit = (e) => {
    e.preventDefault();
@@ -200,7 +208,11 @@ const handleSubmit = (e) => {
     .then((response) => {
       Swal.fire({ position: "top", text: response.data.msg 
       ,customClass: {container: 'my-swal',
-      confirmButton: 'my-swal-button'} });
+      confirmButton: 'my-swal-button'} }).then((result) => {
+        if (result.isConfirmed) {
+          fetchUserData(); // Call fetchUserData after the user confirms the alert
+        }
+      });
      // window.alert(response.data.msg);
       console.log(response.data);
     })
@@ -245,44 +257,58 @@ const handleSubmit = (e) => {
                 sx={{ display: { xs: "none", md: "flex" }, my: 1 }}
               >
                 <Stack direction="column" spacing={1}>
-                  <AspectRatio
+                <AspectRatio
                     ratio="1"
                     maxHeight={200}
                     sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
                   >
-                     <img
-                        src={imageUrl || image3} 
+                    <Box position="relative">
+                      <img
+                        src={imageUrl || image3}
                         loading="lazy"
                         alt=""
-                    />
+                      />
+                      {loading && (
+                        <CircularProgress
+                          variant="determinate"
+                          value={progress}
+                          sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                          }}
+                        />
+                      )}
+                    </Box>
                   </AspectRatio>
                   <input
-                      accept="image/*"
-                      style={{ display: 'none' }}
-                      id="icon-button-file"
-                      type="file"
-                      onChange={(event) => {
-                        setImage(event.target.files[0]);
-                      }}
-                    />
-                 <label htmlFor="icon-button-file">
-                  <IconButton
-                    aria-label="upload new picture"
-                    size="sm"
-                    variant="outlined"
-                    color="neutral"
-                    sx={{
-                      bgcolor: "background.body",
-                      position: "absolute",
-                      zIndex: 2,
-                      borderRadius: "50%",
-                      left: 100,
-                      top: 170,
-                      boxShadow: "sm",
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="icon-button-file"
+                    type="file"
+                    onChange={(event) => {
+                      setImage(event.target.files[0]);
                     }}
-                     component="span"
-                  >
-                    <EditRoundedIcon />
+                  />
+                  <label htmlFor="icon-button-file">
+                    <IconButton
+                      aria-label="upload new picture"
+                      size="sm"
+                      variant="outlined"
+                      color="neutral"
+                      sx={{
+                        bgcolor: "background.body",
+                        position: "absolute",
+                        zIndex: 2,
+                        borderRadius: "50%",
+                        left: 100,
+                        top: 170,
+                        boxShadow: "sm",
+                      }}
+                      component="span"
+                    >
+                      <EditRoundedIcon />
                   </IconButton>
                 </label>  
                 </Stack>

@@ -32,6 +32,7 @@ import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import { useUserData } from '../Contexts/UserContext';
 
 const drawerWidth = 240;
 
@@ -85,16 +86,21 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Sidebar() {
-  const [data, setData] = useState("");
+  
   const theme = useTheme();
   const navigate = useNavigate();
   const open = useAppStore((state) => state.dopen);
   const [selected, setSelected] = useState("");
   const location = useLocation();
+  const { data, fetchUserData } = useUserData();
   
   const token = localStorage.getItem('token');
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role;
+  useEffect(() => {
+    fetchUserData();
+  }, [fetchUserData]);
+  console.log(data);
 
   if (userRole !== 'admin') {
     Swal.fire({
@@ -109,7 +115,7 @@ export default function Sidebar() {
    
     return null; // Do not render the component
   }
- console.log(data.role);
+
   useEffect(() => {
     const currentPath = location.pathname;
     
@@ -132,18 +138,7 @@ export default function Sidebar() {
     }
   }, [location]);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    axios.get(`${BASE_URL}user`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((result) => {
-      setData(result.data.user);
-    })
-    .catch((err) => console.log(err));
-  }, []);
+ 
 
 
 
@@ -182,7 +177,7 @@ export default function Sidebar() {
               }}
             >
               <Avatar 
-                src={data.imageUrl} 
+                src={data?.imageUrl} 
                 sx={{ 
                   width: open ? 100 : 45, 
                   height: open ? 100 : 45, 
@@ -192,10 +187,10 @@ export default function Sidebar() {
             {open && (
               <>
                 <Typography variant="h6" sx={{ marginTop: 1, fontWeight: 'bold', color: "lightcyan" }}>
-                  {data.fname} {data.lname}
+                  {data?.fname} {data?.lname}
                 </Typography>
                 <Typography variant="body2" sx={{ color: "lightblue" }}>
-                  {data.jobtitle}
+                  {data?.jobtitle}
                 </Typography>
               </>
             )}
