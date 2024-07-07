@@ -31,7 +31,7 @@ import {
 } from "firebase/storage";
 import { storage } from "../../firebaseconfig"
 import { uuidv4 } from '@firebase/util'
-
+import { useUserData } from '../../components/Contexts/UserContext';
 
 
 
@@ -63,6 +63,7 @@ export default function InternProfile() {
   const [mentors, setMentors] = useState([]);
   const [selectedMentorName, setSelectedMentorName] = useState("");
   const [selectedMentorEmail, setSelectedMentorEmail] = useState("");
+  const { fetchUserData } = useUserData();
 
   if (userRole !== 'intern') {
     Swal.fire({
@@ -150,6 +151,7 @@ export default function InternProfile() {
          })
          .then((response) => {
             console.log(response.data.msg);
+            fetchUserData();
          })
          .catch((error) => {
            console.log(error);
@@ -184,15 +186,20 @@ const handleSubmit = (e) => {
     // uploadFile();
 
     //other details
+    const { imageUrl, ...restOfData } = data;
  axios
-    .put(`${BASE_URL}updateinterns`, data, {
+    .put(`${BASE_URL}updateinterns`, restOfData, {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((response) => {
 
       Swal.fire({ position: "top", text: response.data.msg 
                   ,customClass: {container: 'my-swal',
-                   confirmButton: 'my-swal-button'} });
+                   confirmButton: 'my-swal-button'} }).then((result)=>{
+                    if(result.isConfirmed){
+                      fetchUserData();
+                    }
+                  })
    //   window.alert(response.data.msg);
 
       console.log(response.data);

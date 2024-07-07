@@ -69,7 +69,7 @@ const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
         }
       })
       .catch((err) => console.log(err));
-  }, [data]);
+  }, []);
 
   const Android12Switch = styled(Switch)(({ theme }) => ({
     padding: 8,

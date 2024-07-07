@@ -29,6 +29,8 @@ import Swal from "sweetalert2";
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import TuneIcon from '@mui/icons-material/Tune';
+import { useUserData } from '../Contexts/UserContext.jsx';
+
 const drawerWidth = 270;
 
 const openedMixin = (theme) => ({
@@ -89,8 +91,8 @@ export default function Mentorsidebar() {
   const token = localStorage.getItem('token');
   const decodedToken = jwtDecode(token);
   const userRole = decodedToken.role;
+  const { data, fetchUserData } = useUserData();
 
-  const [data, setData] = useState("");
 
   useEffect(() => {
     const currentPath = location.pathname;
@@ -125,17 +127,8 @@ export default function Mentorsidebar() {
     return null; // Do not render the component
   }
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    axios.get(`${BASE_URL}user`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((result) => {
-      setData(result.data.user);
-    })
-    .catch((err) => console.log(err));
-  }, []);
+    fetchUserData();
+  }, [fetchUserData]);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -166,7 +159,7 @@ export default function Mentorsidebar() {
               }}
             >
               <Avatar 
-                src={data.imageUrl} 
+                src={data?.imageUrl} 
                 sx={{ 
                   width: open ? 100 : 45, 
                   height: open ? 100 : 45, 
@@ -176,10 +169,10 @@ export default function Mentorsidebar() {
             {open && (
               <>
                 <Typography variant="h6" sx={{ marginTop: 1, fontWeight: 'bold', color: "lightcyan" }}>
-                  {data.fname} {data.lname}
+                  {data?.fname} {data?.lname}
                 </Typography>
                 <Typography variant="body2" sx={{ color: "lightblue" }}>
-                  {data.jobtitle}
+                  {data?.jobtitle}
                 </Typography>
               </>
             )}
