@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import Adminsidebar from "./AdminSidebar";
@@ -23,14 +24,15 @@ import axios from "axios";
 import { BASE_URL } from "../../config";
 import image3 from "../../assets/Unknown_person.jpg"
 import Swal from "sweetalert2";
-
 import {
   deleteObject,
   getDownloadURL,
   ref, uploadBytesResumable,
 } from "firebase/storage";
-import { storage } from "../../firebaseconfig"
-import { uuidv4 } from '@firebase/util'
+import { storage } from "../../firebaseconfig";
+import { uuidv4 } from '@firebase/util';
+import { CircularProgress } from "@mui/material";
+import { useUserData } from '../Contexts/UserContext.jsx';
 
 export default function Profile() {
   const [role, setRole] = useState("");
@@ -45,8 +47,7 @@ export default function Profile() {
     employmentType: ''
   });
   const [originalData, setOriginalData] = useState({});
-
- 
+  const { fetchUserData } = useUserData();
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [progress, setProgress] = useState(0);
@@ -162,6 +163,7 @@ export default function Profile() {
              })
              .then((response) => {
                 console.log(response.data.msg);
+                fetchUserData();
              })
              .catch((error) => {
                console.log(error);
@@ -191,18 +193,23 @@ const handleSubmit = (e) => {
   }
     //update photo after the click save button it not uersfrienly so commented it
     // uploadFile();
-
+    const { imageUrl, ...restOfData } = data;
     //other details
    axios
-    .put(`${BASE_URL}updateuser`, data, {
+    .put(`${BASE_URL}updateuser`, restOfData, {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((response) => {
       Swal.fire({ position: "top", text: response.data.msg 
       ,customClass: {container: 'my-swal',
-      confirmButton: 'my-swal-button'} });
+      confirmButton: 'my-swal-button'} }).then((result)=>{
+        if(result.isConfirmed){
+          fetchUserData();
+        }
+      })
      // window.alert(response.data.msg);
       console.log(response.data);
+
     })
     .catch((error) => {
       console.log(error);
@@ -550,3 +557,6 @@ const handleSubmit = (e) => {
     </>
   );
 }
+
+
+

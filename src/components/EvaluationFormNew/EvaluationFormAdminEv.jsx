@@ -7,9 +7,6 @@ import { BASE_URL } from '../../config';
 function EvaluationFormAdminEv({ evaluationFormDetailsId,handleSave, additionalCriteria, setAdditionalCriteria, additionalCriteria2, setAdditionalCriteria2,initialCriteria, initialCriteria2,  setSelectedEvaluator,selectedEvaluator, evaluatorError, setEvaluatorError  }) {
     
     
-   
-    
-    
     const [ratings, setRatings] = useState([]);
     const [ratings2, setRatings2] = useState([]);
     const [newCriteria, setNewCriteria] = useState('');
@@ -37,11 +34,13 @@ function EvaluationFormAdminEv({ evaluationFormDetailsId,handleSave, additionalC
 
 
      
-      const handleChange = (event) => {
-        setSelectedEvaluator(event.target.value);
-        setEvaluatorError(false); // Reset evaluatorError when an evaluator is selected
-        console.log(event.target.value); // Log the selected value
-      };
+    const handleChange = (event) => {
+      const selectedEmail = event.target.value;
+      const selectedEvaluator = evaluators.find(evaluator => evaluator.email === selectedEmail);
+      setSelectedEvaluator(selectedEvaluator);
+      setEvaluatorError(false); // Reset evaluatorError when an evaluator is selected
+      console.log(selectedEvaluator); // Log the selected evaluator object
+    };
   
     const handleRadioChange = (event, index) => {
       setRatings((prevRatings) => {
@@ -65,30 +64,30 @@ function EvaluationFormAdminEv({ evaluationFormDetailsId,handleSave, additionalC
       <Typography variant="h4" align="center" style={{ margin: "20px 0" }}>
         Evaluator
       </Typography>
-
       <Container maxWidth="md">
-      <br></br>
-
-      <FormControl fullWidth>
-                    <InputLabel id="evaluator-select-label">Select Evaluator</InputLabel>
-                    <Select
-                        labelId="evaluator-select-label"
-                        id="evaluator-select"
-                        onChange={handleChange}
-                        value={selectedEvaluator}
-                        label="Select Evaluator"
-                        error={evaluatorError} // error prop
-                    >
-                        {evaluators.map((evaluator, index) => (
-  <MenuItem key={index} value={evaluator}>{evaluator}</MenuItem>
-))}
-                    </Select>
-                    {evaluatorError && <p style={{ color: 'red' }}>Please select an evaluator.</p>} 
-       
-                </FormControl>
-               
-                
-    </Container>
+        <br />
+        <FormControl fullWidth>
+          <InputLabel id="evaluator-select-label">Select Evaluator</InputLabel>
+          <Select
+            labelId="evaluator-select-label"
+            id="evaluator-select"
+            onChange={handleChange}
+            value={selectedEvaluator.email || ''}
+            label="Select Evaluator"
+            error={evaluatorError}
+          >
+            {evaluators.map((evaluator, index) => (
+           <MenuItem key={index} value={evaluator.email}>
+           <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+             <span>{evaluator.name}</span>
+             <span style={{ color: 'rgba(0, 0, 0, 0.54)' }}>{evaluator.email}</span>
+           </div>
+         </MenuItem>
+            ))}
+          </Select>
+          {evaluatorError && <p style={{ color: 'red' }}>Please select an evaluator.</p>}
+        </FormControl>
+      </Container>
 
       <br></br>
       <Container maxWidth="md">
