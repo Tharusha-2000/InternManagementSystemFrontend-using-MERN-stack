@@ -24,6 +24,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import Box from "@mui/joy/Box";
+import Grid from "@mui/joy/Grid";
 import Button from "@mui/joy/Button";
 import Divider from "@mui/joy/Divider";
 import IconButton from "@mui/joy/IconButton";
@@ -33,6 +34,9 @@ import Card from "@mui/joy/Card";
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
 import TablePagination from '@mui/material/TablePagination';
+import InternPdf from "../../components/project/InernTaskPdf";
+import PrintIcon from "@mui/icons-material/Print";
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 function TaskTable() {
     // State for tasks and data
@@ -49,7 +53,8 @@ function TaskTable() {
     const token = localStorage.getItem('token');
     const decodedToken = jwtDecode(token);
     const userRole = decodedToken.role;
-
+    const internID = decodedToken.id;
+   console.log(internID);
 
    if (userRole !== 'intern') {
       return null; // Do not render the component
@@ -282,6 +287,8 @@ function TaskTable() {
           console.log(error);
         });
     };
+
+  
   
   return (
     <>
@@ -291,70 +298,84 @@ function TaskTable() {
     <Internsidebar />
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
     <div>
-      <Stack
-        spacing={4}
-        sx={{
-          display: "flex",
-          maxWidth: "1500px",
-          mx: "auto",
-          px: { xs: 2, md: 6 },
-          py: { xs: 2, md: 3 },
-        }}
-      >
-     <Card sx={{ backgroundColor: '#FFF2F2' }}>
-          <Box sx={{ mb: 1 }}>
-            <Typography
-              level="title-md"
-              style={{ fontSize: "18px", fontWeight: "bold", color: "red" }}
-            >
-              TO DO LIST
-            </Typography>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              style={{ marginTop: "30px" }}
-            >
+    <Divider sx={{ height: 15, m: 0.5 }} orientation="vertical"/>      
+        <Stack
+          spacing={4}
+          sx={{
+            display: "flex",
+            maxWidth: "1500px",
+            mx: "auto",
+            px: { xs: 2, md: 6 },
+            py: { xs: 2, md: 3 },
+          }}
+        >
 
-  <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
+                          <Box
+                            style={{
+                              position: "absolute",
+                              top: 80,
+                              right: 60,
+                              margin: "10px",
+                              textAlign: "center"
+                            }}
+                          >
+                            <InternPdf/>
+                          </Box>
 
-  <TextField
-    value={data.title}
-    onChange={(e) => setData({ ...data, title: e.target.value })}
-    placeholder="Add a task"
-    fullWidth
-    size="small"
-    InputProps={{
-      style: {
-        height: '40px',
-        fontSize: '0.875rem',
-      },
-    }}
-    sx={{
-      '& .MuiOutlinedInput-root': {
-        borderRadius: '10px',
-      },
-      flexGrow: 1, 
-    }}
-  />
-  <Button
-    variant="contained"
-    type="submit"
-    onClick={addTask}
+                  <Card sx={{ backgroundColor: '#FFF2F2' }}>
+                        <Box sx={{ mb: 1 }}>
+                          <Typography
+                            level="title-md"
+                            style={{ fontSize: "18px", fontWeight: "bold", color: "red" }}
+                          >
+                            TO DO LIST
+                          </Typography>
+                          <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            style={{ marginTop: "30px" }}
+                          >
 
-    sx={{
-      backgroundColor: '#e7004c',
-      color: 'white',
-      '&:hover': {
-        transform: 'scale(1.04)', 
-        boxShadow: 'lg',
-      },
-    }}
+                <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
 
-  >
-    +ADD
-  </Button>
-</Stack>
+                <TextField
+                  value={data.title}
+                  onChange={(e) => setData({ ...data, title: e.target.value })}
+                  placeholder="Add a task"
+                  fullWidth
+                  size="small"
+                  InputProps={{
+                    style: {
+                      height: '40px',
+                      fontSize: '0.875rem',
+                    },
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '10px',
+                    },
+                    flexGrow: 1, 
+                  }}
+                />
+                <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={addTask}
+
+                  sx={{
+                    backgroundColor: '#e7004c',
+                    color: 'white',
+                    '&:hover': {
+                      transform: 'scale(1.04)', 
+                      boxShadow: 'lg',
+                    },
+                  }}
+
+                >
+                  +ADD
+                </Button>
+              </Stack>
 
 
 
@@ -501,6 +522,8 @@ function TaskTable() {
     />
   </Stack>
 </Card>
+       
+          
       </Stack>
 
       <Dialog

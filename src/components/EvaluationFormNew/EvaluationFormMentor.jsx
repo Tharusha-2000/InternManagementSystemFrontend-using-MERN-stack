@@ -39,24 +39,40 @@ function EvaluationFormMentor({
   const token = localStorage.getItem("token");
   // ...
 
+
   const onSave = async () => {
     if (!validateInputs()) {
       return;
     }
   
-    handleClose(); // Close the form
+    // Convert ratings to percentage values
+    const jobPerformanceScoresPercentage = ratings.map(rating => rating * 20);
+    const coreValuesScoresPercentage = coreValuesRatings.map(rating => rating * 20); 
   
     try {
+      const response = await axios.post(`${BASE_URL}storeMentorScores/${internId}`, {
+        coreValuesScoresMentor: coreValuesScoresPercentage, 
+        jobPerformanceScoresMentor: jobPerformanceScoresPercentage, 
+        overall_performance_mentor: overallPerformanceRating,
+        action_taken_mentor: actionTakenMentor,
+        comment_mentor: commentMentor,
+        
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
   
-  
-      console.log("Response from server:", response.data);
-      setRefreshKey(refreshKey + 1); // Refresh the data if needed
+      if (response.status === 200) {
+        console.log('Data saved successfully');
+      } else {
+        console.error('Error saving data', response.status);
+      }
     } catch (error) {
-      console.error(
-        "Error saving data:",
-        error.response ? error.response.data : error.message
-      );
+      console.error('Error saving data:', error.message);
     }
+  
+    handleClose(); // Close the form
   };
   
 
@@ -161,7 +177,7 @@ function EvaluationFormMentor({
   return (
     <div>
       <Typography variant="h4" align="center" style={{ margin: "20px 0" }}>
-        Mentor
+        Evaluation Form
       </Typography>
       <Container maxWidth="md">
         <Box
@@ -191,11 +207,11 @@ function EvaluationFormMentor({
           Rating Scale
         </Typography>
         <Box display="flex" justifyContent="space-between" width="100%">
-  <Typography variant="body1" sx={{ mr: 2 }}>5 – outstanding</Typography>
-  <Typography variant="body1" sx={{ mr: 2 }}>4 – exceeds expectations</Typography>
+  <Typography variant="body1" sx={{ mr: 2 }}>1 – unacceptable </Typography>
+  <Typography variant="body1" sx={{ mr: 2 }}>2 – needs improvement </Typography>
   <Typography variant="body1" sx={{ mr: 2 }}>3 – meets expectations</Typography>
-  <Typography variant="body1" sx={{ mr: 2 }}>2 – needs improvement</Typography>
-  <Typography variant="body1">1 – unacceptable</Typography>
+  <Typography variant="body1" sx={{ mr: 2 }}>4 – exceeds expectations</Typography>
+  <Typography variant="body1">5 – outstanding</Typography>
 </Box>
 
         <br></br>
@@ -209,7 +225,7 @@ function EvaluationFormMentor({
           align="left"
           style={{ margin: "20px 0", fontWeight: "bold" }}
         >
-          Criterias for Assessing Job Performance mentor
+          CRITERIAS FOR ASSESING JOB PERFORMANCE
         </Typography>
         <br></br>
         <EvaluationFormTableTemp
@@ -228,7 +244,7 @@ function EvaluationFormMentor({
           align="left"
           style={{ margin: "20px 0", fontWeight: "bold" }}
         >
-          CORE VALUES AND OBJECTIVES mentor
+         CRITERIAS FOR ASSESING CORE VALUES 
         </Typography>
         <br></br>
         <EvaluationFormTableTemp
