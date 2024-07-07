@@ -214,7 +214,7 @@ function EvaluationinternListMentor() {
                   </TableRow>
                 ))}
                 <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-                  <DialogTitle>Evaluation Form</DialogTitle>
+                  <DialogTitle></DialogTitle>
                   <DialogContent>
                     {selectedIntern && (
                       <EvaluationFormMentor

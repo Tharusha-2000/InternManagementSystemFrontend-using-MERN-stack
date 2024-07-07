@@ -148,7 +148,7 @@ if (coreValuesRatings.some(rating => rating === 0)) {
   return (
     <div>
       <Typography variant="h4" align="center" style={{ margin: "20px 0" }}>
-        Evaluator
+      Evaluation Form
       </Typography>
       <Container maxWidth="md">
         <Box
@@ -175,11 +175,11 @@ if (coreValuesRatings.some(rating => rating === 0)) {
           Rating Scale
         </Typography>
         <Box display="flex" justifyContent="space-between" width="100%">
-  <Typography variant="body1" sx={{ mr: 2 }}>5 – outstanding</Typography>
-  <Typography variant="body1" sx={{ mr: 2 }}>4 – exceeds expectations</Typography>
+        <Typography variant="body1" sx={{ mr: 2 }}>1 – unacceptable </Typography>
+  <Typography variant="body1" sx={{ mr: 2 }}>2 – needs improvement </Typography>
   <Typography variant="body1" sx={{ mr: 2 }}>3 – meets expectations</Typography>
-  <Typography variant="body1" sx={{ mr: 2 }}>2 – needs improvement</Typography>
-  <Typography variant="body1">1 – unacceptable</Typography>
+  <Typography variant="body1" sx={{ mr: 2 }}>4 – exceeds expectations</Typography>
+  <Typography variant="body1">5 – outstanding</Typography>
 </Box>
 
         <br></br>
@@ -192,7 +192,7 @@ if (coreValuesRatings.some(rating => rating === 0)) {
           align="left"
           style={{ margin: "20px 0", fontWeight: "bold" }}
         >
-          Criterias for Assessing Job Performance Evaluator
+          CRITERIAS FOR ASSESING JOB PERFORMANCE
         </Typography>
         <br></br>
         
@@ -212,7 +212,7 @@ if (coreValuesRatings.some(rating => rating === 0)) {
           align="left"
           style={{ margin: "20px 0", fontWeight: "bold" }}
         >
-          CORE VALUES AND OBJECTIVES Evaluator
+            CRITERIAS FOR ASSESING CORE VALUES 
         </Typography><br></br>
         <EvaluationFormTableTemp
           criterias={coreValuesCriteriasEvaluator}
