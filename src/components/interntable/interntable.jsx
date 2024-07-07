@@ -102,6 +102,13 @@ const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
       height: 16,
       margin: 2,
     },
+    "& .Mui-disabled + .MuiSwitch-track": {
+      opacity: 0.8,
+    },
+    
+    "& .Mui-disabled .MuiSwitch-thumb": {
+      color: theme.palette.grey[200],
+    }
   }));
 
 
@@ -296,7 +303,7 @@ const SetDataChange = (internId, newData) => {
                           }
                         />
                       }
-                      label="complete"
+                
                     />
 
                   </TableCell>
