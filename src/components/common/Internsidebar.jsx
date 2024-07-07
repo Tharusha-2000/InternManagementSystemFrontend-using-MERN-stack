@@ -124,8 +124,10 @@ export default function Internsidebar() {
   }
 
   useEffect(() => {
+
     fetchUserData();
   }, [fetchUserData]);
+
 
 
   return (
