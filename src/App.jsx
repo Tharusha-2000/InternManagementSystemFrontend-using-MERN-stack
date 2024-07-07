@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route, BrowserRouter, Link ,useNavigat
 import React,{ useEffect, useState } from 'react';
 import {jwtDecode} from 'jwt-decode';
 import './App.css';
+import { UserProvider } from './components/Contexts/UserContext.jsx';
+
 
 import Login from './components/login/Login';
 import Addusertable from './components/adduser/Addusertable';
@@ -12,7 +14,7 @@ import Fogetpassword from './components/login/Fogetpassword';
 import Varify from './components/login/Varify';
 import CreateNew from './components/login/CreateNew';
 import Security from './components/common/Security.jsx';
-import Profile from './components/common/Profile.jsx'
+import Profile from './components/common/Profile.jsx';
 
 
 import AdminDashboard from './Pages/admin_page/AdminDashboard';
@@ -27,7 +29,7 @@ import ShowTask from './Pages/admin_page/ShowTask.jsx';
 import Interntable from './components/interntable/interntable.jsx';
 import Intern from './components/interntable/intern.jsx';
 import Project from './components/project/project.jsx';
-import Projectinternlist from './components/project/projectinternlist.jsx'
+import Projectinternlist from './components/project/projectinternlist.jsx';
 
 
 
@@ -57,7 +59,8 @@ function App() {
   const [user,setUsers] = useState();  
 
   return (
-   
+
+<UserProvider>
   <BrowserRouter>
    
       <TokenCheck setUsers={setUsers} />
@@ -145,7 +148,8 @@ function App() {
 
         </Routes>
 
-   </BrowserRouter>    
+   </BrowserRouter>  
+  </UserProvider>  
   
   );
 }

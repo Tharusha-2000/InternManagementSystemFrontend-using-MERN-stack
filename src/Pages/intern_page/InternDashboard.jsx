@@ -267,8 +267,12 @@ useEffect(() => {
                   borderRadius: "0 0 12px 12px",
                   scrollbarWidth: "thin",
                   scrollbarColor: "white white",
+                  marginTop: "-5px",
                 }}
               >
+                <Typography variant="h5" sx={{ marginBottom: '20px', color: '#000066', fontWeight: 'bold', textAlign: 'center' }}>
+                Scheduled events
+                </Typography>
                 <ul style={{ listStyleType: "none", padding: 0 }}>
                   {data.schedules &&
                     data.schedules.map((schedule, index) => (
@@ -356,7 +360,7 @@ useEffect(() => {
                   sx={{
                     position: "absolute",
                     top: 2,
-                    left: 50,
+                    left: 10,
                     color: colors.greenAccent[500],
                   }}
                 >
@@ -402,7 +406,7 @@ useEffect(() => {
                   sx={{
                     position: "absolute",
                     top: 2,
-                    left: 50,
+                    left: 10,
                     color: colors.greenAccent[500],
                   }}
                 >
@@ -448,7 +452,7 @@ useEffect(() => {
                   sx={{
                     position: "absolute",
                     top: 2,
-                    left: 50,
+                    left: 10,
                     color: colors.greenAccent[500],
                   }}
                 >
@@ -464,12 +468,13 @@ useEffect(() => {
               overflow="auto"
               borderRadius={1}
               p="1px"
+              sx={{ marginTop: '10px' }}
             >
-              <Card sx={{ backgroundColor: colors.greenAccent[800] }}>
+              <Typography variant="h5" sx={{ marginBottom: '20px', color: '#000066', fontWeight: 'bold' }}>
+                 Send your Email here
+               </Typography>
+              <Card sx={{ backgroundColor: '#D3E1F6' }}>
                 <CardContent>
-                  <Typography variant="h6" color={colors.greenAccent[100]}>
-                    Send Email
-                  </Typography>
                   <Email />
                 </CardContent>
               </Card>
@@ -480,6 +485,7 @@ useEffect(() => {
               overflow="auto"
               borderRadius={2}
               p="1px"
+              sx={{ marginTop: '20px' }}
             >
               <Card sx={{ backgroundColor: colors.blueAccent[900] }}>
                 <CardContent>

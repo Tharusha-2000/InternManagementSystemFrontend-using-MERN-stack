@@ -15,7 +15,6 @@ import {
   Paper,
 } from "@mui/material";
 
-
 function Internpdf() {
   const [comments, setComments] = useState({
     commentMentor: "Loading mentor comment...",
@@ -31,20 +30,18 @@ function Internpdf() {
   });
   const [showModal, setShowModal] = useState(false);
   const [pdfDataUrl, setPdfDataUrl] = useState("");
-useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       const decoded = KJUR.jws.JWS.parse(token);
       const userId = decoded.payloadObj.id;
-      
 
       axios
 
         .get(`${BASE_URL}getCommentsById`, {
-
           headers: {
-            Authorization: `Bearer ${token}` // Add authorization header
-          }
+            Authorization: `Bearer ${token}`, // Add authorization header
+          },
         })
         .then((response) => {
           const {
@@ -60,23 +57,22 @@ useEffect(() => {
             mentor,
           } = response.data;
 
-      
-        setComments({
-          commentMentor: comment_mentor,
-          commentEvaluator: comment_evaluator,
-          overallPerformanceMentor: overall_performance_mentor,
-          overallPerformanceEvaluator: overall_performance_evaluator,
-          actionTakenMentor: action_taken_mentor,
-          evaluatedDateEvaluator: evaluated_date_Evaluator,
-          evaluatedDateMentor: evaluated_date_Mentor,
-          user: user,
-          evaluatorName: evaluator,
-          mentorName: user.mentor,
-        });
-      })
-      .catch((error) => console.error("Fetching comments failed:", error));
-  }
-}, []);
+          setComments({
+            commentMentor: comment_mentor,
+            commentEvaluator: comment_evaluator,
+            overallPerformanceMentor: overall_performance_mentor,
+            overallPerformanceEvaluator: overall_performance_evaluator,
+            actionTakenMentor: action_taken_mentor,
+            evaluatedDateEvaluator: evaluated_date_Evaluator,
+            evaluatedDateMentor: evaluated_date_Mentor,
+            user: user,
+            evaluatorName: evaluator,
+            mentorName: user.mentor,
+          });
+        })
+        .catch((error) => console.error("Fetching comments failed:", error));
+    }
+  }, []);
 
   const generatePDFBlob = async () => {
     const input = document.getElementById("pdfContent");
@@ -131,130 +127,131 @@ useEffect(() => {
     ).toFixed(2);
 
     return (
-      
       <div id="pdfContent" style={{ background: "white", padding: "20px" }}>
         <Paper style={{ maxWidth: "100%", overflow: "auto" }}>
-        <h2>Evaluation Summary</h2>
-       
-        <div
-          className="a4Container"
-          style={{
-            width: "794px",
-            height: "1123px",
-            margin: "auto",
-            padding: "20px",
-            boxSizing: "border-box",
-          }}
-        >
-          <h3>
-            Name:{" "}
-            {comments.user
-              ? `${comments.user.fname} ${comments.user.lname}`.trim()
-              : "Loading..."}
-          </h3>
-          <div className="summary">
-            <Card className="cardHoverEffect">
-              <CardContent className="cardStyle">
-                <CircularProgress CircularProgress value={overallPerformanceEvaluator}
-                  className="circularProgressEvaluator"
-                  variant="determinate"
-                  
-                  size={100}
-                  thickness={8}
-                  style={{ color: "#b5179e" }}
-                />
-                <p>Overall performance marked by</p>
-                <h4>Evaluator</h4>
-                <h4>{overallPerformanceEvaluator.toFixed(2)}%</h4>
-              </CardContent>
-            </Card>
-            <Card className="cardHoverEffect">
-              <CardContent className="cardStyle">
-              <CircularProgress
-  value={overallPerformanceEvaluator}
-  className="circularProgressEvaluator"
-  variant="determinate"
-  size={100}
-  thickness={8}
-  style={{ color: "#b5179e" }}
-/>
-<p>Overall performance marked by</p>
-<h4>Evaluator</h4>
-<h4>{overallPerformanceEvaluator.toFixed(2)}%</h4>
-</CardContent>
-</Card>
-<Card className="cardHoverEffect">
-<CardContent className="cardStyle">
-<CircularProgress
-  value={overallPerformanceMentor}
-  className="circularProgressMentor"
-  variant="determinate"
-  size={100}
-  thickness={8}
-  style={{ color: "#008080" }}
-/>
-<p>Overall performance marked by</p>
-<h4>Mentor</h4>
-<h4>{overallPerformanceMentor.toFixed(2)}%</h4>
-</CardContent>
-</Card>
-          </div>
-          <div className="comments">
-            <h2>Comments</h2>
+          <h2>Evaluation Summary</h2>
+
+          <div
+            className="a4Container"
+            style={{
+              width: "794px",
+              height: "1123px",
+              margin: "auto",
+              padding: "20px",
+              boxSizing: "border-box",
+            }}
+          >
+            <h3>
+              Name:{" "}
+              {comments.user
+                ? `${comments.user.fname} ${comments.user.lname}`.trim()
+                : "Loading..."}
+            </h3>
+            <div className="summary">
+              <Card className="cardHoverEffect">
+                <CardContent className="cardStyle">
+                  <CircularProgress
+                    CircularProgress
+                    value={overallPerformanceEvaluator}
+                    className="circularProgressEvaluator"
+                    variant="determinate"
+                    size={100}
+                    thickness={8}
+                    style={{ color: "#b5179e" }}
+                  />
+                  <p>Overall performance marked by</p>
+                  <h4>Evaluator</h4>
+                  <h4>{overallPerformanceEvaluator.toFixed(2)}%</h4>
+                </CardContent>
+              </Card>
+           
+              <Card className="cardHoverEffect">
+                <CardContent className="cardStyle">
+                  <CircularProgress
+                    value={overallPerformanceMentor}
+                    className="circularProgressMentor"
+                    variant="determinate"
+                    size={100}
+                    thickness={8}
+                    style={{ color: "#008080" }}
+                  />
+                  <p>Overall performance marked by</p>
+                  <h4>Mentor</h4>
+                  <h4>{overallPerformanceMentor.toFixed(2)}%</h4>
+                </CardContent>
+              </Card>
+              <Card className="cardHoverEffect">
+                <CardContent className="cardStyle">
+                  <CircularProgress
+                    value={overallPerformanceEvaluator}
+                    className="circularProgressEvaluator"
+                    variant="determinate"
+                    size={100}
+                    thickness={8}
+                    style={{ color: "#b5179e" }}
+                  />
+                  <p>Overall performance  </p>
+                  <h4>Average</h4>
+                  <h4>{averagePerformance}%</h4>
+                </CardContent>
+              </Card>
+            </div>
+            <div className="comments">
+              <h2>Comments</h2>
+              <br />
+              <h5>Evaluator's Comment:</h5>
+              <div className="comment-box">
+                <p>
+                  {comments.commentEvaluator?.split("\n").map((item, key) => (
+                    <span key={key}>
+                      {item}
+                      <br />
+                    </span>
+                  ))}
+                </p>
+              </div>
+              <br />
+              <h5>Mentor's Comment:</h5>
+              <div className="comment-box">
+                <p>
+                  {comments.commentMentor?.split("\n").map((item, key) => (
+                    <span key={key}>
+                      {item}
+                      <br />
+                    </span>
+                  ))}
+                </p>
+              </div>
+            </div>
+            <h2>Actions Taken by Mentor</h2>
             <br />
-            <h5>Evaluator's Comment:</h5>
             <div className="comment-box">
               <p>
-                {comments.commentEvaluator?.split("\n").map((item, key) => (
-                  <span key={key}>
-                    {item}
-                    <br />
-                  </span>
-                ))}
+                {(comments.actionTakenMentor?.split("\n") || []).map(
+                  (item, key) => (
+                    <span key={key}>
+                      {item}
+                      <br />
+                    </span>
+                  )
+                )}
               </p>
             </div>
-            <br />
-            <h5>Mentor's Comment:</h5>
-            <div className="comment-box">
-              <p>
-                {comments.commentMentor?.split("\n").map((item, key) => (
-                  <span key={key}>
-                    {item}
-                    <br />
-                  </span>
-                ))}
-              </p>
+            <div className="evaluation-details">
+              <h5>Evaluator: {comments.evaluatorName}</h5>
+              <h5>
+                Evaluated on:{" "}
+                {new Date(comments.evaluatedDateEvaluator).toLocaleDateString()}
+              </h5>
+            </div>
+            <div className="evaluation-details">
+              <h5>Mentor: {comments.mentorName}</h5>
+              <h5>
+                Evaluated on:{" "}
+                {new Date(comments.evaluatedDateMentor).toLocaleDateString()}
+              </h5>
             </div>
           </div>
-          <h2>Actions Taken by Mentor</h2>
-          <br />
-          <div className="comment-box">
-            <p>
-              {(comments.actionTakenMentor?.split("\n") || []).map(
-                (item, key) => (
-                  <span key={key}>
-                    {item}
-                    <br />
-                  </span>
-                )
-              )}
-            </p>
-          </div>
-          <div className="evaluation-details">
-            <h5>Evaluator: {comments.evaluatorName}</h5>
-            <h5>
-              Evaluated on:{" "}
-              {new Date(comments.evaluatedDateEvaluator).toLocaleDateString()}
-            </h5>
-          </div>
-          <div className="evaluation-details">
-            <h5>Mentor: {comments.mentorName}</h5>
-            <h5>
-              Evaluated on:{" "}
-              {new Date(comments.evaluatedDateMentor).toLocaleDateString()}
-            </h5>
-          </div>
-        </div>
         </Paper>
       </div>
     );

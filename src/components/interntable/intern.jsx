@@ -293,23 +293,7 @@ function interndetails({ internId,onDataChange }) {
                       >
                         <img src={imageUrl || image3} loading="lazy" alt="" />
                       </AspectRatio>
-                      <IconButton
-                        aria-label="upload new picture"
-                        size="sm"
-                        variant="outlined"
-                        color="neutral"
-                        sx={{
-                          bgcolor: "background.body",
-                          position: "absolute",
-                          zIndex: 2,
-                          borderRadius: "50%",
-                          left: 100,
-                          top: 170,
-                          boxShadow: "sm",
-                        }}
-                      >
-                        <EditRoundedIcon />
-                      </IconButton>
+                      
                     </Stack>
                     <Stack spacing={2} sx={{ flexGrow: 1 }}>
                       <Stack spacing={1}>
@@ -322,6 +306,7 @@ function interndetails({ internId,onDataChange }) {
                             }}
                           >
                             <Input
+                              readOnly={userRole !== 'admin'} 
                               size="sm"
                               value={data.fname}
                               onChange={(e) =>
@@ -338,6 +323,7 @@ function interndetails({ internId,onDataChange }) {
                             }}
                           >
                             <Input
+                              readOnly={userRole !== 'admin'} 
                               size="sm"
                               value={data.lname}
                               onChange={(e) =>
@@ -352,13 +338,14 @@ function interndetails({ internId,onDataChange }) {
                         <Grid item xs={3} sm={3}>
                           <FormControl>
                             <FormLabel>Role</FormLabel>
-                            <Input size="sm" value={data.role} />
+                            <Input size="sm" value={data.role} readOnly />
                           </FormControl>
                         </Grid>
                         <Grid item xs={3} sm={4}>
                           <FormControl>
                             <FormLabel>phone number</FormLabel>
                             <Input
+                              readOnly={userRole !== 'admin'} 
                               size="sm"
                               value={data.phonenumber}
                               onChange={(e) =>
@@ -378,6 +365,7 @@ function interndetails({ internId,onDataChange }) {
                             <FormControl sx={{ flexGrow: 1 }}>
                               <FormLabel>Gender</FormLabel>
                               <Input
+                                readOnly={userRole !== 'admin'} 
                                 size="sm"
                                 value={data.gender}
                                 onChange={(e) =>
@@ -392,6 +380,7 @@ function interndetails({ internId,onDataChange }) {
                             <FormControl sx={{ flexGrow: 1 }}>
                               <FormLabel>Date of Birth</FormLabel>
                               <Input
+                                readOnly={userRole !== 'admin'} 
                                 size="sm"
                                 value={data.dob}
                                 type="date"
@@ -450,6 +439,7 @@ function interndetails({ internId,onDataChange }) {
                           }}
                         >
                           <Input
+                            readOnly={userRole !== 'admin'} 
                             size="sm"
                             value={data.fname}
                             onChange={(e) =>
@@ -467,6 +457,7 @@ function interndetails({ internId,onDataChange }) {
                           }}
                         >
                           <Input
+                            readOnly={userRole !== 'admin'} 
                             size="sm"
                             value={data.lname}
                             onChange={(e) =>
@@ -478,11 +469,12 @@ function interndetails({ internId,onDataChange }) {
                     </Stack>
                     <FormControl>
                       <FormLabel>Role</FormLabel>
-                      <Input size="sm" value={data.role} />
+                      <Input size="sm" value={data.role} readOnly />
                     </FormControl>
                     <FormControl>
                       <FormLabel>phone number</FormLabel>
                       <Input
+                        readOnly={userRole !== 'admin'} 
                         size="sm"
                         value={data.phonenumber}
                         onChange={(e) =>
@@ -495,6 +487,7 @@ function interndetails({ internId,onDataChange }) {
                       <FormControl sx={{ display: { sm: "contents" } }}>
                         <FormLabel>Gender</FormLabel>
                         <Input
+                          readOnly={userRole !== 'admin'} 
                           size="sm"
                           value={data.gender}
                           type="text"
@@ -507,6 +500,7 @@ function interndetails({ internId,onDataChange }) {
                       <FormControl>
                         <FormLabel>Date of Birth</FormLabel>
                         <Input
+                          readOnly={userRole !== 'admin'} 
                           size="sm"
                           value={data.dob}
                           type="date"
@@ -542,6 +536,7 @@ function interndetails({ internId,onDataChange }) {
                           }}
                         >
                           <Input
+                          readOnly={userRole !== 'admin'} 
                             size="sm"
                             placeholder="University Name"
                             value={data.university}
@@ -557,6 +552,7 @@ function interndetails({ internId,onDataChange }) {
                         <FormControl>
                           <FormLabel>GPA</FormLabel>
                           <Input
+                          readOnly={userRole !== 'admin'} 
                             size="sm"
                             placeholder="GPA"
                             value={data.GPA}
@@ -569,6 +565,7 @@ function interndetails({ internId,onDataChange }) {
                         <FormControl sx={{ flexGrow: 1 }}>
                           <FormLabel>Email</FormLabel>
                           <Input
+                            readOnly={userRole !== 'admin'} 
                             size="sm"
                             type="email"
                             startDecorator={<EmailRoundedIcon />}
@@ -585,6 +582,7 @@ function interndetails({ internId,onDataChange }) {
                         <FormControl>
                           <FormLabel>Interview Score</FormLabel>
                           <Input
+                            readOnly={userRole !== 'admin'} 
                             size="sm"
                             placeholder="Interview Score"
                             value={data.interviewScore}
@@ -600,6 +598,7 @@ function interndetails({ internId,onDataChange }) {
                         <FormControl sx={{ flexGrow: 1 }}>
                           <FormLabel>Interview FeedBack</FormLabel>
                           <Input
+                           readOnly={userRole !== 'admin'} 
                             size="sm"
                             value={data.interviewFeedback}
                             type="text"
@@ -618,6 +617,7 @@ function interndetails({ internId,onDataChange }) {
                         <FormControl sx={{ flexGrow: 1 }}>
                           <FormLabel>mentor Email </FormLabel>
                           <select
+                            readOnly={userRole !== 'admin'} 
                             value={selectedMentorEmail} 
                             onChange={handleMentorChange}
                             aria-label="Select mentor"
@@ -692,6 +692,7 @@ function interndetails({ internId,onDataChange }) {
                       minRows={4}
                       sx={{ mt: 1.5 }}
                       value={data.Bio}
+                      readOnly
                       type="text"
                       onChange={(e) =>
                         setData({ ...data, Bio: e.target.value })

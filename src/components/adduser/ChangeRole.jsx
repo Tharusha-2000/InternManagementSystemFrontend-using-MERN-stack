@@ -105,15 +105,7 @@ function ChangeRole({ userid,onRoleChange }) {
           confirmButton: 'my-swal-button'} 
          })
        //  window.alert(err.response.data.msg)
-        
-         .then(() => {
-         
-            if ( err.response.status === 403) {
-                localStorage.removeItem('token');
-                navigate("/");
-              }
-         });
-                
+       closepopup();       
       });
  }
   

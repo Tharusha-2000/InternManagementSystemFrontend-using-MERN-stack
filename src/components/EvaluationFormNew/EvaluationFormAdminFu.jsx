@@ -30,7 +30,7 @@ function EvaluationFormAdminFu({
 }) {
   const [internNameState] = useState(internName);
   const [evaluationDate, setEvaluationDate] = useState("");
-  const [selectedEvaluator, setSelectedEvaluator] = useState("");
+  const [selectedEvaluator, setSelectedEvaluator] = useState({ name: '', email: '' , id: ''});
   const [additionalCriteria, setAdditionalCriteria] = useState([]);
   const [additionalCriteria2, setAdditionalCriteria2] = useState([]);
   const [evaluatorError, setEvaluatorError] = useState(false);
@@ -39,7 +39,7 @@ function EvaluationFormAdminFu({
     "System Proficiency",
     "Quality of work - Free from errors and mistakes. Accuracy, quality of work in general",
     "Effective Communication",
-    "job knowledge",
+    "Job knowledge",
     "Training & Development - seeks to enhance performance and stays updated with new developments in the field.",
   ]);
   const [initialCriteria2] = useState([
@@ -86,7 +86,7 @@ function EvaluationFormAdminFu({
       return;
     }
   
-    if (!selectedEvaluator) {
+    if (!selectedEvaluator || !selectedEvaluator.id) {
       setEvaluatorError(true);
       Swal.fire({
         position: "top",
@@ -122,7 +122,9 @@ function EvaluationFormAdminFu({
     axios
       .post(`${BASE_URL}evaluatorname`, {
         id: evaluationFormDetailsId,
-        evaluatorName: selectedEvaluator,
+        evaluatorName: selectedEvaluator.name,
+        evaluatorEmail: selectedEvaluator.email,
+        evaluatorId: selectedEvaluator.id,
         jobPerformanceCriteriasEvaluator,
         coreValuesCriteriasEvaluator,
         jobPerformanceCriteriasMentor,

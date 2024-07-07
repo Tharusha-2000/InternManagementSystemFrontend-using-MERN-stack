@@ -254,7 +254,7 @@ function EvaluationinternListEvaluator() {
                 fullWidth={true}
                 maxWidth="md"
               >
-                <DialogTitle id="form-dialog-title">Evaluation Form</DialogTitle>
+                <DialogTitle id="form-dialog-title"></DialogTitle>
                 <DialogContent>
                   {selectedIntern && (
                     <EvaluationFormEvaluator
