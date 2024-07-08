@@ -84,7 +84,8 @@ function internTaskTable({ internId }) {
       margin: 2,
     },
      "& .Mui-disabled + .MuiSwitch-track": {
-      opacity: 0.7,
+
+      opacity: 0.991,
     },
     
     "& .Mui-disabled .MuiSwitch-thumb": {

@@ -102,8 +102,9 @@ const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
       height: 16,
       margin: 2,
     },
+
     "& .Mui-disabled + .MuiSwitch-track": {
-      opacity: 0.8,
+      opacity: 0.99,
     },
     
     "& .Mui-disabled .MuiSwitch-thumb": {
@@ -303,6 +304,7 @@ const SetDataChange = (internId, newData) => {
                           }
                         />
                       }
+
                     />
                   </TableCell>
               </TableRow>
