@@ -302,6 +302,7 @@ const SetDataChange = (internId, newData) => {
                           onChange={(e) => 
                             setIsComplete(e.target.checked)
                           }
+                          disabled={true}
                         />
                       }
 
