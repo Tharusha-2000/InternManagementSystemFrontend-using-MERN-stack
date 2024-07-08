@@ -303,9 +303,7 @@ const SetDataChange = (internId, newData) => {
                           }
                         />
                       }
-                     
                     />
-
                   </TableCell>
               </TableRow>
             ))}
