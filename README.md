@@ -25,7 +25,6 @@ in our project have 5differnt user roles.
            tharusha@123
            
 # React + Vite
-
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
