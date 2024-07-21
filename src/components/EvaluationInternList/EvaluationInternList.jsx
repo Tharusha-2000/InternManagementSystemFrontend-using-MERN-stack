@@ -26,6 +26,7 @@ import EvaluationFormAdminFu from "../EvaluationFormNew/EvaluationFormAdminFu";
 import { BASE_URL } from '../../config';
 import SearchIcon from '@mui/icons-material/Search';
 import Swal from "sweetalert2";
+import ReviewFormAdmin from "../EvaluationFormNew/ReviewFormAdmin";
 
 function EvaluationInternList() {
   const token = localStorage.getItem('token'); 
@@ -41,6 +42,7 @@ function EvaluationInternList() {
   const [refreshKey, setRefreshKey] = useState(0); // to refresh the page after save the evaluation form
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [toBeDeletedId, setToBeDeletedId] = useState(null);
+  const [createdDialogOpen, setCreatedDialogOpen] = useState(false); 
 
   const handleClick = (intern) => {
     if (!intern.mentor) {
@@ -50,11 +52,10 @@ function EvaluationInternList() {
         icon: 'warning',
       });
     } else if (intern.eformStatus === "created") {
-      Swal.fire({
-        title: 'Already Created',
-        text: 'This evaluation form has already been created.',
-        icon: 'info',
-      });
+      setSelectedInternName(intern.name);
+      setSelectedMentorName(intern.mentor);
+      setSelectedEvaluationFormDetailsId(intern.evaluationFormDetailsId);
+      setCreatedDialogOpen(true); // Open the created evaluation dialog
     } else {
       setSelectedInternName(intern.name);
       setSelectedMentorName(intern.mentor);
@@ -65,6 +66,7 @@ function EvaluationInternList() {
 
   const handleClose = () => {
     setOpenDialog(false);
+    setCreatedDialogOpen(false); 
   };
 
   useEffect(() => {
@@ -273,6 +275,25 @@ function EvaluationInternList() {
           }}
         />
       </Dialog>
+      <Dialog
+            open={createdDialogOpen}
+            onClose={handleClose}
+            maxWidth="md"
+            fullWidth
+            PaperProps={{
+              style: {
+                height: '90%',
+              },
+            }}
+          >
+            {/* Render the component you want for created evaluation dialog */}
+            <ReviewFormAdmin
+              internName={selectedInternName}
+              mentorName={selectedMentorName}
+              evaluationFormDetailsId={selectedEvaluationFormDetailsId}
+              onClose={handleClose}
+            />
+          </Dialog>
     </TableContainer>
     </Grid>
     </Grid>
